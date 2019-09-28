@@ -5,6 +5,7 @@ import android.content.Context;
 
 
 import com.comm.jksdk.ad.AdsManger;
+import com.comm.jksdk.ad.view.ylhview.YLHAdView;
 
 /**
  * @author liupengbing

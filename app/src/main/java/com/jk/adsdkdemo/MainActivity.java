@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Observable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,24 +15,17 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-
 import com.comm.jksdk.ad.AdsManger;
 import com.comm.jksdk.ad.listener.AdListener;
-import com.comm.jksdk.http.OkHttpWrapper;
-import com.comm.jksdk.http.utils.LogUtils;
-import com.jk.adsdkdemo.testhttp.NewsService;
-import com.jk.adsdkdemo.testhttp.TimeResponse;
+
 import com.jk.adsdkdemo.utils.Constants;
+import com.jk.adsdkdemo.utils.LogUtils;
 import com.jk.adsdkdemo.utils.SPUtils;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "MainActivity";
@@ -124,12 +118,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.button_test_http:
                 //测试网络框架
-                requestNetwok();
+//                requestNetwok();
 
                 break;
             case R.id.button_configinfo:
                 //请求配置信息
-                AdsManger.getInstance().setContext(this)
+              AdsManger.getInstance().setContext(this)
                         .setBid(10)
                         .setProductName("13")
                         .setMarketName("jrl_jinritoutiao_35")
@@ -139,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .setCity("")
                         .setUserActive(System.currentTimeMillis())
                         .requestConfig();
+
                 break;
             case R.id.button_cms_ad:
 
@@ -166,51 +161,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void requestYLHAd() {
-
-        AdsManger.getInstance().setContext(this)
+        View adView = AdsManger.getInstance().setContext(this)
                 .setAdPositionId("60004844594457490")
                 .setAdListener(mAdListener)
                 .setDefaultConfigKey(Constants.DEFAULT_CONFIG_KEY)
-                .build();
-
+                .build()
+                .getAdView();
+        if (adRlyt != null) {
+            adRlyt.addView(adView);
+        }
     }
 
-    private void requestNetwok() {
-        getTime().subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<TimeResponse>() {
-                    @Override
-                    public void accept(TimeResponse timeResponse) throws Exception {
-                        LogUtils.d(TAG, "accept->请求成功 ");
-                        Toast.makeText(MainActivity.this, "accept->请求成功 ", Toast.LENGTH_SHORT).show();
-
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        LogUtils.d(TAG, "accept->请求失败");
-                        Toast.makeText(MainActivity.this, "accept->请求失败 ", Toast.LENGTH_SHORT).show();
-
-                    }
-                });
-    }
-
-    public Observable<TimeResponse> getTime() {
-        return OkHttpWrapper.getInstance().getRetrofit().create(NewsService.class).getTimes()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-    }
+//    private void requestNetwok() {
+//        getTime().subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Consumer<TimeResponse>() {
+//                    @Override
+//                    public void accept(TimeResponse timeResponse) throws Exception {
+//                        LogUtils.d(TAG, "accept->请求成功 ");
+//                        Toast.makeText(MainActivity.this, "accept->请求成功 ", Toast.LENGTH_SHORT).show();
+//
+//                    }
+//                }, new Consumer<Throwable>() {
+//                    @Override
+//                    public void accept(Throwable throwable) throws Exception {
+//                        LogUtils.d(TAG, "accept->请求失败");
+//                        Toast.makeText(MainActivity.this, "accept->请求失败 ", Toast.LENGTH_SHORT).show();
+//
+//                    }
+//                });
+//    }
+//
+//    public Observable<TimeResponse> getTime() {
+//        return OkHttpWrapper.getInstance().getRetrofit().create(NewsService.class).getTimes()
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread());
+//    }
 
     private AdListener mAdListener = new AdListener() {
         @Override
         public void adSuccess() {
              LogUtils.w("dkk", "adSuccess");
 
-            View adView =  AdsManger.getInstance().getAdView();
 
-            if (adRlyt != null) {
-                adRlyt.addView(adView);
-            }
 
         }
 
