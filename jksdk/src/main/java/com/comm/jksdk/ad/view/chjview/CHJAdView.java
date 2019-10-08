@@ -7,6 +7,8 @@ import com.bytedance.sdk.openadsdk.TTAdManager;
 import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTFeedAd;
 import com.comm.jksdk.ad.view.CommAdView;
+import com.comm.jksdk.ad.view.ylhview.YlhBIgImgAdView;
+import com.comm.jksdk.ad.view.ylhview.YlhLeftImgRightTwoTextAdView;
 import com.comm.jksdk.config.TTAdManagerHolder;
 import com.comm.jksdk.constant.Constants;
 import com.comm.jksdk.http.utils.LogUtils;
@@ -33,9 +35,26 @@ public class CHJAdView extends CommAdView {
         this.style=style;
 
         if (Constants.AdStyle.BigImg.equals(style)) {
-
+            mAdView = new ChjBigImgAdView(mContext);
         } else if (Constants.AdStyle.LeftImgRightTwoText.equals(style)){
             mAdView = new ChjLeftImgRightTwoTextAdView(mContext);
+        }else if(Constants.AdStyle.All.equals(style)){
+            //所有样式都支持 随机展示
+            //所有样式都支持 随机展示
+            int num=AdsUtils.getRandomNum(2);
+            LogUtils.w("------->num:",num+"");
+            switch (num){
+                case 0:
+                    mAdView = new ChjLeftImgRightTwoTextAdView(mContext);
+                    break;
+                case 1:
+                    mAdView = new ChjBigImgAdView(mContext);
+                    break;
+                default:
+                    mAdView = new ChjLeftImgRightTwoTextAdView(mContext);
+                    break;
+            }
+
         }
         this.addView(mAdView);
 

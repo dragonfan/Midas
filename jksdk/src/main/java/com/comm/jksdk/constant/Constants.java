@@ -31,12 +31,14 @@ public class Constants {
      * 左图右边两行文字
      */
     String LeftImgRightTwoText = "LeftImgRightTwoText";
+    /**
+     * 左图右边两行文字
+     */
+    String All = "All";
   }
 
 
-  /**
-   * 广告APPID
-   */
+
   public interface SPUtils {
     /**
      * 配置信息
@@ -46,6 +48,10 @@ public class Constants {
      * 第一次请求广告系统时间
      */
     String FIRST_REQUEST_AD_TIME= "FIRST_REQUEST_AD_TIME";
+    /**
+     * 测试广告位置id
+     */
+    String TEST_ONE_AD_POSITION_ID= "TEST_ONE_AD_POSITION_ID";
   }
   /**
    * 优量汇广告APPID

@@ -13,6 +13,7 @@ import com.qq.e.ads.nativ.NativeUnifiedADData;
 import com.qq.e.comm.util.AdError;
 
 import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -37,9 +38,25 @@ public class YLHAdView extends CommAdView {
         this.style=style;
         this.mContext=context;
         if (Constants.AdStyle.BigImg.equals(style)) {
-//            mAdView = new YlhBIgImgAdView(mContext);
+            mAdView = new YlhBIgImgAdView(mContext);
         } else if (Constants.AdStyle.LeftImgRightTwoText.equals(style)){
             mAdView = new YlhLeftImgRightTwoTextAdView(mContext);
+        }else if(Constants.AdStyle.All.equals(style)){
+            //所有样式都支持 随机展示
+            int num=AdsUtils.getRandomNum(2);
+            LogUtils.w("------->num:",num+"");
+            switch (num){
+                case 0:
+                    mAdView = new YlhLeftImgRightTwoTextAdView(mContext);
+                break;
+                case 1:
+                    mAdView = new YlhBIgImgAdView(mContext);
+                    break;
+                default:
+                    mAdView = new YlhLeftImgRightTwoTextAdView(mContext);
+                    break;
+            }
+
         }
         this.addView(mAdView);
 
@@ -74,9 +91,7 @@ public class YLHAdView extends CommAdView {
                 if(requestAdOverTime){
                     return;
                 }
-                if(adRequestTimeOut==0){
 
-                }
                 if (nativeAdList == null || nativeAdList.isEmpty()) {
                     return;
                 }

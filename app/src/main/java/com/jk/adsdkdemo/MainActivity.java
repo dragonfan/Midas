@@ -49,8 +49,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             // 如果是Android6.0以下的机器，建议在manifest中配置相关权限，这里可以直接调用SDK
         }
-        //保存默认配置文件
-        String jsonData="{\"code\":0,\"data\":{\"adList\":[{\"adPosition\":\"home_page_list1\",\"adRequestTimeOut\":10,\"adStyle\":\"BigImg\",\"adVersion\":1,\"adsInfos\":[{\"adId\":\"6548444565561\",\"adUnion\":\"youlianghui\",\"adsAppId\":\"jktq1103\",\"adsAppName\":\"即刻天气\",\"requestOrder\":1,\"requestType\":0},{\"adId\":\"4654564654644\",\"adUnion\":\"chuanshanjia\",\"adsAppId\":\"tq1103\",\"adsAppName\":\"天气\",\"requestOrder\":5,\"requestType\":0}],\"isChange\":0,\"productId\":1},{\"adPosition\":\"home_page_list2\",\"adRequestTimeOut\":3,\"adStyle\":\"LeftImgRightTwoText\",\"adVersion\":3,\"adsInfos\":[{\"adId\":\"6548444565561\",\"adUnion\":\"youlianghui\",\"adsAppId\":\"jrl1103\",\"adsAppName\":\"吉日历\",\"requestOrder\":10,\"requestType\":0},{\"adId\":\"4654564654644\",\"adUnion\":\"chuanshanjia\",\"adsAppId\":\"jrl1103\",\"adsAppName\":\"吉日历\",\"requestOrder\":5,\"requestType\":0}],\"isChange\":0,\"productId\":3}]},\"msg\":\"请求成功\"}";
+        //保存默认配置文件  建议保存在asset目录下的json文件
+        String jsonData=" {\n" +
+                "\t\"code\": 0,\n" +
+                "\t\"data\": {\n" +
+                "\t\t\"adList\": [{\n" +
+                "\t\t\t\"adPosition\": \"shipin_stream_no_1\",\n" +
+                "\t\t\t\"adRequestTimeOut\": 0,\n" +
+                "\t\t\t\"adStyle\": \"All\",\n" +
+                "\t\t\t\"adVersion\": 2,\n" +
+                "\t\t\t\"adsInfos\": [{\n" +
+                "\t\t\t\t\"adId\": \"3010171130615111\",\n" +
+                "\t\t\t\t\"adUnion\": \"youlianghui\",\n" +
+                "\t\t\t\t\"adsAppId\": \"1108839337\",\n" +
+                "\t\t\t\t\"adsAppName\": \"即刻天气\",\n" +
+                "\t\t\t\t\"requestOrder\": 1,\n" +
+                "\t\t\t\t\"requestType\": 0\n" +
+                "\t\t\t}],\n" +
+                "\t\t\t\"isChange\": 0,\n" +
+                "\t\t\t\"productId\": 1\n" +
+                "\t\t}, {\n" +
+                "\t\t\t\"adPosition\": \"24_tianqi_banner\",\n" +
+                "\t\t\t\"adRequestTimeOut\": 0,\n" +
+                "\t\t\t\"adStyle\": \"All\",\n" +
+                "\t\t\t\"adVersion\": 2,\n" +
+                "\t\t\t\"adsInfos\": [{\n" +
+                "\t\t\t\t\"adId\": \"7020185381052226\",\n" +
+                "\t\t\t\t\"adUnion\": \"youlianghui\",\n" +
+                "\t\t\t\t\"adsAppId\": \"1108839337\",\n" +
+                "\t\t\t\t\"adsAppName\": \"即刻天气\",\n" +
+                "\t\t\t\t\"requestOrder\": 1,\n" +
+                "\t\t\t\t\"requestType\": 0\n" +
+                "\t\t\t}],\n" +
+                "\t\t\t\"isChange\": 0,\n" +
+                "\t\t\t\"productId\": 1\n" +
+                "\t\t}]\n" +
+                "\t},\n" +
+                "\t\"msg\": \"请求成功\"\n" +
+                "}";
         SPUtils.putString(Constants.DEFAULT_CONFIG_KEY,jsonData);
     }
 
@@ -116,17 +152,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.button_test_http:
-                //测试网络框架
-//                requestNetwok();
-
-                break;
             case R.id.button_configinfo:
                 //请求配置信息
               AdsManger.getInstance().setContext(this)
                         .setBid(10)
                         .setProductName("13")
-                        .setMarketName("jrl_jinritoutiao_35")
+                        .setMarketName("shipin_stream_no_1")
                         .setLatitude("")
                         .setLongitude("")
                         .setProvince("")
@@ -135,16 +166,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .requestConfig();
 
                 break;
-            case R.id.button_cms_ad:
 
-                break;
             case R.id.button_ylh_ad:
                 adRlyt.removeAllViews();
                 requestYLHAd();
                 break;
-            case R.id.button_chj_ad:
-                requestCHJAd();
-                break;
+
             default:
                 break;
 
@@ -162,7 +189,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void requestYLHAd() {
         View adView = AdsManger.getInstance().setContext(this)
-                .setAdPositionId("60004844594457490")
+                .setAdPositionId("6000484459445749")
+                .setMarketName("shipin_stream_no_1")
                 .setAdListener(mAdListener)
                 .setDefaultConfigKey(Constants.DEFAULT_CONFIG_KEY)
                 .build()
@@ -172,38 +200,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-//    private void requestNetwok() {
-//        getTime().subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Consumer<TimeResponse>() {
-//                    @Override
-//                    public void accept(TimeResponse timeResponse) throws Exception {
-//                        LogUtils.d(TAG, "accept->请求成功 ");
-//                        Toast.makeText(MainActivity.this, "accept->请求成功 ", Toast.LENGTH_SHORT).show();
-//
-//                    }
-//                }, new Consumer<Throwable>() {
-//                    @Override
-//                    public void accept(Throwable throwable) throws Exception {
-//                        LogUtils.d(TAG, "accept->请求失败");
-//                        Toast.makeText(MainActivity.this, "accept->请求失败 ", Toast.LENGTH_SHORT).show();
-//
-//                    }
-//                });
-//    }
-//
-//    public Observable<TimeResponse> getTime() {
-//        return OkHttpWrapper.getInstance().getRetrofit().create(NewsService.class).getTimes()
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread());
-//    }
 
     private AdListener mAdListener = new AdListener() {
         @Override
         public void adSuccess() {
              LogUtils.w("dkk", "adSuccess");
-
-
 
         }
 
