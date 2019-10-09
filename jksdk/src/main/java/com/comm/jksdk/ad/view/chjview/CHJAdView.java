@@ -23,14 +23,14 @@ import java.util.List;
 public class CHJAdView extends CommAdView {
     private  String style;
     // 广告位ID
-    protected String mAdPositionId = "";
+    protected String mAdId = "";
     // 广告请求数量
     private final static int REQUEST_AD_COUNTS = 1;
 
     private CommAdView mAdView = null;
-    public CHJAdView(Context context, String style, String adPositionId) {
-        super(context,style,adPositionId);
-        this.mAdPositionId=adPositionId;
+    public CHJAdView(Context context, String style, String mAdId) {
+        super(context,style,mAdId);
+        this.mAdId=mAdId;
         this.mContext=context;
         this.style=style;
 
@@ -87,7 +87,7 @@ public class CHJAdView extends CommAdView {
 //        TTAdManagerHolder.get().requestPermissionIfNecessary(mContext);
 
         AdSlot adSlot = new AdSlot.Builder()
-                .setCodeId(mAdPositionId)
+                .setCodeId(mAdId.trim())
                 .setSupportDeepLink(true)
                 .setImageAcceptedSize(640, 320)
                 .setAdCount(1)

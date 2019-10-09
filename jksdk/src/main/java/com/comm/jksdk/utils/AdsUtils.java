@@ -40,4 +40,6 @@ public class AdsUtils {
         num=random.nextInt(max);
         return num;
     }
+
+
 }

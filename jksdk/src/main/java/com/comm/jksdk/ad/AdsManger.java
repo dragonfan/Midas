@@ -51,11 +51,11 @@ public class AdsManger {
     }
 
 
-    /**
-     * 广告位置ID
-     */
-    private String mAdPositionId;
 
+    /**
+     * 广告ID
+     */
+    private String mAdId;
     /**
      * 广告监听器
      */
@@ -135,7 +135,8 @@ public class AdsManger {
 
 
     public AdsManger setAdPositionId(String adPositionId) {
-        this.mAdPositionId = adPositionId;
+
+        Constants.adPositionId=adPositionId;
         return this;
     }
 
@@ -151,14 +152,15 @@ public class AdsManger {
      */
     public AdsManger getConfig() {
         //获取本地配置信息
-        ConfigBean.AdListBean mConfigInfoBean = AdsConfig.getInstance(mContext).getConfig(defaultConfigKey, Constants.marketName);
+        ConfigBean.AdListBean mConfigInfoBean = AdsConfig.getInstance(mContext).getConfig(defaultConfigKey, Constants.adPositionId);
 
         if (mConfigInfoBean != null) {
-            if (Constants.marketName.equals(mConfigInfoBean.getAdPosition())) {
+            if (Constants.adPositionId.equals(mConfigInfoBean.getAdPosition())) {
                 //当前广告位所对应的配置信息 存储到curAdlist
                 adStyle = mConfigInfoBean.getAdStyle();
                 adRequestTimeOut = mConfigInfoBean.getAdRequestTimeOut();
 
+                adsInfoslist.clear();
                 adsInfoslist.addAll(mConfigInfoBean.getAdsInfos());
 
             }
@@ -176,12 +178,12 @@ public class AdsManger {
      *
      * @param adType 广告样式
      */
-    private void createAdView(String adType) {
+    private void createAdView(String adType,String mAdId) {
 
         if (Constants.AdType.ChuanShanJia.equals(adType)) {
-            mAdView = new CHJAdView(mContext, adStyle, mAdPositionId);
+            mAdView = new CHJAdView(mContext, adStyle, mAdId);
         } else if (Constants.AdType.YouLiangHui.equals(adType)) {
-            mAdView = new YLHAdView(mContext, adStyle, mAdPositionId);
+            mAdView = new YLHAdView(mContext, adStyle, mAdId);
         } else {
             // 暂不处理
         }
@@ -237,27 +239,30 @@ public class AdsManger {
             ConfigBean.AdListBean.AdsInfosBean mAdsInfosBean = adsInfoslist.remove(0);
             if (mAdsInfosBean != null) {
                 adType = mAdsInfosBean.getAdUnion();
-                mAdPositionId = mAdsInfosBean.getAdId();
+                mAdId = mAdsInfosBean.getAdId();
 
                 requestType = mAdsInfosBean.getRequestType();
                 if (!TextUtils.isEmpty(adType)) {
                     if (adType.equals(Constants.AdType.YouLiangHui)) {
-                        Constants.YLH_APPID = mAdsInfosBean.getAdsAppId();
-                        Constants.YLH_APPNAME = mAdsInfosBean.getAdsAppName();
-                        //测试数据 生产环境删除
-                        setAdPositionId("6000484459445749");
-                        Constants.YLH_APPID = "1108839337";
-                        Constants.YLH_APPNAME = "即刻天气";
+//                        Constants.YLH_APPID = mAdsInfosBean.getAdsAppId();
+//                        Constants.YLH_APPNAME = mAdsInfosBean.getAdsAppName();
+                        //保存优量汇广告APPID  APPNAME
+                        SpUtils.putString(Constants.SPUtils.YLH_APPID,mAdsInfosBean.getAdsAppId());
+                        SpUtils.putString(Constants.SPUtils.YLH_APPNAME,mAdsInfosBean.getAdsAppName());
                     } else {
-                        Constants.CHJ_APPID = mAdsInfosBean.getAdsAppId();
-                        Constants.CHJ_APPNAME = mAdsInfosBean.getAdsAppName();
-                        //测试数据  生产环境删除
-                        setAdPositionId("915945995");
-                        Constants.CHJ_APPID = "5015945";
-                        Constants.CHJ_APPNAME = "即刻天气";
+//                        Constants.CHJ_APPID = mAdsInfosBean.getAdsAppId();
+//                        Constants.CHJ_APPNAME = mAdsInfosBean.getAdsAppName();
+                        //保存穿山甲广告APPID  APPNAME
+                        SpUtils.putString(Constants.SPUtils.CHJ_APPID,mAdsInfosBean.getAdsAppId());
+                        SpUtils.putString(Constants.SPUtils.CHJ_APPNAME,mAdsInfosBean.getAdsAppName());
                     }
                     //创建广告样式
-                    createAdView(adType);
+                    if(!TextUtils.isEmpty(mAdId)){
+                        createAdView(adType,mAdId);
+                    }else{
+                        LogUtils.w(TAG,"广告id为空，请检查");
+                    }
+
                 }
             }
         }
@@ -304,9 +309,6 @@ public class AdsManger {
         Constants.mContext = mContext;
         Constants.CHJ_APPID = chjAppId;
         Constants.CHJ_APPNAME = chjAppName;
-        //测试数据  生产环境删除
-        Constants.CHJ_APPID = "5015945";
-        Constants.CHJ_APPNAME = "即刻天气";
         //初始化基本配置信息
         InitBaseConfig.getInstance().init(mContext);
     }

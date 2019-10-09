@@ -1,12 +1,14 @@
 package com.comm.jksdk.config;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.bytedance.sdk.openadsdk.TTAdConfig;
 import com.bytedance.sdk.openadsdk.TTAdConstant;
 import com.bytedance.sdk.openadsdk.TTAdManager;
 import com.bytedance.sdk.openadsdk.TTAdSdk;
 import com.comm.jksdk.constant.Constants;
+import com.comm.jksdk.utils.SpUtils;
 
 /**
  * 可以用一个单例来保存TTAdManager实例，在需要初始化sdk的时候调用
@@ -35,10 +37,18 @@ public class TTAdManagerHolder {
     }
 
     private static TTAdConfig buildConfig(Context context) {
+        String chjAppid=SpUtils.getString(Constants.SPUtils.CHJ_APPID,"");
+        if(TextUtils.isEmpty(chjAppid)){
+            chjAppid=Constants.CHJ_APPID;
+        }
+        String chjAppName=SpUtils.getString(Constants.SPUtils.CHJ_APPNAME,"");
+        if(TextUtils.isEmpty(chjAppName)){
+            chjAppName=Constants.CHJ_APPNAME;
+        }
         return new TTAdConfig.Builder()
-                .appId(Constants.CHJ_APPID)
+                .appId(chjAppid.trim())
                 .useTextureView(true) //使用TextureView控件播放视频,默认为SurfaceView,当有SurfaceView冲突的场景，可以使用TextureView
-                .appName(Constants.CHJ_APPNAME)
+                .appName(chjAppName)
                 .titleBarTheme(TTAdConstant.TITLE_BAR_THEME_DARK)
                 .allowShowNotify(true) //是否允许sdk展示通知栏提示
                 .allowShowPageWhenScreenLock(true) //是否在锁屏场景支持展示广告落地页

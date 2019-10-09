@@ -26,7 +26,7 @@
         android:id="@+id/button_ylh_ad"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="请求广告"
+        android:text="请求广告(左图右文)"
         />
     <RelativeLayout
         android:id="@+id/first_weather_adrlyt"
@@ -39,8 +39,8 @@
         android:id="@+id/button_chj_ad"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="穿山甲广告"
-        android:visibility="gone"
+        android:text="请求广告（全量）"
+        android:visibility="visible"
         />
     <Button
         android:id="@+id/button_cms_ad"

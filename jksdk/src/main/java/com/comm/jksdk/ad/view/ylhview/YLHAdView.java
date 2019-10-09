@@ -1,12 +1,14 @@
 package com.comm.jksdk.ad.view.ylhview;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 
 import com.comm.jksdk.ad.view.CommAdView;
 import com.comm.jksdk.constant.Constants;
 import com.comm.jksdk.http.utils.LogUtils;
 import com.comm.jksdk.utils.AdsUtils;
+import com.comm.jksdk.utils.SpUtils;
 import com.qq.e.ads.nativ.NativeADUnifiedListener;
 import com.qq.e.ads.nativ.NativeUnifiedAD;
 import com.qq.e.ads.nativ.NativeUnifiedADData;
@@ -23,7 +25,7 @@ import java.util.Random;
 public class YLHAdView extends CommAdView {
     private  String style;
     // 广告位ID
-    protected String mAdPositionId = "";
+    protected String mAdId = "";
 
     // 广告请求数量
     private final static int REQUEST_AD_COUNTS = 1;
@@ -32,9 +34,9 @@ public class YLHAdView extends CommAdView {
 
     private CommAdView mAdView = null;
 
-    public YLHAdView(Context context, String style, String adPositionId) {
-        super(context,style,adPositionId);
-        this.mAdPositionId=adPositionId;
+    public YLHAdView(Context context, String style, String mAdId) {
+        super(context,style,mAdId);
+        this.mAdId=mAdId;
         this.style=style;
         this.mContext=context;
         if (Constants.AdStyle.BigImg.equals(style)) {
@@ -83,7 +85,12 @@ public class YLHAdView extends CommAdView {
      * 通过SDK获取广告
      */
     private void getAdBySdk(final int adRequestTimeOut) {
-        NativeUnifiedAD mAdManager = new NativeUnifiedAD(getContext(), Constants.YLH_APPID, mAdPositionId, new NativeADUnifiedListener() {
+        String ylhAppid= SpUtils.getString(Constants.SPUtils.YLH_APPID,"");
+        if(TextUtils.isEmpty(ylhAppid)){
+            ylhAppid=Constants.YLH_APPID;
+        }
+
+        NativeUnifiedAD mAdManager = new NativeUnifiedAD(getContext(), ylhAppid, mAdId.trim(), new NativeADUnifiedListener() {
             @Override
             public void onADLoaded(List<NativeUnifiedADData> nativeAdList) {
                 LogUtils.d(TAG, "onADLoaded->请求优量汇成功");

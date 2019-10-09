@@ -50,38 +50,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // 如果是Android6.0以下的机器，建议在manifest中配置相关权限，这里可以直接调用SDK
         }
         //保存默认配置文件  建议保存在asset目录下的json文件
-        String jsonData=" {\n" +
+        String jsonData="{\n" +
                 "\t\"code\": 0,\n" +
                 "\t\"data\": {\n" +
                 "\t\t\"adList\": [{\n" +
-                "\t\t\t\"adPosition\": \"shipin_stream_no_1\",\n" +
+                "\t\t\t\"adPosition\": \"test_ad_code\",\n" +
                 "\t\t\t\"adRequestTimeOut\": 0,\n" +
                 "\t\t\t\"adStyle\": \"All\",\n" +
-                "\t\t\t\"adVersion\": 2,\n" +
+                "\t\t\t\"adVersion\": 5,\n" +
                 "\t\t\t\"adsInfos\": [{\n" +
-                "\t\t\t\t\"adId\": \"3010171130615111\",\n" +
+                "\t\t\t\t\"adId\": \"6000484459445749\",\n" +
                 "\t\t\t\t\"adUnion\": \"youlianghui\",\n" +
-                "\t\t\t\t\"adsAppId\": \"1108839337\",\n" +
+                "\t\t\t\t\"adsAppId\": \"1108839337  \",\n" +
                 "\t\t\t\t\"adsAppName\": \"即刻天气\",\n" +
                 "\t\t\t\t\"requestOrder\": 1,\n" +
                 "\t\t\t\t\"requestType\": 0\n" +
-                "\t\t\t}],\n" +
-                "\t\t\t\"isChange\": 0,\n" +
-                "\t\t\t\"productId\": 1\n" +
-                "\t\t}, {\n" +
-                "\t\t\t\"adPosition\": \"24_tianqi_banner\",\n" +
-                "\t\t\t\"adRequestTimeOut\": 0,\n" +
-                "\t\t\t\"adStyle\": \"All\",\n" +
-                "\t\t\t\"adVersion\": 2,\n" +
-                "\t\t\t\"adsInfos\": [{\n" +
-                "\t\t\t\t\"adId\": \"7020185381052226\",\n" +
-                "\t\t\t\t\"adUnion\": \"youlianghui\",\n" +
-                "\t\t\t\t\"adsAppId\": \"1108839337\",\n" +
+                "\t\t\t}, {\n" +
+                "\t\t\t\t\"adId\": \"915945995\",\n" +
+                "\t\t\t\t\"adUnion\": \"chuanshanjia\",\n" +
+                "\t\t\t\t\"adsAppId\": \"5015945\",\n" +
                 "\t\t\t\t\"adsAppName\": \"即刻天气\",\n" +
-                "\t\t\t\t\"requestOrder\": 1,\n" +
+                "\t\t\t\t\"requestOrder\": 2,\n" +
                 "\t\t\t\t\"requestType\": 0\n" +
                 "\t\t\t}],\n" +
-                "\t\t\t\"isChange\": 0,\n" +
+                "\t\t\t\"isChange\": 1,\n" +
                 "\t\t\t\"productId\": 1\n" +
                 "\t\t}]\n" +
                 "\t},\n" +
@@ -154,10 +146,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.button_configinfo:
                 //请求配置信息
+                //bid 第一次安装app时产生0-99之间的随机数
+                // UserActive 用户激活时间
+                //ProductName 业务线
               AdsManger.getInstance().setContext(this)
                         .setBid(10)
+                        .setMarketName("jinritoutiao")
                         .setProductName("13")
-                        .setMarketName("shipin_stream_no_1")
                         .setLatitude("")
                         .setLongitude("")
                         .setProvince("")
@@ -167,9 +162,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
 
+            case R.id.button_chj_ad:
+                adRlyt.removeAllViews();
+                requestYLHAd("shipin_stream_no_1");
+                break;
             case R.id.button_ylh_ad:
                 adRlyt.removeAllViews();
-                requestYLHAd();
+                requestYLHAd("test_ad_code");
                 break;
 
             default:
@@ -178,19 +177,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void requestCHJAd() {
-        adRlyt.removeAllViews();
-        AdsManger.getInstance().setContext(this)
-                .setAdPositionId("915945995")
-                .setAdListener(mAdListener)
-                .build();
 
-    }
-
-    private void requestYLHAd() {
+    private void requestYLHAd(String adPosId) {
         View adView = AdsManger.getInstance().setContext(this)
-                .setAdPositionId("6000484459445749")
-                .setMarketName("shipin_stream_no_1")
+                .setAdPositionId(adPosId)
                 .setAdListener(mAdListener)
                 .setDefaultConfigKey(Constants.DEFAULT_CONFIG_KEY)
                 .build()
@@ -204,23 +194,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private AdListener mAdListener = new AdListener() {
         @Override
         public void adSuccess() {
-             LogUtils.w("dkk", "adSuccess");
+             LogUtils.w("lpb", "adSuccess");
 
         }
 
         @Override
         public void adExposed() {
-            LogUtils.w("dkk", "adExposed");
+            LogUtils.w("lpb", "adExposed");
         }
 
         @Override
         public void adClicked() {
-            LogUtils.w("dkk", "adClicked");
+            LogUtils.w("lpb", "adClicked");
         }
 
         @Override
         public void adError(int errorCode, String errorMsg) {
-            LogUtils.w("dkk", "adError errorCode = " + errorCode + " errorMsg = " + errorMsg);
+            LogUtils.w("lpb", "adError errorCode = " + errorCode + " errorMsg = " + errorMsg);
         }
 
     };

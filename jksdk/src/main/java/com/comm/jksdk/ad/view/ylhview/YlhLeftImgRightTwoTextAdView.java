@@ -15,6 +15,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.comm.jksdk.R;
+import com.comm.jksdk.http.utils.LogUtils;
 import com.comm.jksdk.utils.DisplayUtil;
 import com.qq.e.ads.nativ.NativeADEventListener;
 import com.qq.e.ads.nativ.NativeUnifiedADData;
@@ -159,11 +160,13 @@ public class YlhLeftImgRightTwoTextAdView extends YLHAdView {
         adData.setNativeAdEventListener(new NativeADEventListener(){
             @Override
             public void onADExposed() {
+                LogUtils.w(TAG, "Ad onADExposed");
                 adExposed();
             }
 
             @Override
             public void onADClicked() {
+                LogUtils.w(TAG, "Ad onADClicked");
                 adClicked();
             }
 

@@ -3,6 +3,7 @@ package com.comm.jksdk.config;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.comm.jksdk.api.ConfigService;
 import com.comm.jksdk.bean.ConfigBean;
@@ -72,6 +73,8 @@ public class AdsConfig {
                             return;
                         }
                         if (!ConfigInfoBean.isSuccess()) {
+                            LogUtils.d(TAG, "accept->配置信息请求失败:" + ConfigInfoBean.getCode()
+                                    +ConfigInfoBean.getMsg());
                             return;
                         }
                         LogUtils.d(TAG, "accept->配置信息请求成功 ");
@@ -98,6 +101,7 @@ public class AdsConfig {
                                 String configInfo = mGson.toJson(configList.get(i));
                                 SpUtils.putString(adPosition, configInfo);
                             }
+
                         }
                         //对象转json保存到sp
                         //保存总json
@@ -108,6 +112,7 @@ public class AdsConfig {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) {
+
                         LogUtils.d(TAG, "accept->配置信息请求失败" + throwable.getMessage());
                     }
                 });
@@ -144,6 +149,10 @@ public class AdsConfig {
         return OkHttpWrapper.getInstance().getRetrofit().create(ConfigService.class).getConfig(requestBody);
     }
 
+    /**
+     * 获取所有位置对于信息
+     * @return
+     */
     private  Boolean getPositionInfos() {
         posInfoList = new ArrayList<PositionInfo>();
         posInfoList.clear();
@@ -180,9 +189,7 @@ public class AdsConfig {
         // 从sp获取配置信息
         if (!TextUtils.isEmpty(cmsConfigKey)) {
             mConfigInfo = SpUtils.getString(cmsConfigKey, "");
-
-            mConfigInfoBean = mGson.fromJson(mConfigInfo, new TypeToken<ConfigBean.AdListBean>() {
-            }.getType());
+            mConfigInfoBean = mGson.fromJson(mConfigInfo, new TypeToken<ConfigBean.AdListBean>() {}.getType());
         }
         if (TextUtils.isEmpty(mConfigInfo)) {
             // 获取默认配置（客户端）
@@ -198,6 +205,7 @@ public class AdsConfig {
                                 if (!TextUtils.isEmpty(adPosition)) {
                                     if (cmsConfigKey.equals(adPosition)) {
                                         mConfigInfoBean = allConfigInfoBean.getData().getAdList().get(i);
+                                        LogUtils.w(TAG,"DATA：客户端默认配置信息");
                                     }
                                 }
 
@@ -205,12 +213,13 @@ public class AdsConfig {
                         }
                     }
                 }
+            }else {
+                LogUtils.w(TAG,"默认defaultConfigKey为空");
             }
 
-        } else {
-            LogUtils.w(TAG, "默认defaultConfigKey为空，请检查");
+        }else{
+            LogUtils.w(TAG,"DATA：cms上次请求配置信息");
         }
-
 
         return mConfigInfoBean;
     }
