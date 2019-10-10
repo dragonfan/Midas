@@ -80,6 +80,7 @@ public class AdsConfig {
                         }
 
                         LogUtils.d(TAG, "accept->配置信息请求成功 ");
+
                         ConfigBean configBean = ConfigInfoBean.getData();
                         if (configBean == null) {
                             LogUtils.d(TAG, "accept->配置信息为空 ");
