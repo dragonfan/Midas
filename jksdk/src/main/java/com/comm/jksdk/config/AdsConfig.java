@@ -64,6 +64,7 @@ public class AdsConfig {
      */
     @SuppressLint("CheckResult")
     public void requestConfig() {
+
         getConfigInfo().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<BaseResponse<ConfigBean>>() {
@@ -77,17 +78,19 @@ public class AdsConfig {
                                     +ConfigInfoBean.getMsg());
                             return;
                         }
+
                         LogUtils.d(TAG, "accept->配置信息请求成功 ");
                         ConfigBean configBean = ConfigInfoBean.getData();
                         if (configBean == null) {
+                            LogUtils.d(TAG, "accept->配置信息为空 ");
                             return;
                         }
 
                         List<ConfigBean.AdListBean> configList = configBean.getAdList();
                         if (configList == null || configList.size() == 0) {
+                            LogUtils.d(TAG, "accept->配置信息为空 ");
                             return;
                         }
-                        LogUtils.d(TAG, "accept->配置信息不为空 ");
                         for (int i = 0; i < configList.size(); i++) {
                             // "isChange": 0,//是否变更：0 - 无  1 - 有
                             if (configList.get(i).getIsChange() == 1) {
@@ -112,10 +115,10 @@ public class AdsConfig {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) {
-
                         LogUtils.d(TAG, "accept->配置信息请求失败" + throwable.getMessage());
                     }
                 });
+        return;
     }
 
 

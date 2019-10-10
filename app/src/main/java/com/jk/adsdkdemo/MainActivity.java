@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Observable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,16 +11,15 @@ import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.comm.jksdk.ad.AdsManger;
 import com.comm.jksdk.ad.listener.AdListener;
-
 import com.jk.adsdkdemo.utils.Constants;
 import com.jk.adsdkdemo.utils.LogUtils;
 import com.jk.adsdkdemo.utils.SPUtils;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,10 +30,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button button_ylh_ad;
     private RelativeLayout adRlyt;
 
-    private Button button_test_http;
-    private Button button_chj_ad;
+
     private Button button_configinfo;
-    private Button button_cms_ad;
+
+    private EditText et_ad_pos_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // 如果是Android6.0以下的机器，建议在manifest中配置相关权限，这里可以直接调用SDK
         }
         //保存默认配置文件  建议保存在asset目录下的json文件
-        String jsonData="{\n" +
+        String jsonData = "{\n" +
                 "\t\"code\": 0,\n" +
                 "\t\"data\": {\n" +
                 "\t\t\"adList\": [{\n" +
@@ -79,21 +77,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 "\t},\n" +
                 "\t\"msg\": \"请求成功\"\n" +
                 "}";
-        SPUtils.putString(Constants.DEFAULT_CONFIG_KEY,jsonData);
+        SPUtils.putString(Constants.DEFAULT_CONFIG_KEY, jsonData);
     }
+
 
     private void initView() {
         button_ylh_ad = findViewById(R.id.button_ylh_ad);
-        button_test_http = findViewById(R.id.button_test_http);
-        button_chj_ad=findViewById(R.id.button_chj_ad);
+        et_ad_pos_id = findViewById(R.id.et_ad_pos_id);
+
         adRlyt = findViewById(R.id.first_weather_adrlyt);
-        button_configinfo=findViewById(R.id.button_configinfo);
-        button_cms_ad=findViewById(R.id.button_cms_ad);
+        button_configinfo = findViewById(R.id.button_configinfo);
+
         button_ylh_ad.setOnClickListener(this);
-        button_test_http.setOnClickListener(this);
-        button_chj_ad.setOnClickListener(this);
         button_configinfo.setOnClickListener(this);
-        button_cms_ad.setOnClickListener(this);
+
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -149,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //bid 第一次安装app时产生0-99之间的随机数
                 // UserActive 用户激活时间
                 //ProductName 业务线
-              AdsManger.getInstance().setContext(this)
+                AdsManger.getInstance().setContext(this)
                         .setBid(10)
                         .setMarketName("jinritoutiao")
                         .setProductName("13")
@@ -162,13 +159,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
 
-            case R.id.button_chj_ad:
-                adRlyt.removeAllViews();
-                requestYLHAd("shipin_stream_no_1");
-                break;
             case R.id.button_ylh_ad:
                 adRlyt.removeAllViews();
-                requestYLHAd("test_ad_code");
+//                requestYLHAd("shipin_stream_no_1");
+                String adPosId=et_ad_pos_id.getText().toString().trim();
+                requestYLHAd(adPosId);
                 break;
 
             default:
@@ -194,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private AdListener mAdListener = new AdListener() {
         @Override
         public void adSuccess() {
-             LogUtils.w("lpb", "adSuccess");
+            LogUtils.w("lpb", "adSuccess");
 
         }
 

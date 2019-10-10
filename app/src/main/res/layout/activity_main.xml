@@ -9,24 +9,39 @@
     android:layout_gravity="center"
     android:gravity="center">
 
-    <Button
-        android:id="@+id/button_test_http"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="测试HTTP"
-        android:visibility="gone"
-       />
+
     <Button
         android:id="@+id/button_configinfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="获取配置信息"
         />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="广告位置:"
+            android:textSize="@dimen/dp_20"
+            android:textColor="@color/colorPrimary"/>
+        <EditText
+            android:id="@+id/et_ad_pos_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="test_ad_code"
+            android:textSize="@dimen/dp_20"
+            android:textColor="@color/colorPrimary"
+            android:visibility="visible"/>
+    </LinearLayout>
+
     <Button
         android:id="@+id/button_ylh_ad"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="请求广告(左图右文)"
+        android:text="请求广告"
         />
     <RelativeLayout
         android:id="@+id/first_weather_adrlyt"
@@ -35,18 +50,5 @@
         android:visibility="visible"
         android:background="@color/colorPrimary"
         />
-    <Button
-        android:id="@+id/button_chj_ad"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="请求广告（全量）"
-        android:visibility="visible"
-        />
-    <Button
-        android:id="@+id/button_cms_ad"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="CMS下发广告"
-        android:visibility="gone"
-        />
+
 </LinearLayout>

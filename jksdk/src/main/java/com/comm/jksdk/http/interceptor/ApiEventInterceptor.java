@@ -46,36 +46,6 @@ public class ApiEventInterceptor implements Interceptor {
 
   @Override
   public Response intercept(Chain chain) throws IOException {
-    String env = null;
-    String group = null;
-    String platformId = null;
-    switch (AppEnvironment.getServerApiEnvironment()) {
-      case Dev:
-        env = Constant.HEADER_PARAM_DEV.DNV;
-        group = Constant.HEADER_PARAM_DEV.GROUP;
-        platformId = Constant.HEADER_PARAM_DEV.PLATFORM_ID;
-        break;
-      case Test:
-        env = Constant.HEADER_PARAM_TEST.DNV;
-        group = Constant.HEADER_PARAM_TEST.GROUP;
-        platformId = Constant.HEADER_PARAM_TEST.PLATFORM_ID;
-        break;
-      case Uat:
-        env = Constant.HEADER_PARAM_UAT.DNV;
-        group = Constant.HEADER_PARAM_UAT.GROUP;
-        platformId = Constant.HEADER_PARAM_UAT.PLATFORM_ID;
-        break;
-      case Product:
-        env = Constant.HEADER_PARAM_PRODUCT.DNV;
-        group = Constant.HEADER_PARAM_PRODUCT.GROUP;
-        platformId = Constant.HEADER_PARAM_PRODUCT.PLATFORM_ID;
-        break;
-      default:
-        env = Constant.HEADER_PARAM_PRODUCT.DNV;
-        group = Constant.HEADER_PARAM_PRODUCT.GROUP;
-        platformId = Constant.HEADER_PARAM_PRODUCT.PLATFORM_ID;
-        break;
-    }
     Request request = null;
     try {
       Request requestTmp = chain.request();
@@ -85,44 +55,11 @@ public class ApiEventInterceptor implements Interceptor {
         LogUtils.e("Domain-Name:" + domain);
         if (!TextUtils.isEmpty(domain)) {
           switch (domain) {
-            case Api.USER_DOMAIN_NAME:
-              OkHttpWrapper.getInstance().updateBaseUrl(ApiManage.getLoginURL());
-              request = chain.request().newBuilder()
-                      .addHeader("Content-Type", "application/json;charset=utf-8")
-                      .addHeader("env", env)
-                      .addHeader("group", group)
-                      .addHeader("platform-id", platformId)
-                      .addHeader("source", "3")
-                      .addHeader("channel", ChannelUtil.getChannel()) //上传渠道号
-                      .addHeader("deviceType", "Android") //上传设备类型
-                      .addHeader("app-id", "")
-                      .addHeader("token", "")
-                      .addHeader("UserId", "")
-                      .addHeader("sign",  "")
-                      .addHeader("version", AppInfoUtils.getVersionName())
-                      .addHeader("versionCode", AppInfoUtils.getVersionCode()+"")
-                      .build();
-              break;
             case Api.WEATHER_DOMAIN_NAME:
               OkHttpWrapper.getInstance().updateBaseUrl(ApiManage.getWeatherURL());
               request = chain.request().newBuilder()
                       .addHeader("Content-Type", "application/json;charset=utf-8")
-                      .addHeader("env", env)
-                      .addHeader("group", group)
-                      .addHeader("platform-id", platformId)
-                      .addHeader("source", "3")
-                      .addHeader("channel", ChannelUtil.getChannel()) //上传渠道号
-                      .addHeader("deviceType", "Android") //上传设备类型
-                      .addHeader("app-id","")
-                      .addHeader("token","")
-                      .addHeader("UserId", "")
-                      .addHeader("sign",  "")
-                      .addHeader("timestamp",   "")
-                      .addHeader("uuid",  "")
-                      .addHeader("version", AppInfoUtils.getVersionName())
-                      .addHeader("versionCode", AppInfoUtils.getVersionCode()+"")
-                      .addHeader("ua", UaUtils.getUa())
-                      .addHeader("appSign", "").build();
+                      .build();
               break;
             default:
               request = requestTmp;

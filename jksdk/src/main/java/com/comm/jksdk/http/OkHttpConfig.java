@@ -62,7 +62,7 @@ public class OkHttpConfig implements IOkHttpConfig {
 
   @Override
   public String getBaseUrl() {
-    return ApiManage.getLoginURL();
+    return ApiManage.getWeatherURL();
   }
 
   @Override

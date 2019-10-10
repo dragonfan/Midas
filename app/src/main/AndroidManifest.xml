@@ -28,20 +28,21 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/gdt_file_path" />
-        </provider> <!-- 穿山甲 Anroid7.0及以上环境运行 -->
+        </provider>
         <provider
             android:name="com.bytedance.sdk.openadsdk.TTFileProvider"
-            android:authorities="com.jk.adsdkdemo.TTFileProvider"
+            android:authorities="${applicationId}.TTFileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
-        </provider> <!-- 穿山甲 单进程或多进程都必现配置 -->
+        </provider>
         <provider
             android:name="com.bytedance.sdk.openadsdk.multipro.TTMultiProvider"
-            android:authorities="com.jk.adsdkdemo.TTMultiProvider"
+            android:authorities="${applicationId}.TTMultiProvider"
             android:exported="false" />
+
     </application>
 
 </manifest>

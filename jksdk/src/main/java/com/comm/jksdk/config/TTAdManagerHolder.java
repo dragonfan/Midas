@@ -7,6 +7,7 @@ import com.bytedance.sdk.openadsdk.TTAdConfig;
 import com.bytedance.sdk.openadsdk.TTAdConstant;
 import com.bytedance.sdk.openadsdk.TTAdManager;
 import com.bytedance.sdk.openadsdk.TTAdSdk;
+import com.comm.jksdk.BuildConfig;
 import com.comm.jksdk.constant.Constants;
 import com.comm.jksdk.utils.SpUtils;
 
@@ -37,14 +38,21 @@ public class TTAdManagerHolder {
     }
 
     private static TTAdConfig buildConfig(Context context) {
-        String chjAppid=SpUtils.getString(Constants.SPUtils.CHJ_APPID,"");
-        if(TextUtils.isEmpty(chjAppid)){
-            chjAppid=Constants.CHJ_APPID;
+        String chjAppid = SpUtils.getString(Constants.SPUtils.CHJ_APPID, "");
+        if (TextUtils.isEmpty(chjAppid)) {
+            chjAppid = Constants.CHJ_APPID;
         }
-        String chjAppName=SpUtils.getString(Constants.SPUtils.CHJ_APPNAME,"");
-        if(TextUtils.isEmpty(chjAppName)){
-            chjAppName=Constants.CHJ_APPNAME;
+        String chjAppName = SpUtils.getString(Constants.SPUtils.CHJ_APPNAME, "");
+        if (TextUtils.isEmpty(chjAppName)) {
+            chjAppName = Constants.CHJ_APPNAME;
         }
+        boolean adsDebug = false;
+        if (BuildConfig.DEBUG) {
+            adsDebug = true;
+        } else {
+            adsDebug = false;
+        }
+
         return new TTAdConfig.Builder()
                 .appId(chjAppid.trim())
                 .useTextureView(true) //使用TextureView控件播放视频,默认为SurfaceView,当有SurfaceView冲突的场景，可以使用TextureView
@@ -52,7 +60,7 @@ public class TTAdManagerHolder {
                 .titleBarTheme(TTAdConstant.TITLE_BAR_THEME_DARK)
                 .allowShowNotify(true) //是否允许sdk展示通知栏提示
                 .allowShowPageWhenScreenLock(true) //是否在锁屏场景支持展示广告落地页
-                .debug(true) //测试阶段打开，可以通过日志排查问题，上线时去除该调用
+                .debug(adsDebug) //测试阶段打开，可以通过日志排查问题，上线时去除该调用
                 .directDownloadNetworkType(TTAdConstant.NETWORK_STATE_WIFI, TTAdConstant.NETWORK_STATE_3G) //允许直接下载的网络状态集合
                 .supportMultiProcess(false)//是否支持多进程
                 //.httpStack(new MyOkStack3())//自定义网络库，demo中给出了okhttp3版本的样例，其余请自行开发或者咨询工作人员。

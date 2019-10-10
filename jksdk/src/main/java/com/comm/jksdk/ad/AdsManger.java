@@ -252,7 +252,7 @@ public class AdsManger {
                     } else {
 //                        Constants.CHJ_APPID = mAdsInfosBean.getAdsAppId();
 //                        Constants.CHJ_APPNAME = mAdsInfosBean.getAdsAppName();
-                        //保存穿山甲广告APPID  APPNAME
+                        // 保存穿山甲广告APPID  APPNAME
                         SpUtils.putString(Constants.SPUtils.CHJ_APPID,mAdsInfosBean.getAdsAppId());
                         SpUtils.putString(Constants.SPUtils.CHJ_APPNAME,mAdsInfosBean.getAdsAppName());
                     }

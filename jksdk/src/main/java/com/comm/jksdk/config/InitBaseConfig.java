@@ -37,6 +37,7 @@ public class InitBaseConfig {
         initNetWork();
         //初始化穿山甲
         initChjAd(context);
+
     }
 
     private  void initChjAd(Context context) {
@@ -51,13 +52,6 @@ public class InitBaseConfig {
             RetrofitUrlManager.getInstance().setDebug(true);
             //将每个 BaseUrl 进行初始化,运行时可以随时改变 DOMAIN_NAME 对应的值,从而达到切换 BaseUrl 的效果
             RetrofitUrlManager.getInstance().putDomain(Api.WEATHER_DOMAIN_NAME, ApiManage.getWeatherURL());
-            RetrofitUrlManager.getInstance().putDomain(Api.USER_DOMAIN_NAME, ApiManage.getLoginURL());
-
-            RetrofitUrlManager.getInstance().putDomain(Api.WEIMI_DF_TOUTIAO_DOMAIN_NAME, ApiManage.getDfWeimiURL());
-            RetrofitUrlManager.getInstance().putDomain(Api.TIME_DF_TOUTIAO_DOMAIN_NAME, ApiManage.getDfTimeURL());
-            RetrofitUrlManager.getInstance().putDomain(Api.NEWS_DF_TOUTIAO_DOMAIN_NAME, ApiManage.getDfNewsURL());
-            RetrofitUrlManager.getInstance().putDomain(Api.JINRITOUTIAO_RETENTION_DOMAIN_NAME, ApiManage.getJinRiTouTiaoURL());
-            RetrofitUrlManager.getInstance().putDomain(Api.TIME_DF_CONFIGINFO_DOMAIN_NAME, ApiManage.getDfConfiginfoURL());
 
         } catch (Exception e) {
             LogUtils.d(TAG, "onCreate()->" + e.getMessage());

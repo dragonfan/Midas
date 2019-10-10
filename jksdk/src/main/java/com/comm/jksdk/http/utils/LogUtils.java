@@ -11,14 +11,18 @@ import android.util.Log;
  */
 public class LogUtils {
     public static boolean isDebug = true;
-    public static final String TAGAN = "ahq";
+
+    public static final String TAGAN = "lpb";
+
     public static void info(String msg){
-        if(isDebug)
+        if(isDebug) {
             Log.i(buildTAG(), msg == null ? "null" : msg);
+        }
     }
     public static void info(String tag, String msg){
-        if(isDebug)
+        if(isDebug) {
             Log.i(tag == null ? buildTAG() : tag, msg == null ? "null" : msg);
+        }
     }
 
     private static String buildTAG() {
@@ -38,53 +42,63 @@ public class LogUtils {
     }
     // 下面四个是默认tag的函数
     public static void i(String msg) {
-        if (isDebug)
+        if (isDebug) {
             Log.i(TAGAN, msg);
+        }
     }
 
     public static void d(String msg) {
-        if (isDebug)
+        if (isDebug) {
             Log.d(TAGAN, msg);
+        }
     }
 
     public static void e(String msg) {
-        if (isDebug)
+        if (isDebug) {
             Log.e(TAGAN, msg);
+        }
     }
 
     public static void v(String msg) {
-        if (isDebug)
+        if (isDebug) {
             Log.v(TAGAN, msg);
+        }
     }
 
     public static void w(String msg) {
-        if (isDebug)
+        if (isDebug) {
             Log.w(TAGAN, msg);
+        }
     }
 
     // 下面是传入自定义tag的函数
     public static void i(String tag, String msg) {
-        if (isDebug)
+        if (isDebug) {
             Log.i(tag, msg);
+        }
     }
 
     public static void d(String tag, String msg) {
-        if (isDebug)
+        if (isDebug) {
             Log.d(tag, msg);
+        }
     }
 
     public static void e(String tag, String msg) {
-        if (isDebug)
+        if (isDebug) {
             Log.e(tag, msg);
+        }
     }
 
     public static void v(String tag, String msg) {
-        if (isDebug)
+        if (isDebug) {
             Log.v(tag, msg);
+        }
     }
 
     public static void w(String tag, String msg) {
-        if (isDebug)
+        if (isDebug) {
             Log.w(tag, msg);
+        }
     }
 }

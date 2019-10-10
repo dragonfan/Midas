@@ -22,7 +22,10 @@ import java.util.List;
  */
 public class CHJAdView extends CommAdView {
     private  String style;
-    // 广告位ID
+
+    /**
+     * 广告位ID
+     */
     protected String mAdId = "";
     // 广告请求数量
     private final static int REQUEST_AD_COUNTS = 1;

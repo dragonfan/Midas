@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<paths xmlns:android="http://schemas.android.com/apk/res/android">
+<resources >
+    <paths>
+        <external-path path="." name="camera_photos" />
+        <!--<external-cache-path name="cache_download" path="download"/>-->
 
-    <external-files-path name="external_files_path" path="Download" />
-    <!--为了适配所有路径可以设置 path = "." -->
-</paths>
+        <external-path
+            name="remind"
+            path="external_files" />
+        <root-path
+            name="root_path"
+            path="." />
+        <external-path
+            name="files_root"
+            path="Android/data/com.geek.jk.weather/files/Download/" />
+        <external-path
+            name="external_storage_root"
+            path="." />
+        <external-path
+            name="Download"
+            path=""/>
+        <external-files-path
+            name="external_files_path"
+            path="Download" />
+
+        <!-- 这个下载路径也不可以修改，必须为GDTDOWNLOAD -->
+        <external-path name="gdt_sdk_download_path" path="GDTDOWNLOAD" />
+
+    </paths>
+
+
+</resources>
