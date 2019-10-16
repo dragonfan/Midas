@@ -89,6 +89,8 @@ public class CHJAdView extends CommAdView {
         //step3:(可选，强烈建议在合适的时机调用):申请部分权限，如read_phone_state,防止获取不了imei时候，下载类广告没有填充的问题。
 //        TTAdManagerHolder.get().requestPermissionIfNecessary(mContext);
 
+        LogUtils.d(TAG, "onADLoaded->请求穿山甲广告");
+
         AdSlot adSlot = new AdSlot.Builder()
                 .setCodeId(mAdId.trim())
                 .setSupportDeepLink(true)

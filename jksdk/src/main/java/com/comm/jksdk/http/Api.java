@@ -18,8 +18,8 @@ public interface Api {
     }
 
     class URL_TEST{//测试环境
-//        public static final String APP_WEATHER_DOMAIN = "http://172.16.11.247:8974/adsenseapi/";
-        public static final String APP_WEATHER_DOMAIN = "http://172.16.11.251:8974/adsenseapi/";
+        public static final String APP_WEATHER_DOMAIN = "http://172.16.11.247:8974/adsenseapi/";
+//        public static final String APP_WEATHER_DOMAIN = "http://172.16.11.251:8974/adsenseapi/";
 
     }
 

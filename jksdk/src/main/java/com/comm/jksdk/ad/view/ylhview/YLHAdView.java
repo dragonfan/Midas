@@ -89,6 +89,7 @@ public class YLHAdView extends CommAdView {
         if(TextUtils.isEmpty(ylhAppid)){
             ylhAppid=Constants.YLH_APPID;
         }
+        LogUtils.d(TAG, "onADLoaded->请求优量汇广告");
 
         NativeUnifiedAD mAdManager = new NativeUnifiedAD(getContext(), ylhAppid, mAdId.trim(), new NativeADUnifiedListener() {
             @Override

@@ -81,11 +81,14 @@ public class AdsConfig {
                             return;
                         }
 
-                        LogUtils.d(TAG, "accept->配置信息请求成功 ");
                         //获取加密的配置信息
                         String data=ConfigInfoBean.getData();
+                        LogUtils.d(TAG, "accept->配置信息请求成功--->加密数据 "+data);
+
                         //解密
                         String decryptData=DesUtils.decode(data);
+                        LogUtils.d(TAG, "accept->配置信息请求成功--->解密数据 "+decryptData);
+
                         ConfigBean configBean= mGson.fromJson(decryptData, ConfigBean.class);
 
                         if (configBean == null) {
