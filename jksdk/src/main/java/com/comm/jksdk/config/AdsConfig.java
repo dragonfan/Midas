@@ -13,7 +13,6 @@ import com.comm.jksdk.http.OkHttpWrapper;
 import com.comm.jksdk.http.base.BaseResponse;
 import com.comm.jksdk.http.utils.AppInfoUtils;
 import com.comm.jksdk.http.utils.LogUtils;
-import com.comm.jksdk.utils.DesUtils;
 import com.comm.jksdk.utils.SpUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -66,31 +65,23 @@ public class AdsConfig {
     @SuppressLint("CheckResult")
     public void requestConfig() {
 
-        getConfigInfo()
-                .subscribeOn(Schedulers.io())
+        getConfigInfo().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<BaseResponse<String>>() {
+                .subscribe(new Consumer<BaseResponse<ConfigBean>>() {
                     @Override
-                    public void accept(BaseResponse<String> ConfigInfoBean) {
+                    public void accept(BaseResponse<ConfigBean> ConfigInfoBean) {
                         if (ConfigInfoBean == null) {
                             return;
                         }
                         if (!ConfigInfoBean.isSuccess()) {
-                            LogUtils.d(TAG, "accept->配置信息请求失败--->code:" + ConfigInfoBean.getCode()
-                                    +",message:"+ConfigInfoBean.getMsg());
+                            LogUtils.d(TAG, "accept->配置信息请求失败:" + ConfigInfoBean.getCode()
+                                    +ConfigInfoBean.getMsg());
                             return;
                         }
 
-                        //获取加密的配置信息
-                        String data=ConfigInfoBean.getData();
-                        LogUtils.d(TAG, "accept->配置信息请求成功--->加密数据 "+data);
 
-                        //解密
-                        String decryptData=DesUtils.decode(data);
-                        LogUtils.d(TAG, "accept->配置信息请求成功--->解密数据 "+decryptData);
 
-                        ConfigBean configBean= mGson.fromJson(decryptData, ConfigBean.class);
-
+                        ConfigBean configBean = ConfigInfoBean.getData();
                         if (configBean == null) {
                             LogUtils.d(TAG, "accept->配置信息为空 ");
                             return;
@@ -115,13 +106,12 @@ public class AdsConfig {
                                 SpUtils.putString(adPosition, configInfo);
                             }
 
-                            //对象转json保存到sp
-                            //保存总json
-//                            String configInfo = mGson.toJson(ConfigInfoBean);
-                            SpUtils.putString(Constants.SPUtils.CONFIG_INFO, decryptData);
                         }
-
-
+                        //对象转json保存到sp
+                        //保存总json
+                        String configInfo = mGson.toJson(ConfigInfoBean);
+                        SpUtils.putString(Constants.SPUtils.CONFIG_INFO, configInfo);
+                        LogUtils.d(TAG, "accept->配置信息请求成功: "+configInfo);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -138,7 +128,7 @@ public class AdsConfig {
      *
      * @return
      */
-    private Observable<BaseResponse<String>> getConfigInfo() {
+    private Observable<BaseResponse<ConfigBean>> getConfigInfo() {
         Map<String, Object> requestParams = new HashMap<>();
         RequestBody requestBody = null;
         requestParams.put("bid", Constants.bid);
@@ -159,13 +149,10 @@ public class AdsConfig {
         if (posInfosBoolean) {
             requestParams.put("positionInfos", posInfoList);
         }
-        String requestData=mGson.toJson(requestParams);
-        //加密
-        String encryptData=DesUtils.encode(requestData);
-        Map<String, Object> encryptMap = new HashMap<>();
-        encryptMap.put("params",encryptData);
-        String requestEncryptData=mGson.toJson(encryptMap);
-        requestBody = RequestBody.create(MediaType.parse("application/json"),requestEncryptData);
+        String requstData=mGson.toJson(requestParams);
+        LogUtils.d(TAG, "requstData->"+requstData);
+
+        requestBody = RequestBody.create(MediaType.parse("application/json;charset=utf-8"),requstData);
         return OkHttpWrapper.getInstance().getRetrofit().create(ConfigService.class).getConfig(requestBody);
     }
 
@@ -180,20 +167,21 @@ public class AdsConfig {
         // 从sp获取配置信息
         mConfigInfo = SpUtils.getString(Constants.SPUtils.CONFIG_INFO, "");
         if (!TextUtils.isEmpty(mConfigInfo)) {
-          ConfigBean mConfigInfoBean = mGson.fromJson(mConfigInfo, new TypeToken<ConfigBean>() {
+            BaseResponse<ConfigBean> mConfigInfoBean = mGson.fromJson(mConfigInfo, new TypeToken<BaseResponse<ConfigBean>>() {
             }.getType());
             if (mConfigInfoBean != null) {
-                    if (mConfigInfoBean.getAdList() != null && mConfigInfoBean.getAdList().size() > 0) {
-                        for (int i = 0; i < mConfigInfoBean.getAdList().size(); i++) {
+                if (mConfigInfoBean.getData() != null) {
+                    if (mConfigInfoBean.getData().getAdList() != null && mConfigInfoBean.getData().getAdList().size() > 0) {
+                        for (int i = 0; i < mConfigInfoBean.getData().getAdList().size(); i++) {
                             PositionInfo posInfo = new PositionInfo();
-                            posInfo.adPosition = mConfigInfoBean.getAdList().get(i).getAdPosition();
-                            posInfo.adVersion = mConfigInfoBean.getAdList().get(i).getAdVersion();
-                            posInfo.productId = mConfigInfoBean.getAdList().get(i).getProductId();
+                            posInfo.adPosition = mConfigInfoBean.getData().getAdList().get(i).getAdPosition();
+                            posInfo.adVersion = mConfigInfoBean.getData().getAdList().get(i).getAdVersion();
+                            posInfo.productId = mConfigInfoBean.getData().getAdList().get(i).getProductId();
                             posInfoList.add(posInfo);
                         }
                         positionInfos=true;
                     }
-
+                }
             }
 
         }
