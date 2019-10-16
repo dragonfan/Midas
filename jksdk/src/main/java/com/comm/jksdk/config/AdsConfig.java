@@ -13,6 +13,7 @@ import com.comm.jksdk.http.OkHttpWrapper;
 import com.comm.jksdk.http.base.BaseResponse;
 import com.comm.jksdk.http.utils.AppInfoUtils;
 import com.comm.jksdk.http.utils.LogUtils;
+import com.comm.jksdk.utils.DesUtils;
 import com.comm.jksdk.utils.SpUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -65,11 +66,12 @@ public class AdsConfig {
     @SuppressLint("CheckResult")
     public void requestConfig() {
 
-        getConfigInfo().subscribeOn(Schedulers.io())
+        getConfigInfo()
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<BaseResponse<ConfigBean>>() {
+                .subscribe(new Consumer<BaseResponse<String>>() {
                     @Override
-                    public void accept(BaseResponse<ConfigBean> ConfigInfoBean) {
+                    public void accept(BaseResponse<String> ConfigInfoBean) {
                         if (ConfigInfoBean == null) {
                             return;
                         }
@@ -80,8 +82,12 @@ public class AdsConfig {
                         }
 
                         LogUtils.d(TAG, "accept->配置信息请求成功 ");
+                        //获取加密的配置信息
+                        String data=ConfigInfoBean.getData();
+                        //解密
+                        String decryptData=DesUtils.decode(data);
+                        ConfigBean configBean= mGson.fromJson(decryptData, ConfigBean.class);
 
-                        ConfigBean configBean = ConfigInfoBean.getData();
                         if (configBean == null) {
                             LogUtils.d(TAG, "accept->配置信息为空 ");
                             return;
@@ -128,7 +134,7 @@ public class AdsConfig {
      *
      * @return
      */
-    private Observable<BaseResponse<ConfigBean>> getConfigInfo() {
+    private Observable<BaseResponse<String>> getConfigInfo() {
         Map<String, Object> requestParams = new HashMap<>();
         RequestBody requestBody = null;
         requestParams.put("bid", Constants.bid);
@@ -149,7 +155,13 @@ public class AdsConfig {
         if (posInfosBoolean) {
             requestParams.put("positionInfos", posInfoList);
         }
-        requestBody = RequestBody.create(MediaType.parse("application/json;charset=utf-8"), mGson.toJson(requestParams));
+        String requestData=mGson.toJson(requestParams);
+        //加密
+        String encryptData=DesUtils.encode(requestData);
+        Map<String, Object> encryptMap = new HashMap<>();
+        encryptMap.put("params",encryptData);
+        String requestEncryptData=mGson.toJson(encryptMap);
+        requestBody = RequestBody.create(MediaType.parse("application/json"),requestEncryptData);
         return OkHttpWrapper.getInstance().getRetrofit().create(ConfigService.class).getConfig(requestBody);
     }
 

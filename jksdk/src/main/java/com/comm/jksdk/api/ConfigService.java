@@ -23,6 +23,6 @@ public interface ConfigService {
      */
     @Headers({DOMAIN_NAME_HEADER + Api.WEATHER_DOMAIN_NAME})
     @POST("/v1/getAdsConfig/getConfig")
-    Observable<BaseResponse<ConfigBean>> getConfig(@Body RequestBody requestBody);
+    Observable<BaseResponse<String>> getConfig(@Body RequestBody requestBody);
 
 }
