@@ -76,8 +76,8 @@ public class AdsConfig {
                             return;
                         }
                         if (!ConfigInfoBean.isSuccess()) {
-                            LogUtils.d(TAG, "accept->配置信息请求失败:" + ConfigInfoBean.getCode()
-                                    +ConfigInfoBean.getMsg());
+                            LogUtils.d(TAG, "accept->配置信息请求失败--->code:" + ConfigInfoBean.getCode()
+                                    +",message:"+ConfigInfoBean.getMsg());
                             return;
                         }
 
@@ -112,11 +112,12 @@ public class AdsConfig {
                                 SpUtils.putString(adPosition, configInfo);
                             }
 
+                            //对象转json保存到sp
+                            //保存总json
+//                            String configInfo = mGson.toJson(ConfigInfoBean);
+                            SpUtils.putString(Constants.SPUtils.CONFIG_INFO, decryptData);
                         }
-                        //对象转json保存到sp
-                        //保存总json
-                        String configInfo = mGson.toJson(ConfigInfoBean);
-                        SpUtils.putString(Constants.SPUtils.CONFIG_INFO, configInfo);
+
 
                     }
                 }, new Consumer<Throwable>() {
@@ -176,21 +177,20 @@ public class AdsConfig {
         // 从sp获取配置信息
         mConfigInfo = SpUtils.getString(Constants.SPUtils.CONFIG_INFO, "");
         if (!TextUtils.isEmpty(mConfigInfo)) {
-            BaseResponse<ConfigBean> mConfigInfoBean = mGson.fromJson(mConfigInfo, new TypeToken<BaseResponse<ConfigBean>>() {
+          ConfigBean mConfigInfoBean = mGson.fromJson(mConfigInfo, new TypeToken<ConfigBean>() {
             }.getType());
             if (mConfigInfoBean != null) {
-                if (mConfigInfoBean.getData() != null) {
-                    if (mConfigInfoBean.getData().getAdList() != null && mConfigInfoBean.getData().getAdList().size() > 0) {
-                        for (int i = 0; i < mConfigInfoBean.getData().getAdList().size(); i++) {
+                    if (mConfigInfoBean.getAdList() != null && mConfigInfoBean.getAdList().size() > 0) {
+                        for (int i = 0; i < mConfigInfoBean.getAdList().size(); i++) {
                             PositionInfo posInfo = new PositionInfo();
-                            posInfo.adPosition = mConfigInfoBean.getData().getAdList().get(i).getAdPosition();
-                            posInfo.adVersion = mConfigInfoBean.getData().getAdList().get(i).getAdVersion();
-                            posInfo.productId = mConfigInfoBean.getData().getAdList().get(i).getProductId();
+                            posInfo.adPosition = mConfigInfoBean.getAdList().get(i).getAdPosition();
+                            posInfo.adVersion = mConfigInfoBean.getAdList().get(i).getAdVersion();
+                            posInfo.productId = mConfigInfoBean.getAdList().get(i).getProductId();
                             posInfoList.add(posInfo);
                         }
                         positionInfos=true;
                     }
-                }
+
             }
 
         }
