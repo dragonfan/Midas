@@ -76,6 +76,8 @@ public class AdsConfig {
                         if (!ConfigInfoBean.isSuccess()) {
                             LogUtils.d(TAG, "accept->配置信息请求失败:" + ConfigInfoBean.getCode()
                                     +ConfigInfoBean.getMsg());
+                            Toast.makeText(mContext, "accept->配置信息请求失败:" + ConfigInfoBean.getCode()
+                                    +ConfigInfoBean.getMsg(), Toast.LENGTH_LONG).show();
                             return;
                         }
 
@@ -84,12 +86,14 @@ public class AdsConfig {
                         ConfigBean configBean = ConfigInfoBean.getData();
                         if (configBean == null) {
                             LogUtils.d(TAG, "accept->配置信息为空 ");
+                            Toast.makeText(mContext, "accept->配置信息为空 ", Toast.LENGTH_LONG).show();
                             return;
                         }
 
                         List<ConfigBean.AdListBean> configList = configBean.getAdList();
                         if (configList == null || configList.size() == 0) {
                             LogUtils.d(TAG, "accept->配置信息为空 ");
+                            Toast.makeText(mContext, "accept->配置信息为空 ", Toast.LENGTH_LONG).show();
                             return;
                         }
                         for (int i = 0; i < configList.size(); i++) {
@@ -112,11 +116,15 @@ public class AdsConfig {
                         String configInfo = mGson.toJson(ConfigInfoBean);
                         SpUtils.putString(Constants.SPUtils.CONFIG_INFO, configInfo);
                         LogUtils.d(TAG, "accept->配置信息请求成功: "+configInfo);
+                        Toast.makeText(mContext, "accept->配置信息请求成功: "+configInfo, Toast.LENGTH_LONG).show();
+
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) {
                         LogUtils.d(TAG, "accept->配置信息请求失败" + throwable.getMessage());
+                        Toast.makeText(mContext, "accept->配置信息请求失败" + throwable.getMessage(), Toast.LENGTH_LONG).show();
+
                     }
                 });
         return;
@@ -213,6 +221,8 @@ public class AdsConfig {
                                     if (cmsConfigKey.equals(adPosition)) {
                                         mConfigInfoBean = allConfigInfoBean.getData().getAdList().get(i);
                                         LogUtils.w(TAG,"DATA：客户端默认配置信息");
+                                        Toast.makeText(mContext, "DATA：客户端默认配置信息", Toast.LENGTH_SHORT).show();
+
                                     }
                                 }
 

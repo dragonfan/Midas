@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.bytedance.sdk.openadsdk.TTFeedAd;
 import com.comm.jksdk.ad.listener.AdListener;
-import com.comm.jksdk.ad.listener.YlhAdListener;
+import com.comm.jksdk.ad.listener.FirstAdListener;
 import com.comm.jksdk.http.utils.LogUtils;
 import com.qq.e.ads.nativ.NativeUnifiedADData;
 
@@ -19,7 +19,7 @@ import java.util.List;
  public class CommAdView extends AbsAdView {
 
     protected static AdListener mAdListener = null;
-    private YlhAdListener mYlhAdListener= null;
+    private FirstAdListener mFirstAdListener = null;
 
     public CommAdView(Context context, String style,String adPositionId) {
         super(context,style,adPositionId);
@@ -58,17 +58,17 @@ import java.util.List;
     public void setAdListener(AdListener adListener) {
         mAdListener = adListener;
     }
-    public void setYlhAdListener(YlhAdListener adListener) {
-        mYlhAdListener = adListener;
+    public void setYlhAdListener(FirstAdListener adListener) {
+        mFirstAdListener = adListener;
     }
     /**
-     * 优量汇广告失败
+     * 第一个广告请求失败
      * @param errorCode
      * @param errorMsg
      */
-    protected void ylhAdError(int errorCode, String errorMsg) {
-        if (mYlhAdListener != null) {
-            mYlhAdListener.adYlhError(errorCode, errorMsg);
+    protected void firstAdError(int errorCode, String errorMsg) {
+        if (mFirstAdListener != null) {
+            mFirstAdListener.firstAdError(errorCode, errorMsg);
         }
     }
     /**

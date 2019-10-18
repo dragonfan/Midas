@@ -2,6 +2,7 @@ package com.comm.jksdk.ad.view.ylhview;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 
 import com.comm.jksdk.ad.view.CommAdView;
@@ -39,11 +40,13 @@ public class YLHAdView extends CommAdView {
         this.mAdId=mAdId;
         this.style=style;
         this.mContext=context;
+
         if (Constants.AdStyle.BigImg.equals(style)) {
             mAdView = new YlhBIgImgAdView(mContext);
         } else if (Constants.AdStyle.LeftImgRightTwoText.equals(style)){
             mAdView = new YlhLeftImgRightTwoTextAdView(mContext);
-        }else if(Constants.AdStyle.All.equals(style)){
+        }else {
+            //all
             //所有样式都支持 随机展示
             int num=AdsUtils.getRandomNum(2);
             LogUtils.w("------->num:",num+"");
@@ -90,11 +93,14 @@ public class YLHAdView extends CommAdView {
             ylhAppid=Constants.YLH_APPID;
         }
         LogUtils.d(TAG, "onADLoaded->请求优量汇广告");
+        Toast.makeText(mContext, "onADLoaded->请求优量汇广告"+"广告id："+mAdId.trim(), Toast.LENGTH_LONG).show();
 
         NativeUnifiedAD mAdManager = new NativeUnifiedAD(getContext(), ylhAppid, mAdId.trim(), new NativeADUnifiedListener() {
             @Override
             public void onADLoaded(List<NativeUnifiedADData> nativeAdList) {
                 LogUtils.d(TAG, "onADLoaded->请求优量汇成功");
+                Toast.makeText(mContext, "onADLoaded->请求优量汇成功", Toast.LENGTH_LONG).show();
+
                 Boolean requestAdOverTime=AdsUtils.requestAdOverTime(adRequestTimeOut);
                 if(requestAdOverTime){
                     return;
@@ -113,8 +119,10 @@ public class YLHAdView extends CommAdView {
             @Override
             public void onNoAD(AdError adError) {
                 LogUtils.d(TAG, "onNoAD->请求优量汇失败,ErrorCode:" + adError.getErrorCode() + ",ErrorMsg:" + adError.getErrorMsg());
+                Toast.makeText(mContext, "onNoAD->请求优量汇失败,ErrorCode:" + adError.getErrorCode() + ",ErrorMsg:" + adError.getErrorMsg(), Toast.LENGTH_LONG).show();
+
                 adError(adError.getErrorCode(), adError.getErrorMsg());
-                ylhAdError(adError.getErrorCode(), adError.getErrorMsg());
+                firstAdError(adError.getErrorCode(), adError.getErrorMsg());
 
 
             }

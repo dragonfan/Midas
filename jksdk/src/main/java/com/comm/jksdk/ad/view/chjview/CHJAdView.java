@@ -1,6 +1,7 @@
 package com.comm.jksdk.ad.view.chjview;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.bytedance.sdk.openadsdk.AdSlot;
 import com.bytedance.sdk.openadsdk.TTAdManager;
@@ -41,7 +42,8 @@ public class CHJAdView extends CommAdView {
             mAdView = new ChjBigImgAdView(mContext);
         } else if (Constants.AdStyle.LeftImgRightTwoText.equals(style)){
             mAdView = new ChjLeftImgRightTwoTextAdView(mContext);
-        }else if(Constants.AdStyle.All.equals(style)){
+        }else {
+            //  all
             //所有样式都支持 随机展示
             //所有样式都支持 随机展示
             int num=AdsUtils.getRandomNum(2);
@@ -90,6 +92,7 @@ public class CHJAdView extends CommAdView {
 //        TTAdManagerHolder.get().requestPermissionIfNecessary(mContext);
 
         LogUtils.d(TAG, "onADLoaded->请求穿山甲广告");
+        Toast.makeText(mContext, "onADLoaded->请求穿山甲广告"+"广告id："+mAdId.trim(), Toast.LENGTH_LONG).show();
 
         AdSlot adSlot = new AdSlot.Builder()
                 .setCodeId(mAdId.trim())
@@ -101,14 +104,19 @@ public class CHJAdView extends CommAdView {
             @Override
             public void onError(int i, String s) {
                 LogUtils.d(TAG, "onNoAD->请求穿山甲失败,ErrorCode:" + i+ ",ErrorMsg:" +s);
+                Toast.makeText(mContext, "onNoAD->请求穿山甲失败,ErrorCode:" + i+ ",ErrorMsg:" +s, Toast.LENGTH_LONG).show();
+
                 if (s != null) {
                     adError(i, s);
+                    firstAdError(i, s);
+
                 }
             }
 
             @Override
             public void onFeedAdLoad(List<TTFeedAd> list) {
                 LogUtils.d(TAG, "onADLoaded->请求穿山甲成功");
+                Toast.makeText(mContext,"onADLoaded->请求穿山甲成功", Toast.LENGTH_LONG).show();
                 Boolean requestAdOverTime= AdsUtils.requestAdOverTime(adRequestTimeOut);
                 if(requestAdOverTime){
                     return;

@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.comm.jksdk.ad.AdsManger;
@@ -23,6 +24,7 @@ import com.jk.adsdkdemo.utils.SPUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -34,6 +36,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button button_configinfo;
 
     private EditText et_ad_pos_id;
+    public static TextView tvResult;
+    private EditText et_chan_id;
+    private EditText et_product_id;
+    private long firstOpenAppTime;
+    private int bid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,15 +85,54 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 "\t\"msg\": \"请求成功\"\n" +
                 "}";
         SPUtils.putString(Constants.DEFAULT_CONFIG_KEY, jsonData);
+
+
+        if (isFirstInstallApp()) {// 第一次安装
+            SPUtils.putBoolean(Constants.FIRST_INSTALL_APP, false);
+            //保存用户首次安装时间
+            SPUtils.putLong(Constants.FIRST_INSTALL_APP_TIME, System.currentTimeMillis());
+            int bid=getRandomNum(99);
+            SPUtils.putInt(Constants.BID, bid);
+
+        }
+
+         firstOpenAppTime = SPUtils.getLong(Constants.FIRST_INSTALL_APP_TIME, 0L);
+         bid = SPUtils.getInt(Constants.BID, 0);
+
     }
 
+    /**
+     * 是否第一次安装app
+     * @return
+     */
+    public static boolean isFirstInstallApp(){
+        Boolean isFirstInstallApp = SPUtils.getBoolean(Constants.FIRST_INSTALL_APP, true);
+        return isFirstInstallApp;
+    }
 
+    /**
+     * 获取随机数
+     * @param max
+     * @return
+     */
+    public static int getRandomNum(int max){
+        // 产生[0,max-1]范围内的随机数为例
+        int num=0;
+        Random random = new Random();
+        num=random.nextInt(max);
+        return num;
+    }
     private void initView() {
         button_ylh_ad = findViewById(R.id.button_ylh_ad);
         et_ad_pos_id = findViewById(R.id.et_ad_pos_id);
 
         adRlyt = findViewById(R.id.first_weather_adrlyt);
         button_configinfo = findViewById(R.id.button_configinfo);
+        tvResult=findViewById(R.id.tv_result);
+        et_chan_id=findViewById(R.id.et_chan_id);
+        et_product_id=findViewById(R.id.et_product_id);
+
+
 
         button_ylh_ad.setOnClickListener(this);
         button_configinfo.setOnClickListener(this);
@@ -146,15 +192,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //bid 第一次安装app时产生0-99之间的随机数
                 // UserActive 用户激活时间
                 //ProductName 业务线
+                String marketName=et_chan_id.getText().toString();
+                String productName=et_product_id.getText().toString();
                 AdsManger.getInstance().setContext(this)
-                        .setBid(10)
-                        .setMarketName("jinritoutiao")
-                        .setProductName("13")
+                        .setBid(bid)
+                        .setMarketName(marketName)
+                        .setProductName(productName)
                         .setLatitude("")
                         .setLongitude("")
                         .setProvince("")
                         .setCity("")
-                        .setUserActive(System.currentTimeMillis())
+                        .setUserActive(firstOpenAppTime)
                         .requestConfig();
 
                 break;
@@ -190,22 +238,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void adSuccess() {
             LogUtils.w("lpb", "adSuccess");
-
         }
 
         @Override
         public void adExposed() {
             LogUtils.w("lpb", "adExposed");
+
         }
 
         @Override
         public void adClicked() {
             LogUtils.w("lpb", "adClicked");
+
         }
 
         @Override
         public void adError(int errorCode, String errorMsg) {
             LogUtils.w("lpb", "adError errorCode = " + errorCode + " errorMsg = " + errorMsg);
+
         }
 
     };

@@ -4,9 +4,10 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.comm.jksdk.ad.listener.AdListener;
-import com.comm.jksdk.ad.listener.YlhAdListener;
+import com.comm.jksdk.ad.listener.FirstAdListener;
 import com.comm.jksdk.ad.view.CommAdView;
 import com.comm.jksdk.ad.view.chjview.CHJAdView;
 import com.comm.jksdk.ad.view.ylhview.YLHAdView;
@@ -14,7 +15,6 @@ import com.comm.jksdk.bean.ConfigBean;
 import com.comm.jksdk.config.AdsConfig;
 import com.comm.jksdk.config.InitBaseConfig;
 import com.comm.jksdk.constant.Constants;
-import com.comm.jksdk.http.base.BaseResponse;
 import com.comm.jksdk.http.utils.LogUtils;
 import com.comm.jksdk.utils.SpUtils;
 
@@ -192,7 +192,7 @@ public class AdsManger {
             //向客户端提供接口
             mAdView.setAdListener(mAdListener);
             //ylh请求失败请求chj广告接口回掉
-            mAdView.setYlhAdListener(mYlhAdListener);
+            mAdView.setYlhAdListener(mFirstAdListener);
         }
 
         adParentView.removeAllViews();
@@ -219,10 +219,10 @@ public class AdsManger {
         return adParentView;
     }
 
-    private YlhAdListener mYlhAdListener = new YlhAdListener() {
+    private FirstAdListener mFirstAdListener = new FirstAdListener() {
         @Override
-        public void adYlhError(int errorCode, String errorMsg) {
-            LogUtils.w(TAG, "回传--->请求优量汇失败");
+        public void firstAdError(int errorCode, String errorMsg) {
+            LogUtils.w(TAG, "回传--->请求第一个广告失败");
             firstRequestAd = false;
             getCacheConfig();
 
@@ -257,14 +257,30 @@ public class AdsManger {
                         SpUtils.putString(Constants.SPUtils.CHJ_APPNAME,mAdsInfosBean.getAdsAppName());
                     }
                     //创建广告样式
-                    if(!TextUtils.isEmpty(mAdId)){
-                        createAdView(adType,mAdId);
-                    }else{
+                    if(TextUtils.isEmpty(mAdId)){
                         LogUtils.w(TAG,"广告id为空，请检查");
+                        Toast.makeText(mContext, "广告id为空，请检查", Toast.LENGTH_SHORT).show();
+
+                        return;
                     }
+                    if(TextUtils.isEmpty(adType)){
+                        LogUtils.w(TAG,"广告adType为空，请检查");
+                        Toast.makeText(mContext, "广告类型为空，请检查", Toast.LENGTH_SHORT).show();
+
+                        return;
+                    }
+                    if(TextUtils.isEmpty(adStyle)){
+                        Toast.makeText(mContext, "广告样式为空，请检查", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                        createAdView(adType,mAdId);
+
 
                 }
             }
+        }else{
+            Toast.makeText(mContext, "后台配置了一个广告源，至少两个广告源，请检查？", Toast.LENGTH_LONG).show();
         }
     }
 
