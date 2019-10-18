@@ -280,7 +280,7 @@ public class AdsManger {
                 }
             }
         }else{
-            Toast.makeText(mContext, "后台配置了一个广告源，至少两个广告源，请检查？", Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, "第一个广告请求失败，后台配置了一个广告源，至少两个广告源，请检查？", Toast.LENGTH_LONG).show();
         }
     }
 
