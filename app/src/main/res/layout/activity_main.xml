@@ -53,55 +53,62 @@
         android:layout_height="wrap_content"
         android:text="获取配置信息"
         />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="@dimen/dp_120">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="广告位置:"
-            android:textSize="@dimen/dp_20"
-            android:textColor="@color/colorPrimary"/>
-        <EditText
-            android:id="@+id/et_ad_pos_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="test_ad_code"
-            android:textSize="@dimen/dp_20"
-            android:textColor="@color/colorPrimary"
-            android:visibility="visible"/>
-    </LinearLayout>
-
     <Button
-        android:id="@+id/button_ylh_ad"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="请求广告"
-        />
-    <RelativeLayout
-        android:id="@+id/first_weather_adrlyt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
-        android:background="@color/colorPrimary"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="输出结果"
-        android:textSize="@dimen/dp_20"
-        android:textColor="@color/colorPrimary"
         android:layout_marginTop="@dimen/dimen_20dp"
-        android:visibility="gone"/>
-    <TextView
-        android:id="@+id/tv_result"
+        android:id="@+id/button_big_img"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=""
+        android:text="大图广告"
         />
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:layout_marginTop="@dimen/dp_20">-->
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="广告位置:"-->
+<!--            android:textSize="@dimen/dp_20"-->
+<!--            android:textColor="@color/colorPrimary"/>-->
+<!--        <EditText-->
+<!--            android:id="@+id/et_ad_pos_id"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="test_ad_code"-->
+<!--            android:textSize="@dimen/dp_20"-->
+<!--            android:textColor="@color/colorPrimary"-->
+<!--            android:visibility="visible"/>-->
+<!--    </LinearLayout>-->
+
+<!--    <Button-->
+<!--        android:id="@+id/button_ylh_ad"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="请求广告"-->
+<!--        />-->
+<!--    <RelativeLayout-->
+<!--        android:id="@+id/first_weather_adrlyt"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:visibility="visible"-->
+<!--        android:background="@color/colorPrimary"-->
+<!--        />-->
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="输出结果"-->
+<!--        android:textSize="@dimen/dp_20"-->
+<!--        android:textColor="@color/colorPrimary"-->
+<!--        android:layout_marginTop="@dimen/dimen_20dp"-->
+<!--        android:visibility="gone"/>-->
+<!--    <TextView-->
+<!--        android:id="@+id/tv_result"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text=""-->
+<!--        />-->
 
 
 </LinearLayout>

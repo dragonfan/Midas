@@ -1,12 +1,12 @@
-package com.comm.jksdk.ad;
+package com.comm.jksdk.ad.admanager;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.comm.jksdk.ad.listener.AdListener;
+import com.comm.jksdk.ad.listener.AdManager;
 import com.comm.jksdk.ad.listener.FirstAdListener;
 import com.comm.jksdk.ad.view.CommAdView;
 import com.comm.jksdk.ad.view.chjview.CHJAdView;
@@ -23,33 +23,34 @@ import java.util.List;
 
 
 /**
+ * 原生广告管理器
+ *
  * @author: docking
  * @date: 2019/9/7 10:22
  * @description: todo ...
  **/
-public class AdsManger {
+public class NativesAdManger implements AdManager {
     protected final String TAG = "GeekAdSdk-->";
     private Context mContext;
     private CommAdView mAdView = null;
     private List<ConfigBean.AdListBean.AdsInfosBean> adsInfoslist = new ArrayList();
 
-    private static AdsManger instance;
+    private static NativesAdManger instance;
     private RelativeLayout adParentView;
 
-    private AdsManger() {
+    public NativesAdManger() {
     }
 
-    public static AdsManger getInstance() {
+    public static NativesAdManger getInstance() {
         if (instance == null) {
-            synchronized (AdsConfig.class) {
+            synchronized (NativesAdManger.class) {
                 if (instance == null) {
-                    instance = new AdsManger();
+                    instance = new NativesAdManger();
                 }
             }
         }
         return instance;
     }
-
 
 
     /**
@@ -82,65 +83,65 @@ public class AdsManger {
 
     private boolean firstRequestAd = true;
 
-    public AdsManger setDefaultConfigKey(String defaultConfigKey) {
+    public NativesAdManger setDefaultConfigKey(String defaultConfigKey) {
         this.defaultConfigKey = defaultConfigKey;
         return this;
     }
 
-    public AdsManger setCity(String city) {
+    public NativesAdManger setCity(String city) {
         Constants.city = city;
         return this;
     }
 
-    public AdsManger setProvince(String province) {
+    public NativesAdManger setProvince(String province) {
         Constants.province = province;
         return this;
     }
 
-    public AdsManger setLongitude(String longitude) {
+    public NativesAdManger setLongitude(String longitude) {
         Constants.longitude = longitude;
         return this;
     }
 
-    public AdsManger setLatitude(String latitude) {
+    public NativesAdManger setLatitude(String latitude) {
         Constants.latitude = latitude;
         return this;
     }
 
-    public AdsManger setUserActive(Long userActive) {
+    public NativesAdManger setUserActive(Long userActive) {
         Constants.userActive = userActive;
         return this;
     }
 
-    public AdsManger setMarketName(String marketName) {
+    public NativesAdManger setMarketName(String marketName) {
         Constants.marketName = marketName;
         return this;
     }
 
-    public AdsManger setProductName(String productName) {
+    public NativesAdManger setProductName(String productName) {
         Constants.productName = productName;
         return this;
     }
 
-    public AdsManger setBid(int bid) {
+    public NativesAdManger setBid(int bid) {
         Constants.bid = bid;
         return this;
     }
 
-    public AdsManger setContext(Context context) {
+    public NativesAdManger setContext(Context context) {
         this.mContext = context;
         Constants.mContext = mContext;
         return this;
     }
 
 
-    public AdsManger setAdPositionId(String adPositionId) {
+    public NativesAdManger setAdPositionId(String adPositionId) {
 
-        Constants.adPositionId=adPositionId;
+        Constants.adPositionId = adPositionId;
         return this;
     }
 
-    public AdsManger setAdListener(AdListener adListener) {
+    public NativesAdManger setAdListener(AdListener adListener) {
         this.mAdListener = adListener;
         return this;
     }
@@ -150,9 +151,9 @@ public class AdsManger {
      *
      * @return
      */
-    public AdsManger getConfig() {
+    public NativesAdManger getConfig() {
         //获取本地配置信息
-        ConfigBean.AdListBean mConfigInfoBean = AdsConfig.getInstance(mContext).getConfig(defaultConfigKey, Constants.adPositionId);
+        ConfigBean.AdListBean mConfigInfoBean = AdsConfig.getInstance(mContext).getConfig(Constants.adPositionId);
 
         if (mConfigInfoBean != null) {
             if (Constants.adPositionId.equals(mConfigInfoBean.getAdPosition())) {
@@ -178,7 +179,7 @@ public class AdsManger {
      *
      * @param adType 广告样式
      */
-    private void createAdView(String adType,String mAdId) {
+    private void createAdView(String adType, String mAdId) {
 
         if (Constants.AdType.ChuanShanJia.equals(adType)) {
             mAdView = new CHJAdView(mContext, adStyle, mAdId);
@@ -215,6 +216,7 @@ public class AdsManger {
         }
     }
 
+    @Override
     public RelativeLayout getAdView() {
         return adParentView;
     }
@@ -247,39 +249,39 @@ public class AdsManger {
 //                        Constants.YLH_APPID = mAdsInfosBean.getAdsAppId();
 //                        Constants.YLH_APPNAME = mAdsInfosBean.getAdsAppName();
                         //保存优量汇广告APPID  APPNAME
-                        SpUtils.putString(Constants.SPUtils.YLH_APPID,mAdsInfosBean.getAdsAppId());
-                        SpUtils.putString(Constants.SPUtils.YLH_APPNAME,mAdsInfosBean.getAdsAppName());
+                        SpUtils.putString(Constants.SPUtils.YLH_APPID, mAdsInfosBean.getAdsAppId());
+                        SpUtils.putString(Constants.SPUtils.YLH_APPNAME, mAdsInfosBean.getAdsAppName());
                     } else {
 //                        Constants.CHJ_APPID = mAdsInfosBean.getAdsAppId();
 //                        Constants.CHJ_APPNAME = mAdsInfosBean.getAdsAppName();
                         // 保存穿山甲广告APPID  APPNAME
-                        SpUtils.putString(Constants.SPUtils.CHJ_APPID,mAdsInfosBean.getAdsAppId());
-                        SpUtils.putString(Constants.SPUtils.CHJ_APPNAME,mAdsInfosBean.getAdsAppName());
+                        SpUtils.putString(Constants.SPUtils.CHJ_APPID, mAdsInfosBean.getAdsAppId());
+                        SpUtils.putString(Constants.SPUtils.CHJ_APPNAME, mAdsInfosBean.getAdsAppName());
                     }
                     //创建广告样式
-                    if(TextUtils.isEmpty(mAdId)){
-                        LogUtils.w(TAG,"广告id为空，请检查");
+                    if (TextUtils.isEmpty(mAdId)) {
+                        LogUtils.w(TAG, "广告id为空，请检查");
                         Toast.makeText(mContext, "广告id为空，请检查", Toast.LENGTH_SHORT).show();
 
                         return;
                     }
-                    if(TextUtils.isEmpty(adType)){
-                        LogUtils.w(TAG,"广告adType为空，请检查");
+                    if (TextUtils.isEmpty(adType)) {
+                        LogUtils.w(TAG, "广告adType为空，请检查");
                         Toast.makeText(mContext, "广告类型为空，请检查", Toast.LENGTH_SHORT).show();
 
                         return;
                     }
-                    if(TextUtils.isEmpty(adStyle)){
+                    if (TextUtils.isEmpty(adStyle)) {
                         Toast.makeText(mContext, "广告样式为空，请检查", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
-                        createAdView(adType,mAdId);
+                    createAdView(adType, mAdId);
 
 
                 }
             }
-        }else{
+        } else {
             Toast.makeText(mContext, "第一个广告请求失败，后台配置了一个广告源，至少两个广告源，请检查？", Toast.LENGTH_LONG).show();
         }
     }
@@ -287,7 +289,7 @@ public class AdsManger {
     /**
      * 请求优量汇广告
      */
-    public AdsManger build() {
+    public NativesAdManger build() {
         adParentView = new RelativeLayout(mContext);
         firstRequestAd = true;
         getConfig();
@@ -297,7 +299,6 @@ public class AdsManger {
     /**
      * 从cms请求广告配置
      */
-    @SuppressLint("CheckResult")
     public void requestConfig() {
         if (mContext == null) {
             return;
@@ -329,4 +330,8 @@ public class AdsManger {
         InitBaseConfig.getInstance().init(mContext);
     }
 
+    @Override
+    public void loadAd(String position, AdListener listener) {
+
+    }
 }

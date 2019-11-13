@@ -2,6 +2,7 @@ package com.comm.jksdk.http.interceptor;
 
 import android.text.TextUtils;
 
+import com.comm.jksdk.GeekAdSdk;
 import com.comm.jksdk.constant.Constants;
 import com.comm.jksdk.http.Api;
 import com.comm.jksdk.http.Constant;
@@ -77,7 +78,7 @@ public class ApiEventInterceptor implements Interceptor {
     if (request == null) {
       return null;
     }
-    if (!NetworkUtil.isNetworkActive(Constants.mContext)) {
+    if (!NetworkUtil.isNetworkActive(GeekAdSdk.getContext())) {
       throw new IOException();
     }
     Response response = chain.proceed(request);

@@ -36,13 +36,13 @@ public class InitBaseConfig {
         // 需要放在接口请求之前
         initNetWork();
         //初始化穿山甲
-        initChjAd(context);
+//        initChjAd(context);
 
     }
 
-    private  void initChjAd(Context context) {
+    public void initChjAd(Context context, String appId) {
         //强烈建议在应用对应的Application#onCreate()方法中调用，避免出现content为null的异常
-        TTAdManagerHolder.init(context);
+        TTAdManagerHolder.init(context, appId);
     }
 
     private  void initNetWork() {

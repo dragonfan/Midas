@@ -3,7 +3,7 @@ package com.jk.adsdkdemo;
 import android.app.Application;
 import android.content.Context;
 
-import com.comm.jksdk.ad.AdsManger;
+import com.comm.jksdk.GeekAdSdk;
 
 /**
  * @author liupengbing
@@ -18,7 +18,11 @@ public class MainApp extends Application {
 
         super.onCreate();
         // 需要放在接口请求之前
-        AdsManger.getInstance().init(mContext,"5015945","即刻天气");
+//        NativesAdManger.getInstance().init(mContext,"5015945","即刻天气");
+
+        //初始化聚合广告sdk
+        GeekAdSdk.init(this, "13", "jinritoutiao", "5015945",  false);
+        GeekAdSdk.setBid(10);
 
     }
 

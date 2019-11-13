@@ -1,10 +1,10 @@
 package com.comm.jksdk.config;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.comm.jksdk.GeekAdSdk;
 import com.comm.jksdk.api.ConfigService;
 import com.comm.jksdk.bean.ConfigBean;
 import com.comm.jksdk.bean.PositionInfo;
@@ -13,13 +13,13 @@ import com.comm.jksdk.http.OkHttpWrapper;
 import com.comm.jksdk.http.base.BaseResponse;
 import com.comm.jksdk.http.utils.AppInfoUtils;
 import com.comm.jksdk.http.utils.LogUtils;
+import com.comm.jksdk.utils.CollectionUtils;
+import com.comm.jksdk.utils.JsonUtils;
 import com.comm.jksdk.utils.SpUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,8 +40,11 @@ public class AdsConfig {
     private static AdsConfig mAdsConfig = null;
     private Gson mGson = new Gson();
     private String mConfigInfo;
-    private ConfigBean.AdListBean mConfigInfoBean;
+//    private ConfigBean.AdListBean mConfigInfoBean;
     private ArrayList<PositionInfo> posInfoList;
+
+    //本地的配置信息
+    private static List<ConfigBean.AdListBean> adsInfoslist = new ArrayList();
 
     private AdsConfig() {
 
@@ -59,12 +62,11 @@ public class AdsConfig {
         return mAdsConfig;
     }
 
+
     /**
      * 从cms请求广告配置
      */
-    @SuppressLint("CheckResult")
     public void requestConfig() {
-
         getConfigInfo().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<BaseResponse<ConfigBean>>() {
@@ -81,8 +83,6 @@ public class AdsConfig {
                             return;
                         }
 
-
-
                         ConfigBean configBean = ConfigInfoBean.getData();
                         if (configBean == null) {
                             LogUtils.d(TAG, "accept->配置信息为空 ");
@@ -96,27 +96,26 @@ public class AdsConfig {
                             Toast.makeText(mContext, "accept->配置信息为空 ", Toast.LENGTH_LONG).show();
                             return;
                         }
-                        for (int i = 0; i < configList.size(); i++) {
-                            // "isChange": 0,//是否变更：0 - 无  1 - 有
-                            if (configList.get(i).getIsChange() == 1) {
-                                //更新数据
-                                //对象转json保存到sp
-                                String adPosition = configList.get(i).getAdPosition();
-                                if (TextUtils.isEmpty(adPosition)) {
-                                    return;
-                                }
-
-                                String configInfo = mGson.toJson(configList.get(i));
-                                SpUtils.putString(adPosition, configInfo);
-                            }
-
-                        }
+//                        for (int i = 0; i < configList.size(); i++) {
+//                            // "isChange": 0,//是否变更：0 - 无  1 - 有
+//                            if (configList.get(i).getIsChange() == 1) {
+//                                //更新数据
+//                                //对象转json保存到sp
+//                                String adPosition = configList.get(i).getAdPosition();
+//                                if (TextUtils.isEmpty(adPosition)) {
+//                                    return;
+//                                }
+//
+//                                String configInfo = mGson.toJson(configList.get(i));
+//                                SpUtils.putString(adPosition, configInfo);
+//                            }
+//
+//                        }
                         //对象转json保存到sp
                         //保存总json
-                        String configInfo = mGson.toJson(ConfigInfoBean);
-                        SpUtils.putString(Constants.SPUtils.CONFIG_INFO, configInfo);
-                        LogUtils.d(TAG, "accept->配置信息请求成功: "+configInfo);
-                        Toast.makeText(mContext, "accept->配置信息请求成功: "+configInfo, Toast.LENGTH_LONG).show();
+                        setAdsInfoslist(configBean);
+                        LogUtils.d(TAG, "accept->配置信息请求成功: ");
+//                        Toast.makeText(mContext, "accept->配置信息请求成功: "+configInfo, Toast.LENGTH_LONG).show();
 
                     }
                 }, new Consumer<Throwable>() {
@@ -137,26 +136,42 @@ public class AdsConfig {
      * @return
      */
     private Observable<BaseResponse<ConfigBean>> getConfigInfo() {
-        Map<String, Object> requestParams = new HashMap<>();
+        Map<String, Object> requestParams = CollectionUtils.createMap();
         RequestBody requestBody = null;
-        requestParams.put("bid", Constants.bid);
-        requestParams.put("productName", Constants.productName);
-        requestParams.put("marketName", Constants.marketName);
-        requestParams.put("versionCode", AppInfoUtils.getVerCode(mContext));
+        int bid = AdsConfig.getBid();
+        if (bid > 0) {
+            requestParams.put("bid", bid);
+        }
+        String productName = GeekAdSdk.getRroductName();
+        requestParams.put("productName", productName);
+        String marketName = GeekAdSdk.getChannel();
+        requestParams.put("marketName", marketName);
+        requestParams.put("versionCode", AppInfoUtils.getVerCode(GeekAdSdk.getContext()));
         requestParams.put("osSystem", 1);
-        requestParams.put("userActive", Constants.userActive);
+        long userActive = AdsConfig.getUserActive();
+        if (userActive < 0) {
+            userActive = System.currentTimeMillis();
+            AdsConfig.setUserActive(userActive);
+        }
+        requestParams.put("userActive", userActive);
         requestParams.put("ts", System.currentTimeMillis());
-        requestParams.put("latitude", Constants.latitude);
-        requestParams.put("longitude", Constants.longitude);
+        String latitude = AdsConfig.getLatitude();
+        if (!TextUtils.isEmpty(latitude)) {
+            requestParams.put("latitude", latitude);
+        }
+        String longitude = AdsConfig.getLongitude();
+        if (!TextUtils.isEmpty(longitude)) {
+            requestParams.put("longitude", longitude);
+        }
         requestParams.put("province", Constants.province);
         requestParams.put("city", Constants.city);
         requestParams.put("modelVersion", "");
         requestParams.put("sdkVersion", 1);
 
-        Boolean posInfosBoolean=getPositionInfos();
-        if (posInfosBoolean) {
-            requestParams.put("positionInfos", posInfoList);
-        }
+//        Boolean posInfosBoolean=getPositionInfos();
+//        if (posInfosBoolean) {
+//            requestParams.put("positionInfos", posInfoList);
+//        }
         String requstData=mGson.toJson(requestParams);
         LogUtils.d(TAG, "requstData->"+requstData);
 
@@ -175,21 +190,33 @@ public class AdsConfig {
         // 从sp获取配置信息
         mConfigInfo = SpUtils.getString(Constants.SPUtils.CONFIG_INFO, "");
         if (!TextUtils.isEmpty(mConfigInfo)) {
-            BaseResponse<ConfigBean> mConfigInfoBean = mGson.fromJson(mConfigInfo, new TypeToken<BaseResponse<ConfigBean>>() {
-            }.getType());
-            if (mConfigInfoBean != null) {
-                if (mConfigInfoBean.getData() != null) {
-                    if (mConfigInfoBean.getData().getAdList() != null && mConfigInfoBean.getData().getAdList().size() > 0) {
-                        for (int i = 0; i < mConfigInfoBean.getData().getAdList().size(); i++) {
-                            PositionInfo posInfo = new PositionInfo();
-                            posInfo.adPosition = mConfigInfoBean.getData().getAdList().get(i).getAdPosition();
-                            posInfo.adVersion = mConfigInfoBean.getData().getAdList().get(i).getAdVersion();
-                            posInfo.productId = mConfigInfoBean.getData().getAdList().get(i).getProductId();
-                            posInfoList.add(posInfo);
-                        }
-                        positionInfos=true;
+//            BaseResponse<ConfigBean> mConfigInfoBean = mGson.fromJson(mConfigInfo, new TypeToken<BaseResponse<ConfigBean>>() {
+//            }.getType());
+            ConfigBean configBean = JsonUtils.decode(mConfigInfo, ConfigBean.class);
+            if (configBean != null) {
+                List<ConfigBean.AdListBean> adListBeans = configBean.getAdList();
+                if (!CollectionUtils.isEmpty(adListBeans)) {
+                    for (ConfigBean.AdListBean adListBean : adListBeans) {
+                        PositionInfo posInfo = new PositionInfo();
+                        posInfo.adPosition = adListBean.getAdPosition();
+                        posInfo.adVersion = adListBean.getAdVersion();
+                        posInfo.productId = adListBean.getProductId();
+                        posInfoList.add(posInfo);
                     }
+                    positionInfos=true;
                 }
+//                if (mConfigInfoBean.getData() != null) {
+//                    if (mConfigInfoBean.getData().getAdList() != null && mConfigInfoBean.getData().getAdList().size() > 0) {
+//                        for (int i = 0; i < mConfigInfoBean.getData().getAdList().size(); i++) {
+//                            PositionInfo posInfo = new PositionInfo();
+//                            posInfo.adPosition = mConfigInfoBean.getData().getAdList().get(i).getAdPosition();
+//                            posInfo.adVersion = mConfigInfoBean.getData().getAdList().get(i).getAdVersion();
+//                            posInfo.productId = mConfigInfoBean.getData().getAdList().get(i).getProductId();
+//                            posInfoList.add(posInfo);
+//                        }
+//                        positionInfos=true;
+//                    }
+//                }
             }
 
         }
@@ -200,45 +227,227 @@ public class AdsConfig {
     /**
      * 获取本地保存配置信息
      */
-    public ConfigBean.AdListBean getConfig(String defaultConfigKey, String cmsConfigKey) {
-        // 从sp获取配置信息
-        if (!TextUtils.isEmpty(cmsConfigKey)) {
-            mConfigInfo = SpUtils.getString(cmsConfigKey, "");
-            mConfigInfoBean = mGson.fromJson(mConfigInfo, new TypeToken<ConfigBean.AdListBean>() {}.getType());
+    public ConfigBean.AdListBean getConfig(String postion) {
+        if (TextUtils.isEmpty(postion)) {
+            return null;
         }
-        if (TextUtils.isEmpty(mConfigInfo)) {
-            // 获取默认配置（客户端）
-            if (!TextUtils.isEmpty(defaultConfigKey)) {
-                String allConfigInfo = SpUtils.getString(defaultConfigKey, "");
-                BaseResponse<ConfigBean> allConfigInfoBean = mGson.fromJson(allConfigInfo, new TypeToken<BaseResponse<ConfigBean>>() {
-                }.getType());
-                if (allConfigInfoBean != null) {
-                    if (allConfigInfoBean.getData() != null) {
-                        if (allConfigInfoBean.getData().getAdList() != null && allConfigInfoBean.getData().getAdList().size() > 0) {
-                            for (int i = 0; i < allConfigInfoBean.getData().getAdList().size(); i++) {
-                                String adPosition = allConfigInfoBean.getData().getAdList().get(i).getAdPosition();
-                                if (!TextUtils.isEmpty(adPosition)) {
-                                    if (cmsConfigKey.equals(adPosition)) {
-                                        mConfigInfoBean = allConfigInfoBean.getData().getAdList().get(i);
-                                        LogUtils.w(TAG,"DATA：客户端默认配置信息");
-                                        Toast.makeText(mContext, "DATA：客户端默认配置信息", Toast.LENGTH_SHORT).show();
-
-                                    }
-                                }
-
-                            }
-                        }
-                    }
-                }
-            }else {
-                LogUtils.w(TAG,"默认defaultConfigKey为空");
+        List<ConfigBean.AdListBean> adListBeans = getAdsInfoslist();
+        if (CollectionUtils.isEmpty(adListBeans)) {
+            return null;
+        }
+        for (ConfigBean.AdListBean adListBean : adListBeans) {
+            if (postion.equals(adListBean.getAdPosition())) {
+                return adListBean;
             }
-
-        }else{
-            LogUtils.w(TAG,"DATA：cms上次请求配置信息");
         }
-
-        return mConfigInfoBean;
+        return null;
+//        // 从sp获取配置信息
+//        if (!TextUtils.isEmpty(cmsConfigKey)) {
+//            mConfigInfo = SpUtils.getString(cmsConfigKey, "");
+//            mConfigInfoBean = mGson.fromJson(mConfigInfo, new TypeToken<ConfigBean.AdListBean>() {}.getType());
+//        }
+//        if (TextUtils.isEmpty(mConfigInfo)) {
+//            // 获取默认配置（客户端）
+//            if (!TextUtils.isEmpty(defaultConfigKey)) {
+//                String allConfigInfo = SpUtils.getString(defaultConfigKey, "");
+//                BaseResponse<ConfigBean> allConfigInfoBean = mGson.fromJson(allConfigInfo, new TypeToken<BaseResponse<ConfigBean>>() {
+//                }.getType());
+//                if (allConfigInfoBean != null) {
+//                    if (allConfigInfoBean.getData() != null) {
+//                        if (allConfigInfoBean.getData().getAdList() != null && allConfigInfoBean.getData().getAdList().size() > 0) {
+//                            for (int i = 0; i < allConfigInfoBean.getData().getAdList().size(); i++) {
+//                                String adPosition = allConfigInfoBean.getData().getAdList().get(i).getAdPosition();
+//                                if (!TextUtils.isEmpty(adPosition)) {
+//                                    if (cmsConfigKey.equals(adPosition)) {
+//                                        mConfigInfoBean = allConfigInfoBean.getData().getAdList().get(i);
+//                                        LogUtils.w(TAG,"DATA：客户端默认配置信息");
+//                                        Toast.makeText(mContext, "DATA：客户端默认配置信息", Toast.LENGTH_SHORT).show();
+//
+//                                    }
+//                                }
+//
+//                            }
+//                        }
+//                    }
+//                }
+//            }else {
+//                LogUtils.w(TAG,"默认defaultConfigKey为空");
+//            }
+//
+//        }else{
+//            LogUtils.w(TAG,"DATA：cms上次请求配置信息");
+//        }
+//
+//        return mConfigInfoBean;
     }
 
+    /**
+     * 获取bid
+     * @return
+     */
+    public static int getBid(){
+        if (Constants.bid > 0) {
+            return Constants.bid;
+        }
+        Constants.bid = SpUtils.getInt(Constants.SPUtils.BID, -1);
+        return Constants.bid;
+    }
+
+    /**
+     * 设置bid
+     * @return
+     */
+    public static void setBid(int bid){
+        SpUtils.putInt(Constants.SPUtils.BID, bid);
+        Constants.bid = bid;
+    }
+
+    /**
+     *获取用户激活时间
+     * @return
+     */
+    public static long getUserActive(){
+        if (Constants.userActive > 0) {
+            return Constants.userActive;
+        }
+        Constants.userActive = SpUtils.getLong(Constants.SPUtils.USER_ACTIVE, -1);
+        return Constants.userActive;
+    }
+
+    /**
+     * 设置用户激活时间
+     * @param userActive
+     */
+    public static void setUserActive(long userActive){
+        SpUtils.putLong(Constants.SPUtils.USER_ACTIVE, userActive);
+        Constants.userActive = userActive;
+    }
+
+    /**
+     * 设置经度
+     * @param longitude
+     */
+    public static void setLongitude(String longitude) {
+        SpUtils.putString(Constants.SPUtils.LONGITUDE, longitude);
+        Constants.longitude = longitude;
+    }
+
+    /**
+     * 获取经度
+     * @return
+     */
+    public static String getLongitude(){
+        if (!TextUtils.isEmpty(Constants.longitude)) {
+            return Constants.longitude;
+        }
+        Constants.longitude = SpUtils.getString(Constants.SPUtils.LONGITUDE, "");
+        return Constants.longitude;
+    }
+
+    /**
+     * 设置纬度
+     */
+    public static void setLatitude(String latitude){
+        SpUtils.putString(Constants.SPUtils.LATITUDE, latitude);
+        Constants.latitude = latitude;
+    }
+
+    /**
+     * 获取纬度
+     * @return
+     */
+    public static String getLatitude(){
+        if (!TextUtils.isEmpty(Constants.latitude)) {
+            return Constants.latitude;
+        }
+        Constants.latitude = SpUtils.getString(Constants.SPUtils.LATITUDE, "");
+        return Constants.latitude;
+    }
+
+    /**
+     * 设置业务线标识
+     * @param productName
+     */
+    public static void setProductName(String productName){
+        Constants.productName = productName;
+    }
+
+    /**
+     * 获取业务线标识
+     * @return
+     */
+    public static String getProductName(){
+        return Constants.productName;
+    }
+
+    /**
+     * 根据业务线获取app name
+     * @return
+     */
+    public static String getProductAppName(){
+        if (TextUtils.isEmpty(Constants.productName)) {
+            return "未知";
+        }
+        String appName = "";
+        switch (Constants.productName) {
+            case "12":
+                appName = "吉日历";
+                break;
+            case "13":
+                appName = "即刻天气";
+                break;
+            case "131":
+                appName = "知心天气";
+                break;
+            case "17":
+                appName = "玲珑视频";
+                break;
+            case "18":
+                appName = "悟空清理";
+                break;
+            case "19":
+                appName = "最来电";
+                break;
+        }
+        return appName;
+    }
+
+    /**
+     * 获取本地配置信息
+     * @return
+     */
+    public static List<ConfigBean.AdListBean> getAdsInfoslist(){
+        if (!CollectionUtils.isEmpty(adsInfoslist)) {
+            return adsInfoslist;
+        }
+        String adInfo = SpUtils.getString(Constants.SPUtils.CONFIG_INFO, "");
+        if (TextUtils.isEmpty(adInfo)) {
+            return adsInfoslist;
+        }
+        ConfigBean configBean = JsonUtils.decode(adInfo, ConfigBean.class);
+        adsInfoslist = configBean.getAdList();
+        return adsInfoslist;
+    }
+
+    /**
+     * 设置本地配置信息
+     * @param configBean
+     */
+    public static void setAdsInfoslist(ConfigBean configBean){
+        if (configBean == null) {
+            return;
+        }
+        adsInfoslist.clear();
+        adsInfoslist.addAll(configBean.getAdList());
+        String configInfo = new Gson().toJson(configBean);
+        SpUtils.putString(Constants.SPUtils.CONFIG_INFO, configInfo);
+//        //初始化穿山甲sdk
+//        String csjAppId = "";
+//        for (ConfigBean.AdListBean adListBean : adsInfoslist) {
+//            List<ConfigBean.AdListBean.AdsInfosBean> adsInfosBeans = adListBean.getAdsInfos();
+//            for (ConfigBean.AdListBean.AdsInfosBean adsInfosBean : adsInfosBeans) {
+//                adsInfosBean.getAdUnion()
+//            }
+//        }
+    }
 }

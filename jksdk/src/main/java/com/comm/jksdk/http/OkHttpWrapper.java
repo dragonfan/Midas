@@ -2,7 +2,7 @@ package com.comm.jksdk.http;
 
 import android.text.TextUtils;
 
-import com.comm.jksdk.http.utils.data.CollectionUtils;
+import com.comm.jksdk.utils.CollectionUtils;
 
 import java.io.IOException;
 

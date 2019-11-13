@@ -12,31 +12,28 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.comm.jksdk.ad.AdsManger;
+import com.comm.jksdk.GeekAdSdk;
+import com.comm.jksdk.ad.admanager.NativesAdManger;
 import com.comm.jksdk.ad.listener.AdListener;
 import com.jk.adsdkdemo.utils.Constants;
 import com.jk.adsdkdemo.utils.LogUtils;
-import com.jk.adsdkdemo.utils.SPUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "MainActivity";
-    private Button button_ylh_ad;
-    private RelativeLayout adRlyt;
+//    private Button button_ylh_ad;
+//    private RelativeLayout adRlyt;
 
 
-    private Button button_configinfo;
+    private Button button_configinfo, buttonBigImg;
 
-    private EditText et_ad_pos_id;
-    public static TextView tvResult;
+//    private EditText et_ad_pos_id;
+//    public static TextView tvResult;
     private EditText et_chan_id;
     private EditText et_product_id;
     private long firstOpenAppTime;
@@ -55,88 +52,90 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // 如果是Android6.0以下的机器，建议在manifest中配置相关权限，这里可以直接调用SDK
         }
         //保存默认配置文件  建议保存在asset目录下的json文件
-        String jsonData = "{\n" +
-                "\t\"code\": 0,\n" +
-                "\t\"data\": {\n" +
-                "\t\t\"adList\": [{\n" +
-                "\t\t\t\"adPosition\": \"test_ad_code\",\n" +
-                "\t\t\t\"adRequestTimeOut\": 0,\n" +
-                "\t\t\t\"adStyle\": \"All\",\n" +
-                "\t\t\t\"adVersion\": 5,\n" +
-                "\t\t\t\"adsInfos\": [{\n" +
-                "\t\t\t\t\"adId\": \"6000484459445749\",\n" +
-                "\t\t\t\t\"adUnion\": \"youlianghui\",\n" +
-                "\t\t\t\t\"adsAppId\": \"1108839337  \",\n" +
-                "\t\t\t\t\"adsAppName\": \"即刻天气\",\n" +
-                "\t\t\t\t\"requestOrder\": 1,\n" +
-                "\t\t\t\t\"requestType\": 0\n" +
-                "\t\t\t}, {\n" +
-                "\t\t\t\t\"adId\": \"915945995\",\n" +
-                "\t\t\t\t\"adUnion\": \"chuanshanjia\",\n" +
-                "\t\t\t\t\"adsAppId\": \"5015945\",\n" +
-                "\t\t\t\t\"adsAppName\": \"即刻天气\",\n" +
-                "\t\t\t\t\"requestOrder\": 2,\n" +
-                "\t\t\t\t\"requestType\": 0\n" +
-                "\t\t\t}],\n" +
-                "\t\t\t\"isChange\": 1,\n" +
-                "\t\t\t\"productId\": 1\n" +
-                "\t\t}]\n" +
-                "\t},\n" +
-                "\t\"msg\": \"请求成功\"\n" +
-                "}";
-        SPUtils.putString(Constants.DEFAULT_CONFIG_KEY, jsonData);
-
-
-        if (isFirstInstallApp()) {// 第一次安装
-            SPUtils.putBoolean(Constants.FIRST_INSTALL_APP, false);
-            //保存用户首次安装时间
-            SPUtils.putLong(Constants.FIRST_INSTALL_APP_TIME, System.currentTimeMillis());
-            int bid=getRandomNum(99);
-            SPUtils.putInt(Constants.BID, bid);
-
-        }
-
-         firstOpenAppTime = SPUtils.getLong(Constants.FIRST_INSTALL_APP_TIME, 0L);
-         bid = SPUtils.getInt(Constants.BID, 0);
+//        String jsonData = "{\n" +
+//                "\t\"code\": 0,\n" +
+//                "\t\"data\": {\n" +
+//                "\t\t\"adList\": [{\n" +
+//                "\t\t\t\"adPosition\": \"test_ad_code\",\n" +
+//                "\t\t\t\"adRequestTimeOut\": 0,\n" +
+//                "\t\t\t\"adStyle\": \"All\",\n" +
+//                "\t\t\t\"adVersion\": 5,\n" +
+//                "\t\t\t\"adsInfos\": [{\n" +
+//                "\t\t\t\t\"adId\": \"6000484459445749\",\n" +
+//                "\t\t\t\t\"adUnion\": \"youlianghui\",\n" +
+//                "\t\t\t\t\"adsAppId\": \"1108839337  \",\n" +
+//                "\t\t\t\t\"adsAppName\": \"即刻天气\",\n" +
+//                "\t\t\t\t\"requestOrder\": 1,\n" +
+//                "\t\t\t\t\"requestType\": 0\n" +
+//                "\t\t\t}, {\n" +
+//                "\t\t\t\t\"adId\": \"915945995\",\n" +
+//                "\t\t\t\t\"adUnion\": \"chuanshanjia\",\n" +
+//                "\t\t\t\t\"adsAppId\": \"5015945\",\n" +
+//                "\t\t\t\t\"adsAppName\": \"即刻天气\",\n" +
+//                "\t\t\t\t\"requestOrder\": 2,\n" +
+//                "\t\t\t\t\"requestType\": 0\n" +
+//                "\t\t\t}],\n" +
+//                "\t\t\t\"isChange\": 1,\n" +
+//                "\t\t\t\"productId\": 1\n" +
+//                "\t\t}]\n" +
+//                "\t},\n" +
+//                "\t\"msg\": \"请求成功\"\n" +
+//                "}";
+//        SPUtils.putString(Constants.DEFAULT_CONFIG_KEY, jsonData);
+//
+//
+//        if (isFirstInstallApp()) {// 第一次安装
+//            SPUtils.putBoolean(Constants.FIRST_INSTALL_APP, false);
+//            //保存用户首次安装时间
+//            SPUtils.putLong(Constants.FIRST_INSTALL_APP_TIME, System.currentTimeMillis());
+//            int bid=getRandomNum(99);
+//            SPUtils.putInt(Constants.BID, bid);
+//
+//        }
+//
+//         firstOpenAppTime = SPUtils.getLong(Constants.FIRST_INSTALL_APP_TIME, 0L);
+//         bid = SPUtils.getInt(Constants.BID, 0);
 
     }
 
-    /**
-     * 是否第一次安装app
-     * @return
-     */
-    public static boolean isFirstInstallApp(){
-        Boolean isFirstInstallApp = SPUtils.getBoolean(Constants.FIRST_INSTALL_APP, true);
-        return isFirstInstallApp;
-    }
+//    /**
+//     * 是否第一次安装app
+//     * @return
+//     */
+//    public static boolean isFirstInstallApp(){
+//        Boolean isFirstInstallApp = SPUtils.getBoolean(Constants.FIRST_INSTALL_APP, true);
+//        return isFirstInstallApp;
+//    }
 
-    /**
-     * 获取随机数
-     * @param max
-     * @return
-     */
-    public static int getRandomNum(int max){
-        // 产生[0,max-1]范围内的随机数为例
-        int num=0;
-        Random random = new Random();
-        num=random.nextInt(max);
-        return num;
-    }
+//    /**
+//     * 获取随机数
+//     * @param max
+//     * @return
+//     */
+//    public static int getRandomNum(int max){
+//        // 产生[0,max-1]范围内的随机数为例
+//        int num=0;
+//        Random random = new Random();
+//        num=random.nextInt(max);
+//        return num;
+//    }
     private void initView() {
-        button_ylh_ad = findViewById(R.id.button_ylh_ad);
-        et_ad_pos_id = findViewById(R.id.et_ad_pos_id);
+//        button_ylh_ad = findViewById(R.id.button_ylh_ad);
+//        et_ad_pos_id = findViewById(R.id.et_ad_pos_id);
 
-        adRlyt = findViewById(R.id.first_weather_adrlyt);
+//        adRlyt = findViewById(R.id.first_weather_adrlyt);
         button_configinfo = findViewById(R.id.button_configinfo);
-        tvResult=findViewById(R.id.tv_result);
+//        tvResult=findViewById(R.id.tv_result);
         et_chan_id=findViewById(R.id.et_chan_id);
         et_product_id=findViewById(R.id.et_product_id);
 
 
 
-        button_ylh_ad.setOnClickListener(this);
+//        button_ylh_ad.setOnClickListener(this);
         button_configinfo.setOnClickListener(this);
 
+        buttonBigImg = findViewById(R.id.button_big_img);
+        buttonBigImg.setOnClickListener(this);
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -192,27 +191,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //bid 第一次安装app时产生0-99之间的随机数
                 // UserActive 用户激活时间
                 //ProductName 业务线
-                String marketName=et_chan_id.getText().toString();
-                String productName=et_product_id.getText().toString();
-                AdsManger.getInstance().setContext(this)
-                        .setBid(bid)
-                        .setMarketName(marketName)
-                        .setProductName(productName)
-                        .setLatitude("")
-                        .setLongitude("")
-                        .setProvince("")
-                        .setCity("")
-                        .setUserActive(firstOpenAppTime)
-                        .requestConfig();
-
+//                String marketName=et_chan_id.getText().toString();
+//                String productName=et_product_id.getText().toString();
+//                NativesAdManger.getInstance().setContext(this)
+//                        .setBid(bid)
+//                        .setMarketName(marketName)
+//                        .setProductName(productName)
+//                        .setLatitude("")
+//                        .setLongitude("")
+//                        .setProvince("")
+//                        .setCity("")
+//                        .setUserActive(firstOpenAppTime)
+//                        .requestConfig();
+                GeekAdSdk.requestConfig();
                 break;
-
-            case R.id.button_ylh_ad:
-                adRlyt.removeAllViews();
-//                requestYLHAd("shipin_stream_no_1");
-                String adPosId=et_ad_pos_id.getText().toString().trim();
-                requestYLHAd(adPosId);
+            case R.id.button_big_img:
+                startActivity(new Intent(this, BigImgAcitvity.class));
                 break;
+//            case R.id.button_ylh_ad:
+////                adRlyt.removeAllViews();
+//////                requestYLHAd("shipin_stream_no_1");
+////                String adPosId=et_ad_pos_id.getText().toString().trim();
+////                requestYLHAd(adPosId);
+//                break;
 
             default:
                 break;
@@ -222,15 +223,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void requestYLHAd(String adPosId) {
-        View adView = AdsManger.getInstance().setContext(this)
+        View adView = NativesAdManger.getInstance().setContext(this)
                 .setAdPositionId(adPosId)
                 .setAdListener(mAdListener)
                 .setDefaultConfigKey(Constants.DEFAULT_CONFIG_KEY)
                 .build()
                 .getAdView();
-        if (adRlyt != null) {
-            adRlyt.addView(adView);
-        }
+//        if (adRlyt != null) {
+//            adRlyt.addView(adView);
+//        }
     }
 
 

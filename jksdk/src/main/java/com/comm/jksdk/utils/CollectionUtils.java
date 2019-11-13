@@ -1,4 +1,4 @@
-package com.comm.jksdk.http.utils.data;
+package com.comm.jksdk.utils;
 
 import android.os.Build;
 import android.util.ArrayMap;

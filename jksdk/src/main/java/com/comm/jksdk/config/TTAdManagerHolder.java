@@ -17,6 +17,7 @@ import com.comm.jksdk.utils.SpUtils;
 public class TTAdManagerHolder {
 
     private static boolean sInit;
+    private static String mAppId;
 
     public static TTAdManager get() {
         if (!sInit) {
@@ -25,7 +26,8 @@ public class TTAdManagerHolder {
         return TTAdSdk.getAdManager();
     }
 
-    public static void init(Context context) {
+    public static void init(Context context, String appId) {
+        mAppId = appId;
         doInit(context);
     }
 
@@ -38,14 +40,14 @@ public class TTAdManagerHolder {
     }
 
     private static TTAdConfig buildConfig(Context context) {
-        String chjAppid = SpUtils.getString(Constants.SPUtils.CHJ_APPID, "");
-        if (TextUtils.isEmpty(chjAppid)) {
-            chjAppid = Constants.CHJ_APPID;
-        }
-        String chjAppName = SpUtils.getString(Constants.SPUtils.CHJ_APPNAME, "");
-        if (TextUtils.isEmpty(chjAppName)) {
-            chjAppName = Constants.CHJ_APPNAME;
-        }
+//        String chjAppid = SpUtils.getString(Constants.SPUtils.CHJ_APPID, "");
+//        if (TextUtils.isEmpty(chjAppid)) {
+//            chjAppid = Constants.CHJ_APPID;
+//        }
+        String chjAppName = AdsConfig.getProductAppName();
+//        if (TextUtils.isEmpty(chjAppName)) {
+//            chjAppName = Constants.CHJ_APPNAME;
+//        }
         boolean adsDebug = false;
         if (BuildConfig.DEBUG) {
             adsDebug = true;
@@ -54,7 +56,7 @@ public class TTAdManagerHolder {
         }
 
         return new TTAdConfig.Builder()
-                .appId(chjAppid.trim())
+                .appId(mAppId.trim())
                 .useTextureView(true) //使用TextureView控件播放视频,默认为SurfaceView,当有SurfaceView冲突的场景，可以使用TextureView
                 .appName(chjAppName)
                 .titleBarTheme(TTAdConstant.TITLE_BAR_THEME_DARK)
@@ -65,5 +67,9 @@ public class TTAdManagerHolder {
                 .supportMultiProcess(false)//是否支持多进程
                 //.httpStack(new MyOkStack3())//自定义网络库，demo中给出了okhttp3版本的样例，其余请自行开发或者咨询工作人员。
                 .build();
+    }
+
+    public static boolean issInit() {
+        return sInit;
     }
 }
