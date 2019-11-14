@@ -21,7 +21,8 @@ public class MainApp extends Application {
 //        NativesAdManger.getInstance().init(mContext,"5015945","即刻天气");
 
         //初始化聚合广告sdk
-        GeekAdSdk.init(this, "13", "jinritoutiao", "5015945",  false);
+//        GeekAdSdk.init(this, "13", "jinritoutiao", "5015945",  false);
+        GeekAdSdk.init(this, "18", "jinritoutiao", "5034152",  false);
         GeekAdSdk.setBid(10);
 
     }

@@ -42,7 +42,7 @@
             android:id="@+id/et_product_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="13"
+            android:text="18"
             android:textSize="@dimen/dp_20"
             android:textColor="@color/colorPrimary"
             android:visibility="visible"/>

@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     buildToolsVersion "28.0.3"
     defaultConfig {
-        applicationId "com.geek.jk.weather"
+        applicationId "com.xiaoniu.cleanking"
         minSdkVersion 18
         targetSdkVersion 28
         versionCode 1
@@ -17,12 +17,21 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+//    signingConfigs {
+//        release {
+//            keyAlias 'weather'
+//            keyPassword 'jkweather'
+//            storeFile file('../weather.jks')
+//            storePassword 'jkweather'
+//        }
+//    }
     signingConfigs {
         release {
-            keyAlias 'weather'
-            keyPassword 'jkweather'
-            storeFile file('../weather.jks')
-            storePassword 'jkweather'
+            storeFile file("../noblemetal.jks")
+            storePassword "honglu"
+            keyAlias "xiaoniu"
+            keyPassword "honglu"
+            v2SigningEnabled false
         }
     }
 

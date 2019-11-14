@@ -42,7 +42,7 @@ public class CHJAdView extends CommAdView {
         this.mAdId=mAdId;
         this.mContext=context;
         this.style=style;
-        this.mAdId = appId;
+        this.mAppId = appId;
 
         if (Constants.AdStyle.BigImg.equals(style)) {
             mAdView = new ChjBigImgAdView(mContext);
