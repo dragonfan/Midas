@@ -16,7 +16,9 @@ import android.widget.Toast;
 
 import com.comm.jksdk.GeekAdSdk;
 import com.comm.jksdk.ad.listener.AdListener;
+import com.comm.jksdk.bean.ConfigBean;
 import com.comm.jksdk.config.listener.ConfigListener;
+import com.comm.jksdk.utils.JsonUtils;
 import com.jk.adsdkdemo.utils.LogUtils;
 
 import java.util.ArrayList;
@@ -29,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //    private RelativeLayout adRlyt;
 
 
-    private Button button_configinfo, buttonBigImg;
+    private Button button_configinfo, buttonBigImg, buttonSplashAd;
 
     //    private EditText et_ad_pos_id;
 //    public static TextView tvResult;
@@ -134,6 +136,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         buttonBigImg = findViewById(R.id.button_big_img);
         buttonBigImg.setOnClickListener(this);
+
+        buttonSplashAd = findViewById(R.id.button_splash_ad);
+        buttonSplashAd.setOnClickListener(this);
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -203,13 +208,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                        .requestConfig();
                 GeekAdSdk.requestConfig(new ConfigListener() {
                     @Override
-                    public void adSuccess() {
+                    public void adSuccess(List<ConfigBean.AdListBean> configList) {
+                        LogUtils.d(TAG, "config:" + JsonUtils.encode(configList));
                         Toast.makeText(getApplicationContext(), "accept->配置信息请求成功", Toast.LENGTH_LONG).show();
                     }
 
                     @Override
                     public void adError(int errorCode, String errorMsg) {
-                        Toast.makeText(getApplicationContext(), "accept->配置信息请求失败， msg:"+errorMsg, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "accept->配置信息请求失败， msg:" + errorMsg, Toast.LENGTH_LONG).show();
                     }
                 });
                 break;
@@ -223,6 +229,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 ////                requestYLHAd(adPosId);
 //                break;
 
+            case R.id.button_splash_ad:
+                startActivity(new Intent(this, SplashAdActivity.class));
+                break;
             default:
                 break;
 

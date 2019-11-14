@@ -43,6 +43,9 @@
             android:authorities="${applicationId}.TTMultiProvider"
             android:exported="false" />
 
+        <activity
+            android:name=".SplashAdActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

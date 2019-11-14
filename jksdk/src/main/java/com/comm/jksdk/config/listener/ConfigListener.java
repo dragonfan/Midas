@@ -1,5 +1,9 @@
 package com.comm.jksdk.config.listener;
 
+import com.comm.jksdk.bean.ConfigBean;
+
+import java.util.List;
+
 /**
  * @ProjectName: GeekAdSdk
  * @Package: com.comm.jksdk.config.listener
@@ -17,7 +21,7 @@ public interface ConfigListener {
     /**
      * 配置请求成功
      */
-    void adSuccess();
+    void adSuccess(List<ConfigBean.AdListBean> configList);
 
     /**
      * 配置请求失败

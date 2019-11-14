@@ -2,7 +2,6 @@ package com.comm.jksdk.config;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.comm.jksdk.GeekAdSdk;
 import com.comm.jksdk.api.ConfigService;
@@ -18,7 +17,6 @@ import com.comm.jksdk.utils.CollectionUtils;
 import com.comm.jksdk.utils.JsonUtils;
 import com.comm.jksdk.utils.SpUtils;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,7 +108,7 @@ public class AdsConfig {
                             return;
                         }
                         if (listener != null) {
-                            listener.adSuccess();
+                            listener.adSuccess(configList);
                         }
 //                        for (int i = 0; i < configList.size(); i++) {
 //                            // "isChange": 0,//是否变更：0 - 无  1 - 有
