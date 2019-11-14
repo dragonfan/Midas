@@ -8,6 +8,7 @@ import com.comm.jksdk.GeekAdSdk;
 import com.comm.jksdk.api.ConfigService;
 import com.comm.jksdk.bean.ConfigBean;
 import com.comm.jksdk.bean.PositionInfo;
+import com.comm.jksdk.config.listener.ConfigListener;
 import com.comm.jksdk.constant.Constants;
 import com.comm.jksdk.http.OkHttpWrapper;
 import com.comm.jksdk.http.base.BaseResponse;
@@ -66,35 +67,50 @@ public class AdsConfig {
     /**
      * 从cms请求广告配置
      */
-    public void requestConfig() {
+    public void requestConfig(final ConfigListener listener) {
         getConfigInfo().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<BaseResponse<ConfigBean>>() {
                     @Override
                     public void accept(BaseResponse<ConfigBean> ConfigInfoBean) {
                         if (ConfigInfoBean == null) {
+                            if (listener != null) {
+                                listener.adError(1, "配置信息请求失败，请求结果为空");
+                            }
                             return;
                         }
                         if (!ConfigInfoBean.isSuccess()) {
                             LogUtils.d(TAG, "accept->配置信息请求失败:" + ConfigInfoBean.getCode()
                                     +ConfigInfoBean.getMsg());
-                            Toast.makeText(mContext, "accept->配置信息请求失败:" + ConfigInfoBean.getCode()
-                                    +ConfigInfoBean.getMsg(), Toast.LENGTH_LONG).show();
+//                            Toast.makeText(mContext, "accept->配置信息请求失败:" + ConfigInfoBean.getCode()
+//                                    +ConfigInfoBean.getMsg(), Toast.LENGTH_LONG).show();
+                            if (listener != null) {
+                                listener.adError(1, "配置信息请求失败,code:"+ConfigInfoBean.getCode()+" msg:"+ConfigInfoBean.getMsg());
+                            }
                             return;
                         }
 
                         ConfigBean configBean = ConfigInfoBean.getData();
                         if (configBean == null) {
                             LogUtils.d(TAG, "accept->配置信息为空 ");
-                            Toast.makeText(mContext, "accept->配置信息为空 ", Toast.LENGTH_LONG).show();
+//                            Toast.makeText(mContext, "accept->配置信息为空 ", Toast.LENGTH_LONG).show();
+                            if (listener != null) {
+                                listener.adError(1, "配置信息请求失败,configBean为空。");
+                            }
                             return;
                         }
 
                         List<ConfigBean.AdListBean> configList = configBean.getAdList();
                         if (configList == null || configList.size() == 0) {
                             LogUtils.d(TAG, "accept->配置信息为空 ");
-                            Toast.makeText(mContext, "accept->配置信息为空 ", Toast.LENGTH_LONG).show();
+//                            Toast.makeText(mContext, "accept->配置信息为空 ", Toast.LENGTH_LONG).show();
+                            if (listener != null) {
+                                listener.adError(1, "配置信息请求失败,configList为空。");
+                            }
                             return;
+                        }
+                        if (listener != null) {
+                            listener.adSuccess();
                         }
 //                        for (int i = 0; i < configList.size(); i++) {
 //                            // "isChange": 0,//是否变更：0 - 无  1 - 有
@@ -122,8 +138,10 @@ public class AdsConfig {
                     @Override
                     public void accept(Throwable throwable) {
                         LogUtils.d(TAG, "accept->配置信息请求失败" + throwable.getMessage());
-                        Toast.makeText(mContext, "accept->配置信息请求失败" + throwable.getMessage(), Toast.LENGTH_LONG).show();
-
+//                        Toast.makeText(mContext, "accept->配置信息请求失败" + throwable.getMessage(), Toast.LENGTH_LONG).show();
+                        if (listener != null) {
+                            listener.adError(1, "配置信息请求失败,"+throwable.getMessage());
+                        }
                     }
                 });
         return;

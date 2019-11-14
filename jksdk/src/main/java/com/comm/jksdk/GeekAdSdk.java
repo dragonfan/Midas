@@ -56,12 +56,12 @@ public final class GeekAdSdk {
      */
     public static void requestConfig(ConfigListener listener){
         checkInit();
-        AdsConfig.getInstance(mContext).requestConfig();
+        AdsConfig.getInstance(mContext).requestConfig(listener);
     }
 
     public static void requestConfig(){
         checkInit();
-        AdsConfig.getInstance(mContext).requestConfig();
+        AdsConfig.getInstance(mContext).requestConfig(null);
     }
 
     /**

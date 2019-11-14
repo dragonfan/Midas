@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.comm.jksdk.GeekAdSdk;
 import com.comm.jksdk.ad.listener.AdListener;
+import com.comm.jksdk.config.listener.ConfigListener;
 import com.jk.adsdkdemo.utils.LogUtils;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Button button_configinfo, buttonBigImg;
 
-//    private EditText et_ad_pos_id;
+    //    private EditText et_ad_pos_id;
 //    public static TextView tvResult;
     private EditText et_chan_id;
     private EditText et_product_id;
@@ -105,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        return isFirstInstallApp;
 //    }
 
-//    /**
+    //    /**
 //     * 获取随机数
 //     * @param max
 //     * @return
@@ -124,9 +125,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        adRlyt = findViewById(R.id.first_weather_adrlyt);
         button_configinfo = findViewById(R.id.button_configinfo);
 //        tvResult=findViewById(R.id.tv_result);
-        et_chan_id=findViewById(R.id.et_chan_id);
-        et_product_id=findViewById(R.id.et_product_id);
-
+        et_chan_id = findViewById(R.id.et_chan_id);
+        et_product_id = findViewById(R.id.et_product_id);
 
 
 //        button_ylh_ad.setOnClickListener(this);
@@ -201,7 +201,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                        .setCity("")
 //                        .setUserActive(firstOpenAppTime)
 //                        .requestConfig();
-                GeekAdSdk.requestConfig();
+                GeekAdSdk.requestConfig(new ConfigListener() {
+                    @Override
+                    public void adSuccess() {
+                        Toast.makeText(getApplicationContext(), "accept->配置信息请求成功", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void adError(int errorCode, String errorMsg) {
+                        Toast.makeText(getApplicationContext(), "accept->配置信息请求失败， msg:"+errorMsg, Toast.LENGTH_LONG).show();
+                    }
+                });
                 break;
             case R.id.button_big_img:
                 startActivity(new Intent(this, BigImgAcitvity.class));
