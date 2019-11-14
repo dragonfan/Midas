@@ -15,9 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.comm.jksdk.GeekAdSdk;
-import com.comm.jksdk.ad.admanager.NativesAdManger;
 import com.comm.jksdk.ad.listener.AdListener;
-import com.jk.adsdkdemo.utils.Constants;
 import com.jk.adsdkdemo.utils.LogUtils;
 
 import java.util.ArrayList;
@@ -223,12 +221,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void requestYLHAd(String adPosId) {
-        View adView = NativesAdManger.getInstance().setContext(this)
-                .setAdPositionId(adPosId)
-                .setAdListener(mAdListener)
-                .setDefaultConfigKey(Constants.DEFAULT_CONFIG_KEY)
-                .build()
-                .getAdView();
+//        View adView = NativesAdManger.getInstance().setContext(this)
+//                .setAdPositionId(adPosId)
+//                .setAdListener(mAdListener)
+//                .setDefaultConfigKey(Constants.DEFAULT_CONFIG_KEY)
+//                .build()
+//                .getAdView();
 //        if (adRlyt != null) {
 //            adRlyt.addView(adView);
 //        }

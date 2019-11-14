@@ -1,17 +1,14 @@
 package com.jk.adsdkdemo;
 
-import android.annotation.SuppressLint;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
 import com.comm.jksdk.GeekAdSdk;
-import com.comm.jksdk.ad.admanager.NativesAdManger;
 import com.comm.jksdk.ad.listener.AdListener;
 import com.comm.jksdk.ad.listener.AdManager;
-import com.jk.adsdkdemo.utils.Constants;
 import com.jk.adsdkdemo.utils.LogUtils;
 
 public class BigImgAcitvity extends AppCompatActivity implements View.OnClickListener {
@@ -63,6 +60,9 @@ public class BigImgAcitvity extends AppCompatActivity implements View.OnClickLis
                     }
                 });
                 adView = adManager.getAdView();
+                if (adView != null) {
+                    container.addView(adView);
+                }
                 break;
             case R.id.button_load_ad:
                 container.addView(adView);

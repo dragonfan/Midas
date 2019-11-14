@@ -58,6 +58,10 @@ public class NativeAdManger implements AdManager {
      */
     private String mAdId;
     /**
+     * 广告sdk对应的appid
+     */
+    private String mAppId;
+    /**
      * 广告监听器
      */
     private AdListener mAdListener;
@@ -118,12 +122,12 @@ public class NativeAdManger implements AdManager {
      *
      * @param adType 广告样式
      */
-    private void createAdView(String adType, String mAdId) {
+    private void createAdView(String adType,String appId, String mAdId) {
 
         if (Constants.AdType.ChuanShanJia.equals(adType)) {
-            mAdView = new CHJAdView(GeekAdSdk.getContext(), adStyle, mAdId);
+            mAdView = new CHJAdView(GeekAdSdk.getContext(), adStyle, appId, mAdId);
         } else if (Constants.AdType.YouLiangHui.equals(adType)) {
-            mAdView = new YLHAdView(GeekAdSdk.getContext(), adStyle, mAdId);
+            mAdView = new YLHAdView(GeekAdSdk.getContext(), adStyle, appId, mAdId);
         } else {
             // 暂不处理
             if (mAdListener != null) {
@@ -313,6 +317,7 @@ public class NativeAdManger implements AdManager {
         }
         adUnion = mAdsInfosBean.getAdUnion();
         mAdId = mAdsInfosBean.getAdId();
-        createAdView(adUnion, mAdId);
+        mAppId = mAdsInfosBean.getAdsAppId();
+        createAdView(adUnion, mAppId, mAdId);
     }
 }
