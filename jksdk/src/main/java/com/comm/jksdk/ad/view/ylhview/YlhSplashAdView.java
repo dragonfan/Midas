@@ -50,8 +50,10 @@ public class YlhSplashAdView extends YLHAdView {
                 LogUtils.d(TAG, "YLH onNoAD:");
                 if (adError != null) {
                     adError(adError.getErrorCode(), adError.getErrorMsg());
+                    firstAdError(adError.getErrorCode(), adError.getErrorMsg());
                 } else {
                     adError(CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                    firstAdError(CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
                 }
             }
 

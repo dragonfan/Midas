@@ -82,6 +82,7 @@ public class YLHAdView extends CommAdView {
             //SDK
             if (mAdView instanceof YlhSplashAdView) {
                 mAdView.setAdListener(mAdListener);
+                mAdView.setYlhAdListener(mFirstAdListener);
                 ((YlhSplashAdView) mAdView).loadSplashAd(mAppId, mAdId);
             } else {
                 getAdBySdk(adRequestTimeOut);

@@ -19,7 +19,7 @@ import java.util.List;
 public class CommAdView extends AbsAdView {
 
     protected AdListener mAdListener = null;
-    private FirstAdListener mFirstAdListener = null;
+    protected FirstAdListener mFirstAdListener = null;
 
     public CommAdView(Context context, String style, String adPositionId) {
         super(context, style, adPositionId);

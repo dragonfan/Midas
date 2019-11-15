@@ -50,6 +50,7 @@ public class ChjSplashAdView extends CHJAdView {
             public void onError(int errorCode, String errorMsg) {
                 LogUtils.d(TAG, "csj errorCode:" + errorCode + " errorMsg:" + errorMsg);
                 adError(errorCode, errorMsg);
+                firstAdError(errorCode, errorMsg);
             }
 
             @Override
