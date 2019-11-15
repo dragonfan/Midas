@@ -46,6 +46,10 @@ public class CHJAdView extends CommAdView {
 
         if (Constants.AdStyle.BigImg.equals(style)) {
             mAdView = new ChjBigImgAdView(mContext);
+        } else if (Constants.AdStyle.BigImgNormal.equals(style)) { //默认大图广告
+            mAdView = new ChjBigImgAdViewNormal(mContext);
+        } else if (Constants.AdStyle.BigImgCenter.equals(style)) { //默认大图居中广告
+            mAdView = new ChjBigImgAdViewCenter(mContext);
         } else if (Constants.AdStyle.LeftImgRightTwoText.equals(style)) {
             mAdView = new ChjLeftImgRightTwoTextAdView(mContext);
         } else if (Constants.AdStyle.SplashAd.equals(style)) {

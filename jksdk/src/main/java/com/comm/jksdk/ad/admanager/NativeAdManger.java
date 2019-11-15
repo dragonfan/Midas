@@ -41,16 +41,16 @@ public class NativeAdManger implements AdManager {
     public NativeAdManger() {
     }
 
-    public static NativeAdManger getInstance() {
-        if (instance == null) {
-            synchronized (NativeAdManger.class) {
-                if (instance == null) {
-                    instance = new NativeAdManger();
-                }
-            }
-        }
-        return instance;
-    }
+//    public static NativeAdManger getInstance() {
+//        if (instance == null) {
+//            synchronized (NativeAdManger.class) {
+//                if (instance == null) {
+//                    instance = new NativeAdManger();
+//                }
+//            }
+//        }
+//        return instance;
+//    }
 
 
     /**

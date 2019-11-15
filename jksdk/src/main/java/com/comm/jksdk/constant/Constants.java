@@ -35,6 +35,15 @@ public class Constants {
         String BigImg = "BigImg";
 
         /**
+         * 大图默认样式
+         */
+        String BigImgNormal = "BIG_IMG_NORMAL";
+        /**
+         * 大图标题居中样式
+         */
+        String BigImgCenter = "BIG_IMG_CENTER";
+
+        /**
          * 左图右边两行文字
          */
         String LeftImgRightTwoText = "LeftImgRightTwoText";

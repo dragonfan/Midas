@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //    private RelativeLayout adRlyt;
 
 
-    private Button button_configinfo, buttonBigImg, buttonSplashAd;
+    private Button button_configinfo, buttonBigImg, buttonBigImgCenter, buttonSplashAd;
 
     //    private EditText et_ad_pos_id;
 //    public static TextView tvResult;
@@ -137,6 +137,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonBigImg = findViewById(R.id.button_big_img);
         buttonBigImg.setOnClickListener(this);
 
+        buttonBigImgCenter = findViewById(R.id.button_big_img_center);
+        buttonBigImgCenter.setOnClickListener(this);
+
         buttonSplashAd = findViewById(R.id.button_splash_ad);
         buttonSplashAd.setOnClickListener(this);
     }
@@ -220,15 +223,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 });
                 break;
             case R.id.button_big_img:
-                startActivity(new Intent(this, BigImgAcitvity.class));
+                startActivity(new Intent(this, BigImgNormalAcitvity.class));
                 break;
-//            case R.id.button_ylh_ad:
-////                adRlyt.removeAllViews();
-//////                requestYLHAd("shipin_stream_no_1");
-////                String adPosId=et_ad_pos_id.getText().toString().trim();
-////                requestYLHAd(adPosId);
-//                break;
-
+            case R.id.button_big_img_center:
+                startActivity(new Intent(this, BigImgCenterActivity.class));
+                break;
             case R.id.button_splash_ad:
                 startActivity(new Intent(this, SplashAdActivity.class));
                 break;
@@ -238,18 +237,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
-    private void requestYLHAd(String adPosId) {
-//        View adView = NativesAdManger.getInstance().setContext(this)
-//                .setAdPositionId(adPosId)
-//                .setAdListener(mAdListener)
-//                .setDefaultConfigKey(Constants.DEFAULT_CONFIG_KEY)
-//                .build()
-//                .getAdView();
-//        if (adRlyt != null) {
-//            adRlyt.addView(adView);
-//        }
-    }
 
 
     private AdListener mAdListener = new AdListener() {
