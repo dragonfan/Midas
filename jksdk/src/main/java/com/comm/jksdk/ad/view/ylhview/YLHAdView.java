@@ -78,9 +78,11 @@ public class YLHAdView extends CommAdView {
     @Override
     public void requestAd(int requestType, int adRequestTimeOut) {
         if (requestType == 0) {
+            LogUtils.d(TAG, "request ad:" + mAppId + " mAdId:" + mAdId);
             //SDK
             if (mAdView instanceof YlhSplashAdView) {
-
+                mAdView.setAdListener(mAdListener);
+                ((YlhSplashAdView) mAdView).loadSplashAd(mAppId, mAdId);
             } else {
                 getAdBySdk(adRequestTimeOut);
             }

@@ -31,9 +31,11 @@ public abstract class AbsAdView extends RelativeLayout {
         super(context, attrs, defStyleAttr);
         init(context);
     }
-    public AbsAdView(Context context, String style,String adPositionId) {
+
+    public AbsAdView(Context context, String style, String adPositionId) {
         super(context);
     }
+
     private void init(Context context) {
         this.mContext = context;
         LayoutInflater.from(context).inflate(getLayoutId(), this);
@@ -41,8 +43,9 @@ public abstract class AbsAdView extends RelativeLayout {
 
     public abstract int getLayoutId();
 
-    public abstract void requestAd(int requestType,int adRequestTimeOut);
+    public abstract void requestAd(int requestType, int adRequestTimeOut);
 
     public abstract void parseYlhAd(List<NativeUnifiedADData> nativeAdList);
+
     public abstract void parseChjAd(List<TTFeedAd> nativeAdList);
 }

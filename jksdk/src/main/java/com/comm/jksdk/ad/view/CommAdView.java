@@ -16,13 +16,13 @@ import java.util.List;
  * @date: 2019/9/7 12:13
  * @description: todo ...
  **/
- public class CommAdView extends AbsAdView {
+public class CommAdView extends AbsAdView {
 
     protected AdListener mAdListener = null;
     private FirstAdListener mFirstAdListener = null;
 
-    public CommAdView(Context context, String style,String adPositionId) {
-        super(context,style,adPositionId);
+    public CommAdView(Context context, String style, String adPositionId) {
+        super(context, style, adPositionId);
         initView();
     }
 
@@ -42,13 +42,15 @@ import java.util.List;
     }
 
     @Override
-    public void requestAd(int requestType,int adRequestTimeOut) {
+    public void requestAd(int requestType, int adRequestTimeOut) {
 
     }
+
     @Override
     public void parseYlhAd(List<NativeUnifiedADData> nativeAdList) {
 
     }
+
     @Override
     public void parseChjAd(List<TTFeedAd> nativeAdList) {
 
@@ -58,11 +60,14 @@ import java.util.List;
     public void setAdListener(AdListener adListener) {
         mAdListener = adListener;
     }
+
     public void setYlhAdListener(FirstAdListener adListener) {
         mFirstAdListener = adListener;
     }
+
     /**
      * 第一个广告请求失败
+     *
      * @param errorCode
      * @param errorMsg
      */
@@ -71,12 +76,16 @@ import java.util.List;
             mFirstAdListener.firstAdError(errorCode, errorMsg);
         }
     }
+
     /**
      * 广告请求i成功
      */
     protected void adSuccess() {
         if (mAdListener != null) {
+            LogUtils.d(TAG, "---------adSuccess------");
             mAdListener.adSuccess();
+        } else {
+            LogUtils.d(TAG, "---------mAdListener is null------");
         }
     }
 
@@ -85,7 +94,7 @@ import java.util.List;
      */
     protected void adExposed() {
         if (mAdListener != null) {
-            LogUtils.w(TAG,"adExposed()");
+            LogUtils.w(TAG, "adExposed()");
             mAdListener.adExposed();
         }
     }
@@ -101,6 +110,7 @@ import java.util.List;
 
     /**
      * 广告失败
+     *
      * @param errorCode
      * @param errorMsg
      */

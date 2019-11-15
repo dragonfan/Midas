@@ -86,7 +86,8 @@ public class CHJAdView extends CommAdView {
         if (requestType == 0) {
             //SDK
             if (mAdView instanceof ChjSplashAdView) {
-
+                mAdView.setAdListener(mAdListener);
+                ((ChjSplashAdView) mAdView).loadSplashAd(mAppId, mAdId);
             } else {
                 getAdBySdk(adRequestTimeOut);
             }
