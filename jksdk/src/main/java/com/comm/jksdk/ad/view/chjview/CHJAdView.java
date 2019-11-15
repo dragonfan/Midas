@@ -8,8 +8,6 @@ import com.bytedance.sdk.openadsdk.TTAdManager;
 import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTFeedAd;
 import com.comm.jksdk.ad.view.CommAdView;
-import com.comm.jksdk.ad.view.ylhview.YlhBIgImgAdView;
-import com.comm.jksdk.ad.view.ylhview.YlhLeftImgRightTwoTextAdView;
 import com.comm.jksdk.config.TTAdManagerHolder;
 import com.comm.jksdk.constant.Constants;
 import com.comm.jksdk.http.utils.LogUtils;
@@ -19,11 +17,12 @@ import java.util.List;
 
 /**
  * 穿山甲
+ *
  * @author liupengbing
  * @date 2019/9/24
  */
 public class CHJAdView extends CommAdView {
-    private  String style;
+    private String style;
 
     /**
      * 广告位ID
@@ -37,24 +36,27 @@ public class CHJAdView extends CommAdView {
     private final static int REQUEST_AD_COUNTS = 1;
 
     private CommAdView mAdView = null;
+
     public CHJAdView(Context context, String style, String appId, String mAdId) {
-        super(context,style,mAdId);
-        this.mAdId=mAdId;
-        this.mContext=context;
-        this.style=style;
+        super(context, style, mAdId);
+        this.mAdId = mAdId;
+        this.mContext = context;
+        this.style = style;
         this.mAppId = appId;
 
         if (Constants.AdStyle.BigImg.equals(style)) {
             mAdView = new ChjBigImgAdView(mContext);
-        } else if (Constants.AdStyle.LeftImgRightTwoText.equals(style)){
+        } else if (Constants.AdStyle.LeftImgRightTwoText.equals(style)) {
             mAdView = new ChjLeftImgRightTwoTextAdView(mContext);
-        }else {
+        } else if (Constants.AdStyle.SplashAd.equals(style)) {
+            mAdView = new ChjSplashAdView(mContext);
+        } else {
             //  all
             //所有样式都支持 随机展示
             //所有样式都支持 随机展示
-            int num=AdsUtils.getRandomNum(2);
-            LogUtils.w("------->num:",num+"");
-            switch (num){
+            int num = AdsUtils.getRandomNum(2);
+            LogUtils.w("------->num:", num + "");
+            switch (num) {
                 case 0:
                     mAdView = new ChjLeftImgRightTwoTextAdView(mContext);
                     break;
@@ -71,16 +73,24 @@ public class CHJAdView extends CommAdView {
 
     }
 
+    public CHJAdView(Context context) {
+        super(context);
+
+    }
 
     @Override
-    public void requestAd(int requestType,int adRequestTimeOut) {
-        if(mContext==null){
+    public void requestAd(int requestType, int adRequestTimeOut) {
+        if (mContext == null) {
             return;
         }
-        if(requestType==0){
+        if (requestType == 0) {
             //SDK
-            getAdBySdk(adRequestTimeOut);
-        }else{
+            if (mAdView instanceof ChjSplashAdView) {
+
+            } else {
+                getAdBySdk(adRequestTimeOut);
+            }
+        } else {
             //api
         }
 
@@ -98,7 +108,7 @@ public class CHJAdView extends CommAdView {
 //        TTAdManagerHolder.get().requestPermissionIfNecessary(mContext);
 
         LogUtils.d(TAG, "onADLoaded->请求穿山甲广告");
-        Toast.makeText(mContext, "onADLoaded->请求穿山甲广告"+"广告id："+mAdId.trim(), Toast.LENGTH_LONG).show();
+        Toast.makeText(mContext, "onADLoaded->请求穿山甲广告" + "广告id：" + mAdId.trim(), Toast.LENGTH_LONG).show();
 
         AdSlot adSlot = new AdSlot.Builder()
                 .setCodeId(mAdId.trim())
@@ -109,8 +119,8 @@ public class CHJAdView extends CommAdView {
         mTTAdNative.loadFeedAd(adSlot, new TTAdNative.FeedAdListener() {
             @Override
             public void onError(int i, String s) {
-                LogUtils.d(TAG, "onNoAD->请求穿山甲失败,ErrorCode:" + i+ ",ErrorMsg:" +s);
-                Toast.makeText(mContext, "onNoAD->请求穿山甲失败,ErrorCode:" + i+ ",ErrorMsg:" +s, Toast.LENGTH_LONG).show();
+                LogUtils.d(TAG, "onNoAD->请求穿山甲失败,ErrorCode:" + i + ",ErrorMsg:" + s);
+                Toast.makeText(mContext, "onNoAD->请求穿山甲失败,ErrorCode:" + i + ",ErrorMsg:" + s, Toast.LENGTH_LONG).show();
 
                 if (s != null) {
                     adError(i, s);
@@ -122,15 +132,15 @@ public class CHJAdView extends CommAdView {
             @Override
             public void onFeedAdLoad(List<TTFeedAd> list) {
                 LogUtils.d(TAG, "onADLoaded->请求穿山甲成功");
-                Toast.makeText(mContext,"onADLoaded->请求穿山甲成功", Toast.LENGTH_LONG).show();
-                Boolean requestAdOverTime= AdsUtils.requestAdOverTime(adRequestTimeOut);
-                if(requestAdOverTime){
+                Toast.makeText(mContext, "onADLoaded->请求穿山甲成功", Toast.LENGTH_LONG).show();
+                Boolean requestAdOverTime = AdsUtils.requestAdOverTime(adRequestTimeOut);
+                if (requestAdOverTime) {
                     return;
                 }
                 if (list == null || list.isEmpty()) {
                     return;
                 }
-                if(mAdView==null){
+                if (mAdView == null) {
                     return;
                 }
                 adSuccess();

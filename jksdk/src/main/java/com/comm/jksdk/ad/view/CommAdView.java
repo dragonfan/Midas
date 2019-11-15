@@ -18,7 +18,7 @@ import java.util.List;
  **/
  public class CommAdView extends AbsAdView {
 
-    protected static AdListener mAdListener = null;
+    protected AdListener mAdListener = null;
     private FirstAdListener mFirstAdListener = null;
 
     public CommAdView(Context context, String style,String adPositionId) {

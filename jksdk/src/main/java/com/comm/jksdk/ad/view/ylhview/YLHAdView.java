@@ -1,22 +1,18 @@
 package com.comm.jksdk.ad.view.ylhview;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.widget.Toast;
-
 
 import com.comm.jksdk.ad.view.CommAdView;
 import com.comm.jksdk.constant.Constants;
 import com.comm.jksdk.http.utils.LogUtils;
 import com.comm.jksdk.utils.AdsUtils;
-import com.comm.jksdk.utils.SpUtils;
 import com.qq.e.ads.nativ.NativeADUnifiedListener;
 import com.qq.e.ads.nativ.NativeUnifiedAD;
 import com.qq.e.ads.nativ.NativeUnifiedADData;
 import com.qq.e.comm.util.AdError;
 
 import java.util.List;
-import java.util.Random;
 
 
 /**
@@ -24,7 +20,7 @@ import java.util.Random;
  * 优量汇广告模块
  */
 public class YLHAdView extends CommAdView {
-    private  String style;
+    private String style;
     // 广告位ID
     protected String mAdId = "";
 
@@ -37,29 +33,30 @@ public class YLHAdView extends CommAdView {
     private final static int REQUEST_AD_COUNTS = 1;
 
 
-
     private CommAdView mAdView = null;
 
     public YLHAdView(Context context, String style, String appId, String mAdId) {
-        super(context,style,mAdId);
-        this.mAdId=mAdId;
-        this.style=style;
-        this.mContext=context;
+        super(context, style, mAdId);
+        this.mAdId = mAdId;
+        this.style = style;
+        this.mContext = context;
         this.mAppId = appId;
 
         if (Constants.AdStyle.BigImg.equals(style)) {
             mAdView = new YlhBIgImgAdView(mContext);
-        } else if (Constants.AdStyle.LeftImgRightTwoText.equals(style)){
+        } else if (Constants.AdStyle.LeftImgRightTwoText.equals(style)) {
             mAdView = new YlhLeftImgRightTwoTextAdView(mContext);
-        }else {
+        } else if (Constants.AdStyle.SplashAd.equals(style)) {
+            mAdView = new YlhSplashAdView(mContext);
+        } else {
             //all
             //所有样式都支持 随机展示
-            int num=AdsUtils.getRandomNum(2);
-            LogUtils.w("------->num:",num+"");
-            switch (num){
+            int num = AdsUtils.getRandomNum(2);
+            LogUtils.w("------->num:", num + "");
+            switch (num) {
                 case 0:
                     mAdView = new YlhLeftImgRightTwoTextAdView(mContext);
-                break;
+                    break;
                 case 1:
                     mAdView = new YlhBIgImgAdView(mContext);
                     break;
@@ -78,13 +75,16 @@ public class YLHAdView extends CommAdView {
     }
 
 
-
     @Override
-    public void requestAd(int requestType,int adRequestTimeOut) {
-        if(requestType==0){
-           //SDK
-            getAdBySdk( adRequestTimeOut);
-        }else{
+    public void requestAd(int requestType, int adRequestTimeOut) {
+        if (requestType == 0) {
+            //SDK
+            if (mAdView instanceof YlhSplashAdView) {
+
+            } else {
+                getAdBySdk(adRequestTimeOut);
+            }
+        } else {
             //api
         }
 
@@ -99,7 +99,7 @@ public class YLHAdView extends CommAdView {
 //            ylhAppid=Constants.YLH_APPID;
 //        }
         LogUtils.d(TAG, "onADLoaded->请求优量汇广告");
-        Toast.makeText(mContext, "onADLoaded->请求优量汇广告"+"广告id："+mAdId.trim(), Toast.LENGTH_LONG).show();
+        Toast.makeText(mContext, "onADLoaded->请求优量汇广告" + "广告id：" + mAdId.trim(), Toast.LENGTH_LONG).show();
 
         NativeUnifiedAD mAdManager = new NativeUnifiedAD(mContext, mAppId, mAdId.trim(), new NativeADUnifiedListener() {
             @Override
@@ -107,15 +107,15 @@ public class YLHAdView extends CommAdView {
                 LogUtils.d(TAG, "onADLoaded->请求优量汇成功");
                 Toast.makeText(mContext, "onADLoaded->请求优量汇成功", Toast.LENGTH_LONG).show();
 
-                Boolean requestAdOverTime=AdsUtils.requestAdOverTime(adRequestTimeOut);
-                if(requestAdOverTime){
+                Boolean requestAdOverTime = AdsUtils.requestAdOverTime(adRequestTimeOut);
+                if (requestAdOverTime) {
                     return;
                 }
 
                 if (nativeAdList == null || nativeAdList.isEmpty()) {
                     return;
                 }
-                if(mAdView==null){
+                if (mAdView == null) {
                     return;
                 }
                 adSuccess();

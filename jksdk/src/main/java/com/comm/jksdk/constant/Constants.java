@@ -23,6 +23,12 @@ public class Constants {
      * 广告样式
      */
     public interface AdStyle {
+
+        /**
+         * 开屏
+         */
+        String SplashAd = "OPEN_ADS";
+
         /**
          * 大图
          */
