@@ -1,5 +1,6 @@
 package com.comm.jksdk.ad.admanager;
 
+import android.app.Activity;
 import android.widget.RelativeLayout;
 
 import com.comm.jksdk.GeekAdSdk;
@@ -33,7 +34,6 @@ public class NativeAdManger implements AdManager {
     private CommAdView mAdView = null;
 
 
-    private static NativeAdManger instance;
     private RelativeLayout adParentView;
 
     private List<ConfigBean.AdListBean.AdsInfosBean> adsInfoslist = new ArrayList();
@@ -41,18 +41,10 @@ public class NativeAdManger implements AdManager {
     public NativeAdManger() {
     }
 
-//    public static NativeAdManger getInstance() {
-//        if (instance == null) {
-//            synchronized (NativeAdManger.class) {
-//                if (instance == null) {
-//                    instance = new NativeAdManger();
-//                }
-//            }
-//        }
-//        return instance;
-//    }
-
-
+    /**
+     * acitvity对象,优量汇开屏用到
+     */
+    private Activity mActivity;
     /**
      * 广告ID
      */
@@ -83,39 +75,6 @@ public class NativeAdManger implements AdManager {
 
     private boolean firstRequestAd = true;
 
-
-//    public NativeAdManger setAdListener(AdListener adListener) {
-//        this.mAdListener = adListener;
-//        return this;
-//    }
-
-//    /**
-//     * 获取本地配置信息
-//     *
-//     * @return
-//     */
-//    public NativeAdManger getConfig() {
-//        //获取本地配置信息
-//        ConfigBean.AdListBean mConfigInfoBean = AdsConfig.getInstance(GeekAdSdk.getContext()).getConfig(Constants.adPositionId);
-//
-//        if (mConfigInfoBean != null) {
-//            if (Constants.adPositionId.equals(mConfigInfoBean.getAdPosition())) {
-//                //当前广告位所对应的配置信息 存储到curAdlist
-//                adStyle = mConfigInfoBean.getAdStyle();
-//                adRequestTimeOut = mConfigInfoBean.getAdRequestTimeOut();
-//
-//                adsInfoslist.clear();
-//                adsInfoslist.addAll(mConfigInfoBean.getAdsInfos());
-//
-//            }
-//
-//
-//        }
-//        // TODO: 2019/9/25 从缓存中取出数据
-//        getCacheConfig();
-//
-//        return this;
-//    }
 
     /**
      * 创建广告View
@@ -177,104 +136,6 @@ public class NativeAdManger implements AdManager {
 
         }
     };
-
-//    /**
-//     * 获取默认广告配置
-//     */
-//    private void getCacheConfig() {
-//        // TODO: 2019/9/25 从缓存中取出下一个广告配置
-//        // TODO: 2019/9/25 如果不存在数据，则不轮循
-//        if (adsInfoslist != null && adsInfoslist.size() > 0) {
-//            ConfigBean.AdListBean.AdsInfosBean mAdsInfosBean = adsInfoslist.remove(0);
-//            if (mAdsInfosBean != null) {
-//                adUnion = mAdsInfosBean.getAdUnion();
-//                mAdId = mAdsInfosBean.getAdId();
-//
-//                requestType = mAdsInfosBean.getRequestType();
-//                if (!TextUtils.isEmpty(adUnion)) {
-//                    if (adUnion.equals(Constants.AdType.YouLiangHui)) {
-////                        Constants.YLH_APPID = mAdsInfosBean.getAdsAppId();
-////                        Constants.YLH_APPNAME = mAdsInfosBean.getAdsAppName();
-//                        //保存优量汇广告APPID  APPNAME
-//                        SpUtils.putString(Constants.SPUtils.YLH_APPID, mAdsInfosBean.getAdsAppId());
-//                        SpUtils.putString(Constants.SPUtils.YLH_APPNAME, mAdsInfosBean.getAdsAppName());
-//                    } else {
-////                        Constants.CHJ_APPID = mAdsInfosBean.getAdsAppId();
-////                        Constants.CHJ_APPNAME = mAdsInfosBean.getAdsAppName();
-//                        // 保存穿山甲广告APPID  APPNAME
-//                        SpUtils.putString(Constants.SPUtils.CHJ_APPID, mAdsInfosBean.getAdsAppId());
-//                        SpUtils.putString(Constants.SPUtils.CHJ_APPNAME, mAdsInfosBean.getAdsAppName());
-//                    }
-//                    //创建广告样式
-//                    if (TextUtils.isEmpty(mAdId)) {
-//                        LogUtils.w(TAG, "广告id为空，请检查");
-//                        Toast.makeText(GeekAdSdk.getContext(), "广告id为空，请检查", Toast.LENGTH_SHORT).show();
-//
-//                        return;
-//                    }
-//                    if (TextUtils.isEmpty(adUnion)) {
-//                        LogUtils.w(TAG, "广告adType为空，请检查");
-//                        Toast.makeText(GeekAdSdk.getContext(), "广告类型为空，请检查", Toast.LENGTH_SHORT).show();
-//                        return;
-//                    }
-//                    if (TextUtils.isEmpty(adStyle)) {
-//                        Toast.makeText(GeekAdSdk.getContext(), "广告样式为空，请检查", Toast.LENGTH_SHORT).show();
-//                        return;
-//                    }
-//
-//                    createAdView(adUnion, mAdId);
-//
-//
-//                }
-//            }
-//        } else {
-//            Toast.makeText(GeekAdSdk.getContext(), "第一个广告请求失败，后台配置了一个广告源，至少两个广告源，请检查？", Toast.LENGTH_LONG).show();
-//        }
-//    }
-
-//    /**
-//     * 请求优量汇广告
-//     */
-//    public NativeAdManger build() {
-//        adParentView = new RelativeLayout(GeekAdSdk.getContext());
-//        firstRequestAd = true;
-//        getConfig();
-//        return this;
-//    }
-
-//    /**
-//     * 从cms请求广告配置
-//     */
-//    public void requestConfig() {
-//        if (GeekAdSdk.getContext() == null) {
-//            return;
-//        }
-//        AdsConfig.getInstance(GeekAdSdk.getContext()).requestConfig();
-//    }
-
-
-//    /**
-//     * 初始化SDK
-//     */
-//    public void init(Context mContext, String chjAppId, String chjAppName) {
-//        if (mContext == null) {
-//            LogUtils.w(TAG, "初始化SDK时Context为null，请检查");
-//            return;
-//        }
-//        if (TextUtils.isEmpty(chjAppId)) {
-//            LogUtils.w(TAG, "初始化SDK时chjAppId为空，请检查");
-//            return;
-//        }
-//        if (TextUtils.isEmpty(chjAppName)) {
-//            LogUtils.w(TAG, "初始化SDK时chjAppName为空，请检查");
-//            return;
-//        }
-//        Constants.mContext = mContext;
-//        Constants.CHJ_APPID = chjAppId;
-//        Constants.CHJ_APPNAME = chjAppName;
-//        //初始化基本配置信息
-//        InitBaseConfig.getInstance().init(mContext);
-//    }
 
     @Override
     public void loadAd(String position, AdListener listener) {

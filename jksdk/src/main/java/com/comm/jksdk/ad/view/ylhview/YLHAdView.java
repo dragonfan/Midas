@@ -30,10 +30,10 @@ public class YLHAdView extends CommAdView {
     protected String mAppId = "";
 
     // 广告请求数量
-    private final static int REQUEST_AD_COUNTS = 1;
+    protected final static int REQUEST_AD_COUNTS = 1;
 
 
-    private CommAdView mAdView = null;
+    protected CommAdView mAdView = null;
 
     public YLHAdView(Context context, String style, String appId, String mAdId) {
         super(context, style, mAdId);
@@ -96,7 +96,7 @@ public class YLHAdView extends CommAdView {
     /**
      * 通过SDK获取广告
      */
-    private void getAdBySdk(final int adRequestTimeOut) {
+    protected void getAdBySdk(final int adRequestTimeOut) {
 //        String ylhAppid= SpUtils.getString(Constants.SPUtils.YLH_APPID,"");
 //        if(TextUtils.isEmpty(ylhAppid)){
 //            ylhAppid=Constants.YLH_APPID;

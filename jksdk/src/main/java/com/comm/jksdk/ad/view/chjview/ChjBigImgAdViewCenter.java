@@ -79,11 +79,6 @@ public class ChjBigImgAdViewCenter extends CommAdView {
         adIm = findViewById(R.id.ad_im);
         downTb = findViewById(R.id.down_bt);
 
-//        ivImg = findViewById(R.id.iv_img);
-//        tvDownload = findViewById(R.id.tv_download);
-//        llNativeAdLayout = findViewById(R.id.ll_native_ad_layout);
-//        tvAdBrowseCount = findViewById(R.id.tv_ad_browse_count);
-
         if (mContext == null) {
             return;
         }
@@ -238,7 +233,8 @@ public class ChjBigImgAdViewCenter extends CommAdView {
 //                nativeAdContainer.setVisibility(View.VISIBLE);
 //                tvDownload.setText("查看详情");
             default:
-                downTb.setVisibility(GONE);
+                downTb.setVisibility(VISIBLE);
+                downTb.setText("详情");
 //                nativeAdContainer.setVisibility(View.GONE);
 //                ToastUtils.setToastStrShort("交互类型异常");
         }

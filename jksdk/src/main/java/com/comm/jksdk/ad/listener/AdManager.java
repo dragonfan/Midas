@@ -1,5 +1,6 @@
 package com.comm.jksdk.ad.listener;
 
+import android.app.Activity;
 import android.view.ViewGroup;
 
 /**
@@ -16,5 +17,6 @@ import android.view.ViewGroup;
  */
 public interface AdManager {
     void loadAd(String position, AdListener listener);
+//    void loadSplashAd(Activity activity, String position, AdListener listener);
     ViewGroup getAdView();
 }

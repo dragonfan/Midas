@@ -47,6 +47,7 @@
             android:layout_height="171dp"
             android:scaleType="centerCrop" />
         <TextView
+            android:visibility="gone"
             android:id="@+id/down_bt"
             android:gravity="center"
             android:layout_marginTop="7.5dp"
