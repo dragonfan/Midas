@@ -1,5 +1,6 @@
 package com.comm.jksdk.ad.view.chjview;
 
+import android.app.Activity;
 import android.content.Context;
 import android.widget.Toast;
 
@@ -35,12 +36,20 @@ public class CHJAdView extends CommAdView {
     // 广告请求数量
     private final static int REQUEST_AD_COUNTS = 1;
 
+    protected Activity mActivity;
+
     private CommAdView mAdView = null;
 
     public CHJAdView(Context context, String style, String appId, String mAdId) {
+        this(context, null, style, appId, mAdId);
+
+    }
+
+    public CHJAdView(Context context, Activity activity, String style, String appId, String mAdId) {
         super(context, style, mAdId);
         this.mAdId = mAdId;
         this.mContext = context;
+        this.mActivity = activity;
         this.style = style;
         this.mAppId = appId;
 
@@ -89,13 +98,7 @@ public class CHJAdView extends CommAdView {
         }
         if (requestType == 0) {
             //SDK
-            if (mAdView instanceof ChjSplashAdView) {
-                mAdView.setAdListener(mAdListener);
-                mAdView.setYlhAdListener(mFirstAdListener);
-                ((ChjSplashAdView) mAdView).loadSplashAd(mAppId, mAdId);
-            } else {
-                getAdBySdk(adRequestTimeOut);
-            }
+            getAdBySdk(adRequestTimeOut);
         } else {
             //api
         }
@@ -105,7 +108,26 @@ public class CHJAdView extends CommAdView {
     /**
      * 通过SDK获取广告
      */
-    private void getAdBySdk(final int adRequestTimeOut) {
+    protected void getAdBySdk(final int adRequestTimeOut) {
+//        String ylhAppid= SpUtils.getString(Constants.SPUtils.YLH_APPID,"");
+//        if(TextUtils.isEmpty(ylhAppid)){
+//            ylhAppid=Constants.YLH_APPID;
+//        }
+        if (Constants.AdStyle.BIG_IMG.equals(style)) {
+            //todo请求大图广告
+            getImageAdBySdk(adRequestTimeOut);
+        } else if (Constants.AdStyle.LEFT_IMG_RIGHT_TWO_TEXT.equals(style)) {
+            //dodo
+            getImageAdBySdk(adRequestTimeOut);
+        } else if (Constants.AdStyle.OPEN_ADS.equals(style)) {
+            getAdBySplashAd();
+        }
+    }
+
+    /**
+     * 通过SDK获取图片广告
+     */
+    private void getImageAdBySdk(final int adRequestTimeOut) {
         //step1:初始化sdk
         TTAdManager ttAdManager = TTAdManagerHolder.get();
         //step2:创建TTAdNative对象,用于调用广告请求接口
@@ -153,5 +175,19 @@ public class CHJAdView extends CommAdView {
                 mAdView.parseChjAd(list);
             }
         });
+    }
+
+    /**
+     * 请求开屏广告
+     */
+    protected void getAdBySplashAd() {
+        if (mAdView == null) {
+            return;
+        }
+        if (mAdView instanceof ChjSplashAdView) {
+            mAdView.setAdListener(mAdListener);
+            mAdView.setYlhAdListener(mFirstAdListener);
+            ((ChjSplashAdView) mAdView).loadSplashAd(mAppId, mAdId);
+        }
     }
 }

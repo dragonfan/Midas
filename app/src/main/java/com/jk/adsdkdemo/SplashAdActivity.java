@@ -45,51 +45,31 @@ public class SplashAdActivity extends AppCompatActivity implements View.OnClickL
      * 获取开屏广告并加载
      */
     private void loadSplashAd() {
-//        adManager.loadAd("open_screen_ad", new AdListener() {
-//            @Override
-//            public void adSuccess() {
-//                LogUtils.d(TAG, "-----adSuccess-----");
-//                splashContainer.addView(adManager.getAdView());
-//            }
-//
-//            @Override
-//            public void adExposed() {
-//                LogUtils.d(TAG, "-----adExposed-----");
-//            }
-//
-//            @Override
-//            public void adClicked() {
-//                LogUtils.d(TAG, "-----adClicked-----");
-//            }
-//
-//            @Override
-//            public void adError(int errorCode, String errorMsg) {
-//                LogUtils.d(TAG, "-----adError-----" + errorMsg);
-//                TextView textView = new TextView(SplashAdActivity.this);
-//                textView.setText("error:" + errorCode + errorMsg);
-//                splashContainer.removeAllViews();
-//                splashContainer.addView(textView);
-//            }
-//        });
+        // cold_kp 、hot_kp
         adManager.loadSplashAd(this, "cold_kp", new AdListener() {
             @Override
             public void adSuccess() {
-
+                LogUtils.d(TAG, "-----adSuccess-----");
+                splashContainer.addView(adManager.getAdView());
             }
 
             @Override
             public void adExposed() {
-
+                LogUtils.d(TAG, "-----adExposed-----");
             }
 
             @Override
             public void adClicked() {
-
+                LogUtils.d(TAG, "-----adClicked-----");
             }
 
             @Override
             public void adError(int errorCode, String errorMsg) {
-
+                LogUtils.d(TAG, "-----adError-----" + errorMsg);
+                TextView textView = new TextView(SplashAdActivity.this);
+                textView.setText("error:" + errorCode + errorMsg);
+                splashContainer.removeAllViews();
+                splashContainer.addView(textView);
             }
         });
     }

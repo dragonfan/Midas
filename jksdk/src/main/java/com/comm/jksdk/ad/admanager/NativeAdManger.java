@@ -81,10 +81,10 @@ public class NativeAdManger implements AdManager {
      *
      * @param adType 广告样式
      */
-    private void createAdView(Activity activity, String adType,String appId, String mAdId) {
+    private void createAdView(Activity activity, String adType, String appId, String mAdId) {
 
         if (Constants.AdType.ChuanShanJia.equals(adType)) {
-            mAdView = new CHJAdView(GeekAdSdk.getContext(), adStyle, appId, mAdId);
+            mAdView = new CHJAdView(GeekAdSdk.getContext(), activity, adStyle, appId, mAdId);
         } else if (Constants.AdType.YouLiangHui.equals(adType)) {
             mAdView = new YLHAdView(GeekAdSdk.getContext(), activity, adStyle, appId, mAdId);
         } else {
@@ -161,6 +161,7 @@ public class NativeAdManger implements AdManager {
 
     /**
      * 开屏广告加载方法
+     *
      * @param activity
      * @param position
      * @param listener
@@ -191,7 +192,7 @@ public class NativeAdManger implements AdManager {
     /**
      * 轮询请求
      */
-    public void againRequest(){
+    public void againRequest() {
         if (CollectionUtils.isEmpty(adsInfoslist)) {
             if (mAdListener != null) {
                 mAdListener.adError(CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));

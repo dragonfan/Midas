@@ -88,12 +88,6 @@ public class YLHAdView extends CommAdView {
         if (requestType == 0) {
             LogUtils.d(TAG, "request ad:" + mAppId + " mAdId:" + mAdId);
             //SDK
-//            if (mAdView instanceof YlhSplashAdView) {
-//                mAdView.setAdListener(mAdListener);
-//                mAdView.setYlhAdListener(mFirstAdListener);
-//                ((YlhSplashAdView) mAdView).loadSplashAd(mAppId, mAdId);
-//            } else {
-//            }
             getAdBySdk(adRequestTimeOut);
         } else {
             //api
@@ -123,9 +117,10 @@ public class YLHAdView extends CommAdView {
 
     /**
      * 请求图片广告
+     *
      * @param adRequestTimeOut
      */
-    protected void getAdByBigImg(final int adRequestTimeOut){
+    protected void getAdByBigImg(final int adRequestTimeOut) {
         LogUtils.d(TAG, "onADLoaded->请求优量汇广告");
         Toast.makeText(mContext, "onADLoaded->请求优量汇广告" + "广告id：" + mAdId.trim(), Toast.LENGTH_LONG).show();
 
@@ -167,12 +162,14 @@ public class YLHAdView extends CommAdView {
     /**
      * 请求开屏广告
      */
-    protected void getAdBySplashAd(){
-        if (mAdView != null) {
+    protected void getAdBySplashAd() {
+        if (mAdView == null) {
             return;
         }
-        if (mAdView instanceof  YlhSplashAdView) {
-            ((YlhSplashAdView)mAdView).loadSplashAd(mAppId, mAdId);
+        if (mAdView instanceof YlhSplashAdView) {
+            mAdView.setAdListener(mAdListener);
+            mAdView.setYlhAdListener(mFirstAdListener);
+            ((YlhSplashAdView) mAdView).loadSplashAd(mActivity, mAppId, mAdId);
         }
     }
 }
