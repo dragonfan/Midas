@@ -79,5 +79,18 @@
         android:layout_marginTop="@dimen/dimen_20dp"
         android:text="开屏广告" />
 
+    <Button
+        android:id="@+id/button_full_screen_video_ad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_20dp"
+        android:text="全屏视频广告" />
+
+    <Button
+        android:id="@+id/button_reward_video_ad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_20dp"
+        android:text="激励视频广告" />
 
 </LinearLayout>

@@ -46,6 +46,13 @@
         <activity
             android:name=".SplashAdActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".FullScreenVideoActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".RewardVideoActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

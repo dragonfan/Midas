@@ -41,6 +41,9 @@ public class SplashAdActivity extends AppCompatActivity implements View.OnClickL
         loadSplashAd();
     }
 
+    /**
+     * 获取开屏广告并加载
+     */
     private void loadSplashAd() {
         adManager.loadAd("open_screen_ad", new AdListener() {
             @Override

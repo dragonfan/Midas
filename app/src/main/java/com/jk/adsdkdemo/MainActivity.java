@@ -15,7 +15,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.comm.jksdk.GeekAdSdk;
-import com.comm.jksdk.ad.listener.AdListener;
 import com.comm.jksdk.bean.ConfigBean;
 import com.comm.jksdk.config.listener.ConfigListener;
 import com.comm.jksdk.utils.JsonUtils;
@@ -31,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //    private RelativeLayout adRlyt;
 
 
-    private Button button_configinfo, buttonBigImg, buttonBigImgCenter, buttonSplashAd;
+    private Button button_configinfo, buttonBigImg, buttonBigImgCenter, buttonSplashAd, btnFullScreenVideo, btnRewardVideo;
 
     //    private EditText et_ad_pos_id;
 //    public static TextView tvResult;
@@ -142,6 +141,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         buttonSplashAd = findViewById(R.id.button_splash_ad);
         buttonSplashAd.setOnClickListener(this);
+
+        btnFullScreenVideo = findViewById(R.id.button_full_screen_video_ad);
+        btnFullScreenVideo.setOnClickListener(this);
+
+        btnRewardVideo = findViewById(R.id.button_reward_video_ad);
+        btnRewardVideo.setOnClickListener(this);
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -231,37 +236,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button_splash_ad:
                 startActivity(new Intent(this, SplashAdActivity.class));
                 break;
+            case R.id.button_full_screen_video_ad:
+                startActivity(new Intent(this, FullScreenVideoActivity.class));
+                break;
+            case R.id.button_reward_video_ad:
+                startActivity(new Intent(this, RewardVideoActivity.class));
+                break;
+
             default:
                 break;
 
         }
     }
 
-
-
-    private AdListener mAdListener = new AdListener() {
-        @Override
-        public void adSuccess() {
-            LogUtils.w("lpb", "adSuccess");
-        }
-
-        @Override
-        public void adExposed() {
-            LogUtils.w("lpb", "adExposed");
-
-        }
-
-        @Override
-        public void adClicked() {
-            LogUtils.w("lpb", "adClicked");
-
-        }
-
-        @Override
-        public void adError(int errorCode, String errorMsg) {
-            LogUtils.w("lpb", "adError errorCode = " + errorCode + " errorMsg = " + errorMsg);
-
-        }
-
-    };
 }
