@@ -11,6 +11,19 @@ import com.comm.jksdk.ad.listener.AdListener;
 import com.comm.jksdk.ad.listener.AdManager;
 import com.jk.adsdkdemo.utils.LogUtils;
 
+/**
+  *
+  * @ProjectName:    ${PROJECT_NAME}
+  * @Package:        ${PACKAGE_NAME}
+  * @ClassName:      ${NAME}
+  * @Description:     大图_带icon文字按钮
+  * @Author:         fanhailong
+  * @CreateDate:     ${DATE} ${TIME}
+  * @UpdateUser:     更新者：
+  * @UpdateDate:     ${DATE} ${TIME}
+  * @UpdateRemark:   更新说明：
+  * @Version:        1.0
+ */
 public class BigImgNormalAcitvity extends AppCompatActivity implements View.OnClickListener {
 
     private Button requestBt, loadBt;
@@ -38,7 +51,7 @@ public class BigImgNormalAcitvity extends AppCompatActivity implements View.OnCl
 //                        .build()
 //                        .getAdView();
                 AdManager adManager = GeekAdSdk.getAdsManger();
-                adManager.loadAd("11", new AdListener() {
+                adManager.loadAd("success_page_ad_1", new AdListener() {
                     @Override
                     public void adSuccess() {
 

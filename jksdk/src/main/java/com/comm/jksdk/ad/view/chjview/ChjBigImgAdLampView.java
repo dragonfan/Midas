@@ -66,7 +66,7 @@ public class ChjBigImgAdLampView extends CommAdView {
 
     @Override
     public int getLayoutId() {
-        return R.layout.chj_ad_big_center_layout;
+        return R.layout.chj_ad_big_lamp_layout;
     }
 
     @Override

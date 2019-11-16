@@ -1,5 +1,6 @@
 package com.comm.jksdk.ad.view.ylhview;
 
+import android.app.Activity;
 import android.content.Context;
 import android.widget.Toast;
 
@@ -29,6 +30,8 @@ public class YLHAdView extends CommAdView {
      */
     protected String mAppId = "";
 
+    protected Activity mActivity;
+
     // 广告请求数量
     protected final static int REQUEST_AD_COUNTS = 1;
 
@@ -36,7 +39,12 @@ public class YLHAdView extends CommAdView {
     protected CommAdView mAdView = null;
 
     public YLHAdView(Context context, String style, String appId, String mAdId) {
+        this(context, null, style, appId, mAdId);
+    }
+
+    public YLHAdView(Context context, Activity activity, String style, String appId, String mAdId) {
         super(context, style, mAdId);
+        this.mActivity = activity;
         this.mAdId = mAdId;
         this.style = style;
         this.mContext = context;
@@ -80,13 +88,13 @@ public class YLHAdView extends CommAdView {
         if (requestType == 0) {
             LogUtils.d(TAG, "request ad:" + mAppId + " mAdId:" + mAdId);
             //SDK
-            if (mAdView instanceof YlhSplashAdView) {
-                mAdView.setAdListener(mAdListener);
-                mAdView.setYlhAdListener(mFirstAdListener);
-                ((YlhSplashAdView) mAdView).loadSplashAd(mAppId, mAdId);
-            } else {
-                getAdBySdk(adRequestTimeOut);
-            }
+//            if (mAdView instanceof YlhSplashAdView) {
+//                mAdView.setAdListener(mAdListener);
+//                mAdView.setYlhAdListener(mFirstAdListener);
+//                ((YlhSplashAdView) mAdView).loadSplashAd(mAppId, mAdId);
+//            } else {
+//            }
+            getAdBySdk(adRequestTimeOut);
         } else {
             //api
         }
@@ -101,6 +109,23 @@ public class YLHAdView extends CommAdView {
 //        if(TextUtils.isEmpty(ylhAppid)){
 //            ylhAppid=Constants.YLH_APPID;
 //        }
+        if (Constants.AdStyle.BigImg.equals(style)) {
+            //todo请求大图广告
+            getAdByBigImg(adRequestTimeOut);
+        } else if (Constants.AdStyle.LeftImgRightTwoText.equals(style)) {
+            //dodo
+            getAdByBigImg(adRequestTimeOut);
+        } else if (Constants.AdStyle.SplashAd.equals(style)) {
+            getAdBySplashAd();
+        }
+    }
+
+
+    /**
+     * 请求图片广告
+     * @param adRequestTimeOut
+     */
+    protected void getAdByBigImg(final int adRequestTimeOut){
         LogUtils.d(TAG, "onADLoaded->请求优量汇广告");
         Toast.makeText(mContext, "onADLoaded->请求优量汇广告" + "广告id：" + mAdId.trim(), Toast.LENGTH_LONG).show();
 
@@ -139,5 +164,15 @@ public class YLHAdView extends CommAdView {
         mAdManager.loadData(REQUEST_AD_COUNTS);
     }
 
-
+    /**
+     * 请求开屏广告
+     */
+    protected void getAdBySplashAd(){
+        if (mAdView != null) {
+            return;
+        }
+        if (mAdView instanceof  YlhSplashAdView) {
+            ((YlhSplashAdView)mAdView).loadSplashAd(mAppId, mAdId);
+        }
+    }
 }

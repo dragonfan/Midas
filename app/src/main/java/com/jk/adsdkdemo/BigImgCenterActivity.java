@@ -10,7 +10,19 @@ import com.comm.jksdk.GeekAdSdk;
 import com.comm.jksdk.ad.listener.AdListener;
 import com.comm.jksdk.ad.listener.AdManager;
 import com.jk.adsdkdemo.utils.LogUtils;
-
+/**
+  *
+  * @ProjectName:    ${PROJECT_NAME}
+  * @Package:        ${PACKAGE_NAME}
+  * @ClassName:      ${NAME}
+  * @Description:     大图_带icon文字按钮居中
+  * @Author:         fanhailong
+  * @CreateDate:     ${DATE} ${TIME}
+  * @UpdateUser:     更新者：
+  * @UpdateDate:     ${DATE} ${TIME}
+  * @UpdateRemark:   更新说明：
+  * @Version:        1.0
+ */
 public class BigImgCenterActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button requestBt, loadBt;
@@ -31,7 +43,7 @@ public class BigImgCenterActivity extends AppCompatActivity implements View.OnCl
         switch (view.getId()) {
             case R.id.button_request_ad:
                 AdManager adManager = GeekAdSdk.getAdsManger();
-                adManager.loadAd("12", new AdListener() {
+                adManager.loadAd("success_page_ad_3", new AdListener() {
                     @Override
                     public void adSuccess() {
 

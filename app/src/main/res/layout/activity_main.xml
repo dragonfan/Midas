@@ -59,38 +59,45 @@
         android:text="获取配置信息" />
 
     <Button
+        android:id="@+id/button_big_bt_img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:text="大图带icon文字按钮" />
+
+    <Button
         android:id="@+id/button_big_img"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_20dp"
-        android:text="大图默认广告" />
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:text="大图带icon文字" />
 
     <Button
         android:id="@+id/button_big_img_center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_20dp"
-        android:text="大图标题居中广告" />
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:text="大图_带icon文字按钮居中" />
 
     <Button
         android:id="@+id/button_splash_ad"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_20dp"
+        android:layout_marginTop="@dimen/dimen_10dp"
         android:text="开屏广告" />
 
     <Button
         android:id="@+id/button_full_screen_video_ad"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_20dp"
+        android:layout_marginTop="@dimen/dimen_10dp"
         android:text="全屏视频广告" />
 
     <Button
         android:id="@+id/button_reward_video_ad"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_20dp"
+        android:layout_marginTop="@dimen/dimen_10dp"
         android:text="激励视频广告" />
 
 </LinearLayout>

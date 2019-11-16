@@ -39,7 +39,7 @@ public class YlhSplashAdView extends YLHAdView {
      */
     public void loadSplashAd(String appId, String adId) {
         LogUtils.d(TAG, "YLH appId:" + appId + " adId:" + adId);
-        SplashAD splashAD = new SplashAD((Activity) mContext, appId, adId, new SplashADListener() {
+        SplashAD splashAD = new SplashAD((Activity) mActivity, appId, adId, new SplashADListener() {
             @Override
             public void onADDismissed() {
                 LogUtils.d(TAG, "YLH onADDismissed:");
@@ -82,4 +82,49 @@ public class YlhSplashAdView extends YLHAdView {
         splashAD.fetchAndShowIn(splashContainer);
     }
 
+    @Override
+    protected void getAdBySdk(int adRequestTimeOut) {
+//        super.getAdBySdk(adRequestTimeOut); 优量汇请求开屏方法跟其他方式不一样，重写父类方法
+        SplashAD splashAD = new SplashAD((Activity) mContext, mAdId, mAppId, new SplashADListener() {
+            @Override
+            public void onADDismissed() {
+                LogUtils.d(TAG, "YLH onADDismissed:");
+            }
+
+            @Override
+            public void onNoAD(AdError adError) {
+                LogUtils.d(TAG, "YLH onNoAD:");
+                if (adError != null) {
+                    adError(adError.getErrorCode(), adError.getErrorMsg());
+                    firstAdError(adError.getErrorCode(), adError.getErrorMsg());
+                } else {
+                    adError(CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                    firstAdError(CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                }
+            }
+
+            @Override
+            public void onADPresent() {
+            }
+
+            @Override
+            public void onADClicked() {
+                LogUtils.d(TAG, "YLH onADClicked:");
+                adClicked();
+            }
+
+            @Override
+            public void onADTick(long l) {
+
+            }
+
+            @Override
+            public void onADExposure() {
+                LogUtils.d(TAG, "YLH onADClicked:");
+                adSuccess();
+                adExposed();
+            }
+        });
+        splashAD.fetchAndShowIn(splashContainer);
+    }
 }

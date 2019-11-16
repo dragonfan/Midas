@@ -42,9 +42,9 @@ public class NativeAdManger implements AdManager {
     }
 
     /**
-     * acitvity对象,优量汇开屏用到
+     * acitvity对象,优量汇开屏、视频广用到
      */
-    private Activity mActivity;
+    protected Activity mActivity;
     /**
      * 广告ID
      */
@@ -81,12 +81,12 @@ public class NativeAdManger implements AdManager {
      *
      * @param adType 广告样式
      */
-    private void createAdView(String adType,String appId, String mAdId) {
+    private void createAdView(Activity activity, String adType,String appId, String mAdId) {
 
         if (Constants.AdType.ChuanShanJia.equals(adType)) {
             mAdView = new CHJAdView(GeekAdSdk.getContext(), adStyle, appId, mAdId);
         } else if (Constants.AdType.YouLiangHui.equals(adType)) {
-            mAdView = new YLHAdView(GeekAdSdk.getContext(), adStyle, appId, mAdId);
+            mAdView = new YLHAdView(GeekAdSdk.getContext(), activity, adStyle, appId, mAdId);
         } else {
             // 暂不处理
             if (mAdListener != null) {
@@ -160,6 +160,35 @@ public class NativeAdManger implements AdManager {
     }
 
     /**
+     * 开屏广告加载方法
+     * @param activity
+     * @param position
+     * @param listener
+     */
+    @Override
+    public void loadSplashAd(Activity activity, String position, AdListener listener) {
+        mAdListener = listener;
+        mActivity = activity;
+        //创建view
+        adParentView = new RelativeLayout(GeekAdSdk.getContext());
+        //获取本地配置信息
+        ConfigBean.AdListBean mConfigInfoBean = AdsConfig.getInstance(GeekAdSdk.getContext()).getConfig(position);
+        if (mConfigInfoBean == null) {
+            if (mAdListener != null) {
+                mAdListener.adError(CodeFactory.LOCAL_INFO_EMPTY, CodeFactory.getError(CodeFactory.LOCAL_INFO_EMPTY));
+            }
+            return;
+        }
+        //当前广告位所对应的配置信息 存储到curAdlist
+        adStyle = mConfigInfoBean.getAdStyle();
+        adRequestTimeOut = mConfigInfoBean.getAdRequestTimeOut();
+        adsInfoslist.clear();
+        adsInfoslist.addAll(mConfigInfoBean.getAdsInfos());
+
+        againRequest();
+    }
+
+    /**
      * 轮询请求
      */
     public void againRequest(){
@@ -179,6 +208,6 @@ public class NativeAdManger implements AdManager {
         adUnion = mAdsInfosBean.getAdUnion();
         mAdId = mAdsInfosBean.getAdId();
         mAppId = mAdsInfosBean.getAdsAppId();
-        createAdView(adUnion, mAppId, mAdId);
+        createAdView(mActivity, adUnion, mAppId, mAdId);
     }
 }
