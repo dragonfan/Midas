@@ -44,15 +44,15 @@ public class CHJAdView extends CommAdView {
         this.style = style;
         this.mAppId = appId;
 
-        if (Constants.AdStyle.BigImg.equals(style)) {
+        if (Constants.AdStyle.BIG_IMG.equals(style)) {
             mAdView = new ChjBigImgAdView(mContext);
-        } else if (Constants.AdStyle.BigImgNormal.equals(style)) { //默认大图广告
+        } else if (Constants.AdStyle.DATU_ICON_TEXT_BUTTON.equals(style)) { //大图_带icon文字
             mAdView = new ChjBigImgAdViewNormal(mContext);
-        } else if (Constants.AdStyle.BigImgCenter.equals(style)) { //默认大图居中广告
+        } else if (Constants.AdStyle.DATU_ICON_TEXT_BUTTON_CENTER.equals(style)) { //大图_带icon文字按钮居中
             mAdView = new ChjBigImgAdViewCenter(mContext);
-        } else if (Constants.AdStyle.LeftImgRightTwoText.equals(style)) {
+        } else if (Constants.AdStyle.LEFT_IMG_RIGHT_TWO_TEXT.equals(style)) {
             mAdView = new ChjLeftImgRightTwoTextAdView(mContext);
-        } else if (Constants.AdStyle.SplashAd.equals(style)) {
+        } else if (Constants.AdStyle.OPEN_ADS.equals(style)) {
             mAdView = new ChjSplashAdView(mContext);
         } else {
             //  all

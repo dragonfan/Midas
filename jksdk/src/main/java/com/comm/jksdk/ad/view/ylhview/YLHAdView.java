@@ -50,11 +50,11 @@ public class YLHAdView extends CommAdView {
         this.mContext = context;
         this.mAppId = appId;
 
-        if (Constants.AdStyle.BigImg.equals(style)) {
+        if (Constants.AdStyle.BIG_IMG.equals(style)) {
             mAdView = new YlhBIgImgAdView(mContext);
-        } else if (Constants.AdStyle.LeftImgRightTwoText.equals(style)) {
+        } else if (Constants.AdStyle.LEFT_IMG_RIGHT_TWO_TEXT.equals(style)) {
             mAdView = new YlhLeftImgRightTwoTextAdView(mContext);
-        } else if (Constants.AdStyle.SplashAd.equals(style)) {
+        } else if (Constants.AdStyle.OPEN_ADS.equals(style)) {
             mAdView = new YlhSplashAdView(mContext);
         } else {
             //all
@@ -109,13 +109,13 @@ public class YLHAdView extends CommAdView {
 //        if(TextUtils.isEmpty(ylhAppid)){
 //            ylhAppid=Constants.YLH_APPID;
 //        }
-        if (Constants.AdStyle.BigImg.equals(style)) {
+        if (Constants.AdStyle.BIG_IMG.equals(style)) {
             //todo请求大图广告
             getAdByBigImg(adRequestTimeOut);
-        } else if (Constants.AdStyle.LeftImgRightTwoText.equals(style)) {
+        } else if (Constants.AdStyle.LEFT_IMG_RIGHT_TWO_TEXT.equals(style)) {
             //dodo
             getAdByBigImg(adRequestTimeOut);
-        } else if (Constants.AdStyle.SplashAd.equals(style)) {
+        } else if (Constants.AdStyle.OPEN_ADS.equals(style)) {
             getAdBySplashAd();
         }
     }

@@ -27,28 +27,43 @@ public class Constants {
         /**
          * 开屏
          */
-        String SplashAd = "OPEN_ADS";
+        String OPEN_ADS = "OPEN_ADS";
 
         /**
          * 大图
          */
-        String BigImg = "BigImg";
+        String BIG_IMG = "BIG_IMG";
 
         /**
-         * 大图默认样式
+         * 大图_带icon文字
          */
-        String BigImgNormal = "BIG_IMG_NORMAL";
+        String DATU_ICON_TEXT = "DATU_ICON_TEXT";
         /**
-         * 大图标题居中样式
+         * 全屏视频
          */
-        String BigImgCenter = "BIG_IMG_CENTER";
-
+        String FULL_SCREEN_VIDEO = "FULL_SCREEN_VIDEO";
         /**
-         * 左图右边两行文字
+         * 激励视频
          */
-        String LeftImgRightTwoText = "LeftImgRightTwoText";
+        String REWARD_VIDEO = "REWARD_VIDEO";
         /**
-         * 左图右边两行文字
+         * 大图_带icon文字按钮居中
+         */
+        String DATU_ICON_TEXT_BUTTON_CENTER = "DATU_ICON_TEXT_BUTTON_CENTER";
+        /**
+         * 大图_带icon文字按钮
+         */
+        String DATU_ICON_TEXT_BUTTON = "DATU_ICON_TEXT_BUTTON";
+        /**
+         * 左图右文
+         */
+        String LEFT_IMG_RIGHT_TWO_TEXT = "LEFT_IMG_RIGHT_TWO_TEXT";
+        /**
+         * 信息流
+         */
+        String INFO_STREAM = "INFO_STREAM";
+        /**
+         *
          */
         String All = "All";
     }
