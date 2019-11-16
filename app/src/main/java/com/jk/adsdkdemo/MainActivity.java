@@ -234,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(this, BigImgNormalAcitvity.class));
                 break;
             case R.id.button_big_img:
-
+                startActivity(new Intent(this, BigImgNotDownloadAcitvity.class));
                 break;
             case R.id.button_big_img_center:
                 startActivity(new Intent(this, BigImgCenterActivity.class));

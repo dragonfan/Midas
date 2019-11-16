@@ -56,9 +56,11 @@ public class CHJAdView extends CommAdView {
 
         if (Constants.AdStyle.BIG_IMG.equals(style)) {
             mAdView = new ChjBigImgAdView(mContext);
-        } else if (Constants.AdStyle.DATU_ICON_TEXT_BUTTON.equals(style)) { //大图_带icon文字
+        } else if (Constants.AdStyle.DATU_ICON_TEXT_BUTTON.equals(style)) { // 大图_带icon文字按钮
             mAdView = new ChjBigImgAdViewNormal(mContext);
-        } else if (Constants.AdStyle.DATU_ICON_TEXT_BUTTON_CENTER.equals(style)) { //大图_带icon文字按钮居中
+        } else if (Constants.AdStyle.DATU_ICON_TEXT.equals(style)) { //大图_带icon文字
+            mAdView = new ChjBigImgNotDownloadAdView(mContext);
+        }else if (Constants.AdStyle.DATU_ICON_TEXT_BUTTON_CENTER.equals(style)) { //大图_带icon文字按钮居中
             mAdView = new ChjBigImgAdViewCenter(mContext);
         } else if (Constants.AdStyle.LEFT_IMG_RIGHT_TWO_TEXT.equals(style)) {
             mAdView = new ChjLeftImgRightTwoTextAdView(mContext);
@@ -116,7 +118,8 @@ public class CHJAdView extends CommAdView {
 //        if(TextUtils.isEmpty(ylhAppid)){
 //            ylhAppid=Constants.YLH_APPID;
 //        }
-        if (Constants.AdStyle.BIG_IMG.equals(style)) {
+        if (Constants.AdStyle.BIG_IMG.equals(style) || Constants.AdStyle.DATU_ICON_TEXT.equals(style) || Constants.AdStyle.DATU_ICON_TEXT_BUTTON_CENTER.equals(style)
+                || Constants.AdStyle.DATU_ICON_TEXT_BUTTON.equals(style) || Constants.AdStyle.LEFT_IMG_RIGHT_TWO_TEXT.equals(style)) {
             //todo请求大图广告
             getImageAdBySdk(adRequestTimeOut);
         } else if (Constants.AdStyle.LEFT_IMG_RIGHT_TWO_TEXT.equals(style)) {
