@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //    private RelativeLayout adRlyt;
 
 
-    private Button button_configinfo, buttonBigImg, buttonBigBt, buttonBigImgCenter, buttonSplashAd, btnFullScreenVideo, btnRewardVideo;
+    private Button button_configinfo, buttonBigImg, buttonBigBt, buttonBigImgCenter, buttonSplashAd, btnFullScreenVideo, btnRewardVideo, btnNewBigImgFour;
 
     //    private EditText et_ad_pos_id;
 //    public static TextView tvResult;
@@ -142,6 +142,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonBigImgCenter = findViewById(R.id.button_big_img_center);
         buttonBigImgCenter.setOnClickListener(this);
 
+        btnNewBigImgFour = findViewById(R.id.new_big_img);
+        btnNewBigImgFour.setOnClickListener(this);
+
         buttonSplashAd = findViewById(R.id.button_splash_ad);
         buttonSplashAd.setOnClickListener(this);
 
@@ -238,6 +241,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.button_big_img_center:
                 startActivity(new Intent(this, BigImgCenterActivity.class));
+                break;
+            case R.id.new_big_img:
+                startActivity(new Intent(this, NewBigImgActivity.class));
                 break;
             case R.id.button_splash_ad:
                 startActivity(new Intent(this, SplashAdActivity.class));

@@ -54,6 +54,11 @@
             android:name=".RewardVideoActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".BigImgNotDownloadAcitvity" />
+        <activity android:name=".NewBigImgActivity" />
+        <activity android:name=".NewBigImg1Acitvity" />
+        <activity android:name=".NewBigImg4Acitvity" />
+        <activity android:name=".NewBigImg3Acitvity" />
+        <activity android:name=".NewBigImg2Acitvity" />
     </application>
 
 </manifest>

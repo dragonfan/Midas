@@ -59,6 +59,22 @@ public class Constants {
          */
         String LEFT_IMG_RIGHT_TWO_TEXT = "LEFT_IMG_RIGHT_TWO_TEXT";
         /**
+         * 大图嵌套美女图片
+         */
+        String BIG_IMG_NEST = "BIG_IMG_NEST";
+        /**
+         * 大图嵌套图片带跑马灯
+         */
+        String BIG_IMG_NEST_LAMP = "BIG_IMG_NEST_LAMP";
+        /**
+         * 大图带按钮（大图_下载播放按钮）
+         */
+        String BIG_IMG_BUTTON = "BIG_IMG_BUTTON";
+        /**
+         * 大图带按钮带跑马灯
+         */
+        String BIG_IMG_BUTTON_LAMP = "BIG_IMG_BUTTON_LAMP";
+        /**
          * 信息流
          */
         String INFO_STREAM = "INFO_STREAM";
