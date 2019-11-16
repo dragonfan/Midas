@@ -56,6 +56,8 @@ public class YLHAdView extends CommAdView {
             mAdView = new YlhLeftImgRightTwoTextAdView(mContext);
         } else if (Constants.AdStyle.OPEN_ADS.equals(style)) {
             mAdView = new YlhSplashAdView(mContext);
+        } else if (Constants.AdStyle.FULL_SCREEN_VIDEO.equals(style)) {
+            mAdView = new YlhFullScreenVideoAdView(mContext);
         } else {
             //all
             //所有样式都支持 随机展示
@@ -111,6 +113,8 @@ public class YLHAdView extends CommAdView {
             getAdByBigImg(adRequestTimeOut);
         } else if (Constants.AdStyle.OPEN_ADS.equals(style)) {
             getAdBySplashAd();
+        } else if (Constants.AdStyle.FULL_SCREEN_VIDEO.equals(style)) {
+            getFullScreenVideoAd();
         }
     }
 
@@ -172,4 +176,19 @@ public class YLHAdView extends CommAdView {
             ((YlhSplashAdView) mAdView).loadSplashAd(mActivity, mAppId, mAdId);
         }
     }
+
+    /**
+     * 请求全屏视频广告
+     */
+    protected void getFullScreenVideoAd() {
+        if (mAdView == null) {
+            return;
+        }
+        if (mAdView instanceof YlhFullScreenVideoAdView) {
+            mAdView.setAdListener(mAdListener);
+            mAdView.setYlhAdListener(mFirstAdListener);
+            ((YlhFullScreenVideoAdView) mAdView).loadFullScreenVideoAd(mAppId, mAdId);
+        }
+    }
+
 }

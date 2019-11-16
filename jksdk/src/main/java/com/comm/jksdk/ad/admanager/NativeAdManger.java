@@ -190,6 +190,36 @@ public class NativeAdManger implements AdManager {
     }
 
     /**
+     * 视频广告加载方法
+     *
+     * @param activity
+     * @param position
+     * @param listener
+     */
+    @Override
+    public void loadVideoAd(Activity activity, String position, AdListener listener) {
+        mAdListener = listener;
+        mActivity = activity;
+        //创建view
+        adParentView = new RelativeLayout(GeekAdSdk.getContext());
+        //获取本地配置信息
+        ConfigBean.AdListBean mConfigInfoBean = AdsConfig.getInstance(GeekAdSdk.getContext()).getConfig(position);
+        if (mConfigInfoBean == null) {
+            if (mAdListener != null) {
+                mAdListener.adError(CodeFactory.LOCAL_INFO_EMPTY, CodeFactory.getError(CodeFactory.LOCAL_INFO_EMPTY));
+            }
+            return;
+        }
+        //当前广告位所对应的配置信息 存储到curAdlist
+        adStyle = mConfigInfoBean.getAdStyle();
+        adRequestTimeOut = mConfigInfoBean.getAdRequestTimeOut();
+        adsInfoslist.clear();
+        adsInfoslist.addAll(mConfigInfoBean.getAdsInfos());
+
+        againRequest();
+    }
+
+    /**
      * 轮询请求
      */
     public void againRequest() {

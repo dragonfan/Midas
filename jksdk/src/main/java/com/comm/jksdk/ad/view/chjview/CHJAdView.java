@@ -5,6 +5,7 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.bytedance.sdk.openadsdk.AdSlot;
+import com.bytedance.sdk.openadsdk.TTAdConstant;
 import com.bytedance.sdk.openadsdk.TTAdManager;
 import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTFeedAd;
@@ -63,6 +64,8 @@ public class CHJAdView extends CommAdView {
             mAdView = new ChjLeftImgRightTwoTextAdView(mContext);
         } else if (Constants.AdStyle.OPEN_ADS.equals(style)) {
             mAdView = new ChjSplashAdView(mContext);
+        } else if (Constants.AdStyle.FULL_SCREEN_VIDEO.equals(style)) {
+            mAdView = new CsjFullScreenVideoView(mContext);
         } else {
             //  all
             //所有样式都支持 随机展示
@@ -121,6 +124,8 @@ public class CHJAdView extends CommAdView {
             getImageAdBySdk(adRequestTimeOut);
         } else if (Constants.AdStyle.OPEN_ADS.equals(style)) {
             getAdBySplashAd();
+        } else if (Constants.AdStyle.FULL_SCREEN_VIDEO.equals(style)) {
+            getFullScreenVideoAd();
         }
     }
 
@@ -188,6 +193,20 @@ public class CHJAdView extends CommAdView {
             mAdView.setAdListener(mAdListener);
             mAdView.setYlhAdListener(mFirstAdListener);
             ((ChjSplashAdView) mAdView).loadSplashAd(mAppId, mAdId);
+        }
+    }
+
+    /**
+     * 请求全屏视频广告
+     */
+    protected void getFullScreenVideoAd() {
+        if (mAdView == null) {
+            return;
+        }
+        if (mAdView instanceof CsjFullScreenVideoView) {
+            mAdView.setAdListener(mAdListener);
+            mAdView.setYlhAdListener(mFirstAdListener);
+            ((CsjFullScreenVideoView) mAdView).loadFullScreenVideoAd(mActivity, mAdId, TTAdConstant.VERTICAL);
         }
     }
 }
