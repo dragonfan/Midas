@@ -101,4 +101,11 @@
         android:layout_marginTop="@dimen/dimen_10dp"
         android:text="激励视频广告" />
 
+    <Button
+        android:id="@+id/button_insert_screen_ad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:text="插屏广告" />
+
 </LinearLayout>

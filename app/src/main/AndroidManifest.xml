@@ -49,7 +49,9 @@
         <activity
             android:name=".FullScreenVideoActivity"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".InsertScreenActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".RewardVideoActivity"
             android:screenOrientation="portrait" />
