@@ -52,10 +52,10 @@ public class NewBigImgActivity extends AppCompatActivity implements View.OnClick
                 startActivity(new Intent(this, NewBigImg2Acitvity.class));
                 break;
             case R.id.new_big_img3:
-                startActivity(new Intent(this, NewBigImg2Acitvity.class));
+                startActivity(new Intent(this, NewBigImg3Acitvity.class));
                 break;
             case R.id.new_big_img4:
-                startActivity(new Intent(this, NewBigImg2Acitvity.class));
+                startActivity(new Intent(this, NewBigImg4Acitvity.class));
                 break;
         }
     }

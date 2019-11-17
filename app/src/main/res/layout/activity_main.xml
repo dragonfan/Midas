@@ -21,6 +21,7 @@
             android:textSize="@dimen/dp_20" />
 
         <EditText
+            android:layout_marginLeft="@dimen/dimen_12dp"
             android:id="@+id/et_chan_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -28,13 +29,6 @@
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/dp_20"
             android:visibility="visible" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

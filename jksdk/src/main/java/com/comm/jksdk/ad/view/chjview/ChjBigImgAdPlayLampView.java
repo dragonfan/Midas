@@ -3,6 +3,7 @@ package com.comm.jksdk.ad.view.chjview;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.AnimationDrawable;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import com.comm.jksdk.R;
 import com.comm.jksdk.ad.view.CommAdView;
 import com.comm.jksdk.http.utils.LogUtils;
 import com.comm.jksdk.utils.DisplayUtil;
+import com.comm.jksdk.widget.TopRoundImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +37,7 @@ import java.util.Random;
   * @ProjectName:    ${PROJECT_NAME}
   * @Package:        ${PACKAGE_NAME}
   * @ClassName:      ${NAME}
-  * @Description:     穿山甲大图跑马灯样式
+  * @Description:     穿山甲大图播放按钮跑马灯样式
   * @Author:         fanhailong
   * @CreateDate:     ${DATE} ${TIME}
   * @UpdateUser:     更新者：
@@ -45,7 +47,7 @@ import java.util.Random;
  */
 
 
-public class ChjBigImgAdLampView extends CommAdView {
+public class ChjBigImgAdPlayLampView extends CommAdView {
     // 广告实体数据
     private TTFeedAd mNativeADData = null;
     private RequestOptions requestOptions;
@@ -55,10 +57,13 @@ public class ChjBigImgAdLampView extends CommAdView {
     ImageView brandIconIm; //广告商图标
     TextView adTitleTv; //广告的title
     TextView adDescribeTv; //广告描述
-    ImageView adIm; //广告主体图片
+    TopRoundImageView adIm; //广告主体图片
     TextView downTb; //广告下载按钮
+    View animationView;
 
-    public ChjBigImgAdLampView(Context context) {
+    private AnimationDrawable mAnimationDrawable;
+
+    public ChjBigImgAdPlayLampView(Context context) {
         super(context);
 
     }
@@ -66,7 +71,7 @@ public class ChjBigImgAdLampView extends CommAdView {
 
     @Override
     public int getLayoutId() {
-        return R.layout.chj_ad_big_lamp_layout;
+        return R.layout.chj_ad_big_paly_lamp_layout;
     }
 
     @Override
@@ -77,8 +82,8 @@ public class ChjBigImgAdLampView extends CommAdView {
         adTitleTv = findViewById(R.id.ad_title_tv);
         adDescribeTv = findViewById(R.id.ad_describe_tv);
         adIm = findViewById(R.id.ad_im);
+        animationView = findViewById(R.id.animation_lamp);
         downTb = findViewById(R.id.down_bt);
-
         if (mContext == null) {
             return;
         }
@@ -91,6 +96,11 @@ public class ChjBigImgAdLampView extends CommAdView {
         requestOptions = new RequestOptions()
                 .transforms(new RoundedCorners(DisplayUtil.dp2px(mContext, 3)))
                 .error(R.color.returncolor);//图片加载失败后，显示的图片
+
+        animationView.setBackground(getResources().getDrawable(R.drawable.anim_ad));
+        if (animationView.getBackground() instanceof AnimationDrawable) {
+            mAnimationDrawable = (AnimationDrawable) animationView.getBackground();
+        }
     }
 
     /**
@@ -217,24 +227,16 @@ public class ChjBigImgAdLampView extends CommAdView {
                 if (mContext instanceof Activity) {
                     ad.setActivityForDownloadApp((Activity) mContext);
                 }
-//                nativeAdContainer.setVisibility(View.VISIBLE);
-                downTb.setVisibility(VISIBLE);
                 downTb.setText("下载");
                 bindDownloadListener(ad);
                 //绑定下载状态控制器
                 bindDownLoadStatusController(ad);
                 break;
             case TTAdConstant.INTERACTION_TYPE_DIAL:
-//                nativeAdContainer.setVisibility(View.VISIBLE);
-//                tvDownload.setText("立即拨打");
             case TTAdConstant.INTERACTION_TYPE_LANDING_PAGE:
             case TTAdConstant.INTERACTION_TYPE_BROWSER:
-                downTb.setVisibility(GONE);
-//                nativeAdContainer.setVisibility(View.VISIBLE);
-//                tvDownload.setText("查看详情");
-            default:
-                downTb.setVisibility(VISIBLE);
                 downTb.setText("详情");
+            default:
 //                nativeAdContainer.setVisibility(View.GONE);
 //                ToastUtils.setToastStrShort("交互类型异常");
         }
@@ -352,4 +354,20 @@ public class ChjBigImgAdLampView extends CommAdView {
             }
         }
     };
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (mAnimationDrawable != null && mAnimationDrawable.isRunning()) {
+            mAnimationDrawable.stop();
+        }
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (mAnimationDrawable != null) {
+            mAnimationDrawable.start();
+        }
+    }
 }
