@@ -9,8 +9,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="150dp"
-        android:text="普通插屏广告"
+        android:text="普通插屏广告浏览类"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_normal_download"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="普通插屏广告下载类"
+        app:layout_constraintTop_toBottomOf="@+id/btn_normal" />
 
     <Button
         android:id="@+id/btn_fullscreen"
@@ -18,5 +26,5 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="全屏插屏广告"
-        app:layout_constraintTop_toBottomOf="@+id/btn_normal" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_normal_download" />
 </android.support.constraint.ConstraintLayout>

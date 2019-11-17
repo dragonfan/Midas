@@ -13,7 +13,7 @@ import android.widget.Button;
  * @since 2019/11/17 17:25
  */
 public class InsertScreenActivity extends AppCompatActivity implements View.OnClickListener {
-    private Button btnNormal, btnFullScreen;
+    private Button btnNormal, btnNormalDownload, btnFullScreen;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,6 +27,9 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
         btnNormal = findViewById(R.id.btn_normal);
         btnNormal.setOnClickListener(this);
 
+        btnNormalDownload = findViewById(R.id.btn_normal_download);
+        btnNormalDownload.setOnClickListener(this);
+
         btnFullScreen = findViewById(R.id.btn_fullscreen);
         btnFullScreen.setOnClickListener(this);
     }
@@ -39,6 +42,8 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
                 break;
             case R.id.btn_normal:
 
+                break;
+            case R.id.btn_normal_download:
                 break;
             default:
                 break;
