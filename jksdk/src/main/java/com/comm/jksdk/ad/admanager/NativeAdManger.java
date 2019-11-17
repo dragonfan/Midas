@@ -1,6 +1,7 @@
 package com.comm.jksdk.ad.admanager;
 
 import android.app.Activity;
+import android.text.TextUtils;
 import android.widget.RelativeLayout;
 
 import com.comm.jksdk.GeekAdSdk;
@@ -69,6 +70,16 @@ public class NativeAdManger implements AdManager {
     private String adUnion;
 
     /**
+     * 视频广告方向: 1 竖屏, 2 横屏
+     */
+    private int orientation = 1;
+
+    /**
+     * 激励视频userid
+     */
+    private String userId = "";
+
+    /**
      * 请求方式：0 - SDK 1 - API
      */
     private int requestType = 0;
@@ -85,6 +96,10 @@ public class NativeAdManger implements AdManager {
 
         if (Constants.AdType.ChuanShanJia.equals(adType)) {
             mAdView = new CHJAdView(GeekAdSdk.getContext(), activity, adStyle, appId, mAdId);
+            ((CHJAdView) mAdView).setOrientation(orientation);
+            if (!TextUtils.isEmpty(userId)) {
+                ((CHJAdView) mAdView).setUserId(userId);
+            }
         } else if (Constants.AdType.YouLiangHui.equals(adType)) {
             mAdView = new YLHAdView(GeekAdSdk.getContext(), activity, adStyle, appId, mAdId);
         } else {
@@ -190,7 +205,7 @@ public class NativeAdManger implements AdManager {
     }
 
     /**
-     * 视频广告加载方法
+     * 全屏视频广告加载方法
      *
      * @param activity
      * @param position
@@ -200,6 +215,39 @@ public class NativeAdManger implements AdManager {
     public void loadVideoAd(Activity activity, String position, AdListener listener) {
         mAdListener = listener;
         mActivity = activity;
+        orientation = 1;
+        //创建view
+        adParentView = new RelativeLayout(GeekAdSdk.getContext());
+        //获取本地配置信息
+        ConfigBean.AdListBean mConfigInfoBean = AdsConfig.getInstance(GeekAdSdk.getContext()).getConfig(position);
+        if (mConfigInfoBean == null) {
+            if (mAdListener != null) {
+                mAdListener.adError(CodeFactory.LOCAL_INFO_EMPTY, CodeFactory.getError(CodeFactory.LOCAL_INFO_EMPTY));
+            }
+            return;
+        }
+        //当前广告位所对应的配置信息 存储到curAdlist
+        adStyle = mConfigInfoBean.getAdStyle();
+        adRequestTimeOut = mConfigInfoBean.getAdRequestTimeOut();
+        adsInfoslist.clear();
+        adsInfoslist.addAll(mConfigInfoBean.getAdsInfos());
+
+        againRequest();
+    }
+
+    /**
+     * 激励视频广告加载方法
+     *
+     * @param activity
+     * @param position
+     * @param listener
+     */
+    @Override
+    public void loadRewardVideoAd(Activity activity, String position, String userId, int orientation, AdListener listener) {
+        mAdListener = listener;
+        mActivity = activity;
+        this.orientation = orientation;
+        this.userId = userId;
         //创建view
         adParentView = new RelativeLayout(GeekAdSdk.getContext());
         //获取本地配置信息

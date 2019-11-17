@@ -38,6 +38,15 @@ public class CHJAdView extends CommAdView {
     private final static int REQUEST_AD_COUNTS = 1;
 
     protected Activity mActivity;
+    /**
+     * 视频广告方向横屏、竖屏
+     */
+    protected int orientation = TTAdConstant.VERTICAL;
+
+    /**
+     * 激励视频userid
+     */
+    private String userId = "";
 
     private CommAdView mAdView = null;
 
@@ -60,7 +69,7 @@ public class CHJAdView extends CommAdView {
             mAdView = new ChjBigImgAdViewNormal(mContext);
         } else if (Constants.AdStyle.DATU_ICON_TEXT.equals(style)) { //大图_带icon文字
             mAdView = new ChjBigImgNotDownloadAdView(mContext);
-        }else if (Constants.AdStyle.DATU_ICON_TEXT_BUTTON_CENTER.equals(style)) { //大图_带icon文字按钮居中
+        } else if (Constants.AdStyle.DATU_ICON_TEXT_BUTTON_CENTER.equals(style)) { //大图_带icon文字按钮居中
             mAdView = new ChjBigImgAdViewCenter(mContext);
         }else if (Constants.AdStyle.BIG_IMG_BUTTON_LAMP.equals(style)) { //大图带按钮带跑马灯
             mAdView = new ChjBigImgAdPlayLampView(mContext);
@@ -70,6 +79,8 @@ public class CHJAdView extends CommAdView {
             mAdView = new ChjSplashAdView(mContext);
         } else if (Constants.AdStyle.FULL_SCREEN_VIDEO.equals(style)) {
             mAdView = new CsjFullScreenVideoView(mContext);
+        } else if (Constants.AdStyle.REWARD_VIDEO.equals(style)) {
+            mAdView = new CsjRewardVideoAdView(mContext);
         } else {
             //  all
             //所有样式都支持 随机展示
@@ -96,6 +107,14 @@ public class CHJAdView extends CommAdView {
     public CHJAdView(Context context) {
         super(context);
 
+    }
+
+    public void setOrientation(int orientation) {
+        this.orientation = orientation;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     @Override
@@ -131,6 +150,8 @@ public class CHJAdView extends CommAdView {
             getAdBySplashAd();
         } else if (Constants.AdStyle.FULL_SCREEN_VIDEO.equals(style)) {
             getFullScreenVideoAd();
+        } else if (Constants.AdStyle.REWARD_VIDEO.equals(style)) {
+            getRewardVideoAd();
         }
     }
 
@@ -211,7 +232,22 @@ public class CHJAdView extends CommAdView {
         if (mAdView instanceof CsjFullScreenVideoView) {
             mAdView.setAdListener(mAdListener);
             mAdView.setYlhAdListener(mFirstAdListener);
-            ((CsjFullScreenVideoView) mAdView).loadFullScreenVideoAd(mActivity, mAdId, TTAdConstant.VERTICAL);
+            ((CsjFullScreenVideoView) mAdView).loadFullScreenVideoAd(mActivity, mAdId, orientation);
+        }
+    }
+
+
+    /**
+     * 请求激励视频广告
+     */
+    protected void getRewardVideoAd() {
+        if (mAdView == null) {
+            return;
+        }
+        if (mAdView instanceof CsjRewardVideoAdView) {
+            mAdView.setAdListener(mAdListener);
+            mAdView.setYlhAdListener(mFirstAdListener);
+            ((CsjRewardVideoAdView) mAdView).loadRewardVideoAd(mActivity, mAdId, userId, orientation);
         }
     }
 }

@@ -9,8 +9,8 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.comm.jksdk.GeekAdSdk;
-import com.comm.jksdk.ad.listener.AdListener;
 import com.comm.jksdk.ad.listener.AdManager;
+import com.comm.jksdk.ad.listener.VideoAdListener;
 import com.jk.adsdkdemo.utils.LogUtils;
 
 /**
@@ -46,7 +46,17 @@ public class FullScreenVideoActivity extends AppCompatActivity implements View.O
      */
     private void loadSplashAd() {
         // cold_kp 、hot_kp
-        adManager.loadVideoAd(this, "cp_ad_1", new AdListener() {
+        adManager.loadVideoAd(this, "cp_ad_1", new VideoAdListener() {
+            @Override
+            public void onVideoResume() {
+
+            }
+
+            @Override
+            public void onVideoRewardVerify(boolean rewardVerify, int rewardAmount, String rewardName) {
+
+            }
+
             @Override
             public void adSuccess() {
                 LogUtils.d(TAG, "-----adSuccess-----");

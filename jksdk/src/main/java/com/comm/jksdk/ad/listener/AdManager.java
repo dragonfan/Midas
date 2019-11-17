@@ -22,5 +22,7 @@ public interface AdManager {
 
     void loadVideoAd(Activity activity, String position, AdListener listener);
 
+    void loadRewardVideoAd(Activity activity, String position, String userId, int orientation, AdListener listener);
+
     ViewGroup getAdView();
 }

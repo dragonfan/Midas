@@ -145,7 +145,7 @@ public class YlhFullScreenVideoAdView extends YLHAdView implements NativeADUnifi
 
             @Override
             public void onADClicked() {
-                LogUtils.d(TAG, "onADClicked: " + " clickUrl: " + ad.ext.get("clickUrl"));
+                LogUtils.d(TAG, "onADClicked: " + " clickUrl: ");
                 adClicked();
             }
 
@@ -193,9 +193,9 @@ public class YlhFullScreenVideoAdView extends YLHAdView implements NativeADUnifi
                 public void onVideoStart() {
                     LogUtils.d(TAG, "onVideoStart: duration:" + mAdData.getVideoDuration());
                     mADInfoContainer.setVisibility(View.VISIBLE);
-                    mTotalTime = ad.getVideoDuration();
-                    mTimeText.setVisibility(View.VISIBLE);
-                    mTimeText.setText((long) Math.floor(mTotalTime / 1000.0) + "s");
+//                    mTotalTime = ad.getVideoDuration();
+//                    mTimeText.setVisibility(View.VISIBLE);
+//                    mTimeText.setText((long) Math.floor(mTotalTime / 1000.0) + "s");
                 }
 
                 @Override
