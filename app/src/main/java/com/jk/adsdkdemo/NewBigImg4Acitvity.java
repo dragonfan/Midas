@@ -49,7 +49,7 @@ public class NewBigImg4Acitvity extends AppCompatActivity implements View.OnClic
 //                        .build()
 //                        .getAdView();
                 AdManager adManager = GeekAdSdk.getAdsManger();
-                adManager.loadAd("homepage_ad_2", new AdListener() {
+                adManager.loadAd("new_homepage_ad_4", new AdListener() {
                     @Override
                     public void adSuccess() {
 

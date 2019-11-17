@@ -42,14 +42,8 @@ public class NewBigImg2Acitvity extends AppCompatActivity implements View.OnClic
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_request_ad:
-//                adView = NativesAdManger.getInstance().setContext(this)
-//                        .setAdPositionId("1")
-//                        .setAdListener(mAdListener)
-//                        .setDefaultConfigKey(Constants.DEFAULT_CONFIG_KEY)
-//                        .build()
-//                        .getAdView();
                 AdManager adManager = GeekAdSdk.getAdsManger();
-                adManager.loadAd("success_page_ad_1", new AdListener() {
+                adManager.loadAd("new_homepage_ad_2", new AdListener() {
                     @Override
                     public void adSuccess() {
 

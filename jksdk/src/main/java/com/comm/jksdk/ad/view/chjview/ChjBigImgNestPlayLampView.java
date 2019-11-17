@@ -26,6 +26,7 @@ import com.comm.jksdk.R;
 import com.comm.jksdk.ad.view.CommAdView;
 import com.comm.jksdk.http.utils.LogUtils;
 import com.comm.jksdk.utils.DisplayUtil;
+import com.comm.jksdk.widget.RoundImageView;
 import com.comm.jksdk.widget.TopRoundImageView;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ import java.util.Random;
   * @ProjectName:    ${PROJECT_NAME}
   * @Package:        ${PACKAGE_NAME}
   * @ClassName:      ${NAME}
-  * @Description:     穿山甲大图播放按钮跑马灯样式
+  * @Description:     大图美女_01_彩带
   * @Author:         fanhailong
   * @CreateDate:     ${DATE} ${TIME}
   * @UpdateUser:     更新者：
@@ -47,30 +48,30 @@ import java.util.Random;
  */
 
 
-public class ChjBigImgAdPlayLampView extends CommAdView {
+public class ChjBigImgNestPlayLampView extends CommAdView {
     // 广告实体数据
     private TTFeedAd mNativeADData = null;
     private RequestOptions requestOptions;
     private FrameLayout.LayoutParams adlogoParams;
 
     RelativeLayout nativeAdContainer;
-    ImageView brandIconIm; //广告商图标
-    TextView adTitleTv; //广告的title
+
+    RoundImageView custonIm; //嵌套进来的美女图片
     TextView adDescribeTv; //广告描述
-    TopRoundImageView adIm; //广告主体图片
-    TextView downTb; //广告下载按钮
+    ImageView adIm; //广告主体图片
+    TextView adTitleTv; //广告的title
+    ImageView adLogo; //广告logo
     View animationView; //跑马灯的view
-    ImageView adLogo;
 
     private boolean isLamp; //是否带走马灯
 
     private AnimationDrawable mAnimationDrawable;
 
-    public ChjBigImgAdPlayLampView(Context context) {
+    public ChjBigImgNestPlayLampView(Context context) {
         this(context, false);
     }
 
-    public ChjBigImgAdPlayLampView(Context context, boolean isLamp) {
+    public ChjBigImgNestPlayLampView(Context context, boolean isLamp) {
         super(context);
         this.isLamp = isLamp;
         initAnimation();
@@ -87,23 +88,21 @@ public class ChjBigImgAdPlayLampView extends CommAdView {
             }
         }
     }
-
     @Override
     public int getLayoutId() {
-        return R.layout.chj_ad_big_paly_lamp_layout;
+        return R.layout.chj_ad_big_nest_paly_lamp_layout;
     }
 
     @Override
     public void initView() {
 
         nativeAdContainer = findViewById(R.id.rl_ad_item_root);
-        brandIconIm = findViewById(R.id.brand_icon_im);
         adTitleTv = findViewById(R.id.ad_title_tv);
         adDescribeTv = findViewById(R.id.ad_describe_tv);
         adIm = findViewById(R.id.ad_im);
         animationView = findViewById(R.id.animation_lamp);
-        downTb = findViewById(R.id.down_bt);
         adLogo = findViewById(R.id.ad_logo);
+        custonIm = findViewById(R.id.custon_im);
         if (mContext == null) {
             return;
         }
@@ -194,20 +193,20 @@ public class ChjBigImgAdPlayLampView extends CommAdView {
 
 
     private void bindData(View convertView, TTFeedAd ad) {
-        TTImage icon = ad.getIcon();
-        if (icon != null && icon.isValid()) {
-            Glide.with(mContext).load(icon.getImageUrl())
-                    .transition(new DrawableTransitionOptions().crossFade())
-                    .apply(requestOptions)
-                    .into(brandIconIm);
-        }
+//        TTImage icon = ad.getIcon();
+//        if (icon != null && icon.isValid()) {
+//            Glide.with(mContext).load(icon.getImageUrl())
+//                    .transition(new DrawableTransitionOptions().crossFade())
+//                    .apply(requestOptions)
+//                    .into(brandIconIm);
+//        }
         adLogo.setImageBitmap(ad.getAdLogo());
         adTitleTv.setText(ad.getTitle());
         adDescribeTv.setText(ad.getDescription());
         //可以被点击的view, 也可以把convertView放进来意味item可被点击
         List<View> clickViewList = new ArrayList<>();
         clickViewList.add(adIm);
-        clickViewList.add(downTb);
+//        clickViewList.add(downTb);
         clickViewList.add(nativeAdContainer);
         //触发创意广告的view（点击下载或拨打电话）
         List<View> creativeViewList = new ArrayList<>();
@@ -232,7 +231,6 @@ public class ChjBigImgAdPlayLampView extends CommAdView {
                         .transition(new DrawableTransitionOptions().crossFade())
                         .apply(requestOptions)
                         .into(adIm);
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -244,7 +242,7 @@ public class ChjBigImgAdPlayLampView extends CommAdView {
                 if (mContext instanceof Activity) {
                     ad.setActivityForDownloadApp((Activity) mContext);
                 }
-                downTb.setText("下载");
+//                downTb.setText("下载");
                 bindDownloadListener(ad);
                 //绑定下载状态控制器
                 bindDownLoadStatusController(ad);
@@ -252,7 +250,7 @@ public class ChjBigImgAdPlayLampView extends CommAdView {
             case TTAdConstant.INTERACTION_TYPE_DIAL:
             case TTAdConstant.INTERACTION_TYPE_LANDING_PAGE:
             case TTAdConstant.INTERACTION_TYPE_BROWSER:
-                downTb.setText("详情");
+//                downTb.setText("详情");
             default:
 //                nativeAdContainer.setVisibility(View.GONE);
 //                ToastUtils.setToastStrShort("交互类型异常");
@@ -281,7 +279,7 @@ public class ChjBigImgAdPlayLampView extends CommAdView {
                 if (!isValid()) {
                     return;
                 }
-                downTb.setText("下载");
+//                downTb.setText("下载");
             }
 
             @SuppressLint("SetTextI18n")
@@ -317,7 +315,7 @@ public class ChjBigImgAdPlayLampView extends CommAdView {
                 if (!isValid()) {
                     return;
                 }
-                downTb.setText("下载");
+//                downTb.setText("下载");
             }
 
             @Override
@@ -325,7 +323,7 @@ public class ChjBigImgAdPlayLampView extends CommAdView {
                 if (!isValid()) {
                     return;
                 }
-                downTb.setText("立即打开");
+//                downTb.setText("立即打开");
             }
 
             @Override
@@ -333,7 +331,7 @@ public class ChjBigImgAdPlayLampView extends CommAdView {
                 if (!isValid()) {
                     return;
                 }
-                downTb.setText("立即安装");
+//                downTb.setText("立即安装");
             }
 
             @SuppressWarnings("BooleanMethodIsAlwaysInverted")
