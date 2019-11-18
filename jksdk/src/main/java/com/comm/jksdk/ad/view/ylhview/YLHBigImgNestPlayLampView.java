@@ -16,8 +16,8 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.comm.jksdk.R;
 import com.comm.jksdk.ad.view.CommAdView;
-import com.comm.jksdk.http.utils.LogUtils;
 import com.comm.jksdk.utils.DisplayUtil;
+import com.comm.jksdk.widget.RoundImageView;
 import com.comm.jksdk.widget.TopRoundImageView;
 import com.qq.e.ads.nativ.NativeADEventListener;
 import com.qq.e.ads.nativ.NativeUnifiedADData;
@@ -33,7 +33,7 @@ import java.util.Random;
   * @ProjectName:    ${PROJECT_NAME}
   * @Package:        ${PACKAGE_NAME}
   * @ClassName:      ${NAME}
-  * @Description:     优量汇大图播放按钮跑马灯样式
+  * @Description:     大图美女_01_彩带
   * @Author:         fanhailong
   * @CreateDate:     ${DATE} ${TIME}
   * @UpdateUser:     更新者：
@@ -43,31 +43,30 @@ import java.util.Random;
  */
 
 
-public class YLHBigImgAdPlayLampView extends CommAdView {
+public class YLHBigImgNestPlayLampView extends CommAdView {
     // 广告实体数据
     private NativeUnifiedADData mNativeADData = null;
     private RequestOptions requestOptions;
     private FrameLayout.LayoutParams adlogoParams;
 
     RelativeLayout nativeAdContainer;
+
     NativeAdContainer adImIayout; //优量汇容器
-    ImageView brandIconIm; //广告商图标
-    TextView adTitleTv; //广告的title
+    RoundImageView custonIm; //嵌套进来的美女图片
     TextView adDescribeTv; //广告描述
-    TopRoundImageView adIm; //广告主体图片
-    TextView downTb; //广告下载按钮
+    ImageView adIm; //广告主体图片
+    TextView adTitleTv; //广告的title
     View animationView; //跑马灯的view
-//    ImageView adLogo;
 
     private boolean isLamp; //是否带走马灯
 
     private AnimationDrawable mAnimationDrawable;
 
-    public YLHBigImgAdPlayLampView(Context context) {
+    public YLHBigImgNestPlayLampView(Context context) {
         this(context, false);
     }
 
-    public YLHBigImgAdPlayLampView(Context context, boolean isLamp) {
+    public YLHBigImgNestPlayLampView(Context context, boolean isLamp) {
         super(context);
         this.isLamp = isLamp;
         initAnimation();
@@ -87,7 +86,7 @@ public class YLHBigImgAdPlayLampView extends CommAdView {
 
     @Override
     public int getLayoutId() {
-        return R.layout.ylh_ad_big_paly_lamp_layout;
+        return R.layout.ylh_ad_big_nest_paly_lamp_layout;
     }
 
     @Override
@@ -95,13 +94,13 @@ public class YLHBigImgAdPlayLampView extends CommAdView {
 
         nativeAdContainer = findViewById(R.id.rl_ad_item_root);
         adImIayout = findViewById(R.id.ad_im_layout);
-        brandIconIm = findViewById(R.id.brand_icon_im);
         adTitleTv = findViewById(R.id.ad_title_tv);
         adDescribeTv = findViewById(R.id.ad_describe_tv);
         adIm = findViewById(R.id.ad_im);
         animationView = findViewById(R.id.animation_lamp);
-        downTb = findViewById(R.id.down_bt);
-//        adLogo = findViewById(R.id.ad_logo);
+        custonIm = findViewById(R.id.custon_im);
+
+
         if (mContext == null) {
             return;
         }
@@ -170,9 +169,7 @@ public class YLHBigImgAdPlayLampView extends CommAdView {
         }
         adTitleTv.setText(ad.getTitle());
         adDescribeTv.setText(ad.getDesc());
-        Glide.with(mContext).load(ad.getIconUrl()).into(brandIconIm);
-        updateAdAction(downTb, ad);
-        downTb.setOnClickListener(new OnClickListener() {
+        nativeAdContainer.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 adIm.callOnClick();
@@ -204,42 +201,40 @@ public class YLHBigImgAdPlayLampView extends CommAdView {
 
             @Override
             public void onADStatusChanged() {
-//                updateClickDesc(tvDownload, mNativeADData);
-                updateAdAction(downTb, ad);
             }
         });
 
     }
 
-    public void updateAdAction(TextView button, NativeUnifiedADData ad) {
-        if (!ad.isAppAd()) {
-            button.setText("详情");
-            return;
-        }
-        switch (ad.getAppStatus()) {
-            case 0:
-                button.setText("下载");
-                break;
-            case 1:
-                button.setText("启动");
-                break;
-            case 2:
-                button.setText("更新");
-                break;
-            case 4:
-                button.setText(ad.getProgress() + "%");
-                break;
-            case 8:
-                button.setText("安装");
-                break;
-            case 16:
-                button.setText("下载失败，重新下载");
-                break;
-            default:
-                button.setText("详情");
-                break;
-        }
-    }
+//    public void updateAdAction(TextView button, NativeUnifiedADData ad) {
+//        if (!ad.isAppAd()) {
+//            button.setText("详情");
+//            return;
+//        }
+//        switch (ad.getAppStatus()) {
+//            case 0:
+//                button.setText("下载");
+//                break;
+//            case 1:
+//                button.setText("启动");
+//                break;
+//            case 2:
+//                button.setText("更新");
+//                break;
+//            case 4:
+//                button.setText(ad.getProgress() + "%");
+//                break;
+//            case 8:
+//                button.setText("安装");
+//                break;
+//            case 16:
+//                button.setText("下载失败，重新下载");
+//                break;
+//            default:
+//                button.setText("详情");
+//                break;
+//        }
+//    }
 
     @Override
     protected void onDetachedFromWindow() {

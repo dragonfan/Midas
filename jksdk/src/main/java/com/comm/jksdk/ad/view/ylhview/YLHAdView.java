@@ -73,9 +73,9 @@ public class YLHAdView extends CommAdView {
         } else if (Constants.AdStyle.BIG_IMG_BUTTON_LAMP.equals(style)) { //大图带按钮带跑马灯
             mAdView = new YLHBigImgAdPlayLampView(mContext, true);
         } else if (Constants.AdStyle.BIG_IMG_NEST.equals(style)) { //大图嵌套美女图片
-            mAdView = new ChjBigImgNestPlayLampView(mContext);
+            mAdView = new YLHBigImgNestPlayLampView(mContext);
         } else if (Constants.AdStyle.BIG_IMG_NEST_LAMP.equals(style)) { //大图嵌套图片带跑马灯
-            mAdView = new ChjBigImgNestPlayLampView(mContext, true);
+            mAdView = new YLHBigImgNestPlayLampView(mContext, true);
         } else if (Constants.AdStyle.LEFT_IMG_RIGHT_TWO_TEXT.equals(style)) {
             mAdView = new YlhLeftImgRightTwoTextAdView(mContext);
         } else if (Constants.AdStyle.OPEN_ADS.equals(style)) {
