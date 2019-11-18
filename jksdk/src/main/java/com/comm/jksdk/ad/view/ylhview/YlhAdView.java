@@ -143,13 +143,11 @@ public class YlhAdView extends CommAdView {
      */
     protected void getAdByBigImg(final int adRequestTimeOut) {
         LogUtils.d(TAG, "onADLoaded->请求优量汇广告");
-        Toast.makeText(mContext, "onADLoaded->请求优量汇广告" + "广告id：" + mAdId.trim(), Toast.LENGTH_LONG).show();
 
         NativeUnifiedAD mAdManager = new NativeUnifiedAD(mActivity, mAppId, mAdId.trim(), new NativeADUnifiedListener() {
             @Override
             public void onADLoaded(List<NativeUnifiedADData> nativeAdList) {
                 LogUtils.d(TAG, "onADLoaded->请求优量汇成功");
-                Toast.makeText(mContext, "onADLoaded->请求优量汇成功", Toast.LENGTH_LONG).show();
 
                 Boolean requestAdOverTime = AdsUtils.requestAdOverTime(adRequestTimeOut);
                 if (requestAdOverTime) {
@@ -169,7 +167,6 @@ public class YlhAdView extends CommAdView {
             @Override
             public void onNoAD(AdError adError) {
                 LogUtils.d(TAG, "onNoAD->请求优量汇失败,ErrorCode:" + adError.getErrorCode() + ",ErrorMsg:" + adError.getErrorMsg());
-                Toast.makeText(mContext, "onNoAD->请求优量汇失败,ErrorCode:" + adError.getErrorCode() + ",ErrorMsg:" + adError.getErrorMsg(), Toast.LENGTH_LONG).show();
 
                 adError(adError.getErrorCode(), adError.getErrorMsg());
                 firstAdError(adError.getErrorCode(), adError.getErrorMsg());
