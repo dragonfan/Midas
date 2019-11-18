@@ -19,7 +19,7 @@ public interface Api {
 
     class URL_TEST{//测试环境
 //        public static final String APP_WEATHER_DOMAIN = "http://172.16.11.247:8974/adsenseapi/"; //测试环境
-        public static final String APP_WEATHER_DOMAIN = "http://testadsenseapi.hellogeek.com"; //测试环境
+        public static final String APP_WEATHER_DOMAIN = "http://testadsenseapi.hellogeek.com/adsenseapi/"; //测试环境
 
     }
 
