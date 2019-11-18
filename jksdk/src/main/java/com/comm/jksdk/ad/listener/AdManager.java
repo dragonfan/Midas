@@ -16,7 +16,8 @@ import android.view.ViewGroup;
  * @Version: 1.0
  */
 public interface AdManager {
-    void loadAd(String position, AdListener listener);
+
+    void loadAd(Activity activity, String position, AdListener listener);
 
     void loadSplashAd(Activity activity, String position, AdListener listener);
 

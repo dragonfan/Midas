@@ -6,23 +6,43 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.jk.adsdkdemo.BigImgNormalAcitvity">
-    <FrameLayout
-        android:background="#eeeeee"
-        android:padding="@dimen/dimen_12dp"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <FrameLayout
-
-            android:layout_marginLeft="@dimen/dimen_12dp"
-            android:layout_marginRight="@dimen/dimen_12dp"
-            android:id="@+id/container"
-            android:background="@drawable/ad_container_bg"
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:text="渠道号:"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/dp_20" />
 
-        </FrameLayout>
-    </FrameLayout>
+        <EditText
+            android:layout_marginLeft="@dimen/dimen_12dp"
+            android:id="@+id/et_chan_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="jinritoutiao"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/dp_20"
+            android:visibility="visible" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="业务线:"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/dp_20" />
+
+        <EditText
+            android:id="@+id/et_product_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="18"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/dp_20"
+            android:visibility="visible" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_marginTop="@dimen/dimen_20dp"
@@ -32,16 +52,16 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="位置:"
+            android:text="bid:"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/dp_20" />
 
         <EditText
             android:layout_marginLeft="@dimen/dimen_12dp"
-            android:id="@+id/et_position_id"
+            android:id="@+id/et_bid_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="success_page_ad_1"
+            android:text="10"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/dp_20"
             android:visibility="visible" />
@@ -49,15 +69,15 @@
 
     <Button
         android:layout_marginTop="@dimen/dimen_20dp"
-        android:id="@+id/button_request_ad"
+        android:id="@+id/button_set_bid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="请求广告" />
+        android:text="设置bid" />
     <Button
         android:layout_marginTop="@dimen/dimen_20dp"
-        android:visibility="gone"
-        android:id="@+id/button_load_ad"
+        android:id="@+id/button_request_config"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="加载广告" />
+        android:text="请求配置信息" />
+
 </LinearLayout>

@@ -3,6 +3,7 @@ package com.comm.jksdk.ad.view.ylhview;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -15,6 +16,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.comm.jksdk.R;
 import com.comm.jksdk.ad.view.CommAdView;
+import com.comm.jksdk.http.utils.LogUtils;
 import com.comm.jksdk.utils.DisplayUtil;
 import com.comm.jksdk.widget.TopRoundImageView;
 import com.qq.e.ads.nativ.NativeADEventListener;
@@ -45,7 +47,7 @@ public class YLHBigImgAdPlayLampView extends CommAdView {
     // 广告实体数据
     private NativeUnifiedADData mNativeADData = null;
     private RequestOptions requestOptions;
-//    private FrameLayout.LayoutParams adlogoParams;
+    private FrameLayout.LayoutParams adlogoParams;
 
     RelativeLayout nativeAdContainer;
     NativeAdContainer adImIayout; //优量汇容器
@@ -55,8 +57,7 @@ public class YLHBigImgAdPlayLampView extends CommAdView {
     TopRoundImageView adIm; //广告主体图片
     TextView downTb; //广告下载按钮
     View animationView; //跑马灯的view
-    ImageView adLogo;
-    FrameLayout imFrameLayout;
+//    ImageView adLogo;
 
     private boolean isLamp; //是否带走马灯
 
@@ -93,23 +94,23 @@ public class YLHBigImgAdPlayLampView extends CommAdView {
     public void initView() {
 
         nativeAdContainer = findViewById(R.id.rl_ad_item_root);
+        adImIayout = findViewById(R.id.ad_im_layout);
         brandIconIm = findViewById(R.id.brand_icon_im);
         adTitleTv = findViewById(R.id.ad_title_tv);
         adDescribeTv = findViewById(R.id.ad_describe_tv);
         adIm = findViewById(R.id.ad_im);
         animationView = findViewById(R.id.animation_lamp);
         downTb = findViewById(R.id.down_bt);
-        adLogo = findViewById(R.id.ad_logo);
-        imFrameLayout = findViewById(R.id.im_framelayout);
+//        adLogo = findViewById(R.id.ad_logo);
         if (mContext == null) {
             return;
         }
-//        int adlogoWidth = DisplayUtil.dp2px(mContext, 30);
-//        int adlogoHeight = DisplayUtil.dp2px(mContext, 12);
-//        adlogoParams = new FrameLayout.LayoutParams(adlogoWidth, adlogoHeight);
-//        adlogoParams.gravity = Gravity.BOTTOM;
-//        adlogoParams.bottomMargin = DisplayUtil.dp2px(mContext, 8);
-//        adlogoParams.leftMargin = (int) (getContext().getResources().getDimension(R.dimen.common_ad_img_width_98dp) - adlogoWidth);
+        int adlogoWidth = DisplayUtil.dp2px(mContext, 30);
+        int adlogoHeight = DisplayUtil.dp2px(mContext, 12);
+        adlogoParams = new FrameLayout.LayoutParams(adlogoWidth, adlogoHeight);
+        adlogoParams.gravity = Gravity.BOTTOM;
+        adlogoParams.bottomMargin = DisplayUtil.dp2px(mContext, 8);
+        adlogoParams.leftMargin = (int) (getContext().getResources().getDimension(R.dimen.common_ad_img_width_98dp) - adlogoWidth);
         requestOptions = new RequestOptions()
                 .transforms(new RoundedCorners(DisplayUtil.dp2px(mContext, 3)))
                 .error(R.color.returncolor);//图片加载失败后，显示的图片
@@ -174,9 +175,10 @@ public class YLHBigImgAdPlayLampView extends CommAdView {
 
 //         广告事件监听
         List<View> clickableViews = new ArrayList<>();
-        clickableViews.add(imFrameLayout);
+        clickableViews.add(adIm);
+        clickableViews.add(downTb);
         try {
-            ad.bindAdToView(nativeAdContainer.getContext(), adImIayout, null, clickableViews);
+            ad.bindAdToView(nativeAdContainer.getContext(), adImIayout, adlogoParams, clickableViews);
         } catch (Exception e) {
             e.printStackTrace();
         }

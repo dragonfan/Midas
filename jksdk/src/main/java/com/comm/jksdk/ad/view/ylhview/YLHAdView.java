@@ -154,7 +154,7 @@ public class YLHAdView extends CommAdView {
         LogUtils.d(TAG, "onADLoaded->请求优量汇广告");
         Toast.makeText(mContext, "onADLoaded->请求优量汇广告" + "广告id：" + mAdId.trim(), Toast.LENGTH_LONG).show();
 
-        NativeUnifiedAD mAdManager = new NativeUnifiedAD(mContext, mAppId, mAdId.trim(), new NativeADUnifiedListener() {
+        NativeUnifiedAD mAdManager = new NativeUnifiedAD(mActivity, mAppId, mAdId.trim(), new NativeADUnifiedListener() {
             @Override
             public void onADLoaded(List<NativeUnifiedADData> nativeAdList) {
                 LogUtils.d(TAG, "onADLoaded->请求优量汇成功");

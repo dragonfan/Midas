@@ -153,7 +153,8 @@ public class NativeAdManger implements AdManager {
     };
 
     @Override
-    public void loadAd(String position, AdListener listener) {
+    public void loadAd(Activity activity, String position, AdListener listener) {
+        mActivity = activity;
         mAdListener = listener;
         //创建view
         adParentView = new RelativeLayout(GeekAdSdk.getContext());

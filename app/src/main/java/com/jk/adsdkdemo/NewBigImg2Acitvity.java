@@ -2,9 +2,12 @@ package com.jk.adsdkdemo;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.comm.jksdk.GeekAdSdk;
 import com.comm.jksdk.ad.listener.AdListener;
@@ -28,6 +31,7 @@ public class NewBigImg2Acitvity extends AppCompatActivity implements View.OnClic
 
     private Button requestBt;
     private FrameLayout container;
+    private EditText positionEt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +39,7 @@ public class NewBigImg2Acitvity extends AppCompatActivity implements View.OnClic
         container = findViewById(R.id.container);
         requestBt = findViewById(R.id.button_request_ad);
         requestBt.setOnClickListener(this);
+        positionEt = findViewById(R.id.et_position_id);
     }
 
     View adView;
@@ -42,11 +47,20 @@ public class NewBigImg2Acitvity extends AppCompatActivity implements View.OnClic
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_request_ad:
+                String position = positionEt.getText().toString().trim();
+                if (TextUtils.isEmpty(position)) {
+                    Toast.makeText(getApplicationContext(), "accept->输入的位置不能为空", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 AdManager adManager = GeekAdSdk.getAdsManger();
-                adManager.loadAd("new_homepage_ad_2", new AdListener() {
+                adManager.loadAd(this,position, new AdListener() {
                     @Override
                     public void adSuccess() {
-
+                        adView = adManager.getAdView();
+                        if (adView != null) {
+                            container.removeAllViews();
+                            container.addView(adView);
+                        }
                     }
 
                     @Override
@@ -64,11 +78,6 @@ public class NewBigImg2Acitvity extends AppCompatActivity implements View.OnClic
 
                     }
                 });
-                adView = adManager.getAdView();
-                if (adView != null) {
-                    container.removeAllViews();
-                    container.addView(adView);
-                }
                 break;
         }
     }

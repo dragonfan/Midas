@@ -8,44 +8,6 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="渠道号:"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/dp_20" />
-
-        <EditText
-            android:layout_marginLeft="@dimen/dimen_12dp"
-            android:id="@+id/et_chan_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="jinritoutiao"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/dp_20"
-            android:visibility="visible" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="业务线:"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/dp_20" />
-
-        <EditText
-            android:id="@+id/et_product_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="18"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/dp_20"
-            android:visibility="visible" />
-    </LinearLayout>
-
     <Button
         android:id="@+id/button_configinfo"
         android:layout_width="match_parent"

@@ -2,9 +2,12 @@ package com.jk.adsdkdemo;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.comm.jksdk.GeekAdSdk;
 import com.comm.jksdk.ad.listener.AdListener;
@@ -28,6 +31,7 @@ public class BigImgNormalAcitvity extends AppCompatActivity implements View.OnCl
 
     private Button requestBt, loadBt;
     private FrameLayout container;
+    private EditText positionEt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +39,7 @@ public class BigImgNormalAcitvity extends AppCompatActivity implements View.OnCl
         container = findViewById(R.id.container);
         requestBt = findViewById(R.id.button_request_ad);
         loadBt = findViewById(R.id.button_load_ad);
+        positionEt = findViewById(R.id.et_position_id);
         requestBt.setOnClickListener(this);
         loadBt.setOnClickListener(this);
     }
@@ -44,17 +49,20 @@ public class BigImgNormalAcitvity extends AppCompatActivity implements View.OnCl
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_request_ad:
-//                adView = NativesAdManger.getInstance().setContext(this)
-//                        .setAdPositionId("1")
-//                        .setAdListener(mAdListener)
-//                        .setDefaultConfigKey(Constants.DEFAULT_CONFIG_KEY)
-//                        .build()
-//                        .getAdView();
+                String position = positionEt.getText().toString().trim();
+                if (TextUtils.isEmpty(position)) {
+                    Toast.makeText(getApplicationContext(), "accept->输入的位置不能为空", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 AdManager adManager = GeekAdSdk.getAdsManger();
-                adManager.loadAd("success_page_ad_1", new AdListener() {
+                adManager.loadAd(this,position, new AdListener() {
                     @Override
                     public void adSuccess() {
-
+                        adView = adManager.getAdView();
+                        if (adView != null) {
+                            container.removeAllViews();
+                            container.addView(adView);
+                        }
                     }
 
                     @Override
@@ -72,11 +80,6 @@ public class BigImgNormalAcitvity extends AppCompatActivity implements View.OnCl
 
                     }
                 });
-                adView = adManager.getAdView();
-                if (adView != null) {
-                    container.removeAllViews();
-                    container.addView(adView);
-                }
                 break;
         }
     }

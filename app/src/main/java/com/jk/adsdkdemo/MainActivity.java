@@ -208,34 +208,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_configinfo:
-                //请求配置信息
-                //bid 第一次安装app时产生0-99之间的随机数
-                // UserActive 用户激活时间
-                //ProductName 业务线
-//                String marketName=et_chan_id.getText().toString();
-//                String productName=et_product_id.getText().toString();
-//                NativesAdManger.getInstance().setContext(this)
-//                        .setBid(bid)
-//                        .setMarketName(marketName)
-//                        .setProductName(productName)
-//                        .setLatitude("")
-//                        .setLongitude("")
-//                        .setProvince("")
-//                        .setCity("")
-//                        .setUserActive(firstOpenAppTime)
-//                        .requestConfig();
-                GeekAdSdk.requestConfig(new ConfigListener() {
-                    @Override
-                    public void adSuccess(List<ConfigBean.AdListBean> configList) {
-                        LogUtils.d(TAG, "config:" + JsonUtils.encode(configList));
-                        Toast.makeText(getApplicationContext(), "accept->配置信息请求成功", Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public void adError(int errorCode, String errorMsg) {
-                        Toast.makeText(getApplicationContext(), "accept->配置信息请求失败， msg:" + errorMsg, Toast.LENGTH_LONG).show();
-                    }
-                });
+                startActivity(new Intent(this, ConfigActivity.class));
                 break;
             case R.id.button_big_bt_img:
                 startActivity(new Intent(this, BigImgNormalAcitvity.class));
