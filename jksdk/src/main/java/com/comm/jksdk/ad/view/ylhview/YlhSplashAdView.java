@@ -17,7 +17,7 @@ import com.qq.e.comm.util.AdError;
  * @author zixuefei
  * @since 2019/11/14 21:53
  */
-public class YlhSplashAdView extends YLHAdView {
+public class YlhSplashAdView extends YlhAdView {
     private ConstraintLayout splashContainer;
 
     protected YlhSplashAdView(Context context) {

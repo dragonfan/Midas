@@ -10,7 +10,7 @@ import com.comm.jksdk.ad.listener.AdManager;
 import com.comm.jksdk.ad.listener.FirstAdListener;
 import com.comm.jksdk.ad.view.CommAdView;
 import com.comm.jksdk.ad.view.chjview.CHJAdView;
-import com.comm.jksdk.ad.view.ylhview.YLHAdView;
+import com.comm.jksdk.ad.view.ylhview.YlhAdView;
 import com.comm.jksdk.bean.ConfigBean;
 import com.comm.jksdk.config.AdsConfig;
 import com.comm.jksdk.constant.Constants;
@@ -107,7 +107,7 @@ public class NativeAdManger implements AdManager {
             }
             ((CHJAdView) mAdView).setFullScreen(isFullScreen);
         } else if (Constants.AdType.YouLiangHui.equals(adType)) {
-            mAdView = new YLHAdView(GeekAdSdk.getContext(), activity, adStyle, appId, mAdId);
+            mAdView = new YlhAdView(GeekAdSdk.getContext(), activity, adStyle, appId, mAdId);
         } else {
             // 暂不处理
             if (mAdListener != null) {

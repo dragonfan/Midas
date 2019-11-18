@@ -33,7 +33,7 @@ import java.util.Random;
  */
 
 
-public class YlhLeftImgRightTwoTextAdView extends YLHAdView {
+public class YlhLeftImgRightTwoTextAdView extends YlhAdView {
     ImageView ivImg;
     TextView tvTitle;
     TextView tvSubTitle;

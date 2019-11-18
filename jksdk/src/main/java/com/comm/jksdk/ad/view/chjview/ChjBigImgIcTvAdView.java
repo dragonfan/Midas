@@ -35,7 +35,7 @@ import java.util.Random;
   * @ProjectName:    ${PROJECT_NAME}
   * @Package:        ${PACKAGE_NAME}
   * @ClassName:      ${NAME}
-  * @Description:     穿山甲大图标题居中样式
+  * @Description:     大图_带icon文字
   * @Author:         fanhailong
   * @CreateDate:     ${DATE} ${TIME}
   * @UpdateUser:     更新者：
@@ -45,7 +45,7 @@ import java.util.Random;
  */
 
 
-public class ChjBigImgAdViewCenter extends CommAdView {
+public class ChjBigImgIcTvAdView extends CommAdView {
     // 广告实体数据
     private TTFeedAd mNativeADData = null;
     private RequestOptions requestOptions;
@@ -56,9 +56,8 @@ public class ChjBigImgAdViewCenter extends CommAdView {
     TextView adTitleTv; //广告的title
     TextView adDescribeTv; //广告描述
     ImageView adIm; //广告主体图片
-    TextView downTb; //广告下载按钮
 
-    public ChjBigImgAdViewCenter(Context context) {
+    public ChjBigImgIcTvAdView(Context context) {
         super(context);
 
     }
@@ -66,7 +65,7 @@ public class ChjBigImgAdViewCenter extends CommAdView {
 
     @Override
     public int getLayoutId() {
-        return R.layout.chj_ad_big_center_layout;
+        return R.layout.chj_ad_big_ic_tv_layout;
     }
 
     @Override
@@ -77,7 +76,6 @@ public class ChjBigImgAdViewCenter extends CommAdView {
         adTitleTv = findViewById(R.id.ad_title_tv);
         adDescribeTv = findViewById(R.id.ad_describe_tv);
         adIm = findViewById(R.id.ad_im);
-        downTb = findViewById(R.id.down_bt);
 
         if (mContext == null) {
             return;
@@ -180,7 +178,6 @@ public class ChjBigImgAdViewCenter extends CommAdView {
         //可以被点击的view, 也可以把convertView放进来意味item可被点击
         List<View> clickViewList = new ArrayList<>();
         clickViewList.add(adIm);
-        clickViewList.add(downTb);
         clickViewList.add(nativeAdContainer);
         //触发创意广告的view（点击下载或拨打电话）
         List<View> creativeViewList = new ArrayList<>();
@@ -218,8 +215,6 @@ public class ChjBigImgAdViewCenter extends CommAdView {
                     ad.setActivityForDownloadApp((Activity) mContext);
                 }
 //                nativeAdContainer.setVisibility(View.VISIBLE);
-                downTb.setVisibility(VISIBLE);
-                downTb.setText("下载");
                 bindDownloadListener(ad);
                 //绑定下载状态控制器
                 bindDownLoadStatusController(ad);
@@ -229,12 +224,9 @@ public class ChjBigImgAdViewCenter extends CommAdView {
 //                tvDownload.setText("立即拨打");
             case TTAdConstant.INTERACTION_TYPE_LANDING_PAGE:
             case TTAdConstant.INTERACTION_TYPE_BROWSER:
-                downTb.setVisibility(GONE);
 //                nativeAdContainer.setVisibility(View.VISIBLE);
 //                tvDownload.setText("查看详情");
             default:
-                downTb.setVisibility(VISIBLE);
-                downTb.setText("详情");
 //                nativeAdContainer.setVisibility(View.GONE);
 //                ToastUtils.setToastStrShort("交互类型异常");
         }
@@ -262,7 +254,6 @@ public class ChjBigImgAdViewCenter extends CommAdView {
                 if (!isValid()) {
                     return;
                 }
-                downTb.setText("下载");
             }
 
             @SuppressLint("SetTextI18n")
@@ -298,7 +289,6 @@ public class ChjBigImgAdViewCenter extends CommAdView {
                 if (!isValid()) {
                     return;
                 }
-                downTb.setText("下载");
             }
 
             @Override
@@ -306,7 +296,6 @@ public class ChjBigImgAdViewCenter extends CommAdView {
                 if (!isValid()) {
                     return;
                 }
-                downTb.setText("立即打开");
             }
 
             @Override
@@ -314,7 +303,6 @@ public class ChjBigImgAdViewCenter extends CommAdView {
                 if (!isValid()) {
                     return;
                 }
-                downTb.setText("立即安装");
             }
 
             @SuppressWarnings("BooleanMethodIsAlwaysInverted")

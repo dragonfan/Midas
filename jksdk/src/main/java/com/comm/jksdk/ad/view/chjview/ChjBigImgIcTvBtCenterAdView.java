@@ -7,12 +7,10 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.androidquery.callback.ImageOptions;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
@@ -37,7 +35,7 @@ import java.util.Random;
   * @ProjectName:    ${PROJECT_NAME}
   * @Package:        ${PACKAGE_NAME}
   * @ClassName:      ${NAME}
-  * @Description:     穿山甲大图样式一
+  * @Description:     大图_带icon文字按钮居中
   * @Author:         fanhailong
   * @CreateDate:     ${DATE} ${TIME}
   * @UpdateUser:     更新者：
@@ -47,7 +45,7 @@ import java.util.Random;
  */
 
 
-public class ChjBigImgAdViewNormal extends CommAdView {
+public class ChjBigImgIcTvBtCenterAdView extends CommAdView {
     // 广告实体数据
     private TTFeedAd mNativeADData = null;
     private RequestOptions requestOptions;
@@ -60,7 +58,7 @@ public class ChjBigImgAdViewNormal extends CommAdView {
     ImageView adIm; //广告主体图片
     TextView downTb; //广告下载按钮
 
-    public ChjBigImgAdViewNormal(Context context) {
+    public ChjBigImgIcTvBtCenterAdView(Context context) {
         super(context);
 
     }
@@ -68,7 +66,7 @@ public class ChjBigImgAdViewNormal extends CommAdView {
 
     @Override
     public int getLayoutId() {
-        return R.layout.chj_ad_big_normal_layout;
+        return R.layout.chj_ad_big_ic_tv_bt_center_layout;
     }
 
     @Override

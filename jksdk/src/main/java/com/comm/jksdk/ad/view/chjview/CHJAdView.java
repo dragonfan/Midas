@@ -71,11 +71,11 @@ public class CHJAdView extends CommAdView {
         if (Constants.AdStyle.BIG_IMG.equals(style)) {
             mAdView = new ChjBigImgAdView(mContext);
         } else if (Constants.AdStyle.DATU_ICON_TEXT_BUTTON.equals(style)) { // 大图_带icon文字按钮
-            mAdView = new ChjBigImgAdViewNormal(mContext);
+            mAdView = new ChjBigImgIcTvBtAdView(mContext);
         } else if (Constants.AdStyle.DATU_ICON_TEXT.equals(style)) { //大图_带icon文字
-            mAdView = new ChjBigImgNotDownloadAdView(mContext);
+            mAdView = new ChjBigImgIcTvAdView(mContext);
         } else if (Constants.AdStyle.DATU_ICON_TEXT_BUTTON_CENTER.equals(style)) { //大图_带icon文字按钮居中
-            mAdView = new ChjBigImgAdViewCenter(mContext);
+            mAdView = new ChjBigImgIcTvBtCenterAdView(mContext);
         } else if (Constants.AdStyle.BIG_IMG_BUTTON.equals(style)) { //大图带按钮（大图_下载播放按钮）
             mAdView = new ChjBigImgAdPlayLampView(mContext);
         } else if (Constants.AdStyle.BIG_IMG_BUTTON_LAMP.equals(style)) { //大图带按钮带跑马灯

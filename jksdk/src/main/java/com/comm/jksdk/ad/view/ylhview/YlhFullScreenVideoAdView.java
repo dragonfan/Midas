@@ -33,7 +33,7 @@ import java.util.List;
  * @author zixuefei
  * @since 2019/11/16 14:01
  */
-public class YlhFullScreenVideoAdView extends YLHAdView implements NativeADUnifiedListener {
+public class YlhFullScreenVideoAdView extends YlhAdView implements NativeADUnifiedListener {
     private final int MAX_DURATION = 60;
     // 与广告有关的变量，用来显示广告素材的UI
     private NativeUnifiedAD nativeUnifiedAD;
