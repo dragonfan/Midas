@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //    private RelativeLayout adRlyt;
 
 
-    private Button button_configinfo, buttonBigImg, buttonBigBt, buttonBigImgCenter, buttonSplashAd,
+    private Button button_configinfo, buttonOldStyle, buttonSplashAd,
             btnFullScreenVideo, btnRewardVideo, btnNewBigImgFour, btnInsertScreenAd;
 
     //    private EditText et_ad_pos_id;
@@ -52,74 +52,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             // 如果是Android6.0以下的机器，建议在manifest中配置相关权限，这里可以直接调用SDK
         }
-        //保存默认配置文件  建议保存在asset目录下的json文件
-//        String jsonData = "{\n" +
-//                "\t\"code\": 0,\n" +
-//                "\t\"data\": {\n" +
-//                "\t\t\"adList\": [{\n" +
-//                "\t\t\t\"adPosition\": \"test_ad_code\",\n" +
-//                "\t\t\t\"adRequestTimeOut\": 0,\n" +
-//                "\t\t\t\"adStyle\": \"All\",\n" +
-//                "\t\t\t\"adVersion\": 5,\n" +
-//                "\t\t\t\"adsInfos\": [{\n" +
-//                "\t\t\t\t\"adId\": \"6000484459445749\",\n" +
-//                "\t\t\t\t\"adUnion\": \"youlianghui\",\n" +
-//                "\t\t\t\t\"adsAppId\": \"1108839337  \",\n" +
-//                "\t\t\t\t\"adsAppName\": \"即刻天气\",\n" +
-//                "\t\t\t\t\"requestOrder\": 1,\n" +
-//                "\t\t\t\t\"requestType\": 0\n" +
-//                "\t\t\t}, {\n" +
-//                "\t\t\t\t\"adId\": \"915945995\",\n" +
-//                "\t\t\t\t\"adUnion\": \"chuanshanjia\",\n" +
-//                "\t\t\t\t\"adsAppId\": \"5015945\",\n" +
-//                "\t\t\t\t\"adsAppName\": \"即刻天气\",\n" +
-//                "\t\t\t\t\"requestOrder\": 2,\n" +
-//                "\t\t\t\t\"requestType\": 0\n" +
-//                "\t\t\t}],\n" +
-//                "\t\t\t\"isChange\": 1,\n" +
-//                "\t\t\t\"productId\": 1\n" +
-//                "\t\t}]\n" +
-//                "\t},\n" +
-//                "\t\"msg\": \"请求成功\"\n" +
-//                "}";
-//        SPUtils.putString(Constants.DEFAULT_CONFIG_KEY, jsonData);
-//
-//
-//        if (isFirstInstallApp()) {// 第一次安装
-//            SPUtils.putBoolean(Constants.FIRST_INSTALL_APP, false);
-//            //保存用户首次安装时间
-//            SPUtils.putLong(Constants.FIRST_INSTALL_APP_TIME, System.currentTimeMillis());
-//            int bid=getRandomNum(99);
-//            SPUtils.putInt(Constants.BID, bid);
-//
-//        }
-//
-//         firstOpenAppTime = SPUtils.getLong(Constants.FIRST_INSTALL_APP_TIME, 0L);
-//         bid = SPUtils.getInt(Constants.BID, 0);
 
     }
 
-//    /**
-//     * 是否第一次安装app
-//     * @return
-//     */
-//    public static boolean isFirstInstallApp(){
-//        Boolean isFirstInstallApp = SPUtils.getBoolean(Constants.FIRST_INSTALL_APP, true);
-//        return isFirstInstallApp;
-//    }
-
-    //    /**
-//     * 获取随机数
-//     * @param max
-//     * @return
-//     */
-//    public static int getRandomNum(int max){
-//        // 产生[0,max-1]范围内的随机数为例
-//        int num=0;
-//        Random random = new Random();
-//        num=random.nextInt(max);
-//        return num;
-//    }
     private void initView() {
 //        button_ylh_ad = findViewById(R.id.button_ylh_ad);
 //        et_ad_pos_id = findViewById(R.id.et_ad_pos_id);
@@ -134,14 +69,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        button_ylh_ad.setOnClickListener(this);
         button_configinfo.setOnClickListener(this);
 
-        buttonBigImg = findViewById(R.id.button_big_img);
-        buttonBigImg.setOnClickListener(this);
+        buttonOldStyle = findViewById(R.id.button_old_style);
+        buttonOldStyle.setOnClickListener(this);
 
-        buttonBigBt = findViewById(R.id.button_big_bt_img);
-        buttonBigBt.setOnClickListener(this);
-
-        buttonBigImgCenter = findViewById(R.id.button_big_img_center);
-        buttonBigImgCenter.setOnClickListener(this);
 
         btnNewBigImgFour = findViewById(R.id.new_big_img);
         btnNewBigImgFour.setOnClickListener(this);
@@ -210,14 +140,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button_configinfo:
                 startActivity(new Intent(this, ConfigActivity.class));
                 break;
-            case R.id.button_big_bt_img:
-                startActivity(new Intent(this, BigImgNormalAcitvity.class));
-                break;
-            case R.id.button_big_img:
-                startActivity(new Intent(this, BigImgNotDownloadAcitvity.class));
-                break;
-            case R.id.button_big_img_center:
-                startActivity(new Intent(this, BigImgCenterActivity.class));
+            case R.id.button_old_style:
+                startActivity(new Intent(this, OldBigImgActivity.class));
                 break;
             case R.id.new_big_img:
                 startActivity(new Intent(this, NewBigImgActivity.class));

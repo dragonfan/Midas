@@ -62,6 +62,7 @@
         <activity android:name=".NewBigImg3Acitvity" />
         <activity android:name=".NewBigImg2Acitvity" />
         <activity android:name=".ConfigActivity" />
+        <activity android:name=".OldBigImgActivity" />
     </application>
 
 </manifest>
