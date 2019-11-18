@@ -24,23 +24,23 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
 
     private void initView() {
         setTitle("自选染插屏广告");
-        btnNormal = findViewById(R.id.btn_normal);
+        btnNormal = findViewById(R.id.btn_normal_browse);
         btnNormal.setOnClickListener(this);
 
         btnNormalDownload = findViewById(R.id.btn_normal_download);
         btnNormalDownload.setOnClickListener(this);
 
-        btnFullScreen = findViewById(R.id.btn_fullscreen);
+        btnFullScreen = findViewById(R.id.btn_fullscreen_download);
         btnFullScreen.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_fullscreen:
+            case R.id.btn_fullscreen_download:
 
                 break;
-            case R.id.btn_normal:
+            case R.id.btn_normal_browse:
 
                 break;
             case R.id.btn_normal_download:
