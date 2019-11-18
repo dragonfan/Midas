@@ -80,6 +80,11 @@ public class NativeAdManger implements AdManager {
     private String userId = "";
 
     /**
+     * 自渲染插屏广告是否是全屏
+     */
+    private boolean isFullScreen = false;
+
+    /**
      * 请求方式：0 - SDK 1 - API
      */
     private int requestType = 0;
@@ -100,6 +105,7 @@ public class NativeAdManger implements AdManager {
             if (!TextUtils.isEmpty(userId)) {
                 ((CHJAdView) mAdView).setUserId(userId);
             }
+            ((CHJAdView) mAdView).setFullScreen(isFullScreen);
         } else if (Constants.AdType.YouLiangHui.equals(adType)) {
             mAdView = new YLHAdView(GeekAdSdk.getContext(), activity, adStyle, appId, mAdId);
         } else {
@@ -249,6 +255,37 @@ public class NativeAdManger implements AdManager {
         mActivity = activity;
         this.orientation = orientation;
         this.userId = userId;
+        //创建view
+        adParentView = new RelativeLayout(GeekAdSdk.getContext());
+        //获取本地配置信息
+        ConfigBean.AdListBean mConfigInfoBean = AdsConfig.getInstance(GeekAdSdk.getContext()).getConfig(position);
+        if (mConfigInfoBean == null) {
+            if (mAdListener != null) {
+                mAdListener.adError(CodeFactory.LOCAL_INFO_EMPTY, CodeFactory.getError(CodeFactory.LOCAL_INFO_EMPTY));
+            }
+            return;
+        }
+        //当前广告位所对应的配置信息 存储到curAdlist
+        adStyle = mConfigInfoBean.getAdStyle();
+        adRequestTimeOut = mConfigInfoBean.getAdRequestTimeOut();
+        adsInfoslist.clear();
+        adsInfoslist.addAll(mConfigInfoBean.getAdsInfos());
+
+        againRequest();
+    }
+
+    /**
+     * 自定义插屏广告加载方法
+     *
+     * @param activity
+     * @param position
+     * @param listener
+     */
+    @Override
+    public void loadCustomInsertScreenAd(Activity activity, String position, boolean isFullScreen, AdListener listener) {
+        mAdListener = listener;
+        mActivity = activity;
+        this.isFullScreen = isFullScreen;
         //创建view
         adParentView = new RelativeLayout(GeekAdSdk.getContext());
         //获取本地配置信息

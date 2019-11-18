@@ -8,6 +8,7 @@ import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTFullScreenVideoAd;
 import com.comm.jksdk.R;
 import com.comm.jksdk.config.TTAdManagerHolder;
+import com.comm.jksdk.http.utils.LogUtils;
 import com.comm.jksdk.utils.CodeFactory;
 
 /**
@@ -55,6 +56,9 @@ public class CsjFullScreenVideoView extends CHJAdView {
         mTTAdNative.loadFullScreenVideoAd(adSlot, new TTAdNative.FullScreenVideoAdListener() {
             @Override
             public void onError(int code, String message) {
+                LogUtils.e(TAG, "loadFullScreenVideoAd error:" + code + " message:" + message);
+                adError(code, message);
+                firstAdError(code, message);
             }
 
             @Override

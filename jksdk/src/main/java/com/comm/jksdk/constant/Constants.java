@@ -25,6 +25,10 @@ public class Constants {
     public interface AdStyle {
 
         /**
+         * 自渲染插屏
+         */
+        String CUSTOM_CP = "CUSTOM_CP";
+        /**
          * 开屏
          */
         String OPEN_ADS = "OPEN_ADS";

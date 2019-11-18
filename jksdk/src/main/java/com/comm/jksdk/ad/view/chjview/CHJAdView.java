@@ -48,6 +48,11 @@ public class CHJAdView extends CommAdView {
      */
     private String userId = "";
 
+    /**
+     * 自渲染插屏广告是否是全屏
+     */
+    private boolean isFullScreen = false;
+
     private CommAdView mAdView = null;
 
     public CHJAdView(Context context, String style, String appId, String mAdId) {
@@ -87,6 +92,8 @@ public class CHJAdView extends CommAdView {
             mAdView = new CsjFullScreenVideoView(mContext);
         } else if (Constants.AdStyle.REWARD_VIDEO.equals(style)) {
             mAdView = new CsjRewardVideoAdView(mContext);
+        } else if (Constants.AdStyle.CUSTOM_CP.equals(style)) {
+            mAdView = new CsjCustomInsertScreenAdView(mContext);
         } else {
             //  all
             //所有样式都支持 随机展示
@@ -121,6 +128,10 @@ public class CHJAdView extends CommAdView {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public void setFullScreen(boolean fullScreen) {
+        isFullScreen = fullScreen;
     }
 
     @Override
@@ -159,6 +170,8 @@ public class CHJAdView extends CommAdView {
             getFullScreenVideoAd();
         } else if (Constants.AdStyle.REWARD_VIDEO.equals(style)) {
             getRewardVideoAd();
+        } else if (Constants.AdStyle.CUSTOM_CP.equals(style)) {
+            getCustomInsertScreenAd();
         }
     }
 
@@ -261,6 +274,23 @@ public class CHJAdView extends CommAdView {
             mAdView.setAdListener(mAdListener);
             mAdView.setYlhAdListener(mFirstAdListener);
             ((CsjRewardVideoAdView) mAdView).loadRewardVideoAd(mActivity, mAdId, userId, orientation);
+        }
+    }
+
+    /**
+     * 请求自渲染插屏广告
+     */
+    protected void getCustomInsertScreenAd() {
+        if (mAdView == null) {
+            return;
+        }
+
+        //step2:(可选，强烈建议在合适的时机调用):申请部分权限，如read_phone_state,防止获取不了imei时候，下载类广告没有填充的问题。
+        TTAdManagerHolder.get(mAppId).requestPermissionIfNecessary(mContext);
+        if (mAdView instanceof CsjCustomInsertScreenAdView) {
+            mAdView.setAdListener(mAdListener);
+            mAdView.setYlhAdListener(mFirstAdListener);
+            ((CsjCustomInsertScreenAdView) mAdView).loadCustomInsertScreenAd(mActivity, isFullScreen, mAdId);
         }
     }
 }
