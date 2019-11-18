@@ -27,6 +27,7 @@ public class TTAdManagerHolder {
 
     public static TTAdManager get(String appId) {
         if (!TextUtils.isEmpty(appId) && !appId.equals(mAppId)) {
+            sInit = false;
             mAppId = appId;
             init(GeekAdSdk.getContext(), mAppId);
         }
