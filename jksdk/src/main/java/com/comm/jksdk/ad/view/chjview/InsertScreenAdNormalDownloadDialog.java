@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bytedance.sdk.openadsdk.TTAdConstant;
 import com.bytedance.sdk.openadsdk.TTImage;
 import com.bytedance.sdk.openadsdk.TTNativeAd;
 import com.comm.jksdk.R;
@@ -24,12 +23,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 全屏插屏广告弹窗<p>
+ * 半屏插屏广告下载类<p>
  *
  * @author zixuefei
- * @since 2019/11/18 16:52
+ * @since 2019/11/18 21:33
  */
-public class InsertScreenAdFullDownloadDialog extends AlertDialog implements View.OnClickListener {
+public class InsertScreenAdNormalDownloadDialog extends AlertDialog implements View.OnClickListener {
     private final String TAG = InsertScreenAdFullDownloadDialog.class.getSimpleName();
     private TextView adName, adDes, adShowTime, adDownloadBtn;
     private ImageView adCover, adClose;
@@ -38,11 +37,12 @@ public class InsertScreenAdFullDownloadDialog extends AlertDialog implements Vie
     private ConstraintLayout adContainer;
     private int showTimeSecond;
 
-    protected InsertScreenAdFullDownloadDialog(Context context, int showTimeSecond) {
+    protected InsertScreenAdNormalDownloadDialog(Context context, int showTimeSecond) {
         super(context, R.style.InsertScreenAdDialog);
         this.showTimeSecond = showTimeSecond;
         setCancelable(false);
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +52,10 @@ public class InsertScreenAdFullDownloadDialog extends AlertDialog implements Vie
         window.getDecorView().setPadding(0, 0, 0, 0);
         WindowManager.LayoutParams params = window.getAttributes();
         params.width = WindowManager.LayoutParams.MATCH_PARENT;
-        params.height = WindowManager.LayoutParams.MATCH_PARENT;
+        params.height = WindowManager.LayoutParams.WRAP_CONTENT;
         window.setAttributes(params);
         window.setGravity(Gravity.CENTER);
-        setContentView(R.layout.csj_custom_full_screen_download_ad_view);
+        setContentView(R.layout.csj_insert_screen_normal_download_ad_view);
         initView();
     }
 
@@ -91,7 +91,6 @@ public class InsertScreenAdFullDownloadDialog extends AlertDialog implements Vie
             dismiss();
             return;
         }
-
         if (ttNativeAd.getImageList() != null && !ttNativeAd.getImageList().isEmpty()) {
             TTImage image = ttNativeAd.getImageList().get(0);
             if (image != null && image.isValid()) {
@@ -106,7 +105,6 @@ public class InsertScreenAdFullDownloadDialog extends AlertDialog implements Vie
 
         adName.setText(ttNativeAd.getTitle());
         adDes.setText(ttNativeAd.getDescription());
-        adDownloadBtn.setText(ttNativeAd.getInteractionType() == TTAdConstant.INTERACTION_TYPE_DOWNLOAD ? "下载" : "查看详情");
         countDownTimer.start();
         bindAd(ttNativeAd);
     }

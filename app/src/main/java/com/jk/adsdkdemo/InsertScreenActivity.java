@@ -39,8 +39,8 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
         btnNormal = findViewById(R.id.btn_normal_browse);
         btnNormal.setOnClickListener(this);
 
-        btnNormalDownload = findViewById(R.id.btn_normal_download);
-        btnNormalDownload.setOnClickListener(this);
+//        btnNormalDownload = findViewById(R.id.btn_normal_download);
+//        btnNormalDownload.setOnClickListener(this);
 
         btnFullScreen = findViewById(R.id.btn_fullscreen_download);
         btnFullScreen.setOnClickListener(this);
@@ -83,7 +83,7 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
                 loadCustomInsertScreenAd(true);
                 break;
             case R.id.btn_normal_browse:
-            case R.id.btn_normal_download:
+//            case R.id.btn_normal_download:
                 loadCustomInsertScreenAd(false);
                 break;
             default:

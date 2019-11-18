@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.bytedance.sdk.openadsdk.AdSlot;
+import com.bytedance.sdk.openadsdk.TTAdConstant;
 import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTNativeAd;
 import com.comm.jksdk.R;
@@ -89,7 +90,15 @@ public class CsjCustomInsertScreenAdView extends CHJAdView {
             fullDownloadDialog.show();
             fullDownloadDialog.loadAd(ttNativeAd);
         } else {
-
+            if (ttNativeAd.getInteractionType() == TTAdConstant.INTERACTION_TYPE_DOWNLOAD) {
+                InsertScreenAdNormalDownloadDialog normalDownloadDialog = new InsertScreenAdNormalDownloadDialog(activity, showTimeSeconds);
+                normalDownloadDialog.show();
+                normalDownloadDialog.loadAd(ttNativeAd);
+            } else {
+                InsertScreenAdNormalBrowseDialog browseDialog = new InsertScreenAdNormalBrowseDialog(activity, showTimeSeconds);
+                browseDialog.show();
+                browseDialog.loadAd(ttNativeAd);
+            }
         }
     }
 }
