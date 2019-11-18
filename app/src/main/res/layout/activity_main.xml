@@ -29,6 +29,13 @@
         android:text="新的大图广告四样式" />
 
     <Button
+        android:id="@+id/fake_video_img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:text="假视频大图_01" />
+
+    <Button
         android:id="@+id/button_splash_ad"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

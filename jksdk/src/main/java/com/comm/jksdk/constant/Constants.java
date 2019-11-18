@@ -83,6 +83,10 @@ public class Constants {
          */
         String INFO_STREAM = "INFO_STREAM";
         /**
+         * 假视频大图_01
+         */
+        String FAKE_VIDEO_IARGE_IMAGE = "FAKE_VIDEO_IARGE_IMAGE";
+        /**
          *
          */
         String All = "All";
