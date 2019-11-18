@@ -10,12 +10,14 @@
         android:id="@+id/ad_im_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <com.comm.jksdk.widget.TopRoundImageView
             android:id="@+id/ad_im"
-            app:fillet="@dimen/dimen_12dp"
             android:layout_width="match_parent"
             android:layout_height="171dp"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            app:fillet="@dimen/dimen_12dp" />
+
         <TextView
             android:id="@+id/ad_describe_tv"
             android:lines="1"

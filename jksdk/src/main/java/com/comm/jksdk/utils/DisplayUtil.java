@@ -15,17 +15,18 @@ import java.lang.reflect.Method;
  */
 
 public class DisplayUtil {
-    private DisplayUtil(){
+    private DisplayUtil() {
 
     }
 
     /**
      * 获得屏幕宽度像素大小
+     *
      * @param context
      * @return
      */
-    public static int getWidthPixels(Context context){
-        if(context == null){
+    public static int getWidthPixels(Context context) {
+        if (context == null) {
             return -1;
         }
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
@@ -35,11 +36,12 @@ public class DisplayUtil {
 
     /**
      * 获得屏幕高度像素大小
+     *
      * @param context
      * @return
      */
-    public static int getHeightPixels(Context context){
-        if(context == null){
+    public static int getHeightPixels(Context context) {
+        if (context == null) {
             return -1;
         }
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
@@ -49,11 +51,12 @@ public class DisplayUtil {
 
     /**
      * 获得屏幕每英寸像素（Pixels Per Inch），又叫DPI（Dots Per Inch）
+     *
      * @param context
      * @return
      */
-    public static int getDensityDpi(Context context){
-        if(context == null){
+    public static int getDensityDpi(Context context) {
+        if (context == null) {
             return -1;
         }
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
@@ -63,44 +66,48 @@ public class DisplayUtil {
 
     /**
      * 将px值转换为dp值
+     *
      * @param context
      * @param pxValue
      * @return
      */
-    public static int px2dp(Context context, float pxValue){
+    public static int px2dp(Context context, float pxValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
     }
 
     /**
      * 将dp值转换为px值，保证尺寸大小不变，在动态设置组件的固定宽,高值时，由于待设置的宽或高为密度值，常用此方法转换
+     *
      * @param context
      * @param dpValue
      * @return
      */
-    public static int dp2px(Context context, float dpValue){
+    public static int dp2px(Context context, float dpValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
 
     /**
      * 将px转化为sp
+     *
      * @param context
      * @param pxValue
      * @return
      */
-    public static int px2sp(Context context, float pxValue){
+    public static int px2sp(Context context, float pxValue) {
         final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
         return (int) (pxValue / fontScale + 0.5f);
     }
 
     /**
      * 将sp值转化为px值
+     *
      * @param context
      * @param spValue
      * @return
      */
-    public static int sp2px(Context context, float spValue){
+    public static int sp2px(Context context, float spValue) {
         final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
         return (int) (spValue * fontScale + 0.5f);
     }
@@ -123,6 +130,7 @@ public class DisplayUtil {
 
     /**
      * 检查是否存在虚拟按键栏
+     *
      * @param context
      * @return
      */
@@ -147,6 +155,7 @@ public class DisplayUtil {
 
     /**
      * 判断虚拟按键栏是否重写
+     *
      * @return
      */
     private static String getNavBarOverride() {
@@ -163,16 +172,20 @@ public class DisplayUtil {
         return sNavBarOverride;
     }
 
-    public static int getScreenWidth(Context context){
+    public static int getScreenWidth(Context context) {
         DisplayMetrics dm = context.getResources().getDisplayMetrics();
         return dm.widthPixels;
+    }
+
+    public static int getScreenHeight(Context context) {
+        DisplayMetrics dm = context.getResources().getDisplayMetrics();
+        return dm.heightPixels;
     }
 
     /**
      * 将dip或dp值转换为px值，保证尺寸大小不变
      *
-     * @param dipValue
-     *            （DisplayMetrics类中属性density）
+     * @param dipValue （DisplayMetrics类中属性density）
      * @return
      */
     public static int dip2px(Context context, float dipValue) {
@@ -181,7 +194,7 @@ public class DisplayUtil {
     }
 
     public static float getDisplayDensity(Context context) {
-         float scale = context.getResources().getDisplayMetrics().density;
+        float scale = context.getResources().getDisplayMetrics().density;
         return scale;
     }
 }

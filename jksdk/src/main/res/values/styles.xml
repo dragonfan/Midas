@@ -8,7 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="Dialog" parent="@android:style/Theme.DeviceDefault.Light.Dialog">
+    <style name="InsertScreenAdDialog" parent="@android:style/Theme.DeviceDefault.Light.Dialog">
         <item name="android:windowFrame">@null</item><!--边框-->
         <item name="android:windowIsFloating">true</item><!--是否浮现在activity之上-->
         <item name="android:windowIsTranslucent">true</item><!--半透明-->

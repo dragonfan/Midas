@@ -85,6 +85,11 @@ public class NativeAdManger implements AdManager {
     private boolean isFullScreen = false;
 
     /**
+     * 自渲染插屏广告展示时长
+     */
+    private int showTimeSeconds = 3;
+
+    /**
      * 请求方式：0 - SDK 1 - API
      */
     private int requestType = 0;
@@ -106,6 +111,7 @@ public class NativeAdManger implements AdManager {
                 ((CHJAdView) mAdView).setUserId(userId);
             }
             ((CHJAdView) mAdView).setFullScreen(isFullScreen);
+            ((CHJAdView) mAdView).setShowTimeSeconds(showTimeSeconds);
         } else if (Constants.AdType.YouLiangHui.equals(adType)) {
             mAdView = new YlhAdView(GeekAdSdk.getContext(), activity, adStyle, appId, mAdId);
         } else {
@@ -282,10 +288,11 @@ public class NativeAdManger implements AdManager {
      * @param listener
      */
     @Override
-    public void loadCustomInsertScreenAd(Activity activity, String position, boolean isFullScreen, AdListener listener) {
+    public void loadCustomInsertScreenAd(Activity activity, String position, boolean isFullScreen, int showTimeSeconds, AdListener listener) {
         mAdListener = listener;
         mActivity = activity;
         this.isFullScreen = isFullScreen;
+        this.showTimeSeconds = showTimeSeconds;
         //创建view
         adParentView = new RelativeLayout(GeekAdSdk.getContext());
         //获取本地配置信息

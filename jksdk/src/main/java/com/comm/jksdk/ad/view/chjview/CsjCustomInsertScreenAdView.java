@@ -40,7 +40,7 @@ public class CsjCustomInsertScreenAdView extends CHJAdView {
     /**
      * 获取插屏广告并展示
      */
-    public void loadCustomInsertScreenAd(Activity activity, final boolean isFullScreen, String adId) {
+    public void loadCustomInsertScreenAd(final Activity activity, final boolean isFullScreen, final int showTimeSeconds, String adId) {
         if (activity == null) {
             throw new NullPointerException("loadCustomInsertScreenAd activity is null");
         }
@@ -69,7 +69,10 @@ public class CsjCustomInsertScreenAdView extends CHJAdView {
             public void onNativeAdLoad(List<TTNativeAd> ads) {
                 if (!CollectionUtils.isEmpty(ads)) {
                     adSuccess();
-                    showAdDialog(ads.get(0), isFullScreen);
+                    if (activity.isFinishing() || activity.isDestroyed()) {
+                        return;
+                    }
+                    showAdDialog(ads.get(0), isFullScreen, showTimeSeconds);
                 } else {
                     adError(CodeFactory.UNKNOWN, "请求广告数据为空");
                 }
@@ -80,7 +83,13 @@ public class CsjCustomInsertScreenAdView extends CHJAdView {
     /**
      * 展示插屏广告
      */
-    private void showAdDialog(TTNativeAd ttNativeAd, boolean isFullScreen) {
+    private void showAdDialog(TTNativeAd ttNativeAd, boolean isFullScreen, int showTimeSeconds) {
+        if (isFullScreen) {
+            InsertScreenAdFullDownloadDialog fullDownloadDialog = new InsertScreenAdFullDownloadDialog(activity, showTimeSeconds);
+            fullDownloadDialog.show();
+            fullDownloadDialog.loadAd(ttNativeAd);
+        } else {
 
+        }
     }
 }

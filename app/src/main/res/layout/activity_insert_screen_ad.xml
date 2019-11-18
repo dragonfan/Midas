@@ -35,6 +35,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="全屏插屏广告下载类"
+        android:text="全屏插屏广告"
         app:layout_constraintTop_toBottomOf="@+id/btn_normal_download" />
 </android.support.constraint.ConstraintLayout>

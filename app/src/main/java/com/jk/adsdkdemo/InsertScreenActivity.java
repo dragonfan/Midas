@@ -32,7 +32,7 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void initView() {
-        setTitle("自选染插屏广告");
+        setTitle("自渲染插屏广告");
         adManager = GeekAdSdk.getAdsManger();
         statePoint = findViewById(R.id.txt_point);
 
@@ -50,7 +50,7 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
      * 获取插屏广告并加载
      */
     private void loadCustomInsertScreenAd(boolean isFullScreen) {
-        adManager.loadCustomInsertScreenAd(this, "external_advertising_ad_1", isFullScreen, new AdListener() {
+        adManager.loadCustomInsertScreenAd(this, "external_advertising_ad_1", isFullScreen, 3, new AdListener() {
             @Override
             public void adSuccess() {
                 LogUtils.d(TAG, "-----adSuccess-----");

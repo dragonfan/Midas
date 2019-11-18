@@ -2,7 +2,6 @@ package com.comm.jksdk.ad.view.chjview;
 
 import android.app.Activity;
 import android.content.Context;
-import android.widget.Toast;
 
 import com.bytedance.sdk.openadsdk.AdSlot;
 import com.bytedance.sdk.openadsdk.TTAdConstant;
@@ -52,6 +51,11 @@ public class CHJAdView extends CommAdView {
      * 自渲染插屏广告是否是全屏
      */
     private boolean isFullScreen = false;
+
+    /**
+     * 自渲染插屏广告展示时长
+     */
+    private int showTimeSeconds = 3;
 
     private CommAdView mAdView = null;
 
@@ -132,6 +136,10 @@ public class CHJAdView extends CommAdView {
 
     public void setFullScreen(boolean fullScreen) {
         isFullScreen = fullScreen;
+    }
+
+    public void setShowTimeSeconds(int showTimeSeconds) {
+        this.showTimeSeconds = showTimeSeconds;
     }
 
     @Override
@@ -287,7 +295,7 @@ public class CHJAdView extends CommAdView {
         if (mAdView instanceof CsjCustomInsertScreenAdView) {
             mAdView.setAdListener(mAdListener);
             mAdView.setYlhAdListener(mFirstAdListener);
-            ((CsjCustomInsertScreenAdView) mAdView).loadCustomInsertScreenAd(mActivity, isFullScreen, mAdId);
+            ((CsjCustomInsertScreenAdView) mAdView).loadCustomInsertScreenAd(mActivity, isFullScreen, showTimeSeconds, mAdId);
         }
     }
 }
