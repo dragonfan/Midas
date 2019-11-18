@@ -45,7 +45,7 @@ public final class GeekAdSdk {
         mCsjAppId = csjAppId;
         //初始化基本配置信息
         InitBaseConfig.getInstance().init(mContext);
-        InitBaseConfig.getInstance().initChjAd(mContext, csjAppId);
+//        InitBaseConfig.getInstance().initChjAd(mContext, csjAppId);
         AdsConfig.setProductName(mRroductName);
         mIsInit = true;
     }

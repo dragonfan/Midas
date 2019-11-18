@@ -5,6 +5,16 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.comm.jksdk.ad.view.CommAdView;
+import com.comm.jksdk.ad.view.chjview.ChjBigImgAdPlayLampView;
+import com.comm.jksdk.ad.view.chjview.ChjBigImgAdView;
+import com.comm.jksdk.ad.view.chjview.ChjBigImgAdViewCenter;
+import com.comm.jksdk.ad.view.chjview.ChjBigImgAdViewNormal;
+import com.comm.jksdk.ad.view.chjview.ChjBigImgNestPlayLampView;
+import com.comm.jksdk.ad.view.chjview.ChjBigImgNotDownloadAdView;
+import com.comm.jksdk.ad.view.chjview.ChjLeftImgRightTwoTextAdView;
+import com.comm.jksdk.ad.view.chjview.ChjSplashAdView;
+import com.comm.jksdk.ad.view.chjview.CsjFullScreenVideoView;
+import com.comm.jksdk.ad.view.chjview.CsjRewardVideoAdView;
 import com.comm.jksdk.constant.Constants;
 import com.comm.jksdk.http.utils.LogUtils;
 import com.comm.jksdk.utils.AdsUtils;
@@ -52,6 +62,20 @@ public class YLHAdView extends CommAdView {
 
         if (Constants.AdStyle.BIG_IMG.equals(style)) {
             mAdView = new YlhBIgImgAdView(mContext);
+        } else if (Constants.AdStyle.DATU_ICON_TEXT_BUTTON.equals(style)) { // 大图_带icon文字按钮
+            mAdView = new ChjBigImgAdViewNormal(mContext);
+        } else if (Constants.AdStyle.DATU_ICON_TEXT.equals(style)) { //大图_带icon文字
+            mAdView = new ChjBigImgNotDownloadAdView(mContext);
+        } else if (Constants.AdStyle.DATU_ICON_TEXT_BUTTON_CENTER.equals(style)) { //大图_带icon文字按钮居中
+            mAdView = new ChjBigImgAdViewCenter(mContext);
+        } else if (Constants.AdStyle.BIG_IMG_BUTTON.equals(style)) { //大图带按钮（大图_下载播放按钮）
+            mAdView = new YLHBigImgAdPlayLampView(mContext);
+        } else if (Constants.AdStyle.BIG_IMG_BUTTON_LAMP.equals(style)) { //大图带按钮带跑马灯
+            mAdView = new YLHBigImgAdPlayLampView(mContext, true);
+        } else if (Constants.AdStyle.BIG_IMG_NEST.equals(style)) { //大图嵌套美女图片
+            mAdView = new ChjBigImgNestPlayLampView(mContext);
+        } else if (Constants.AdStyle.BIG_IMG_NEST_LAMP.equals(style)) { //大图嵌套图片带跑马灯
+            mAdView = new ChjBigImgNestPlayLampView(mContext, true);
         } else if (Constants.AdStyle.LEFT_IMG_RIGHT_TWO_TEXT.equals(style)) {
             mAdView = new YlhLeftImgRightTwoTextAdView(mContext);
         } else if (Constants.AdStyle.OPEN_ADS.equals(style)) {
@@ -106,7 +130,8 @@ public class YLHAdView extends CommAdView {
 //            ylhAppid=Constants.YLH_APPID;
 //        }
         if (Constants.AdStyle.BIG_IMG.equals(style) || Constants.AdStyle.DATU_ICON_TEXT.equals(style) || Constants.AdStyle.DATU_ICON_TEXT_BUTTON_CENTER.equals(style)
-                || Constants.AdStyle.DATU_ICON_TEXT_BUTTON.equals(style) || Constants.AdStyle.LEFT_IMG_RIGHT_TWO_TEXT.equals(style)) {
+                || Constants.AdStyle.DATU_ICON_TEXT_BUTTON.equals(style) || Constants.AdStyle.LEFT_IMG_RIGHT_TWO_TEXT.equals(style) || Constants.AdStyle.BIG_IMG_BUTTON_LAMP.equals(style)
+                || Constants.AdStyle.BIG_IMG_BUTTON.equals(style) || Constants.AdStyle.BIG_IMG_NEST.equals(style) || Constants.AdStyle.BIG_IMG_NEST_LAMP.equals(style)) {
             //todo请求大图广告
             getAdByBigImg(adRequestTimeOut);
         } else if (Constants.AdStyle.LEFT_IMG_RIGHT_TWO_TEXT.equals(style)) {

@@ -34,9 +34,9 @@ public class CsjRewardVideoAdView extends CHJAdView {
     @Override
     public void initView() {
         //step2:(可选，强烈建议在合适的时机调用):申请部分权限，如read_phone_state,防止获取不了imei时候，下载类广告没有填充的问题。
-        TTAdManagerHolder.get().requestPermissionIfNecessary(mContext);
+        TTAdManagerHolder.get(mAppId).requestPermissionIfNecessary(mContext);
         //step3:创建TTAdNative对象,用于调用广告请求接口
-        mTTAdNative = TTAdManagerHolder.get().createAdNative(mContext.getApplicationContext());
+        mTTAdNative = TTAdManagerHolder.get(mAppId).createAdNative(mContext.getApplicationContext());
     }
 
     /**

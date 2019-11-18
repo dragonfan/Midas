@@ -45,7 +45,7 @@ public class ChjSplashAdView extends CHJAdView {
                 .setSupportDeepLink(true)
                 .setImageAcceptedSize(720, 1280)
                 .build();
-        TTAdManagerHolder.get().createAdNative(mContext).loadSplashAd(adSlot, new TTAdNative.SplashAdListener() {
+        TTAdManagerHolder.get(mAppId).createAdNative(mContext).loadSplashAd(adSlot, new TTAdNative.SplashAdListener() {
             @Override
             public void onError(int errorCode, String errorMsg) {
                 LogUtils.d(TAG, "csj errorCode:" + errorCode + " errorMsg:" + errorMsg);
