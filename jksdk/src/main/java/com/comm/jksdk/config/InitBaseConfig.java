@@ -65,7 +65,7 @@ public class InitBaseConfig {
             public int getServerEnvironment() {
                 //判断应用环境：release 且不为mt_test 渠道时候使用正式环境
                 boolean product = !Constant.CHANNEL_TEST.equals(ChannelUtil.getChannel());
-                int defEnvironment = product? AppEnvironment.ServerEnvironment.Product.ordinal():AppEnvironment.ServerEnvironment.Dev.ordinal();
+                int defEnvironment = product? AppEnvironment.ServerEnvironment.Product.ordinal():AppEnvironment.ServerEnvironment.Test.ordinal();
                 return SpUtils.getInt(SERVER_ENVIRONMENT,defEnvironment);
             }
 

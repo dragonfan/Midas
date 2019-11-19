@@ -24,12 +24,12 @@ public interface Api {
     }
 
     class URL_UAT{//预发布环境
-        public static final String APP_WEATHER_DOMAIN = "http://172.16.11.251:8974/adsenseapi/";//预发布域名
+        public static final String APP_WEATHER_DOMAIN = "http://testadsenseapi.hellogeek.com/adsenseapi/";//预发布域名
 
     }
 
     class URL_PRODUCT{//生产环境
-        public static final String APP_WEATHER_DOMAIN = "http://172.16.11.251:8974/adsenseapi/";
+        public static final String APP_WEATHER_DOMAIN = "http://adsenseapi.hellogeek.com/adsenseapi/";
 
     }
 
