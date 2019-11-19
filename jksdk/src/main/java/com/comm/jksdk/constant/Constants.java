@@ -77,7 +77,7 @@ public class Constants {
         /**
          * 大图带按钮带跑马灯
          */
-        String BIG_IMG_BUTTON_LAMP = "BIG_IMG_BUTTON_LAMP";
+        String BIG_IMG_BUTTON_LAMP = "BIG_IMG_PLAY_BUTTON_LAMP";
         /**
          * 信息流
          */
