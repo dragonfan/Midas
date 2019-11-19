@@ -24,10 +24,14 @@ public class Constants {
      */
     public interface AdStyle {
 
+//        /**
+//         * 自渲染插屏
+//         */
+//        String CUSTOM_CP = "CUSTOM_CP";
         /**
-         * 自渲染插屏
+         * 自定义插屏_01
          */
-        String CUSTOM_CP = "CUSTOM_CP";
+        String CUSTOM_CP = "CUSTOM_CP_01";
         /**
          * 开屏
          */
