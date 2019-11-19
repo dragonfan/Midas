@@ -72,7 +72,7 @@ public class CHJAdView extends CommAdView {
         this.mActivity = activity;
         this.style = style;
         this.mAppId = appId;
-
+        LogUtils.d(TAG, "广告样式------->style:" + style);
         if (Constants.AdStyle.BIG_IMG.equals(style)) {
             mAdView = new ChjBigImgAdView(mContext);
         } else if (Constants.AdStyle.DATU_ICON_TEXT_BUTTON.equals(style)) { // 大图_带icon文字按钮
@@ -99,7 +99,7 @@ public class CHJAdView extends CommAdView {
             mAdView = new CsjFullScreenVideoView(mContext);
         } else if (Constants.AdStyle.REWARD_VIDEO.equals(style)) {
             mAdView = new CsjRewardVideoAdView(mContext);
-        } else if (Constants.AdStyle.CUSTOM_CP.equals(style)) {
+        } else if (Constants.AdStyle.CUSTOM_CP.equals(style) || Constants.AdStyle.FULLSCREEN_CP_01.equals(style)) {
             mAdView = new CsjCustomInsertScreenAdView(mContext);
         } else {
             //  all
@@ -168,6 +168,7 @@ public class CHJAdView extends CommAdView {
 //        if(TextUtils.isEmpty(ylhAppid)){
 //            ylhAppid=Constants.YLH_APPID;
 //        }
+        LogUtils.d(TAG, "--------开始请求广告-------------广告样式------->style:" + style);
         if (Constants.AdStyle.BIG_IMG.equals(style) || Constants.AdStyle.DATU_ICON_TEXT.equals(style) || Constants.AdStyle.DATU_ICON_TEXT_BUTTON_CENTER.equals(style)
                 || Constants.AdStyle.DATU_ICON_TEXT_BUTTON.equals(style) || Constants.AdStyle.LEFT_IMG_RIGHT_TWO_TEXT.equals(style) || Constants.AdStyle.BIG_IMG_BUTTON_LAMP.equals(style)
                 || Constants.AdStyle.BIG_IMG_BUTTON.equals(style) || Constants.AdStyle.BIG_IMG_NEST.equals(style) || Constants.AdStyle.BIG_IMG_NEST_LAMP.equals(style) || Constants.AdStyle.FAKE_VIDEO_IARGE_IMAGE.equals(style)) {
@@ -182,7 +183,7 @@ public class CHJAdView extends CommAdView {
             getFullScreenVideoAd();
         } else if (Constants.AdStyle.REWARD_VIDEO.equals(style)) {
             getRewardVideoAd();
-        } else if (Constants.AdStyle.CUSTOM_CP.equals(style)) {
+        } else if (Constants.AdStyle.CUSTOM_CP.equals(style) || Constants.AdStyle.FULLSCREEN_CP_01.equals(style)) {
             getCustomInsertScreenAd();
         }
     }
