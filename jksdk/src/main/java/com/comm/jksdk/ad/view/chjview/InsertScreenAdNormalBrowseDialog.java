@@ -29,10 +29,10 @@ import java.util.List;
  * @since 2019/11/18 21:51
  */
 public class InsertScreenAdNormalBrowseDialog extends AlertDialog implements View.OnClickListener {
-    private final String TAG = InsertScreenAdFullDownloadDialog.class.getSimpleName();
-    private TextView adName, adDes, adShowTime, adDownloadBtn;
-    private ImageView adCover, adClose;
-    private RoundImageView appIcon;
+    private final String TAG = InsertScreenAdNormalBrowseDialog.class.getSimpleName();
+    private TextView /*adName, adDes,*/ adShowTime/*, adDownloadBtn*/;
+    private ImageView /*adCover,*/ adClose;
+    private RoundImageView adCover;
     private CountDownTimer countDownTimer;
     private ConstraintLayout adContainer;
     private int showTimeSecond;
@@ -47,26 +47,25 @@ public class InsertScreenAdNormalBrowseDialog extends AlertDialog implements Vie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Window window = getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         window.getDecorView().setPadding(0, 0, 0, 0);
         WindowManager.LayoutParams params = window.getAttributes();
         params.width = WindowManager.LayoutParams.MATCH_PARENT;
         params.height = WindowManager.LayoutParams.WRAP_CONTENT;
         window.setAttributes(params);
         window.setGravity(Gravity.CENTER);
-        setContentView(R.layout.csj_insert_screen_normal_download_ad_view);
+        setContentView(R.layout.csj_insert_screen_normal_browse_ad_view);
         initView();
     }
 
     private void initView() {
         adContainer = findViewById(R.id.insert_ad_container);
-        adName = findViewById(R.id.full_screen_insert_ad_app_name);
-        adDes = findViewById(R.id.full_screen_insert_ad_des);
+//        adName = findViewById(R.id.full_screen_insert_ad_app_name);
+//        adDes = findViewById(R.id.full_screen_insert_ad_des);
         adShowTime = findViewById(R.id.full_screen_insert_ad_show_time_txt);
-        adDownloadBtn = findViewById(R.id.full_screen_insert_ad_download);
-        adCover = findViewById(R.id.full_screen_insert_ad_view);
-        adClose = findViewById(R.id.full_screen_insert_ad_close);
-        appIcon = findViewById(R.id.full_screen_insert_ad_app_icon);
+//        adDownloadBtn = findViewById(R.id.full_screen_insert_ad_download);
+        adCover = findViewById(R.id.normal_insert_ad_view);
+        adClose = findViewById(R.id.normal_insert_ad_close);
+//        appIcon = findViewById(R.id.full_screen_insert_ad_app_icon);
         adShowTime.setText(showTimeSecond + "s");
         adShowTime.setVisibility(View.VISIBLE);
         countDownTimer = new CountDownTimer(showTimeSecond * 1000, 1000) {
@@ -97,13 +96,13 @@ public class InsertScreenAdNormalBrowseDialog extends AlertDialog implements Vie
             }
         }
 
-        TTImage icon = ttNativeAd.getIcon();
-        if (icon != null && icon.isValid()) {
-            Glide.with(getContext()).load(icon.getImageUrl()).into(appIcon);
-        }
+//        TTImage icon = ttNativeAd.getIcon();
+//        if (icon != null && icon.isValid()) {
+//            Glide.with(getContext()).load(icon.getImageUrl()).into(appIcon);
+//        }
 
-        adName.setText(ttNativeAd.getTitle());
-        adDes.setText(ttNativeAd.getDescription());
+//        adName.setText(ttNativeAd.getTitle());
+//        adDes.setText(ttNativeAd.getDescription());
         countDownTimer.start();
         bindAd(ttNativeAd);
     }
@@ -111,15 +110,12 @@ public class InsertScreenAdNormalBrowseDialog extends AlertDialog implements Vie
     private void bindAd(TTNativeAd ttNativeAd) {
         //可以被点击的view, 比如标题、icon等,点击后尝试打开落地页，也可以把nativeView放进来意味整个广告区域可被点击
         List<View> clickViewList = new ArrayList<>();
-        clickViewList.add(adName);
-        clickViewList.add(adDes);
         clickViewList.add(adCover);
-        clickViewList.add(appIcon);
         //触发创意广告的view（点击下载或拨打电话），比如可以设置为一个按钮，按钮上文案根据广告类型设定提示信息
         List<View> creativeViewList = new ArrayList<>();
         //如果需要点击图文区域也能进行下载或者拨打电话动作，请将图文区域的view传入
         //creativeViewList.add(nativeView);
-        creativeViewList.add(adDownloadBtn);
+        creativeViewList.add(adCover);
 
         //重要! 这个涉及到广告计费，必须正确调用。convertView必须使用ViewGroup。
         ttNativeAd.registerViewForInteraction(adContainer, clickViewList, creativeViewList, new TTNativeAd.AdInteractionListener() {
@@ -148,7 +144,7 @@ public class InsertScreenAdNormalBrowseDialog extends AlertDialog implements Vie
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.full_screen_insert_ad_close) {
+        if (v.getId() == R.id.normal_insert_ad_close) {
             dismiss();
         }
     }

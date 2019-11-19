@@ -45,7 +45,7 @@ public class CsjCustomInsertScreenAdView extends CHJAdView {
         if (activity == null) {
             throw new NullPointerException("loadCustomInsertScreenAd activity is null");
         }
-        LogUtils.d(TAG, "isFullScreen:" + isFullScreen + " adId:" + adId);
+        LogUtils.d(TAG, "isFullScreen:" + isFullScreen + " adId:" + adId + " showTimeSeconds:" + showTimeSeconds);
         //step3:创建TTAdNative对象,用于调用广告请求接口
         this.activity = activity;
         mTTAdNative = TTAdManagerHolder.get(mAppId).createAdNative(activity.getApplicationContext());
@@ -61,7 +61,7 @@ public class CsjCustomInsertScreenAdView extends CHJAdView {
         mTTAdNative.loadNativeAd(adSlot, new TTAdNative.NativeAdListener() {
             @Override
             public void onError(int code, String message) {
-                LogUtils.d(TAG, "code:" + code + " message:" + message);
+                LogUtils.e(TAG, "loadNativeAd code:" + code + " message:" + message);
                 adError(code, message);
                 firstAdError(code, message);
             }
@@ -85,6 +85,7 @@ public class CsjCustomInsertScreenAdView extends CHJAdView {
      * 展示插屏广告
      */
     private void showAdDialog(TTNativeAd ttNativeAd, boolean isFullScreen, int showTimeSeconds) {
+        LogUtils.d(TAG, "showAdDialog:" + isFullScreen + " showTimeSeconds:" + showTimeSeconds);
         if (isFullScreen) {
             InsertScreenAdFullDownloadDialog fullDownloadDialog = new InsertScreenAdFullDownloadDialog(activity, showTimeSeconds);
             fullDownloadDialog.show();

@@ -29,7 +29,7 @@ import java.util.List;
  * @since 2019/11/18 21:33
  */
 public class InsertScreenAdNormalDownloadDialog extends AlertDialog implements View.OnClickListener {
-    private final String TAG = InsertScreenAdFullDownloadDialog.class.getSimpleName();
+    private final String TAG = InsertScreenAdNormalDownloadDialog.class.getSimpleName();
     private TextView adName, adDes, adShowTime, adDownloadBtn;
     private ImageView adCover, adClose;
     private RoundImageView appIcon;
@@ -48,7 +48,6 @@ public class InsertScreenAdNormalDownloadDialog extends AlertDialog implements V
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Window window = getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         window.getDecorView().setPadding(0, 0, 0, 0);
         WindowManager.LayoutParams params = window.getAttributes();
         params.width = WindowManager.LayoutParams.MATCH_PARENT;
