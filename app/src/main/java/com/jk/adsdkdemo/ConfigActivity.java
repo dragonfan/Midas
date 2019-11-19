@@ -89,11 +89,13 @@ public class ConfigActivity extends AppCompatActivity implements View.OnClickLis
     private void showConfigList(List<ConfigBean.AdListBean> configList) {
         if (!CollectionUtils.isEmpty(configList)) {
             StringBuffer config = new StringBuffer();
-
+            config.append("配置信息:" + configList.size() + "条\n");
+            config.append("*********************************************\n");
             for (ConfigBean.AdListBean adListBean : configList) {
                 config.append(JsonUtils.encode(adListBean) + "\n");
+                config.append("*********************************************\n");
             }
-            stateText.setText("配置信息:\n" + config.toString().trim());
+            stateText.setText(config.toString().trim());
         }
     }
 }
