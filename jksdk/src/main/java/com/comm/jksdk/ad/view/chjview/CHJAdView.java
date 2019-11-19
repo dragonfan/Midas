@@ -107,7 +107,7 @@ public class CHJAdView extends CommAdView {
             //所有样式都支持 随机展示
             int num = AdsUtils.getRandomNum(2);
             LogUtils.w(TAG, "随机显示样式------->style:" + style + " getRandomNum:" + num);
-            Toast.makeText(mContext, "发现未定义样式，试图随机显示样式", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "发现未定义样式:" + style + "正试图随机显示样式" + num, Toast.LENGTH_SHORT).show();
             switch (num) {
                 case 0:
                     mAdView = new ChjLeftImgRightTwoTextAdView(mContext);
