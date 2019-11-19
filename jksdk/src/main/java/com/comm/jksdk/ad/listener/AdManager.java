@@ -27,5 +27,7 @@ public interface AdManager {
 
     void loadCustomInsertScreenAd(Activity activity, String position, boolean isFullScreen, int showTimeSeconds, AdListener listener);
 
+//    void loadInsert
+
     ViewGroup getAdView();
 }

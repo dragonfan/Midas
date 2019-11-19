@@ -29,10 +29,6 @@ public class Constants {
          */
         String FULLSCREEN_CP_01 = "FULLSCREEN_CP_01";
         /**
-         * 全屏插屏_01
-         */
-        String FULLSCREEN_CP_01 = "FULLSCREEN_CP_01";
-        /**
          * 自定义插屏_01
          */
         String CUSTOM_CP = "CUSTOM_CP_01";

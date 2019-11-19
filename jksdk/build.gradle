@@ -67,10 +67,10 @@ dependencies {
 //publishing {
 //    publications {
 //        maven(MavenPublication) {
-//            groupId 'com.xxx.im'
-//            artifactId 'IMLib'
-//            version '0.0.2-SNAPSHOT'
-//            artifact "$buildDir/outputs/aar/app-release.aar"
+//            groupId 'com.comm.jksdk'
+//            artifactId 'GeekSdk'
+//            version '1.1.0'
+//            artifact "$buildDir/outputs/aar/jksdk-release.aar"
 //            pom.withXml {
 //                def dependenciesNode = asNode().appendNode('dependencies')
 //                configurations .implementation.allDependencies.each { dependency ->
@@ -85,6 +85,10 @@ dependencies {
 //        }
 //    }
 //
-//    repositories { maven { url "$buildDir/repo" } }
+//    repositories {
+//        maven {
+//            url "$buildDir/repo"
+//        }
+//    }
 //}
 
