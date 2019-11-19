@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private Button button_configinfo, buttonOldStyle, buttonSplashAd, buttonFakeVideo,
-            btnFullScreenVideo, btnRewardVideo, btnNewBigImgFour, btnInsertScreenAd;
+            btnFullScreenVideo, btnRewardVideo, btnNewBigImgFour, btnInsertScreenAd, btnTemplateInsertScreenAd;
 
     //    private EditText et_ad_pos_id;
 //    public static TextView tvResult;
@@ -90,6 +90,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         btnInsertScreenAd = findViewById(R.id.button_insert_screen_ad);
         btnInsertScreenAd.setOnClickListener(this);
+
+        btnTemplateInsertScreenAd = findViewById(R.id.button_template_insert_screen_ad);
+        btnTemplateInsertScreenAd.setOnClickListener(this);
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -163,6 +166,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.button_insert_screen_ad:
                 startActivity(new Intent(this, InsertScreenActivity.class));
+                break;
+            case R.id.button_template_insert_screen_ad:
+                startActivity(new Intent(this, TemplateInsertScreenAcitvity.class));
                 break;
             default:
                 break;

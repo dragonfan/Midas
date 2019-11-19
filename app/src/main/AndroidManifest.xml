@@ -64,6 +64,7 @@
         <activity android:name=".ConfigActivity" />
         <activity android:name=".OldBigImgActivity" />
         <activity android:name=".FakeVideoBigImg1Acitvity" />
+        <activity android:name=".TemplateInsertScreenAcitvity" />
     </application>
 
 </manifest>

@@ -63,4 +63,11 @@
         android:layout_marginTop="@dimen/dimen_10dp"
         android:text="自渲染插屏广告" />
 
+    <Button
+        android:id="@+id/button_template_insert_screen_ad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:text="模板插屏广告" />
+
 </LinearLayout>

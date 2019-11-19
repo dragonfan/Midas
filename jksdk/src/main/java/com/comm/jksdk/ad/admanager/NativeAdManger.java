@@ -312,6 +312,7 @@ public class NativeAdManger implements AdManager {
         againRequest();
     }
 
+
     /**
      * 轮询请求
      */
