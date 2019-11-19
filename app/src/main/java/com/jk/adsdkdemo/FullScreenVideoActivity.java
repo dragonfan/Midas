@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -23,6 +24,7 @@ public class FullScreenVideoActivity extends AppCompatActivity implements View.O
     private final String TAG = FullScreenVideoActivity.class.getSimpleName();
     private AdManager adManager;
     private FrameLayout splashContainer;
+    private EditText positionEdit;
     private Button refreshBtn;
 
     @Override
@@ -36,17 +38,20 @@ public class FullScreenVideoActivity extends AppCompatActivity implements View.O
         setTitle("全屏视频广告");
         splashContainer = findViewById(R.id.video_container);
         refreshBtn = findViewById(R.id.video_refresh);
+        positionEdit = findViewById(R.id.splash_position_edit);
         refreshBtn.setOnClickListener(this);
         adManager = GeekAdSdk.getAdsManger();
-        loadSplashAd();
+        positionEdit.setText("cp_ad_1");
+        loadSplashAd("cp_ad_1");
     }
 
     /**
      * 获取视频广告并加载
      */
-    private void loadSplashAd() {
+    private void loadSplashAd(String position) {
         // cold_kp 、hot_kp
-        adManager.loadVideoAd(this, "cp_ad_1", new VideoAdListener() {
+        splashContainer.removeAllViews();
+        adManager.loadVideoAd(this, position, new VideoAdListener() {
             @Override
             public void onVideoResume() {
 
@@ -93,7 +98,7 @@ public class FullScreenVideoActivity extends AppCompatActivity implements View.O
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.video_refresh:
-                loadSplashAd();
+                loadSplashAd(positionEdit.getText().toString().trim());
                 break;
             default:
                 break;

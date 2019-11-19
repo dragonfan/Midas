@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.jk.adsdkdemo.BigImgNormalAcitvity">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,14 +19,15 @@
             android:textSize="@dimen/dp_20" />
 
         <EditText
-            android:layout_marginLeft="@dimen/dimen_12dp"
             android:id="@+id/et_chan_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_12dp"
             android:text="jinritoutiao"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/dp_20"
             android:visibility="visible" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -45,10 +46,11 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginTop="@dimen/dimen_20dp"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_20dp"
+        android:orientation="horizontal">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -57,10 +59,10 @@
             android:textSize="@dimen/dp_20" />
 
         <EditText
-            android:layout_marginLeft="@dimen/dimen_12dp"
             android:id="@+id/et_bid_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_12dp"
             android:text="10"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/dp_20"
@@ -68,16 +70,23 @@
     </LinearLayout>
 
     <Button
-        android:layout_marginTop="@dimen/dimen_20dp"
         android:id="@+id/button_set_bid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="设置bid" />
-    <Button
         android:layout_marginTop="@dimen/dimen_20dp"
+        android:text="设置bid" />
+
+    <Button
         android:id="@+id/button_request_config"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_20dp"
         android:text="请求配置信息" />
+
+    <TextView
+        android:id="@+id/config_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
 
 </LinearLayout>

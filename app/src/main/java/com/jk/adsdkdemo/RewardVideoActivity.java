@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ import com.jk.adsdkdemo.utils.LogUtils;
 public class RewardVideoActivity extends AppCompatActivity implements View.OnClickListener {
     private final String TAG = RewardVideoActivity.class.getSimpleName();
     private AdManager adManager;
+    private EditText positionEdit;
     private FrameLayout splashContainer;
     private Button refreshBtn;
 
@@ -37,17 +39,20 @@ public class RewardVideoActivity extends AppCompatActivity implements View.OnCli
         setTitle("激励视频广告");
         splashContainer = findViewById(R.id.video_container);
         refreshBtn = findViewById(R.id.video_refresh);
+        positionEdit = findViewById(R.id.splash_position_edit);
         refreshBtn.setOnClickListener(this);
         adManager = GeekAdSdk.getAdsManger();
-        loadSplashAd();
+        positionEdit.setText("click_virus_killing_ad");
+        loadSplashAd("click_virus_killing_ad");
     }
 
     /**
      * 获取视频广告并加载
      */
-    private void loadSplashAd() {
+    private void loadSplashAd(String position) {
         // cp_ad_1
-        adManager.loadRewardVideoAd(this, "click_virus_killing_ad", "user123", 1, new VideoAdListener() {
+        splashContainer.removeAllViews();
+        adManager.loadRewardVideoAd(this, position, "user123", 1, new VideoAdListener() {
 
             @Override
             public void onVideoResume() {
@@ -90,7 +95,7 @@ public class RewardVideoActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.video_refresh:
-                loadSplashAd();
+                loadSplashAd(positionEdit.getText().toString().trim());
                 break;
             default:
                 break;

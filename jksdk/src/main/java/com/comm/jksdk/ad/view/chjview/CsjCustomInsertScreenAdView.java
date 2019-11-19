@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.widget.Toast;
 
 import com.bytedance.sdk.openadsdk.AdSlot;
 import com.bytedance.sdk.openadsdk.TTAdConstant;
@@ -66,6 +67,7 @@ public class CsjCustomInsertScreenAdView extends CHJAdView {
                 LogUtils.e(TAG, "loadNativeAd code:" + code + " message:" + message);
                 adError(code, message);
                 firstAdError(code, message);
+                Toast.makeText(mContext, "loadCustomInsertScreenAd error:" + code + " message:" + message, Toast.LENGTH_SHORT).show();
             }
 
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)

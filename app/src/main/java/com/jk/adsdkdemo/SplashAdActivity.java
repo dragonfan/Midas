@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -22,6 +23,7 @@ import com.jk.adsdkdemo.utils.LogUtils;
 public class SplashAdActivity extends AppCompatActivity implements View.OnClickListener {
     private final String TAG = SplashAdActivity.class.getSimpleName();
     private FrameLayout splashContainer;
+    private EditText positionEdit;
     private Button refreshBtn;
     private AdManager adManager;
 
@@ -36,17 +38,20 @@ public class SplashAdActivity extends AppCompatActivity implements View.OnClickL
         setTitle("开屏广告");
         splashContainer = findViewById(R.id.splash_container);
         refreshBtn = findViewById(R.id.splash_refresh);
+        positionEdit = findViewById(R.id.splash_position_edit);
         refreshBtn.setOnClickListener(this);
         adManager = GeekAdSdk.getAdsManger();
-        loadSplashAd();
+        positionEdit.setText("cold_kp");
+        loadSplashAd("cold_kp");
     }
 
     /**
      * 获取开屏广告并加载
      */
-    private void loadSplashAd() {
+    private void loadSplashAd(String position) {
         // cold_kp 、hot_kp
-        adManager.loadSplashAd(this, "cold_kp", new AdListener() {
+        splashContainer.removeAllViews();
+        adManager.loadSplashAd(this, position, new AdListener() {
             @Override
             public void adSuccess() {
                 LogUtils.d(TAG, "-----adSuccess-----");
@@ -83,7 +88,7 @@ public class SplashAdActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.splash_refresh:
-                loadSplashAd();
+                loadSplashAd(positionEdit.getText().toString().trim());
                 break;
             default:
                 break;
