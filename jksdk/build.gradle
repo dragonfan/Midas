@@ -1,5 +1,6 @@
 //apply plugin: 'com.android.application'
 apply plugin: 'com.android.library'
+//apply plugin: 'maven-publish'
 
 android {
     compileSdkVersion 28
@@ -8,7 +9,7 @@ android {
 
     defaultConfig {
 //        applicationId "com.comm.jksdk"
-        minSdkVersion 16
+        minSdkVersion 15
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -25,6 +26,17 @@ android {
     }
 
 }
+//uploadArchives {
+//    repositories.mavenDeployer{
+//        repository(url:"file:/home/pen/develop/other/")
+//        // 唯一标识
+//        pom.groupId = "com.comm.jksdk"
+//        // 项目名称
+//        pom.artifactId = "jksdk"
+//        // 版本号
+//        pom.version = "1.1"
+//    }
+//}
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -49,4 +61,30 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
     implementation files('libs/android-query-full.0.26.7.jar')
+//    implementation 'com.novoda:bintray-release:0.2.7'
 }
+
+//publishing {
+//    publications {
+//        maven(MavenPublication) {
+//            groupId 'com.xxx.im'
+//            artifactId 'IMLib'
+//            version '0.0.2-SNAPSHOT'
+//            artifact "$buildDir/outputs/aar/app-release.aar"
+//            pom.withXml {
+//                def dependenciesNode = asNode().appendNode('dependencies')
+//                configurations .implementation.allDependencies.each { dependency ->
+//                    if (!"unspecified".equals(dependenciesNode.name)) {
+//                        def dependencyNode = dependenciesNode.appendNode('dependency')
+//                        dependencyNode.appendNode('groupId', dependency.group)
+//                        dependencyNode.appendNode('artifactId', dependency.name)
+//                        dependencyNode.appendNode('version', dependency.version)
+//                    }
+//                }
+//            }
+//        }
+//    }
+//
+//    repositories { maven { url "$buildDir/repo" } }
+//}
+

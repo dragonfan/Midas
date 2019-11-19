@@ -2,6 +2,8 @@ package com.comm.jksdk.ad.view.chjview;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 
 import com.bytedance.sdk.openadsdk.AdSlot;
 import com.bytedance.sdk.openadsdk.TTAdConstant;
@@ -66,6 +68,7 @@ public class CsjCustomInsertScreenAdView extends CHJAdView {
                 firstAdError(code, message);
             }
 
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
             @Override
             public void onNativeAdLoad(List<TTNativeAd> ads) {
                 if (!CollectionUtils.isEmpty(ads)) {

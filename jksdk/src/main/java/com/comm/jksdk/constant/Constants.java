@@ -65,11 +65,11 @@ public class Constants {
         /**
          * 大图嵌套美女图片
          */
-        String BIG_IMG_NEST = "BIG_IMG_NEST";
+        String BIG_IMG_NEST = "BIG_IMG_NEST_01";
         /**
          * 大图嵌套图片带跑马灯
          */
-        String BIG_IMG_NEST_LAMP = "BIG_IMG_NEST_LAMP";
+        String BIG_IMG_NEST_LAMP = "BIG_IMG_NEST_01_LAMP";
         /**
          * 大图带按钮（大图_下载播放按钮）
          */
