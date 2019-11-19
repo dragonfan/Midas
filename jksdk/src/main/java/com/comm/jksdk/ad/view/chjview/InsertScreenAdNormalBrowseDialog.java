@@ -61,7 +61,7 @@ public class InsertScreenAdNormalBrowseDialog extends AlertDialog implements Vie
         adContainer = findViewById(R.id.insert_ad_container);
 //        adName = findViewById(R.id.full_screen_insert_ad_app_name);
 //        adDes = findViewById(R.id.full_screen_insert_ad_des);
-        adShowTime = findViewById(R.id.full_screen_insert_ad_show_time_txt);
+        adShowTime = findViewById(R.id.normal_insert_ad_show_time_txt);
 //        adDownloadBtn = findViewById(R.id.full_screen_insert_ad_download);
         adCover = findViewById(R.id.normal_insert_ad_view);
         adClose = findViewById(R.id.normal_insert_ad_close);
