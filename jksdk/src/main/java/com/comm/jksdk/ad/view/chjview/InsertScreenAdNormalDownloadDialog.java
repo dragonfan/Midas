@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bytedance.sdk.openadsdk.TTAdConstant;
 import com.bytedance.sdk.openadsdk.TTImage;
 import com.bytedance.sdk.openadsdk.TTNativeAd;
 import com.comm.jksdk.R;
@@ -104,6 +105,7 @@ public class InsertScreenAdNormalDownloadDialog extends AlertDialog implements V
 
         adName.setText(ttNativeAd.getTitle());
         adDes.setText(ttNativeAd.getDescription());
+        adDownloadBtn.setText(ttNativeAd.getInteractionType() == TTAdConstant.INTERACTION_TYPE_DOWNLOAD ? "下载" : "查看详情");
         countDownTimer.start();
         bindAd(ttNativeAd);
     }
