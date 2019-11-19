@@ -4,6 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <EditText
+        android:id="@+id/splash_position_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/txt_point"
         android:layout_width="match_parent"
@@ -12,7 +18,7 @@
         android:gravity="center_vertical"
         android:text="state"
         android:textSize="30sp"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/splash_position_edit" />
 
     <Button
         android:id="@+id/btn_normal_browse"

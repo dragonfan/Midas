@@ -308,7 +308,7 @@ public class NativeAdManger implements AdManager {
         adRequestTimeOut = mConfigInfoBean.getAdRequestTimeOut();
         adsInfoslist.clear();
         adsInfoslist.addAll(mConfigInfoBean.getAdsInfos());
-
+        LogUtils.d(TAG, "-----loadCustomInsertScreenAd--------");
         againRequest();
     }
 

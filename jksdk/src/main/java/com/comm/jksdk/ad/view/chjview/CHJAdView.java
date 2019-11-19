@@ -2,6 +2,7 @@ package com.comm.jksdk.ad.view.chjview;
 
 import android.app.Activity;
 import android.content.Context;
+import android.widget.Toast;
 
 import com.bytedance.sdk.openadsdk.AdSlot;
 import com.bytedance.sdk.openadsdk.TTAdConstant;
@@ -90,7 +91,7 @@ public class CHJAdView extends CommAdView {
             mAdView = new ChjBigImgNestPlayLampView(mContext, true);
         } else if (Constants.AdStyle.FAKE_VIDEO_IARGE_IMAGE.equals(style)) { //假视频大图_01
             mAdView = new ChjBigImgFakeVideoAdView(mContext);
-        }else if (Constants.AdStyle.LEFT_IMG_RIGHT_TWO_TEXT.equals(style)) {
+        } else if (Constants.AdStyle.LEFT_IMG_RIGHT_TWO_TEXT.equals(style)) {
             mAdView = new ChjLeftImgRightTwoTextAdView(mContext);
         } else if (Constants.AdStyle.OPEN_ADS.equals(style)) {
             mAdView = new ChjSplashAdView(mContext);
@@ -105,7 +106,8 @@ public class CHJAdView extends CommAdView {
             //所有样式都支持 随机展示
             //所有样式都支持 随机展示
             int num = AdsUtils.getRandomNum(2);
-            LogUtils.w("------->num:", num + "");
+            LogUtils.w(TAG, "随机显示样式------->style:" + style + " getRandomNum:" + num);
+            Toast.makeText(mContext, "发现未定义样式，试图随机显示样式", Toast.LENGTH_SHORT).show();
             switch (num) {
                 case 0:
                     mAdView = new ChjLeftImgRightTwoTextAdView(mContext);
