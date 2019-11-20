@@ -24,6 +24,7 @@ public class SplashAdActivity extends AppCompatActivity implements View.OnClickL
     private final String TAG = SplashAdActivity.class.getSimpleName();
     private FrameLayout splashContainer;
     private EditText positionEdit;
+    private TextView stateTxt;
     private Button refreshBtn;
     private AdManager adManager;
 
@@ -39,6 +40,7 @@ public class SplashAdActivity extends AppCompatActivity implements View.OnClickL
         splashContainer = findViewById(R.id.splash_container);
         refreshBtn = findViewById(R.id.splash_refresh);
         positionEdit = findViewById(R.id.splash_position_edit);
+        stateTxt = findViewById(R.id.state_txt);
         refreshBtn.setOnClickListener(this);
         adManager = GeekAdSdk.getAdsManger();
         positionEdit.setText("cold_kp");
@@ -51,16 +53,18 @@ public class SplashAdActivity extends AppCompatActivity implements View.OnClickL
     private void loadSplashAd(String position) {
         // cold_kp 、hot_kp
         splashContainer.removeAllViews();
+        stateTxt.setText("");
         adManager.loadSplashAd(this, position, new AdListener() {
             @Override
             public void adSuccess() {
                 LogUtils.d(TAG, "-----adSuccess-----");
-                splashContainer.addView(adManager.getAdView());
+                stateTxt.setText("-----adSuccess-----");
             }
 
             @Override
             public void adExposed() {
                 LogUtils.d(TAG, "-----adExposed-----");
+                stateTxt.setText("-----adExposed-----");
             }
 
             @Override
@@ -70,13 +74,11 @@ public class SplashAdActivity extends AppCompatActivity implements View.OnClickL
 
             @Override
             public void adError(int errorCode, String errorMsg) {
-                LogUtils.d(TAG, "-----adError-----" + errorMsg);
-                TextView textView = new TextView(SplashAdActivity.this);
-                textView.setText("error:" + errorCode + errorMsg);
-                splashContainer.removeAllViews();
-                splashContainer.addView(textView);
+                LogUtils.e(TAG, "-----adError-----" + errorMsg);
+                stateTxt.setText("errorCode:" + errorCode + " errorMsg:" + errorMsg);
             }
         });
+        splashContainer.addView(adManager.getAdView());
     }
 
     @Override

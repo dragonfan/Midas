@@ -49,7 +49,7 @@ public class ChjSplashAdView extends CHJAdView {
         TTAdManagerHolder.get(mAppId).createAdNative(mContext).loadSplashAd(adSlot, new TTAdNative.SplashAdListener() {
             @Override
             public void onError(int errorCode, String errorMsg) {
-                LogUtils.d(TAG, "csj errorCode:" + errorCode + " errorMsg:" + errorMsg);
+                LogUtils.e(TAG, "csj errorCode:" + errorCode + " errorMsg:" + errorMsg);
                 adError(errorCode, errorMsg);
                 firstAdError(errorCode, errorMsg);
                 Toast.makeText(mContext, "loadSplashAd error:" + errorCode + " message:" + errorMsg, Toast.LENGTH_SHORT).show();
@@ -64,9 +64,9 @@ public class ChjSplashAdView extends CHJAdView {
             public void onSplashAdLoad(TTSplashAd ttSplashAd) {
                 if (ttSplashAd != null) {
                     LogUtils.d(TAG, "csj onSplashAdLoad:" + ttSplashAd.getInteractionType());
+                    adSuccess();
                     splashContainer.removeAllViews();
                     splashContainer.addView(ttSplashAd.getSplashView());
-                    adSuccess();
                     ttSplashAd.setNotAllowSdkCountdown();
                     //设置SplashView的交互监听器
                     ttSplashAd.setSplashInteractionListener(new TTSplashAd.AdInteractionListener() {
