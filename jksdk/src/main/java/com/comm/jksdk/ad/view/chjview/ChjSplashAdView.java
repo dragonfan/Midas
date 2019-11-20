@@ -1,7 +1,7 @@
 package com.comm.jksdk.ad.view.chjview;
 
 import android.content.Context;
-import android.support.constraint.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import android.view.View;
 import android.widget.Toast;
 

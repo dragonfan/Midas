@@ -2,7 +2,7 @@ package com.comm.jksdk.ad.view.ylhview;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.constraint.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.comm.jksdk.R;
 import com.comm.jksdk.http.utils.LogUtils;

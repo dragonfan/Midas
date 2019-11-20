@@ -2,24 +2,19 @@ package com.comm.jksdk.ad.view.chjview;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.util.Log;
+
+import androidx.annotation.RequiresApi;
+
 import android.view.View;
-import android.widget.Toast;
 
 import com.bytedance.sdk.openadsdk.AdSlot;
 import com.bytedance.sdk.openadsdk.TTAdConstant;
 import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTAppDownloadListener;
-import com.bytedance.sdk.openadsdk.TTInteractionAd;
-import com.bytedance.sdk.openadsdk.TTNativeAd;
 import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
 import com.comm.jksdk.R;
 import com.comm.jksdk.config.TTAdManagerHolder;
 import com.comm.jksdk.http.utils.LogUtils;
-import com.comm.jksdk.utils.CodeFactory;
-import com.comm.jksdk.utils.CollectionUtils;
 
 import java.util.List;
 

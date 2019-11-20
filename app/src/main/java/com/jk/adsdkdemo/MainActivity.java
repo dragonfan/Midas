@@ -8,17 +8,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import com.comm.jksdk.GeekAdSdk;
-import com.comm.jksdk.bean.ConfigBean;
-import com.comm.jksdk.config.listener.ConfigListener;
-import com.comm.jksdk.utils.JsonUtils;
-import com.jk.adsdkdemo.utils.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
