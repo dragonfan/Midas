@@ -22,7 +22,7 @@ import java.util.List;
  * @ProjectName: ${PROJECT_NAME}
  * @Package: ${PACKAGE_NAME}
  * @ClassName: ${NAME}
- * @Description: 配置信息界面
+ * @Description: 初始化信息界面
  * @Author: fanhailong
  * @CreateDate: ${DATE} ${TIME}
  * @UpdateUser: 更新者：
@@ -30,21 +30,20 @@ import java.util.List;
  * @UpdateRemark: 更新说明：
  * @Version: 1.0
  */
-public class ConfigActivity extends AppCompatActivity implements View.OnClickListener {
+public class InitActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button requestBt, setBidTb, initTb;
-    private EditText bidEt, editProduct, editChan;
+    private EditText bidEt, editProduct;
     private TextView stateText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_config);
+        setContentView(R.layout.activity_init);
         setBidTb = findViewById(R.id.button_set_bid);
         requestBt = findViewById(R.id.button_request_config);
         stateText = findViewById(R.id.config_state);
         bidEt = findViewById(R.id.et_bid_id);
-        editChan = findViewById(R.id.et_chan_id);
         editProduct = findViewById(R.id.et_product_id);
         initTb = findViewById(R.id.button_init);
         initTb.setOnClickListener(this);
@@ -85,10 +84,8 @@ public class ConfigActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.button_init:
                 String product = editProduct.getText().toString().trim();
-                String chan = editChan.getText().toString().trim();
                 LogUtils.e(">>>product="+product);
-                LogUtils.e(">>>渠道号="+chan);
-                GeekAdSdk.init(this, product, chan,   false);
+                GeekAdSdk.init(this, product, "jinritoutiao",   false);
                 break;
         }
     }

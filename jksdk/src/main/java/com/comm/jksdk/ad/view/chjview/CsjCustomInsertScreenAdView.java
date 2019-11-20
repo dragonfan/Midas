@@ -92,10 +92,32 @@ public class CsjCustomInsertScreenAdView extends CHJAdView {
         LogUtils.d(TAG, "showAdDialog:" + isFullScreen + " showTimeSeconds:" + showTimeSeconds);
         if (isFullScreen) {
             InsertScreenAdFullDownloadDialog fullDownloadDialog = new InsertScreenAdFullDownloadDialog(activity, showTimeSeconds);
+            fullDownloadDialog.setListenr(new InsertScreenAdFullDownloadDialog.OnClickListenr() {
+                @Override
+                public void onClick() {
+                    adClicked();
+                }
+
+                @Override
+                public void onAdShow() {
+                    adExposed();
+                }
+            });
             fullDownloadDialog.show();
             fullDownloadDialog.loadAd(ttNativeAd);
         } else {
             InsertScreenAdNormalDownloadDialog normalDownloadDialog = new InsertScreenAdNormalDownloadDialog(activity, showTimeSeconds);
+            normalDownloadDialog.setListenr(new InsertScreenAdNormalDownloadDialog.OnClickListenr() {
+                @Override
+                public void onClick() {
+                    adClicked();
+                }
+
+                @Override
+                public void onAdShow() {
+                    adExposed();
+                }
+            });
             normalDownloadDialog.show();
             normalDownloadDialog.loadAd(ttNativeAd);
         }

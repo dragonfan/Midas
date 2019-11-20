@@ -23,7 +23,7 @@ public class MainApp extends Application {
         //初始化聚合广告sdk
 //        GeekAdSdk.init(this, "13", "jinritoutiao", "5015945",  false);
         GeekAdSdk.init(this, "18", "jinritoutiao",   false);
-        GeekAdSdk.setBid(10);
+//        GeekAdSdk.setBid(10);
 
     }
 

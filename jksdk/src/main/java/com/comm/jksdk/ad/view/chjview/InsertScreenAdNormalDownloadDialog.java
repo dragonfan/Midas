@@ -38,6 +38,12 @@ public class InsertScreenAdNormalDownloadDialog extends AlertDialog implements V
     private ConstraintLayout adContainer;
     private int showTimeSecond;
 
+    private OnClickListenr mListenr;
+
+    public void setListenr(OnClickListenr listenr) {
+        this.mListenr = listenr;
+    }
+
     protected InsertScreenAdNormalDownloadDialog(Context context, int showTimeSecond) {
         super(context, R.style.InsertScreenAdDialog);
         this.showTimeSecond = showTimeSecond;
@@ -130,6 +136,9 @@ public class InsertScreenAdNormalDownloadDialog extends AlertDialog implements V
                 if (ad != null) {
                     LogUtils.d(TAG, "广告" + ad.getTitle() + "被点击");
                 }
+                if (mListenr != null) {
+                    mListenr.onClick();
+                }
             }
 
             @Override
@@ -137,12 +146,18 @@ public class InsertScreenAdNormalDownloadDialog extends AlertDialog implements V
                 if (ad != null) {
                     LogUtils.d(TAG, "广告" + ad.getTitle() + "被创意按钮被点击");
                 }
+                if (mListenr != null) {
+                    mListenr.onClick();
+                }
             }
 
             @Override
             public void onAdShow(TTNativeAd ad) {
                 if (ad != null) {
                     LogUtils.d(TAG, "广告" + ad.getTitle() + "展示");
+                }
+                if (mListenr != null) {
+                    mListenr.onAdShow();
                 }
             }
         });
@@ -153,5 +168,13 @@ public class InsertScreenAdNormalDownloadDialog extends AlertDialog implements V
         if (v.getId() == R.id.full_screen_insert_ad_close) {
             dismiss();
         }
+    }
+
+    /**
+     * 模板广告点击回调(内部使用)
+     */
+    public interface OnClickListenr {
+        void onClick();
+        void onAdShow();
     }
 }
