@@ -41,7 +41,7 @@
             android:id="@+id/et_position_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="new_homepage_ad_2"
+            android:text="homepage_ad_1"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/dp_20"
             android:visibility="visible" />

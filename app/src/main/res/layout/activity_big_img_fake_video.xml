@@ -40,7 +40,7 @@
             android:id="@+id/et_position_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="FAKE_VIDEO_IARGE_IMAGE"
+            android:text="newlist_1_1"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/dp_20"
             android:visibility="visible" />
