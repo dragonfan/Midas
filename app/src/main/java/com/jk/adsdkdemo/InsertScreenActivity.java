@@ -116,11 +116,11 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_fullscreen_download:
-                loadCustomInsertScreenAd2(positionEdit.getText().toString().trim());
+                loadCustomInsertScreenAd2(positionEdit2.getText().toString().trim());
                 break;
             case R.id.btn_normal_browse:
 //            case R.id.btn_normal_download:
-                loadCustomInsertScreenAd(positionEdit2.getText().toString().trim());
+                loadCustomInsertScreenAd(positionEdit.getText().toString().trim());
                 break;
             default:
                 break;
