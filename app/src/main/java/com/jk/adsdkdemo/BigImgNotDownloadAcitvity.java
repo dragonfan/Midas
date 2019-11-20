@@ -70,12 +70,12 @@ public class BigImgNotDownloadAcitvity extends AppCompatActivity implements View
 
                     @Override
                     public void adClicked() {
-
+                        LogUtils.e("adClicked");
                     }
 
                     @Override
                     public void adError(int errorCode, String errorMsg) {
-
+                        LogUtils.e("adError");
                     }
                 });
                 break;

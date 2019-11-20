@@ -88,7 +88,7 @@ public class ConfigActivity extends AppCompatActivity implements View.OnClickLis
                 String chan = editChan.getText().toString().trim();
                 LogUtils.e(">>>product="+product);
                 LogUtils.e(">>>渠道号="+chan);
-                GeekAdSdk.init(this, product, chan,   false);
+                GeekAdSdk.init(this, product, "5036430", chan,   false);
                 break;
         }
     }
