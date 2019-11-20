@@ -37,7 +37,7 @@ public class TTAdManagerHolder {
         return TTAdSdk.getAdManager();
     }
 
-    public static void init(Context context, String appId) {
+    public synchronized static void init(Context context, String appId) {
         mAppId = appId;
         doInit(context);
     }
