@@ -21,9 +21,9 @@ import com.jk.adsdkdemo.utils.LogUtils;
  */
 public class InsertScreenActivity extends AppCompatActivity implements View.OnClickListener {
     private final String TAG = InsertScreenActivity.class.getSimpleName();
-    private Button btnNormal, btnNormalDownload, btnFullScreen;
-    private EditText positionEdit;
-    private TextView statePoint;
+    private Button btnNormal, btnFullScreen;
+    private EditText positionEdit, positionEdit2;
+    private TextView statePoint, statePoint2;
     private AdManager adManager;
 
     @Override
@@ -37,13 +37,16 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
         setTitle("自渲染插屏广告");
         adManager = GeekAdSdk.getAdsManger();
         statePoint = findViewById(R.id.txt_point);
+        statePoint2 = findViewById(R.id.txt_point2);
         positionEdit = findViewById(R.id.splash_position_edit);
+        positionEdit2 = findViewById(R.id.splash_position_edit2);
         btnNormal = findViewById(R.id.btn_normal_browse);
         btnNormal.setOnClickListener(this);
 
 //        btnNormalDownload = findViewById(R.id.btn_normal_download);
 //        btnNormalDownload.setOnClickListener(this);
         positionEdit.setText("external_advertising_ad_1");
+        positionEdit2.setText("cp_ad_2");
         btnFullScreen = findViewById(R.id.btn_fullscreen_download);
         btnFullScreen.setOnClickListener(this);
     }
@@ -51,9 +54,39 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
     /**
      * 获取插屏广告并加载
      */
-    private void loadCustomInsertScreenAd(String position, boolean isFullScreen) {
-        LogUtils.d(TAG, "position:" + position + " isFullScreen:" + isFullScreen);
-        adManager.loadCustomInsertScreenAd(this, position, isFullScreen, 3, new AdListener() {
+    private void loadCustomInsertScreenAd(String position) {
+        LogUtils.d(TAG, "position:" + position );
+        adManager.loadCustomInsertScreenAd(this, position, 3, new AdListener() {
+            @Override
+            public void adSuccess() {
+                LogUtils.d(TAG, "-----adSuccess-----");
+                statePoint.setText("state:adSuccess");
+            }
+
+            @Override
+            public void adExposed() {
+                LogUtils.d(TAG, "-----adExposed-----");
+            }
+
+            @Override
+            public void adClicked() {
+                LogUtils.d(TAG, "-----adClicked-----");
+            }
+
+            @Override
+            public void adError(int errorCode, String errorMsg) {
+                LogUtils.d(TAG, "-----adError-----" + errorMsg);
+                statePoint.setText("error:" + errorCode + " errorMsg:" + errorMsg);
+            }
+        });
+    }
+
+    /**
+     * 获取全屏插屏广告并加载
+     */
+    private void loadCustomInsertScreenAd2(String position) {
+        LogUtils.d(TAG, "position:" + position + " isFullScreen:");
+        adManager.loadCustomInsertScreenAd(this, position, 3, new AdListener() {
             @Override
             public void adSuccess() {
                 LogUtils.d(TAG, "-----adSuccess-----");
@@ -83,11 +116,11 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_fullscreen_download:
-                loadCustomInsertScreenAd(positionEdit.getText().toString().trim(), true);
+                loadCustomInsertScreenAd2(positionEdit.getText().toString().trim());
                 break;
             case R.id.btn_normal_browse:
 //            case R.id.btn_normal_download:
-                loadCustomInsertScreenAd(positionEdit.getText().toString().trim(), false);
+                loadCustomInsertScreenAd(positionEdit2.getText().toString().trim());
                 break;
             default:
                 break;

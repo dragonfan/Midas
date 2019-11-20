@@ -55,7 +55,7 @@ public class TemplateInsertScreenAcitvity extends AppCompatActivity implements V
                     return;
                 }
                 AdManager adManager = GeekAdSdk.getAdsManger();
-                adManager.loadCustomInsertScreenAd(this, position, false, 3, new AdListener() {
+                adManager.loadCustomInsertScreenAd(this, position, 3, new AdListener() {
                     @Override
                     public void adSuccess() {
                         LogUtils.d(TAG, "-----adSuccess-----");

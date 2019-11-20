@@ -26,9 +26,15 @@ import java.util.List;
 public class CsjCustomInsertScreenAdView extends CHJAdView {
     private Activity activity;
     private TTAdNative mTTAdNative;
+    protected boolean isFullScreen;
 
     public CsjCustomInsertScreenAdView(Context context) {
+        this(context, false);
+    }
+
+    public CsjCustomInsertScreenAdView(Context context, boolean isFullScreen) {
         super(context);
+        this.isFullScreen = isFullScreen;
     }
 
     @Override
@@ -43,7 +49,7 @@ public class CsjCustomInsertScreenAdView extends CHJAdView {
     /**
      * 获取插屏广告并展示
      */
-    public void loadCustomInsertScreenAd(final Activity activity, final boolean isFullScreen, final int showTimeSeconds, String adId) {
+    public void loadCustomInsertScreenAd(final Activity activity, final int showTimeSeconds, String adId) {
         if (activity == null) {
             throw new NullPointerException("loadCustomInsertScreenAd activity is null");
         }

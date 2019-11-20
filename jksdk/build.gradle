@@ -39,8 +39,8 @@ android {
 //}
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation fileTree(include: ['*.aar'], dir: 'libs')
+    api fileTree(include: ['*.jar'], dir: 'libs')
+    api fileTree(include: ['*.aar'], dir: 'libs')
     //穿山甲
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.6'
     //穿山甲 为了适配下载和安装相关功能，在工程中引用的包 com.android.support:support-v4:24.2.0

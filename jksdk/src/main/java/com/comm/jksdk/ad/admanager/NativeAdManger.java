@@ -288,7 +288,7 @@ public class NativeAdManger implements AdManager {
      * @param listener
      */
     @Override
-    public void loadCustomInsertScreenAd(Activity activity, String position, boolean isFullScreen, int showTimeSeconds, AdListener listener) {
+    public void loadCustomInsertScreenAd(Activity activity, String position, int showTimeSeconds, AdListener listener) {
         mAdListener = listener;
         mActivity = activity;
         this.isFullScreen = isFullScreen;
