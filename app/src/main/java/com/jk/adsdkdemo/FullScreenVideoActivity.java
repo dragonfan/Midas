@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.comm.jksdk.GeekAdSdk;
+import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.ad.listener.AdManager;
 import com.comm.jksdk.ad.listener.VideoAdListener;
 import com.jk.adsdkdemo.utils.LogUtils;
@@ -63,18 +64,18 @@ public class FullScreenVideoActivity extends AppCompatActivity implements View.O
             }
 
             @Override
-            public void adSuccess() {
+            public void adSuccess(AdInfo info) {
                 LogUtils.d(TAG, "-----adSuccess-----");
                 splashContainer.addView(adManager.getAdView());
             }
 
             @Override
-            public void adExposed() {
+            public void adExposed(AdInfo info) {
                 LogUtils.d(TAG, "-----adExposed-----");
             }
 
             @Override
-            public void adClicked() {
+            public void adClicked(AdInfo info) {
                 LogUtils.d(TAG, "-----adClicked-----");
             }
 

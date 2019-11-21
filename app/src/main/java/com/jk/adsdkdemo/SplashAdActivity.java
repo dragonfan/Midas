@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.comm.jksdk.GeekAdSdk;
+import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.ad.listener.AdListener;
 import com.comm.jksdk.ad.listener.AdManager;
 import com.jk.adsdkdemo.utils.LogUtils;
@@ -56,19 +57,19 @@ public class SplashAdActivity extends AppCompatActivity implements View.OnClickL
         stateTxt.setText("");
         adManager.loadSplashAd(this, position, new AdListener() {
             @Override
-            public void adSuccess() {
+            public void adSuccess(AdInfo info) {
                 LogUtils.d(TAG, "-----adSuccess-----");
                 stateTxt.setText("-----adSuccess-----");
             }
 
             @Override
-            public void adExposed() {
+            public void adExposed(AdInfo info) {
                 LogUtils.d(TAG, "-----adExposed-----");
                 stateTxt.setText("-----adExposed-----");
             }
 
             @Override
-            public void adClicked() {
+            public void adClicked(AdInfo info) {
                 LogUtils.d(TAG, "-----adClicked-----");
             }
 

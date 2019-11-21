@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.comm.jksdk.GeekAdSdk;
+import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.ad.listener.AdListener;
 import com.comm.jksdk.ad.listener.AdManager;
 import com.jk.adsdkdemo.utils.LogUtils;
@@ -28,6 +29,7 @@ import com.jk.adsdkdemo.utils.LogUtils;
  */
 public class BigImgCenterActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private final String TAG = RewardVideoActivity.class.getSimpleName();
     private Button requestBt;
     private FrameLayout container;
     private EditText positionEt;
@@ -54,7 +56,12 @@ public class BigImgCenterActivity extends AppCompatActivity implements View.OnCl
                 AdManager adManager = GeekAdSdk.getAdsManger();
                 adManager.loadAd(this,position, new AdListener() {
                     @Override
-                    public void adSuccess() {
+                    public void adSuccess(AdInfo info) {
+                        if (info == null) {
+                            LogUtils.e("DEMO>>>adSuccess， AdInfo is empty");
+                        } else {
+                            LogUtils.e("DEMO>>>adSuccess， "+ info.toString());
+                        }
                         adView = adManager.getAdView();
                         if (adView != null) {
                             container.removeAllViews();
@@ -63,18 +70,27 @@ public class BigImgCenterActivity extends AppCompatActivity implements View.OnCl
                     }
 
                     @Override
-                    public void adExposed() {
+                    public void adExposed(AdInfo info) {
+                        if (info == null) {
+                            LogUtils.e("DEMO>>>adExposed， AdInfo is empty");
+                        } else {
+                            LogUtils.e("DEMO>>>adExposed， "+ info.toString());
+                        }
                         LogUtils.e("adExposed");
                     }
 
                     @Override
-                    public void adClicked() {
-
+                    public void adClicked(AdInfo info) {
+                        if (info == null) {
+                            LogUtils.e("DEMO>>>adClicked， AdInfo is empty");
+                        } else {
+                            LogUtils.e("DEMO>>>adClicked， "+ info.toString());
+                        }
                     }
 
                     @Override
                     public void adError(int errorCode, String errorMsg) {
-
+                        LogUtils.e("DEMO>>>adError： "+errorMsg);
                     }
                 });
                 break;

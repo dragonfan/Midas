@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.comm.jksdk.GeekAdSdk;
+import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.ad.listener.AdListener;
 import com.comm.jksdk.ad.listener.AdManager;
 import com.jk.adsdkdemo.utils.LogUtils;
@@ -58,18 +59,18 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
         LogUtils.d(TAG, "position:" + position );
         adManager.loadCustomInsertScreenAd(this, position, 3, new AdListener() {
             @Override
-            public void adSuccess() {
+            public void adSuccess(AdInfo info) {
                 LogUtils.d(TAG, "-----adSuccess-----");
                 statePoint.setText("state:adSuccess");
             }
 
             @Override
-            public void adExposed() {
+            public void adExposed(AdInfo info) {
                 LogUtils.d(TAG, "-----adExposed-----");
             }
 
             @Override
-            public void adClicked() {
+            public void adClicked(AdInfo info) {
                 LogUtils.d(TAG, "-----adClicked-----");
             }
 
@@ -88,18 +89,18 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
         LogUtils.d(TAG, "position:" + position + " isFullScreen:");
         adManager.loadCustomInsertScreenAd(this, position, 3, new AdListener() {
             @Override
-            public void adSuccess() {
+            public void adSuccess(AdInfo info) {
                 LogUtils.d(TAG, "-----adSuccess-----");
                 statePoint.setText("state:adSuccess");
             }
 
             @Override
-            public void adExposed() {
+            public void adExposed(AdInfo info) {
                 LogUtils.d(TAG, "-----adExposed-----");
             }
 
             @Override
-            public void adClicked() {
+            public void adClicked(AdInfo info) {
                 LogUtils.d(TAG, "-----adClicked-----");
             }
 

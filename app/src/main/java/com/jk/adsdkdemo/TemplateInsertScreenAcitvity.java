@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.comm.jksdk.GeekAdSdk;
+import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.ad.listener.AdListener;
 import com.comm.jksdk.ad.listener.AdManager;
 import com.jk.adsdkdemo.utils.LogUtils;
@@ -57,17 +58,17 @@ public class TemplateInsertScreenAcitvity extends AppCompatActivity implements V
                 AdManager adManager = GeekAdSdk.getAdsManger();
                 adManager.loadCustomInsertScreenAd(this, position, 3, new AdListener() {
                     @Override
-                    public void adSuccess() {
+                    public void adSuccess(AdInfo info) {
                         LogUtils.d(TAG, "-----adSuccess-----");
                     }
 
                     @Override
-                    public void adExposed() {
+                    public void adExposed(AdInfo info) {
                         LogUtils.d(TAG, "-----adExposed-----");
                     }
 
                     @Override
-                    public void adClicked() {
+                    public void adClicked(AdInfo info) {
                         LogUtils.d(TAG, "-----adClicked-----");
                     }
 

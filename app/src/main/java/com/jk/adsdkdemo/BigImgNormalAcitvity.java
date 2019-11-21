@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.comm.jksdk.GeekAdSdk;
+import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.ad.listener.AdListener;
 import com.comm.jksdk.ad.listener.AdManager;
 import com.jk.adsdkdemo.utils.LogUtils;
@@ -57,7 +58,7 @@ public class BigImgNormalAcitvity extends AppCompatActivity implements View.OnCl
                 AdManager adManager = GeekAdSdk.getAdsManger();
                 adManager.loadAd(this,position, new AdListener() {
                     @Override
-                    public void adSuccess() {
+                    public void adSuccess(AdInfo info) {
                         adView = adManager.getAdView();
                         if (adView != null) {
                             container.removeAllViews();
@@ -66,12 +67,12 @@ public class BigImgNormalAcitvity extends AppCompatActivity implements View.OnCl
                     }
 
                     @Override
-                    public void adExposed() {
+                    public void adExposed(AdInfo info) {
                         LogUtils.e("adExposed");
                     }
 
                     @Override
-                    public void adClicked() {
+                    public void adClicked(AdInfo info) {
 
                     }
 
