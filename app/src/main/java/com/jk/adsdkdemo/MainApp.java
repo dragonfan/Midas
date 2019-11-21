@@ -3,6 +3,7 @@ package com.jk.adsdkdemo;
 import android.app.Application;
 import android.content.Context;
 
+import com.bytedance.sdk.openadsdk.TTAdConfig;
 import com.comm.jksdk.GeekAdSdk;
 
 /**
