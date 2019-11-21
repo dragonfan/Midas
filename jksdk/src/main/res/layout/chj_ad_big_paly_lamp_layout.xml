@@ -17,6 +17,10 @@
             android:layout_width="match_parent"
             android:layout_height="171dp"
             android:scaleType="centerCrop" />
+        <ImageView
+            android:background="@mipmap/ad_mask"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/ad_describe_tv"
             android:lines="1"
@@ -68,6 +72,7 @@
             android:id="@+id/ad_title_tv"
             android:layout_centerVertical="true"
             android:layout_marginLeft="60dp"
+            android:layout_marginRight="80dp"
             android:lines="1"
             android:textSize="15dp"
             android:textColor="#404040"
