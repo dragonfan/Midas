@@ -74,6 +74,7 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
                 LogUtils.d(TAG, "-----adClicked-----");
             }
 
+
             @Override
             public void adError(int errorCode, String errorMsg) {
                 LogUtils.d(TAG, "-----adError-----" + errorMsg);

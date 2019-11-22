@@ -82,6 +82,11 @@ public class RewardVideoActivity extends AppCompatActivity implements View.OnCli
             }
 
             @Override
+            public void adClose(AdInfo info) {
+                LogUtils.d(TAG, "-----adClose-----");
+            }
+
+            @Override
             public void adError(int errorCode, String errorMsg) {
                 LogUtils.d(TAG, "-----adError-----" + errorMsg);
                 TextView textView = new TextView(RewardVideoActivity.this);
