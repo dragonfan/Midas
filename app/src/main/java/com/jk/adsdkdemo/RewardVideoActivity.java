@@ -56,14 +56,20 @@ public class RewardVideoActivity extends AppCompatActivity implements View.OnCli
         adManager.loadRewardVideoAd(this, position, "user123", 1, new VideoAdListener() {
 
             @Override
-            public void onVideoResume() {
+            public void onVideoResume(AdInfo info) {
 
             }
 
             @Override
-            public void onVideoRewardVerify(boolean rewardVerify, int rewardAmount, String rewardName) {
+            public void onVideoRewardVerify(AdInfo info, boolean rewardVerify, int rewardAmount, String rewardName) {
                 Toast.makeText(RewardVideoActivity.this, rewardName + rewardAmount, Toast.LENGTH_SHORT).show();
             }
+
+            @Override
+            public void onVideoComplete(AdInfo info) {
+
+            }
+
 
             @Override
             public void adSuccess(AdInfo info) {

@@ -54,13 +54,18 @@ public class FullScreenVideoActivity extends AppCompatActivity implements View.O
         splashContainer.removeAllViews();
         adManager.loadVideoAd(this, position, new VideoAdListener() {
             @Override
-            public void onVideoResume() {
+            public void onVideoResume(AdInfo info) {
 
             }
 
             @Override
-            public void onVideoRewardVerify(boolean rewardVerify, int rewardAmount, String rewardName) {
+            public void onVideoRewardVerify(AdInfo info, boolean rewardVerify, int rewardAmount, String rewardName) {
 
+            }
+
+            @Override
+            public void onVideoComplete(AdInfo info) {
+                LogUtils.d(TAG, "-----onVideoComplete-----");
             }
 
             @Override
@@ -77,6 +82,11 @@ public class FullScreenVideoActivity extends AppCompatActivity implements View.O
             @Override
             public void adClicked(AdInfo info) {
                 LogUtils.d(TAG, "-----adClicked-----");
+            }
+
+            @Override
+            public void adClose(AdInfo info) {
+                LogUtils.d(TAG, "-----adClose-----");
             }
 
             @Override
