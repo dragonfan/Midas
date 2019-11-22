@@ -80,7 +80,7 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
                 LogUtils.d(TAG, "-----adError-----" + errorMsg);
                 statePoint.setText("error:" + errorCode + " errorMsg:" + errorMsg);
             }
-        });
+        }, "80");
     }
 
     /**
