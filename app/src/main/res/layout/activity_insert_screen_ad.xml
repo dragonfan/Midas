@@ -5,7 +5,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <FrameLayout
+        android:background="#eeeeee"
+        android:padding="@dimen/dimen_12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+
+            android:layout_marginLeft="@dimen/dimen_12dp"
+            android:layout_marginRight="@dimen/dimen_12dp"
+            android:id="@+id/container"
+            android:background="@drawable/ad_container_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </FrameLayout>
+    </FrameLayout>
+
     <EditText
+        android:layout_marginTop="@dimen/dimen_12dp"
         android:id="@+id/splash_position_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

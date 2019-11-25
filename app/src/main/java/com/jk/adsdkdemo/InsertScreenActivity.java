@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.comm.jksdk.GeekAdSdk;
@@ -26,6 +27,7 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
     private EditText positionEdit, positionEdit2;
     private TextView statePoint, statePoint2;
     private AdManager adManager;
+    private FrameLayout container;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,6 +45,7 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
         positionEdit2 = findViewById(R.id.splash_position_edit2);
         btnNormal = findViewById(R.id.btn_normal_browse);
         btnNormal.setOnClickListener(this);
+        container = findViewById(R.id.container);
 
 //        btnNormalDownload = findViewById(R.id.btn_normal_download);
 //        btnNormalDownload.setOnClickListener(this);
@@ -52,6 +55,7 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
         btnFullScreen.setOnClickListener(this);
     }
 
+    View adView;
     /**
      * 获取插屏广告并加载
      */
@@ -61,7 +65,16 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void adSuccess(AdInfo info) {
                 LogUtils.d(TAG, "-----adSuccess-----");
+
                 statePoint.setText("state:adSuccess");
+                String adStyle = info.getAdStyle();
+                if ("EXTERNAL_CP_01".equals(adStyle)) { //外部插屏广告用addView的形式
+                    adView = adManager.getAdView();
+                    if (adView != null) {
+                        container.removeAllViews();
+                        container.addView(adView);
+                    }
+                }
             }
 
             @Override
