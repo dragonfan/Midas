@@ -60,6 +60,7 @@
     </FrameLayout>
     <RelativeLayout
         android:orientation="horizontal"
+        android:background="@drawable/ad_big_img_bottom_bg"
         android:layout_below="@+id/ad_im_layout"
         android:layout_width="match_parent"
         android:layout_height="62dp">
