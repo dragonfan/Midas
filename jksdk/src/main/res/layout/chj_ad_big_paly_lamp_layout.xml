@@ -17,8 +17,10 @@
             android:layout_width="match_parent"
             android:layout_height="171dp"
             android:scaleType="centerCrop" />
-        <ImageView
-            android:background="@mipmap/ad_mask"
+        <com.comm.jksdk.widget.TopRoundImageView
+            android:src="@mipmap/angle_ad_mask"
+            app:fillet="@dimen/dimen_12dp"
+            android:scaleType="centerCrop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <TextView
