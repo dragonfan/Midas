@@ -50,6 +50,7 @@
 
         <TextView
             android:id="@+id/down_bt"
+            android:textColor="#ffffff"
             android:gravity="center"
             android:layout_marginTop="22dp"
             android:layout_gravity="center_horizontal"

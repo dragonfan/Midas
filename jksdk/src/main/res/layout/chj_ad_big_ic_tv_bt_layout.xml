@@ -50,6 +50,7 @@
             android:visibility="gone"
             android:id="@+id/down_bt"
             android:gravity="center"
+            android:textColor="#ffffff"
             android:layout_marginTop="7.5dp"
             android:layout_gravity="center_horizontal"
             android:background="@mipmap/ad_big_img_down"
