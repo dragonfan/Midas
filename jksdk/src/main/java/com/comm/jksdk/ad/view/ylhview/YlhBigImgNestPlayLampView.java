@@ -111,6 +111,8 @@ public class YlhBigImgNestPlayLampView extends CommAdView {
         list.add(R.mipmap.nest_im);
         list.add(R.mipmap.nest_im1);
         list.add(R.mipmap.nest_im2);
+        list.add(R.mipmap.nest_im3);
+        list.add(R.mipmap.nest_im4);
         int index = new Random().nextInt(list.size());
         custonIm.setImageResource(list.get(index));
         int adlogoWidth = DisplayUtil.dp2px(mContext, 30);
