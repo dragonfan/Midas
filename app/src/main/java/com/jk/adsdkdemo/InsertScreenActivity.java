@@ -119,6 +119,11 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
             }
 
             @Override
+            public void adClose(AdInfo info) {
+                LogUtils.d(TAG, "-----adClose-----");
+            }
+
+            @Override
             public void adError(int errorCode, String errorMsg) {
                 LogUtils.d(TAG, "-----adError-----" + errorMsg);
                 statePoint.setText("error:" + errorCode + " errorMsg:" + errorMsg);
