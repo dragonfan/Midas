@@ -15,6 +15,13 @@
         android:text="获取配置信息" />
 
     <Button
+        android:id="@+id/button_preloading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:text="预加载大图广告" />
+
+    <Button
         android:id="@+id/button_old_style"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

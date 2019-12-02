@@ -121,6 +121,17 @@ public class ChjBigImgIcTvBtAdView extends CommAdView {
         initAdData(adData);
     }
 
+    @Override
+    public void parseChjAd(TTFeedAd ttFeedAd) {
+        // 如果没有特定需求，随机取一个
+
+        this.mNativeADData = ttFeedAd;
+
+
+
+        initAdData(ttFeedAd);
+    }
+
     /**
      * 初始化广告数据
      *

@@ -27,7 +27,7 @@ public class RewardVideoActivity extends AppCompatActivity implements View.OnCli
     private AdManager adManager;
     private EditText positionEdit;
     private FrameLayout splashContainer;
-    private Button refreshBtn;
+    private Button refreshBtn, preloadingAd;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,7 +44,10 @@ public class RewardVideoActivity extends AppCompatActivity implements View.OnCli
         refreshBtn.setOnClickListener(this);
         adManager = GeekAdSdk.getAdsManger();
         positionEdit.setText("click_virus_killing_ad");
-        loadSplashAd("click_virus_killing_ad");
+
+        preloadingAd = findViewById(R.id.button_preloading_ad);
+        preloadingAd.setOnClickListener(this);
+//        loadSplashAd("click_virus_killing_ad");
     }
 
     /**
@@ -106,6 +109,8 @@ public class RewardVideoActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.button_preloading_ad:
+                break;
             case R.id.video_refresh:
                 loadSplashAd(positionEdit.getText().toString().trim());
                 break;

@@ -17,6 +17,7 @@ import com.comm.jksdk.http.utils.LogUtils;
 import com.comm.jksdk.utils.AdsUtils;
 import com.comm.jksdk.utils.CodeFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -180,17 +181,18 @@ public class CHJAdView extends CommAdView {
         } else {
             //api
         }
+    }
 
+    @Override
+    public void requestAd(int requestType, TTFeedAd ttFeedAd, int adRequestTimeOut) {
+        mAdView.parseChjAd(ttFeedAd);
+        adSuccess(mAdInfo);
     }
 
     /**
      * 通过SDK获取广告
      */
     protected void getAdBySdk(final int adRequestTimeOut) {
-//        String ylhAppid= SpUtils.getString(Constants.SPUtils.YLH_APPID,"");
-//        if(TextUtils.isEmpty(ylhAppid)){
-//            ylhAppid=Constants.YLH_APPID;
-//        }
         LogUtils.d(TAG, "--------开始请求广告-------------广告样式------->style:" + style);
         if (Constants.AdStyle.BIG_IMG.equals(style) || Constants.AdStyle.DATU_ICON_TEXT.equals(style) || Constants.AdStyle.DATU_ICON_TEXT_BUTTON_CENTER.equals(style) || Constants.AdStyle.EXTERNAL_DIALOG_BIG_IMAGE_01.equals(style)
                 || Constants.AdStyle.DATU_ICON_TEXT_BUTTON.equals(style) || Constants.AdStyle.LEFT_IMG_RIGHT_TWO_TEXT.equals(style) || Constants.AdStyle.BIG_IMG_BUTTON_LAMP.equals(style)

@@ -71,12 +71,22 @@ public class CommAdView extends AbsAdView {
     }
 
     @Override
+    public void requestAd(int requestType, TTFeedAd ttFeedAd, int adRequestTimeOut) {
+
+    }
+
+    @Override
     public void parseYlhAd(List<NativeUnifiedADData> nativeAdList) {
 
     }
 
     @Override
     public void parseChjAd(List<TTFeedAd> nativeAdList) {
+
+    }
+
+    @Override
+    public void parseChjAd(TTFeedAd ttFeedAd) {
 
     }
 

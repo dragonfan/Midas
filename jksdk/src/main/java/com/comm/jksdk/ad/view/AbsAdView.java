@@ -45,7 +45,11 @@ public abstract class AbsAdView extends RelativeLayout {
 
     public abstract void requestAd(int requestType, int adRequestTimeOut);
 
+    public abstract void requestAd(int requestType, TTFeedAd ttFeedAd, int adRequestTimeOut);
+
     public abstract void parseYlhAd(List<NativeUnifiedADData> nativeAdList);
 
     public abstract void parseChjAd(List<TTFeedAd> nativeAdList);
+
+    public abstract void parseChjAd(TTFeedAd ttFeedAd);
 }

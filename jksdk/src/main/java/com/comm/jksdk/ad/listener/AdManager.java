@@ -19,6 +19,8 @@ public interface AdManager {
 
     void loadAd(Activity activity, String position, AdListener listener);
 
+    void preloadingAd(Activity activity, String position, AdPreloadingListener listener);
+
     void loadSplashAd(Activity activity, String position, AdListener listener);
 
     void loadVideoAd(Activity activity, String position, AdListener listener);
