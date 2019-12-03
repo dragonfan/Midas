@@ -24,6 +24,7 @@ import com.bytedance.sdk.openadsdk.TTFeedAd;
 import com.bytedance.sdk.openadsdk.TTImage;
 import com.bytedance.sdk.openadsdk.TTNativeAd;
 import com.comm.jksdk.R;
+import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.ad.view.CommAdView;
 import com.comm.jksdk.http.utils.LogUtils;
 import com.comm.jksdk.utils.DisplayUtil;
@@ -48,7 +49,7 @@ import java.util.Random;
  */
 
 
-public class ChjBigImgAdPlayLampView extends CommAdView {
+public class ChjBigImgAdPlayLampView extends CHJAdView {
     // 广告实体数据
     private TTFeedAd mNativeADData = null;
     private RequestOptions requestOptions;
@@ -122,31 +123,12 @@ public class ChjBigImgAdPlayLampView extends CommAdView {
 
     }
 
-    /**
-     * 解析广告
-     *
-     * @param nativeAdList
-     */
     @Override
-    public void parseChjAd(List<TTFeedAd> nativeAdList) {
-        // 如果没有特定需求，随机取一个
-        if (nativeAdList == null || nativeAdList.isEmpty()) {
-            firstAdError(1, "请求结果为空");
-            return;
-        }
-//        int size = nativeAdList.size();
-//        int index = new Random().nextInt(size);
-        TTFeedAd adData = nativeAdList.get(0);
-        if (adData == null) {
-            firstAdError(1, "请求结果为空");
-            return;
-        }
-
-        this.mNativeADData = adData;
-
-
-
-        initAdData(adData);
+    public void parseAd(AdInfo adInfo) {
+        super.parseAd(adInfo);
+        this.mAdInfo = adInfo;
+        TTFeedAd ttFeedAd = adInfo.getTtFeedAd();
+        initAdData(ttFeedAd);
     }
 
     /**
@@ -156,12 +138,12 @@ public class ChjBigImgAdPlayLampView extends CommAdView {
      */
     private void initAdData(TTFeedAd adData) {
         if ( mContext == null) {
-            firstAdError(1, "mContext 为空");
+            firstAdError(mAdInfo, 1, "mContext 为空");
             return;
         }
 
         if (adData.getImageMode() != TTAdConstant.IMAGE_MODE_LARGE_IMG) {
-            firstAdError(1, "返回结果不是大图");
+            firstAdError(mAdInfo, 1, "返回结果不是大图");
             return;
         }
         nativeAdContainer.setVisibility(VISIBLE);

@@ -44,7 +44,7 @@ import java.util.List;
  */
 
 
-public class YlhExternalDialogBigImageView extends CommAdView {
+public class YlhExternalDialogBigImageView extends YlhAdView {
     // 广告实体数据
     private NativeUnifiedADData mNativeADData = null;
     private RequestOptions requestOptions;

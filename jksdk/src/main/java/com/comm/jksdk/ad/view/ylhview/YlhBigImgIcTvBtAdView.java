@@ -40,7 +40,7 @@ import java.util.Random;
  */
 
 
-public class YlhBigImgIcTvBtAdView extends CommAdView {
+public class YlhBigImgIcTvBtAdView extends YlhAdView {
     // 广告实体数据
     private NativeUnifiedADData mNativeADData = null;
     private RequestOptions requestOptions;

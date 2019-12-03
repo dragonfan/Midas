@@ -18,7 +18,7 @@ import com.qq.e.comm.util.AdError;
  * @author zixuefei
  * @since 2019/11/18 11:24
  */
-public class YlhTemplateInsertScreenAdView extends CHJAdView {
+public class YlhTemplateInsertScreenAdView extends YlhAdView {
     private Activity activity;
     private UnifiedInterstitialAD iad;
 

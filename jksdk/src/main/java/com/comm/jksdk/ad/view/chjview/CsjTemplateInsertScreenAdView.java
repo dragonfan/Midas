@@ -59,7 +59,7 @@ public class CsjTemplateInsertScreenAdView extends CHJAdView {
         mAdInfo.setAdAppid(mAppId);
         mAdInfo.setAdId(adId);
 
-        mTTAdNative = TTAdManagerHolder.get(mAppId).createAdNative(activity.getApplicationContext());
+        mTTAdNative = TTAdManagerHolder.get().createAdNative(activity.getApplicationContext());
 
         float expressViewWidth = 300;
         float expressViewHeight = 300;

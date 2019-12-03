@@ -22,6 +22,7 @@ import com.bytedance.sdk.openadsdk.TTFeedAd;
 import com.bytedance.sdk.openadsdk.TTImage;
 import com.bytedance.sdk.openadsdk.TTNativeAd;
 import com.comm.jksdk.R;
+import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.ad.view.CommAdView;
 import com.comm.jksdk.http.utils.LogUtils;
 import com.comm.jksdk.utils.DisplayUtil;
@@ -45,7 +46,7 @@ import java.util.Random;
  */
 
 
-public class ChjBigImgIcTvBtCenterAdView extends CommAdView {
+public class ChjBigImgIcTvBtCenterAdView extends CHJAdView {
     // 广告实体数据
     private TTFeedAd mNativeADData = null;
     private RequestOptions requestOptions;
@@ -94,32 +95,40 @@ public class ChjBigImgIcTvBtCenterAdView extends CommAdView {
                 .error(R.color.returncolor);//图片加载失败后，显示的图片
     }
 
-    /**
-     * 解析广告
-     *
-     * @param nativeAdList
-     */
     @Override
-    public void parseChjAd(List<TTFeedAd> nativeAdList) {
-        // 如果没有特定需求，随机取一个
-        if (nativeAdList == null || nativeAdList.isEmpty()) {
-            firstAdError(1, "请求结果为空");
-            return;
-        }
-//        int size = nativeAdList.size();
-//        int index = new Random().nextInt(size);
-        TTFeedAd adData = nativeAdList.get(0);
-        if (adData == null) {
-            firstAdError(1, "请求结果为空");
-            return;
-        }
-
-        this.mNativeADData = adData;
-
-
-
-        initAdData(adData);
+    public void parseAd(AdInfo adInfo) {
+        super.parseAd(adInfo);
+        this.mAdInfo = adInfo;
+        TTFeedAd ttFeedAd = adInfo.getTtFeedAd();
+        initAdData(ttFeedAd);
     }
+
+    //    /**
+//     * 解析广告
+//     *
+//     * @param nativeAdList
+//     */
+//    @Override
+//    public void parseChjAd(List<TTFeedAd> nativeAdList) {
+//        // 如果没有特定需求，随机取一个
+//        if (nativeAdList == null || nativeAdList.isEmpty()) {
+//            firstAdError(1, "请求结果为空");
+//            return;
+//        }
+////        int size = nativeAdList.size();
+////        int index = new Random().nextInt(size);
+//        TTFeedAd adData = nativeAdList.get(0);
+//        if (adData == null) {
+//            firstAdError(1, "请求结果为空");
+//            return;
+//        }
+//
+//        this.mNativeADData = adData;
+//
+//
+//
+//        initAdData(adData);
+//    }
 
     /**
      * 初始化广告数据
@@ -128,43 +137,18 @@ public class ChjBigImgIcTvBtCenterAdView extends CommAdView {
      */
     private void initAdData(TTFeedAd adData) {
         if ( mContext == null) {
-            firstAdError(1, "mContext 为空");
+            firstAdError(mAdInfo, 1, "mContext 为空");
             return;
         }
 
         if (adData.getImageMode() != TTAdConstant.IMAGE_MODE_LARGE_IMG) {
-            firstAdError(1, "返回结果不是大图");
+            firstAdError(mAdInfo,1, "返回结果不是大图");
             return;
         }
         nativeAdContainer.setVisibility(VISIBLE);
 
         bindData(nativeAdContainer,adData);
 
-    }
-
-
-    private int getRandowNum() {
-        //为2000到10000的随机数
-        int num = (int) (Math.random() * 8000 + 2000);
-        return num;
-    }
-
-    /**
-     * 更新浏览人数量
-     *
-     * @param downloadCount
-     * @return
-     */
-    private String getBrowseDesc(long downloadCount) {
-        String desc = "";
-        if (downloadCount <= 0) {
-            desc = getRandowNum() + "人浏览";
-        } else if (0 < downloadCount && downloadCount < 10000) {
-            desc = downloadCount + "人浏览";
-        } else {
-            desc = downloadCount / 10000 + "w+人浏览";
-        }
-        return desc;
     }
 
 

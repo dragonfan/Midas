@@ -2,6 +2,10 @@ package com.comm.jksdk.ad.entity;
 
 import android.os.Parcel;
 
+import com.bytedance.sdk.openadsdk.TTFeedAd;
+import com.bytedance.sdk.openadsdk.TTFullScreenVideoAd;
+import com.bytedance.sdk.openadsdk.TTSplashAd;
+
 /**
  * @ProjectName: GeekAdSdk
  * @Package: com.comm.jksdk.ad.entity
@@ -15,6 +19,20 @@ import android.os.Parcel;
  * @Version: 1.0
  */
 public class AdInfo extends BaseEntity{
+
+    /**
+     * 穿山甲全屏视频广告
+     */
+    private TTFullScreenVideoAd ttFullScreenVideoAd;
+    /**
+     * 穿山甲图文类广告
+     */
+    private TTFeedAd ttFeedAd;
+
+    /**
+     * 穿山甲开屏广告
+     */
+    private TTSplashAd ttSplashAd;
     /**
      * 广告对应的appid
      */
@@ -35,14 +53,66 @@ public class AdInfo extends BaseEntity{
     private String adTitle;
 
     /**
-     * 插屏样式
+     * 广告样式
      */
     private String adStyle;
+
+    /**
+     * 广告请求超时时间
+     */
+    private int adRequestTimeOut;
+
 
     /**
      * 点击后的类型：1=下载；2=详情
      */
     private int adClickType;
+
+    /**
+     * 位置信息
+     */
+    private String mPosition;
+
+
+    public TTFullScreenVideoAd getTtFullScreenVideoAd() {
+        return ttFullScreenVideoAd;
+    }
+
+    public void setTtFullScreenVideoAd(TTFullScreenVideoAd ttFullScreenVideoAd) {
+        this.ttFullScreenVideoAd = ttFullScreenVideoAd;
+    }
+
+    public TTSplashAd getTtSplashAd() {
+        return ttSplashAd;
+    }
+
+    public void setTtSplashAd(TTSplashAd ttSplashAd) {
+        this.ttSplashAd = ttSplashAd;
+    }
+
+    public TTFeedAd getTtFeedAd() {
+        return ttFeedAd;
+    }
+
+    public void setTtFeedAd(TTFeedAd ttFeedAd) {
+        this.ttFeedAd = ttFeedAd;
+    }
+
+    public String getPosition() {
+        return mPosition;
+    }
+
+    public void setPosition(String mPosition) {
+        this.mPosition = mPosition;
+    }
+
+    public int getAdRequestTimeOut() {
+        return adRequestTimeOut;
+    }
+
+    public void setAdRequestTimeOut(int adRequestTimeOut) {
+        this.adRequestTimeOut = adRequestTimeOut;
+    }
 
     public String getAdAppid() {
         return adAppid;

@@ -41,7 +41,7 @@ import java.util.Random;
  */
 
 
-public class ChjLeftImgRightTwoTextAdView extends CommAdView {
+public class ChjLeftImgRightTwoTextAdView extends CHJAdView {
     ImageView ivImg;
     TextView tvTitle;
     TextView tvSubTitle;
@@ -92,30 +92,30 @@ public class ChjLeftImgRightTwoTextAdView extends CommAdView {
                 .error(R.color.returncolor);//图片加载失败后，显示的图片
     }
 
-    /**
-     * 解析广告
-     *
-     * @param nativeAdList
-     */
-    @Override
-    public void parseChjAd(List<TTFeedAd> nativeAdList) {
-        // 如果没有特定需求，随机取一个
-        if (nativeAdList == null || nativeAdList.isEmpty()) {
-            return;
-        }
-//        int size = nativeAdList.size();
-//        int index = new Random().nextInt(size);
-        TTFeedAd adData = nativeAdList.get(0);
-        if (adData == null) {
-            return;
-        }
-
-        this.mNativeADData = adData;
-
-
-
-        initAdData(adData);
-    }
+//    /**
+//     * 解析广告
+//     *
+//     * @param nativeAdList
+//     */
+//    @Override
+//    public void parseChjAd(List<TTFeedAd> nativeAdList) {
+//        // 如果没有特定需求，随机取一个
+//        if (nativeAdList == null || nativeAdList.isEmpty()) {
+//            return;
+//        }
+////        int size = nativeAdList.size();
+////        int index = new Random().nextInt(size);
+//        TTFeedAd adData = nativeAdList.get(0);
+//        if (adData == null) {
+//            return;
+//        }
+//
+//        this.mNativeADData = adData;
+//
+//
+//
+//        initAdData(adData);
+//    }
 
     /**
      * 初始化广告数据

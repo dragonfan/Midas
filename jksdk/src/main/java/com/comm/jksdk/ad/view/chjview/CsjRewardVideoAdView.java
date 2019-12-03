@@ -46,7 +46,7 @@ public class CsjRewardVideoAdView extends CHJAdView {
      * 获取激励视屏广告并展示
      */
     public void loadRewardVideoAd(final Activity activity, String adId, String userId, int orientation) {
-        mTTAdNative = TTAdManagerHolder.get(mAppId).createAdNative(mContext.getApplicationContext());
+        mTTAdNative = TTAdManagerHolder.get().createAdNative(mContext.getApplicationContext());
         if (activity == null) {
             throw new NullPointerException("loadFullScreenVideoAd activity is null");
         }

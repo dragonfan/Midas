@@ -62,7 +62,7 @@ public class CsjCustomInsertScreenAdView extends CHJAdView {
         mAdInfo.setAdSource(Constants.AdType.ChuanShanJia);
         mAdInfo.setAdAppid(mAppId);
         mAdInfo.setAdId(adId);
-        mTTAdNative = TTAdManagerHolder.get(mAppId).createAdNative(activity.getApplicationContext());
+        mTTAdNative = TTAdManagerHolder.get().createAdNative(activity.getApplicationContext());
         AdSlot adSlot = new AdSlot.Builder()
                 .setCodeId(adId)
                 .setSupportDeepLink(true)

@@ -43,7 +43,7 @@ import java.util.Random;
  */
 
 
-public class YlhBigImgFakeVideoAdView extends CommAdView {
+public class YlhBigImgFakeVideoAdView extends YlhAdView {
     // 广告实体数据
     private NativeUnifiedADData mNativeADData = null;
     private RequestOptions requestOptions;

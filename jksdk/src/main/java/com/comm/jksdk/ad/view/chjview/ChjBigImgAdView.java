@@ -39,7 +39,7 @@ import java.util.Random;
  */
 
 
-public class ChjBigImgAdView extends CommAdView {
+public class ChjBigImgAdView extends CHJAdView {
     ImageView ivImg;
 
     TextView tvDownload;
@@ -88,53 +88,53 @@ public class ChjBigImgAdView extends CommAdView {
                 .error(R.color.returncolor);//图片加载失败后，显示的图片
     }
 
-    /**
-     * 解析广告
-     *
-     * @param nativeAdList
-     */
-    @Override
-    public void parseChjAd(List<TTFeedAd> nativeAdList) {
-        // 如果没有特定需求，随机取一个
-        if (nativeAdList == null || nativeAdList.isEmpty()) {
-            firstAdError(1, "请求结果为空");
-            return;
-        }
-//        int size = nativeAdList.size();
-//        int index = new Random().nextInt(size);
-        TTFeedAd adData = nativeAdList.get(0);
-        if (adData == null) {
-            firstAdError(1, "请求结果为空");
-            return;
-        }
-
-        this.mNativeADData = adData;
-
-
-
-        initAdData(adData);
-    }
-
-    /**
-     * 初始化广告数据
-     *
-     * @param adData
-     */
-    private void initAdData(TTFeedAd adData) {
-        if ( mContext == null) {
-            firstAdError(1, "mContext 为空");
-            return;
-        }
-
-        nativeAdContainer.setVisibility(VISIBLE);
-        if (adData.getImageMode() != TTAdConstant.IMAGE_MODE_LARGE_IMG) {
-            firstAdError(1, "返回结果不是大图");
-            return;
-        }
-
-        bindData(nativeAdContainer,adData);
-
-    }
+//    /**
+//     * 解析广告
+//     *
+//     * @param nativeAdList
+//     */
+//    @Override
+//    public void parseChjAd(List<TTFeedAd> nativeAdList) {
+//        // 如果没有特定需求，随机取一个
+//        if (nativeAdList == null || nativeAdList.isEmpty()) {
+//            firstAdError(1, "请求结果为空");
+//            return;
+//        }
+////        int size = nativeAdList.size();
+////        int index = new Random().nextInt(size);
+//        TTFeedAd adData = nativeAdList.get(0);
+//        if (adData == null) {
+//            firstAdError(1, "请求结果为空");
+//            return;
+//        }
+//
+//        this.mNativeADData = adData;
+//
+//
+//
+//        initAdData(adData);
+//    }
+//
+//    /**
+//     * 初始化广告数据
+//     *
+//     * @param adData
+//     */
+//    private void initAdData(TTFeedAd adData) {
+//        if ( mContext == null) {
+//            firstAdError(1, "mContext 为空");
+//            return;
+//        }
+//
+//        nativeAdContainer.setVisibility(VISIBLE);
+//        if (adData.getImageMode() != TTAdConstant.IMAGE_MODE_LARGE_IMG) {
+//            firstAdError(1, "返回结果不是大图");
+//            return;
+//        }
+//
+//        bindData(nativeAdContainer,adData);
+//
+//    }
 
 
     private int getRandowNum() {

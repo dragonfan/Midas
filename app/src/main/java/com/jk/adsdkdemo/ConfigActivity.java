@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bytedance.sdk.openadsdk.TTAdSdk;
 import com.comm.jksdk.GeekAdSdk;
 import com.comm.jksdk.bean.ConfigBean;
 import com.comm.jksdk.config.AdsConfig;
@@ -82,6 +83,8 @@ public class ConfigActivity extends AppCompatActivity implements View.OnClickLis
                         stateText.setText("配置信息请求失败:" + errorCode + " errorMsg:" + errorMsg);
                     }
                 });
+                String visionName = TTAdSdk.getAdManager().getSDKVersion();
+                LogUtils.e("visionName>>>"+visionName);
                 break;
             case R.id.button_init:
                 String product = editProduct.getText().toString().trim();

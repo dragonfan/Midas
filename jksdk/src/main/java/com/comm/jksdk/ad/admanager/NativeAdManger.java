@@ -2,21 +2,40 @@ package com.comm.jksdk.ad.admanager;
 
 import android.app.Activity;
 import android.text.TextUtils;
-import android.widget.RelativeLayout;
 
 import com.bytedance.sdk.openadsdk.AdSlot;
-import com.bytedance.sdk.openadsdk.TTAdConstant;
 import com.bytedance.sdk.openadsdk.TTAdManager;
 import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTFeedAd;
+import com.bytedance.sdk.openadsdk.TTFullScreenVideoAd;
 import com.comm.jksdk.GeekAdSdk;
 import com.comm.jksdk.ad.entity.AdInfo;
+import com.comm.jksdk.ad.factory.RequestManagerFactory;
 import com.comm.jksdk.ad.listener.AdListener;
 import com.comm.jksdk.ad.listener.AdManager;
 import com.comm.jksdk.ad.listener.AdPreloadingListener;
+import com.comm.jksdk.ad.listener.AdRequestListener;
+import com.comm.jksdk.ad.listener.AdRequestManager;
 import com.comm.jksdk.ad.listener.FirstAdListener;
+import com.comm.jksdk.ad.listener.VideoAdListener;
+import com.comm.jksdk.ad.view.AbsAdView;
 import com.comm.jksdk.ad.view.CommAdView;
 import com.comm.jksdk.ad.view.chjview.CHJAdView;
+import com.comm.jksdk.ad.view.chjview.ChjBigImgAdPlayLampView;
+import com.comm.jksdk.ad.view.chjview.ChjBigImgAdView;
+import com.comm.jksdk.ad.view.chjview.ChjBigImgFakeVideoAdView;
+import com.comm.jksdk.ad.view.chjview.ChjBigImgIcTvAdView;
+import com.comm.jksdk.ad.view.chjview.ChjBigImgIcTvBtAdView;
+import com.comm.jksdk.ad.view.chjview.ChjBigImgIcTvBtCenterAdView;
+import com.comm.jksdk.ad.view.chjview.ChjBigImgNestPlayLampView;
+import com.comm.jksdk.ad.view.chjview.ChjExternalDialogBigImageView;
+import com.comm.jksdk.ad.view.chjview.ChjLeftImgRightTwoTextAdView;
+import com.comm.jksdk.ad.view.chjview.ChjSplashAdView;
+import com.comm.jksdk.ad.view.chjview.CsjCustomInsertScreenAdView;
+import com.comm.jksdk.ad.view.chjview.CsjExternalInsertScreenAdView;
+import com.comm.jksdk.ad.view.chjview.CsjFullScreenVideoView;
+import com.comm.jksdk.ad.view.chjview.CsjRewardVideoAdView;
+import com.comm.jksdk.ad.view.chjview.CsjTemplateInsertScreenAdView;
 import com.comm.jksdk.ad.view.ylhview.YlhAdView;
 import com.comm.jksdk.bean.ConfigBean;
 import com.comm.jksdk.cache.CacheAd;
@@ -42,10 +61,6 @@ import java.util.List;
  **/
 public class NativeAdManger implements AdManager {
     protected final String TAG = "GeekAdSdk-->";
-    private CommAdView mAdView = null;
-
-
-    private RelativeLayout adParentView;
 
     private List<ConfigBean.AdListBean.AdsInfosBean> adsInfoslist = new ArrayList();
 
@@ -56,14 +71,6 @@ public class NativeAdManger implements AdManager {
      * acitvity对象,优量汇开屏、视频广用到
      */
     protected Activity mActivity;
-    /**
-     * 广告ID
-     */
-    private String mAdId;
-    /**
-     * 广告sdk对应的appid
-     */
-    private String mAppId;
     /**
      * 广告监听器
      */
@@ -78,31 +85,6 @@ public class NativeAdManger implements AdManager {
      * 广告预加载监听器
      */
     private AdPreloadingListener mAdPreloadingListener;
-
-    /**
-     * 广告样式
-     */
-    private String adStyle = "";
-    private int adRequestTimeOut;
-    /**
-     * 广告类型
-     */
-    private String adUnion;
-
-    /**
-     * 视频广告方向: 1 竖屏, 2 横屏
-     */
-    private int orientation = 1;
-
-    /**
-     * 激励视频userid
-     */
-    private String userId = "";
-
-    /**
-     * 自渲染插屏广告是否是全屏
-     */
-    private boolean isFullScreen = false;
 
     /**
      * 自渲染插屏广告展示时长
@@ -122,152 +104,81 @@ public class NativeAdManger implements AdManager {
     private String mProgress;
 
 
-    /**
-     * 创建广告View
-     *
-     * @param adType 广告样式
-     */
-    private void createAdView(Activity activity, String adType, String appId, String mAdId) {
-
-        if (Constants.AdType.ChuanShanJia.equals(adType)) {
-            mAdView = new CHJAdView(GeekAdSdk.getContext(), activity, adStyle, appId, mAdId);
-            ((CHJAdView) mAdView).setOrientation(orientation);
-            if (!TextUtils.isEmpty(userId)) {
-                ((CHJAdView) mAdView).setUserId(userId);
-            }
-            ((CHJAdView) mAdView).setFullScreen(isFullScreen);
-            ((CHJAdView) mAdView).setShowTimeSeconds(showTimeSeconds);
-            ((CHJAdView) mAdView).setmProgress(mProgress);
-        } else if (Constants.AdType.YouLiangHui.equals(adType)) {
-            mAdView = new YlhAdView(GeekAdSdk.getContext(), activity, adStyle, appId, mAdId);
-        } else {
-            // 暂不处理
-            if (mAdListener != null) {
-                mAdListener.adError(CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-            }
-            return;
-        }
-
-        if (mAdView != null && mAdListener != null) {
-            //向客户端提供接口
-            mAdView.setAdListener(mAdListener);
-            //ylh请求失败请求chj广告接口回掉
-            mAdView.setYlhAdListener(mFirstAdListener);
-        }
-
-        adParentView.removeAllViews();
-        adParentView.addView(mAdView);
-        mAdView.setAdId(mAdId);
-        mAdView.setAppId(appId);
-        requestAd();
-    }
-
-    /**
-     * 创建广告View
-     *
-     * @param adType 广告样式
-     */
-    private void createAdView(Activity activity, TTFeedAd ttFeedAd, String adType, String appId, String mAdId) {
-
-        if (Constants.AdType.ChuanShanJia.equals(adType)) {
-            mAdView = new CHJAdView(GeekAdSdk.getContext(), activity, adStyle, appId, mAdId);
-            ((CHJAdView) mAdView).setOrientation(orientation);
-            if (!TextUtils.isEmpty(userId)) {
-                ((CHJAdView) mAdView).setUserId(userId);
-            }
-            ((CHJAdView) mAdView).setFullScreen(isFullScreen);
-            ((CHJAdView) mAdView).setShowTimeSeconds(showTimeSeconds);
-            ((CHJAdView) mAdView).setmProgress(mProgress);
-        } else if (Constants.AdType.YouLiangHui.equals(adType)) {
-            mAdView = new YlhAdView(GeekAdSdk.getContext(), activity, adStyle, appId, mAdId);
-        } else {
-            // 暂不处理
-            if (mAdListener != null) {
-                mAdListener.adError(CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-            }
-            return;
-        }
-
-        if (mAdView != null && mAdListener != null) {
-            //向客户端提供接口
-            mAdView.setAdListener(mAdListener);
-            //ylh请求失败请求chj广告接口回掉
-            mAdView.setYlhAdListener(mFirstAdListener);
-        }
-
-        adParentView.removeAllViews();
-        adParentView.addView(mAdView);
-        mAdView.setAdId(mAdId);
-        mAdView.setAppId(appId);
-        if (mAdView != null) {
-            //第一次请求广告保存请求时间
-            if (firstRequestAd) {
-                Long curTime = System.currentTimeMillis();
-                SpUtils.putLong(Constants.SPUtils.FIRST_REQUEST_AD_TIME, curTime);
-            }
-            mAdView.requestAd(requestType, ttFeedAd, adRequestTimeOut);
-        }
-    }
-
-
-    /**
-     * 请求广告
-     */
-    private void requestAd() {
-        if (mAdView != null) {
-            //第一次请求广告保存请求时间
-            if (firstRequestAd) {
-                Long curTime = System.currentTimeMillis();
-                SpUtils.putLong(Constants.SPUtils.FIRST_REQUEST_AD_TIME, curTime);
-            }
-            mAdView.requestAd(requestType, adRequestTimeOut);
-        }
-    }
-
-    @Override
-    public RelativeLayout getAdView() {
-        return adParentView;
-    }
 
     private FirstAdListener mFirstAdListener = new FirstAdListener() {
         @Override
-        public void firstAdError(int errorCode, String errorMsg) {
+        public void firstAdError(AdInfo adInfo, int errorCode, String errorMsg) {
             LogUtils.w(TAG, "回传--->请求第一个广告失败");
-            firstRequestAd = false;
-            againRequest();
 
+            if (CollectionUtils.isEmpty(adsInfoslist)) {
+                if (mAdListener != null) {
+                    mAdListener.adError(adInfo, errorCode, errorMsg);
+                }
+                return;
+            }
+            ConfigBean.AdListBean.AdsInfosBean mAdsInfosBean = adsInfoslist.remove(0);
+            if (mAdsInfosBean == null) {
+                if (mAdListener != null) {
+                    mAdListener.adError(adInfo, errorCode, errorMsg);
+                }
+                return;
+            }
+            firstRequestAd = false;
+            againRequest(adInfo, mAdsInfosBean);
         }
     };
+
 
     @Override
     public void loadAd(Activity activity, String position, AdListener listener) {
         mAdListener = listener;
+        AdInfo adInfo = new AdInfo();
         try {
             mPosition = position;
             mActivity = activity;
-            //创建view
-            adParentView = new RelativeLayout(GeekAdSdk.getContext());
+            //设置广告位置信息
+            adInfo.setPosition(position);
             //获取本地配置信息
-            ConfigBean.AdListBean mConfigInfoBean = AdsConfig.getInstance(GeekAdSdk.getContext()).getConfig(position);
-            if (mConfigInfoBean == null) {
+            readyInfo(adInfo);
+            if (CollectionUtils.isEmpty(adsInfoslist)) {
                 if (mAdListener != null) {
-                    mAdListener.adError(CodeFactory.LOCAL_INFO_EMPTY, CodeFactory.getError(CodeFactory.LOCAL_INFO_EMPTY));
+                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
                 }
                 return;
             }
-            //当前广告位所对应的配置信息 存储到curAdlist
-            adStyle = mConfigInfoBean.getAdStyle();
-            adRequestTimeOut = mConfigInfoBean.getAdRequestTimeOut();
-            adsInfoslist.clear();
-            adsInfoslist.addAll(mConfigInfoBean.getAdsInfos());
-
-            againRequest();
+            ConfigBean.AdListBean.AdsInfosBean mAdsInfosBean = adsInfoslist.remove(0);
+            if (mAdsInfosBean == null) {
+                if (mAdListener != null) {
+                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                }
+                return;
+            }
+            againRequest(adInfo, mAdsInfosBean);
         } catch (Exception e) {
             e.printStackTrace();
             if (mAdListener != null) {
-                mAdListener.adError(CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
             }
         }
+    }
+
+    /**
+     * 准备数据
+     * @param adInfo
+     */
+    public void readyInfo(AdInfo adInfo){
+        //获取本地配置信息
+        ConfigBean.AdListBean mConfigInfoBean = AdsConfig.getInstance(GeekAdSdk.getContext()).getConfig(adInfo.getPosition());
+        if (mConfigInfoBean == null) {
+            if (mAdListener != null) {
+                mAdListener.adError(adInfo, CodeFactory.LOCAL_INFO_EMPTY, CodeFactory.getError(CodeFactory.LOCAL_INFO_EMPTY));
+            }
+            return;
+        }
+        adInfo.setAdStyle(mConfigInfoBean.getAdStyle());
+        adInfo.setAdRequestTimeOut(mConfigInfoBean.getAdRequestTimeOut());
+        adsInfoslist.clear();
+        adsInfoslist.addAll(mConfigInfoBean.getAdsInfos());
     }
 
     @Override
@@ -306,7 +217,7 @@ public class NativeAdManger implements AdManager {
             mAdId = mAdsInfosBean.getAdId();
             mAppId = mAdsInfosBean.getAdsAppId();
 
-            loadCsjAd(position);
+//            loadCsjAd(position);
         } catch (Exception e) {
             e.printStackTrace();
             if (mAdPreloadingListener != null) {
@@ -315,309 +226,217 @@ public class NativeAdManger implements AdManager {
         }
     }
 
-    public void loadCsjAd(String position){
-        //step1:初始化sdk
-        TTAdManager ttAdManager = TTAdManagerHolder.get(mAppId);
-        //step2:创建TTAdNative对象,用于调用广告请求接口
-        TTAdNative mTTAdNative = ttAdManager.createAdNative(GeekAdSdk.getContext());
-        //step3:(可选，强烈建议在合适的时机调用):申请部分权限，如read_phone_state,防止获取不了imei时候，下载类广告没有填充的问题。
-//        TTAdManagerHolder.get().requestPermissionIfNecessary(mContext);
 
-        LogUtils.d(TAG, "onADLoaded->请求穿山甲广告");
+    /**
+     * 轮询请求
+     */
+    public void againRequest(AdInfo adInfo, ConfigBean.AdListBean.AdsInfosBean adsInfosBean) {
+        if (adInfo == null) {
+            adInfo = new AdInfo();
+        }
+        //某些特有的数据清空，避免污染下一次请求数据
+        adInfo.setAdTitle("");
+        adInfo.setAdClickType(0);
 
-        AdSlot adSlot = new AdSlot.Builder()
-                .setCodeId(mAdId.trim())
-                .setSupportDeepLink(true)
-                .setImageAcceptedSize(640, 320)
-                .setAdCount(1)
-                .build();
-        mTTAdNative.loadFeedAd(adSlot, new TTAdNative.FeedAdListener() {
+        //广告源
+        adInfo.setAdSource(adsInfosBean.getAdUnion());
+        //广告id
+        adInfo.setAdId(adsInfosBean.getAdId());
+        //广告对应的appid
+        adInfo.setAdAppid(adsInfosBean.getAdsAppId());
+        //请求类型 0 - SDK 1 - API
+        requestType = adsInfosBean.getRequestType();
+        if (requestType == 0) {
+            sdkRequest(adInfo);
+        } else {
+            apiRequest(adInfo);
+        }
+    }
+
+    /**
+     * api 请求
+     */
+    public void apiRequest(AdInfo adInfo){
+        // TODO: 2019/12/3
+    }
+
+    /**
+     * sdk 请求
+     */
+    public void sdkRequest(AdInfo adInfo){
+        AdRequestManager adRequestManager = new RequestManagerFactory().produce(adInfo);
+        if (adRequestManager == null) {
+            if (mAdListener != null) {
+                mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+            }
+            return;
+        }
+        adRequestManager.requestAd(adInfo, new AdRequestListener() {
             @Override
-            public void onError(int i, String s) {
-                LogUtils.d(TAG, "onNoAD->请求穿山甲失败,ErrorCode:" + i + ",ErrorMsg:" + s);
-                if (mAdPreloadingListener != null) {
-                    mAdPreloadingListener.adError(i, s);
-                }
+            public void adSuccess(AdInfo info) {
+                createAdView(mActivity, info);
             }
 
             @Override
-            public void onFeedAdLoad(List<TTFeedAd> list) {
-                LogUtils.d(TAG, "onADLoaded->请求穿山甲成功");
-                if (CollectionUtils.isEmpty(list)) {
-                    if (mAdPreloadingListener != null) {
-                        mAdPreloadingListener.adError(CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-                    }
-                    return;
-                }
-                TTFeedAd ttFeedAd = list.get(0);
-                if (ttFeedAd == null) {
-                    if (mAdPreloadingListener != null) {
-                        mAdPreloadingListener.adError(CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-                    }
-                    return;
-                }
-                CacheAd. setAd(position, ttFeedAd);
-                if (mAdPreloadingListener != null) {
-                    mAdPreloadingListener.adSuccess(null);
+            public void adError(AdInfo info, int errorCode, String errorMsg) {
+                if (mFirstAdListener != null) {
+                    mFirstAdListener.firstAdError(info, errorCode, errorMsg);
                 }
             }
         });
     }
 
     /**
-     * 开屏广告加载方法
-     *
-     * @param activity
-     * @param position
-     * @param listener
+     * 创建广告View
      */
-    @Override
-    public void loadSplashAd(Activity activity, String position, AdListener listener) {
-        mAdListener = listener;
-        try {
-            mActivity = activity;
-            //创建view
-            adParentView = new RelativeLayout(GeekAdSdk.getContext());
-            //获取本地配置信息
-            ConfigBean.AdListBean mConfigInfoBean = AdsConfig.getInstance(GeekAdSdk.getContext()).getConfig(position);
-            if (mConfigInfoBean == null) {
-                if (mAdListener != null) {
-                    mAdListener.adError(CodeFactory.LOCAL_INFO_EMPTY, CodeFactory.getError(CodeFactory.LOCAL_INFO_EMPTY));
-                }
-                return;
-            }
-            //当前广告位所对应的配置信息 存储到curAdlist
-            adStyle = mConfigInfoBean.getAdStyle();
-            adRequestTimeOut = mConfigInfoBean.getAdRequestTimeOut();
-            adsInfoslist.clear();
-            adsInfoslist.addAll(mConfigInfoBean.getAdsInfos());
-
-            againRequest();
-        } catch (Exception e) {
-            e.printStackTrace();
-            if (mAdListener != null) {
-                mAdListener.adError(CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-            }
-        }
-    }
-
-    /**
-     * 全屏视频广告加载方法
-     *
-     * @param activity
-     * @param position
-     * @param listener
-     */
-    @Override
-    public void loadVideoAd(Activity activity, String position, AdListener listener) {
-        mAdListener = listener;
-        try {
-            mActivity = activity;
-            orientation = 1;
-            //创建view
-            adParentView = new RelativeLayout(GeekAdSdk.getContext());
-            //获取本地配置信息
-            ConfigBean.AdListBean mConfigInfoBean = AdsConfig.getInstance(GeekAdSdk.getContext()).getConfig(position);
-            if (mConfigInfoBean == null) {
-                if (mAdListener != null) {
-                    mAdListener.adError(CodeFactory.LOCAL_INFO_EMPTY, CodeFactory.getError(CodeFactory.LOCAL_INFO_EMPTY));
-                }
-                return;
-            }
-            //当前广告位所对应的配置信息 存储到curAdlist
-            adStyle = mConfigInfoBean.getAdStyle();
-            adRequestTimeOut = mConfigInfoBean.getAdRequestTimeOut();
-            adsInfoslist.clear();
-            adsInfoslist.addAll(mConfigInfoBean.getAdsInfos());
-
-            againRequest();
-        } catch (Exception e) {
-            e.printStackTrace();
-            if (mAdListener != null) {
-                mAdListener.adError(CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-            }
-        }
-    }
-
-    /**
-     * 激励视频广告加载方法
-     *
-     * @param activity
-     * @param position
-     * @param listener
-     */
-    @Override
-    public void loadRewardVideoAd(Activity activity, String position, String userId, int orientation, AdListener listener) {
-        mAdListener = listener;
-        try {
-            mActivity = activity;
-            this.orientation = orientation;
-            this.userId = userId;
-            //创建view
-            adParentView = new RelativeLayout(GeekAdSdk.getContext());
-            //获取本地配置信息
-            ConfigBean.AdListBean mConfigInfoBean = AdsConfig.getInstance(GeekAdSdk.getContext()).getConfig(position);
-            if (mConfigInfoBean == null) {
-                if (mAdListener != null) {
-                    mAdListener.adError(CodeFactory.LOCAL_INFO_EMPTY, CodeFactory.getError(CodeFactory.LOCAL_INFO_EMPTY));
-                }
-                return;
-            }
-            //当前广告位所对应的配置信息 存储到curAdlist
-            adStyle = mConfigInfoBean.getAdStyle();
-            adRequestTimeOut = mConfigInfoBean.getAdRequestTimeOut();
-            adsInfoslist.clear();
-            adsInfoslist.addAll(mConfigInfoBean.getAdsInfos());
-
-            againRequest();
-        } catch (Exception e) {
-            e.printStackTrace();
-            if (mAdListener != null) {
-                mAdListener.adError(CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-            }
-        }
-    }
-
-    /**
-     * 自定义插屏广告加载方法
-     *
-     * @param activity
-     * @param position
-     * @param listener
-     */
-    @Override
-    public void loadCustomInsertScreenAd(Activity activity, String position, int showTimeSeconds, AdListener listener) {
-        mAdListener = listener;
-        try {
-            mActivity = activity;
-            this.isFullScreen = isFullScreen;
-            this.showTimeSeconds = showTimeSeconds;
-            //创建view
-            adParentView = new RelativeLayout(GeekAdSdk.getContext());
-            //获取本地配置信息
-            ConfigBean.AdListBean mConfigInfoBean = AdsConfig.getInstance(GeekAdSdk.getContext()).getConfig(position);
-            if (mConfigInfoBean == null) {
-                if (mAdListener != null) {
-                    mAdListener.adError(CodeFactory.LOCAL_INFO_EMPTY, CodeFactory.getError(CodeFactory.LOCAL_INFO_EMPTY));
-                }
-                return;
-            }
-            //当前广告位所对应的配置信息 存储到curAdlist
-            adStyle = mConfigInfoBean.getAdStyle();
-            adRequestTimeOut = mConfigInfoBean.getAdRequestTimeOut();
-            adsInfoslist.clear();
-            adsInfoslist.addAll(mConfigInfoBean.getAdsInfos());
-            LogUtils.d(TAG, "-----loadCustomInsertScreenAd--------");
-            againRequest();
-        } catch (Exception e) {
-            e.printStackTrace();
-            if (mAdListener != null) {
-                mAdListener.adError(CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-            }
-        }
-    }
-
-    @Override
-    public void loadCustomInsertScreenAd(Activity activity, String position, int showTimeSeconds, AdListener listener, String... pos) {
-        mAdListener = listener;
-        try {
-            String progress = ""; //进度
-            if (!CollectionUtils.isEmpty(pos)) {
-                progress = pos[0];
-            }
-            mProgress = progress;
-            mActivity = activity;
-            this.isFullScreen = isFullScreen;
-            this.showTimeSeconds = showTimeSeconds;
-            //创建view
-            adParentView = new RelativeLayout(GeekAdSdk.getContext());
-            //获取本地配置信息
-            ConfigBean.AdListBean mConfigInfoBean = AdsConfig.getInstance(GeekAdSdk.getContext()).getConfig(position);
-            if (mConfigInfoBean == null) {
-                if (mAdListener != null) {
-                    mAdListener.adError(CodeFactory.LOCAL_INFO_EMPTY, CodeFactory.getError(CodeFactory.LOCAL_INFO_EMPTY));
-                }
-                return;
-            }
-            //当前广告位所对应的配置信息 存储到curAdlist
-            adStyle = mConfigInfoBean.getAdStyle();
-            adRequestTimeOut = mConfigInfoBean.getAdRequestTimeOut();
-            adsInfoslist.clear();
-            adsInfoslist.addAll(mConfigInfoBean.getAdsInfos());
-            LogUtils.d(TAG, "-----loadCustomInsertScreenAd--------");
-            againRequest();
-        } catch (Exception e) {
-            e.printStackTrace();
-            if (mAdListener != null) {
-                mAdListener.adError(CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-            }
-        }
-    }
-
-
-    /**
-     * 轮询请求
-     */
-    public void againRequest() {
-        if (CollectionUtils.isEmpty(adsInfoslist)) {
-            if (mAdListener != null) {
-                mAdListener.adError(CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-            }
-            return;
-        }
-        ConfigBean.AdListBean.AdsInfosBean mAdsInfosBean = adsInfoslist.remove(0);
-        if (mAdsInfosBean == null) {
-            if (mAdListener != null) {
-                mAdListener.adError(CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-            }
-            return;
-        }
-        adUnion = mAdsInfosBean.getAdUnion();
-        mAdId = mAdsInfosBean.getAdId();
-        mAppId = mAdsInfosBean.getAdsAppId();
-        TTFeedAd ttFeedAd = CacheAd.getAd(mPosition);
-        if (ttFeedAd != null) {
-            createAdView(mActivity, ttFeedAd, adUnion, mAppId, mAdId);
-        } else {
-            createAdView(mActivity, adUnion, mAppId, mAdId);
-        }
-    }
-
-    /**
-     * 请求插屏广告
-     * @param activity
-     * @param adType
-     * @param appId
-     * @param mAdId
-     */
-    protected void requsetInteractionScreenn(Activity activity, String adType, String appId, String mAdId){
-        if (Constants.AdType.ChuanShanJia.equals(adType)) {
-            mAdView = new CHJAdView(GeekAdSdk.getContext(), activity, adStyle, appId, mAdId);
-            ((CHJAdView) mAdView).setOrientation(orientation);
-            if (!TextUtils.isEmpty(userId)) {
-                ((CHJAdView) mAdView).setUserId(userId);
-            }
-            ((CHJAdView) mAdView).setFullScreen(isFullScreen);
-            ((CHJAdView) mAdView).setShowTimeSeconds(showTimeSeconds);
-        } else if (Constants.AdType.YouLiangHui.equals(adType)) {
-            mAdView = new YlhAdView(GeekAdSdk.getContext(), activity, adStyle, appId, mAdId);
+    private void createAdView(Activity activity, AdInfo adInfo) {
+        String adSource = adInfo.getAdSource();
+        if (Constants.AdType.ChuanShanJia.equals(adSource)) {
+            createCsjAdView(activity, adInfo);
+//            CommAdView mAdView = new CHJAdView(GeekAdSdk.getContext(), activity, adInfo.getAdStyle(), adInfo.getAdAppid(), adInfo.getAdId());
+//            ((CHJAdView) mAdView).setOrientation(orientation);
+//            if (!TextUtils.isEmpty(userId)) {
+//                ((CHJAdView) mAdView).setUserId(userId);
+//            }
+//            ((CHJAdView) mAdView).setFullScreen(isFullScreen);
+//            ((CHJAdView) mAdView).setShowTimeSeconds(showTimeSeconds);
+//            ((CHJAdView) mAdView).setmProgress(mProgress);
+        } else if (Constants.AdType.YouLiangHui.equals(adSource)) {
+//            AbsAdView mAdView = new YlhAdView(GeekAdSdk.getContext(), activity, adStyle, appId, mAdId);
+            createYlhAdView(activity, adInfo);
         } else {
             // 暂不处理
             if (mAdListener != null) {
-                mAdListener.adError(CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+            }
+        }
+    }
+
+    /**
+     * 创建穿山甲view
+     * @param activity
+     * @param adInfo
+     */
+    private void createCsjAdView(Activity activity, AdInfo adInfo){
+        if (activity == null) {
+            if (mAdListener != null) {
+                mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
             }
             return;
         }
-
-        if (mAdView != null && mAdListener != null) {
-            //向客户端提供接口
-            mAdView.setAdListener(mAdListener);
-            //ylh请求失败请求chj广告接口回掉
-            mAdView.setYlhAdListener(mFirstAdListener);
+        if (activity.isFinishing()) {
+            if (mAdListener != null) {
+                mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+            }
+            return;
         }
+        String style = adInfo.getAdStyle();
+        //全屏视频
+        if (Constants.AdStyle.FULL_SCREEN_VIDEO.equals(style)) {
+            showCsjFullVideo(activity, adInfo);
+            return;
+        }
+        CHJAdView adView = null;
+        if (Constants.AdStyle.BIG_IMG.equals(style)) {
+            adView = new ChjBigImgAdView(activity);
+        } else if (Constants.AdStyle.DATU_ICON_TEXT_BUTTON.equals(style)) { // 大图_带icon文字按钮
+            adView = new ChjBigImgIcTvBtAdView(activity);
+        } else if (Constants.AdStyle.DATU_ICON_TEXT.equals(style)) { //大图_带icon文字
+            adView = new ChjBigImgIcTvAdView(activity);
+        } else if (Constants.AdStyle.DATU_ICON_TEXT_BUTTON_CENTER.equals(style)) { //大图_带icon文字按钮居中
+            adView = new ChjBigImgIcTvBtCenterAdView(activity);
+        } else if (Constants.AdStyle.BIG_IMG_BUTTON.equals(style)) { //大图带按钮（大图_下载播放按钮）
+            adView = new ChjBigImgAdPlayLampView(activity);
+        } else if (Constants.AdStyle.BIG_IMG_BUTTON_LAMP.equals(style)) { //大图带按钮带跑马灯
+            adView = new ChjBigImgAdPlayLampView(activity, true);
+        } else if (Constants.AdStyle.BIG_IMG_NEST.equals(style)) { //大图嵌套美女图片
+            adView = new ChjBigImgNestPlayLampView(activity);
+        } else if (Constants.AdStyle.BIG_IMG_NEST_LAMP.equals(style)) { //大图嵌套图片带跑马灯
+            adView = new ChjBigImgNestPlayLampView(activity, true);
+        } else if (Constants.AdStyle.FAKE_VIDEO_IARGE_IMAGE.equals(style)) { //假视频大图_01
+            adView = new ChjBigImgFakeVideoAdView(activity);
+        } else if (Constants.AdStyle.EXTERNAL_DIALOG_BIG_IMAGE_01.equals(style)) { //外部弹窗大图广告_01
+            adView = new ChjExternalDialogBigImageView(activity);
+        } else if (Constants.AdStyle.OPEN_ADS.equals(style)) { //开屏广告
+            adView = new ChjSplashAdView(activity);
+        } else if (Constants.AdStyle.REWARD_VIDEO.equals(style)) {
+            adView = new CsjRewardVideoAdView(activity);
+        } else if (Constants.AdStyle.CP.equals(style)) { //模板插屏
+            adView = new CsjTemplateInsertScreenAdView(activity);
+        } else if (Constants.AdStyle.CUSTOM_CP.equals(style) ) { //自定义插屏
+            adView = new CsjCustomInsertScreenAdView(activity);
+        } else if (Constants.AdStyle.FULLSCREEN_CP_01.equals(style)) { //自定义全屏插屏
+            adView = new CsjCustomInsertScreenAdView(activity, true);
+        } else if (Constants.AdStyle.EXTERNAL_CP_01.equals(style)) { //外部插屏_01
+            adView = new CsjExternalInsertScreenAdView(activity);
+        }
+        if (adView == null) {
+            if (mAdListener != null) {
+                mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+            }
+            return;
+        }
+        adView.setAdListener(mAdListener);
+        adView.setPollingAdListener(mFirstAdListener);
 
-        adParentView.removeAllViews();
-        adParentView.addView(mAdView);
-        requestAd();
+        adView.parseAd(adInfo);
+    }
+
+    /**
+     * 穿山甲全屏视频
+     * @param activity
+     * @param adInfo
+     */
+    private void showCsjFullVideo(Activity activity, AdInfo adInfo){
+        TTFullScreenVideoAd ttFullScreenVideoAd = adInfo.getTtFullScreenVideoAd();
+        if (mAdListener != null) {
+            mAdListener.adSuccess(adInfo);
+        }
+        ttFullScreenVideoAd.setFullScreenVideoAdInteractionListener(new TTFullScreenVideoAd.FullScreenVideoAdInteractionListener() {
+
+            @Override
+            public void onAdShow() {
+                if (mAdListener != null) {
+                    mAdListener.adExposed(adInfo);
+                }
+            }
+
+            @Override
+            public void onAdVideoBarClick() {
+                if (mAdListener != null) {
+                    mAdListener.adClicked(adInfo);
+                }
+            }
+
+            @Override
+            public void onAdClose() {
+                if (mAdListener != null) {
+                    mAdListener.adClose(adInfo);
+                }
+            }
+
+            @Override
+            public void onVideoComplete() {
+                if (mAdListener != null && mAdListener instanceof VideoAdListener) {
+                    ((VideoAdListener) mAdListener).onVideoComplete(adInfo);
+                }
+            }
+
+            @Override
+            public void onSkippedVideo() {
+
+            }
+        });
+        //step6:在获取到广告后展示
+        ttFullScreenVideoAd.showFullScreenVideoAd(activity);
+    }
+
+    /**
+     * 创建优量汇view
+     * @param activity
+     * @param adInfo
+     */
+    private void createYlhAdView(Activity activity, AdInfo adInfo){
+        String adStyle = adInfo.getAdStyle();
     }
 }

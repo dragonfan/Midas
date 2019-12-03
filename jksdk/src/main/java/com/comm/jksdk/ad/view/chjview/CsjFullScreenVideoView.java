@@ -24,7 +24,7 @@ import com.comm.jksdk.utils.CodeFactory;
 public class CsjFullScreenVideoView extends CHJAdView {
     private TTAdNative mTTAdNative;
 
-    protected CsjFullScreenVideoView(Context context) {
+    public CsjFullScreenVideoView(Context context) {
         super(context);
     }
 
@@ -45,7 +45,7 @@ public class CsjFullScreenVideoView extends CHJAdView {
      * 获取全屏视屏广告并展示
      */
     public void loadFullScreenVideoAd(final Activity activity, String adId, int orientation) {
-        mTTAdNative = TTAdManagerHolder.get(mAppId).createAdNative(mContext.getApplicationContext());
+        mTTAdNative = TTAdManagerHolder.get().createAdNative(mContext.getApplicationContext());
         if (activity == null) {
             throw new NullPointerException("loadFullScreenVideoAd activity is null");
         }

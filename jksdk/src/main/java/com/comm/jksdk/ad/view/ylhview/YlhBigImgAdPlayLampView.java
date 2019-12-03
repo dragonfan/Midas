@@ -44,7 +44,7 @@ import java.util.Random;
  */
 
 
-public class YlhBigImgAdPlayLampView extends CommAdView {
+public class YlhBigImgAdPlayLampView extends YlhAdView {
     // 广告实体数据
     private NativeUnifiedADData mNativeADData = null;
     private RequestOptions requestOptions;

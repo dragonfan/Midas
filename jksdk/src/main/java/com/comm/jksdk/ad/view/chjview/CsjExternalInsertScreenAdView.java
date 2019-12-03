@@ -85,7 +85,7 @@ public class CsjExternalInsertScreenAdView extends CHJAdView {
         mAdInfo.setAdAppid(mAppId);
         mAdInfo.setAdId(adId);
         mAdInfo.setAdStyle(Constants.AdStyle.EXTERNAL_CP_01);
-        mTTAdNative = TTAdManagerHolder.get(mAppId).createAdNative(activity.getApplicationContext());
+        mTTAdNative = TTAdManagerHolder.get().createAdNative(activity.getApplicationContext());
         AdSlot adSlot = new AdSlot.Builder()
                 .setCodeId(adId)
                 .setSupportDeepLink(true)
