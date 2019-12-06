@@ -101,9 +101,8 @@ public class ChjExternalDialogBigImageView extends CHJAdView {
     @Override
     public void parseAd(AdInfo adInfo) {
         super.parseAd(adInfo);
-        this.mAdInfo = adInfo;
         TTFeedAd ttFeedAd = adInfo.getTtFeedAd();
-        initAdData(ttFeedAd);
+        initAdData(ttFeedAd, adInfo);
     }
 
     //    /**
@@ -136,22 +135,22 @@ public class ChjExternalDialogBigImageView extends CHJAdView {
      *
      * @param adData
      */
-    private void initAdData(TTFeedAd adData) {
+    private void initAdData(TTFeedAd adData,AdInfo adInfo) {
         if ( mContext == null) {
-            firstAdError(mAdInfo,1, "mContext 为空");
+            firstAdError(adInfo,1, "mContext 为空");
             return;
         }
 
         if (adData.getImageMode() != TTAdConstant.IMAGE_MODE_LARGE_IMG) {
-            firstAdError(mAdInfo,1, "返回结果不是大图");
+            firstAdError(adInfo,1, "返回结果不是大图");
             return;
         }
 
-        bindData(adContainer,adData);
+        bindData(adContainer, adData, adInfo);
 
     }
 
-    private void bindData(View convertView, TTFeedAd ad) {
+    private void bindData(View convertView, TTFeedAd ad, AdInfo adInfo) {
         TTImage icon = ad.getIcon();
         if (icon != null && icon.isValid()) {
             Glide.with(mContext).load(icon.getImageUrl())
@@ -173,7 +172,31 @@ public class ChjExternalDialogBigImageView extends CHJAdView {
         //如果需要点击图文区域也能进行下载或者拨打电话动作，请将图文区域的view传入
 //            creativeViewList.add(convertView);
         //重要! 这个涉及到广告计费，必须正确调用。convertView必须使用ViewGroup。
-        ad.registerViewForInteraction((ViewGroup) convertView, clickViewList, creativeViewList,adListener );
+        ad.registerViewForInteraction((ViewGroup) convertView, clickViewList, creativeViewList, new TTNativeAd.AdInteractionListener() {
+            @Override
+            public void onAdClicked(View view, TTNativeAd ttNativeAd) {
+                if (ad != null) {
+                    LogUtils.w(TAG, "deployAditem onAdClicked");
+                    adClicked(adInfo);
+                }
+            }
+
+            @Override
+            public void onAdCreativeClick(View view, TTNativeAd ttNativeAd) {
+                if (ad != null) {
+                    LogUtils.w(TAG, "deployAditem onAdClicked");
+                    adClicked(adInfo);
+                }
+            }
+
+            @Override
+            public void onAdShow(TTNativeAd ttNativeAd) {
+                if (ad != null) {
+                    LogUtils.w(TAG, "广告" + ad.getTitle() + "展示");
+                    adExposed(adInfo);
+                }
+            }
+        });
 
         TTImage image = ad.getImageList().get(0);
         if (image != null && image.isValid()) {
@@ -295,30 +318,4 @@ public class ChjExternalDialogBigImageView extends CHJAdView {
         ad.setDownloadListener(downloadListener); // 注册下载监听器
 
     }
-
-    TTNativeAd.AdInteractionListener adListener=new TTNativeAd.AdInteractionListener() {
-        @Override
-        public void onAdClicked(View view, TTNativeAd ad) {
-            if (ad != null) {
-                LogUtils.w(TAG, "deployAditem onAdClicked");
-                adClicked(mAdInfo);
-            }
-        }
-
-        @Override
-        public void onAdCreativeClick(View view, TTNativeAd ad) {
-            if (ad != null) {
-                LogUtils.w(TAG, "deployAditem onAdCreativeClick");
-                adClicked(mAdInfo);
-            }
-        }
-
-        @Override
-        public void onAdShow(TTNativeAd ad) {
-            if (ad != null) {
-                LogUtils.w(TAG, "广告" + ad.getTitle() + "展示");
-                adExposed(mAdInfo);
-            }
-        }
-    };
 }

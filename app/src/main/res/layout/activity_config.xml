@@ -39,7 +39,7 @@
             android:id="@+id/et_product_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="181"
+            android:text="88"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/dp_20"
             android:visibility="visible" />
@@ -80,15 +80,22 @@
         android:id="@+id/button_set_bid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_20dp"
+        android:layout_marginTop="@dimen/dimen_10dp"
         android:text="设置bid" />
 
     <Button
         android:id="@+id/button_request_config"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_20dp"
+        android:layout_marginTop="@dimen/dimen_10dp"
         android:text="请求配置信息" />
+
+    <Button
+        android:id="@+id/next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:text="next" />
 
     <TextView
         android:id="@+id/config_state"

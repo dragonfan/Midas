@@ -26,7 +26,6 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
     private Button btnNormal, btnFullScreen;
     private EditText positionEdit, positionEdit2;
     private TextView statePoint, statePoint2;
-    private AdManager adManager;
     private FrameLayout container;
 
     @Override
@@ -38,7 +37,6 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
 
     private void initView() {
         setTitle("自渲染插屏广告");
-        adManager = GeekAdSdk.getAdsManger();
         statePoint = findViewById(R.id.txt_point);
         statePoint2 = findViewById(R.id.txt_point2);
         positionEdit = findViewById(R.id.splash_position_edit);
@@ -61,7 +59,7 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
      */
     private void loadCustomInsertScreenAd(String position) {
         LogUtils.d(TAG, "position:" + position );
-        adManager.loadCustomInsertScreenAd(this, position, 3, new AdListener() {
+        GeekAdSdk.getAdsManger().loadCustomInsertScreenAd(this, position, 3, new AdListener() {
             @Override
             public void adSuccess(AdInfo info) {
                 LogUtils.d(TAG, "-----adSuccess-----");
@@ -69,7 +67,7 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
                 statePoint.setText("state:adSuccess");
                 String adStyle = info.getAdStyle();
                 if ("EXTERNAL_CP_01".equals(adStyle)) { //外部插屏广告用addView的形式
-                    adView = adManager.getAdView();
+                    adView = info.getAdView();
                     if (adView != null) {
                         container.removeAllViews();
                         container.addView(adView);
@@ -87,9 +85,9 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
                 LogUtils.d(TAG, "-----adClicked-----");
             }
 
-
             @Override
-            public void adError(int errorCode, String errorMsg) {
+            public void adError(AdInfo info, int errorCode, String errorMsg) {
+                //调试用
                 LogUtils.d(TAG, "-----adError-----" + errorMsg);
                 statePoint.setText("error:" + errorCode + " errorMsg:" + errorMsg);
             }
@@ -101,7 +99,7 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
      */
     private void loadCustomInsertScreenAd2(String position) {
         LogUtils.d(TAG, "position:" + position + " isFullScreen:");
-        adManager.loadCustomInsertScreenAd(this, position, 3, new AdListener() {
+        GeekAdSdk.getAdsManger().loadCustomInsertScreenAd(this, position, 3, new AdListener() {
             @Override
             public void adSuccess(AdInfo info) {
                 LogUtils.d(TAG, "-----adSuccess-----");
@@ -124,10 +122,11 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
             }
 
             @Override
-            public void adError(int errorCode, String errorMsg) {
+            public void adError(AdInfo info, int errorCode, String errorMsg) {
                 LogUtils.d(TAG, "-----adError-----" + errorMsg);
                 statePoint.setText("error:" + errorCode + " errorMsg:" + errorMsg);
             }
+
         });
     }
 

@@ -7,6 +7,8 @@ import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.ad.view.CommAdView;
 import com.comm.jksdk.constant.Constants;
 import com.comm.jksdk.http.utils.LogUtils;
+import com.comm.jksdk.utils.AdsUtils;
+import com.qq.e.ads.nativ.NativeUnifiedAD;
 
 
 /**
@@ -95,7 +97,7 @@ public class YlhAdView extends CommAdView {
 //
 //        }
 //        mAdView.setAdListener(mAdListener);
-        this.addView(mAdView);
+//        this.addView(mAdView);
 
     }
 
@@ -122,44 +124,43 @@ public class YlhAdView extends CommAdView {
 //
 //    }
 
-    /**
-     * 通过SDK获取广告
-     */
-    protected void getAdBySdk(final int adRequestTimeOut) {
-        LogUtils.d(TAG, "--------开始请求广告-------------广告样式------->style:" + style);
-        if (Constants.AdStyle.BIG_IMG.equals(style) || Constants.AdStyle.DATU_ICON_TEXT.equals(style) || Constants.AdStyle.DATU_ICON_TEXT_BUTTON_CENTER.equals(style) || Constants.AdStyle.EXTERNAL_DIALOG_BIG_IMAGE_01.equals(style)
-                || Constants.AdStyle.DATU_ICON_TEXT_BUTTON.equals(style) || Constants.AdStyle.LEFT_IMG_RIGHT_TWO_TEXT.equals(style) || Constants.AdStyle.BIG_IMG_BUTTON_LAMP.equals(style)
-                || Constants.AdStyle.BIG_IMG_BUTTON.equals(style) || Constants.AdStyle.BIG_IMG_NEST.equals(style) || Constants.AdStyle.BIG_IMG_NEST_LAMP.equals(style) || Constants.AdStyle.FAKE_VIDEO_IARGE_IMAGE.equals(style)) {
-            //todo请求大图广告
-            getAdByBigImg(adRequestTimeOut);
-        } else if (Constants.AdStyle.LEFT_IMG_RIGHT_TWO_TEXT.equals(style)) {
-            //dodo
-            getAdByBigImg(adRequestTimeOut);
-        } else if (Constants.AdStyle.OPEN_ADS.equals(style)) {
-            getAdBySplashAd();
-        } else if (Constants.AdStyle.FULL_SCREEN_VIDEO.equals(style)) {
-            getFullScreenVideoAd();
-        } else if (Constants.AdStyle.CUSTOM_CP.equals(style) || Constants.AdStyle.FULLSCREEN_CP_01.equals(style) || Constants.AdStyle.CP.equals(style)) {
-            getCustomInsertScreenAd();
-        } else if (Constants.AdStyle.REWARD_VIDEO.equals(style)) {
-            getRewardVideoAd();
-        }
-    }
+//    /**
+//     * 通过SDK获取广告
+//     */
+//    protected void getAdBySdk(final int adRequestTimeOut) {
+//        LogUtils.d(TAG, "--------开始请求广告-------------广告样式------->style:" + style);
+//        if (Constants.AdStyle.BIG_IMG.equals(style) || Constants.AdStyle.DATU_ICON_TEXT.equals(style) || Constants.AdStyle.DATU_ICON_TEXT_BUTTON_CENTER.equals(style) || Constants.AdStyle.EXTERNAL_DIALOG_BIG_IMAGE_01.equals(style)
+//                || Constants.AdStyle.DATU_ICON_TEXT_BUTTON.equals(style) || Constants.AdStyle.LEFT_IMG_RIGHT_TWO_TEXT.equals(style) || Constants.AdStyle.BIG_IMG_BUTTON_LAMP.equals(style)
+//                || Constants.AdStyle.BIG_IMG_BUTTON.equals(style) || Constants.AdStyle.BIG_IMG_NEST.equals(style) || Constants.AdStyle.BIG_IMG_NEST_LAMP.equals(style) || Constants.AdStyle.FAKE_VIDEO_IARGE_IMAGE.equals(style)) {
+//            //todo请求大图广告
+////            getAdByBigImg(adRequestTimeOut);
+//        } else if (Constants.AdStyle.LEFT_IMG_RIGHT_TWO_TEXT.equals(style)) {
+//            //dodo
+////            getAdByBigImg(adRequestTimeOut);
+//        } else if (Constants.AdStyle.OPEN_ADS.equals(style)) {
+////            getAdBySplashAd();
+//        } else if (Constants.AdStyle.FULL_SCREEN_VIDEO.equals(style)) {
+//            getFullScreenVideoAd();
+//        } else if (Constants.AdStyle.CUSTOM_CP.equals(style) || Constants.AdStyle.FULLSCREEN_CP_01.equals(style) || Constants.AdStyle.CP.equals(style)) {
+//            getCustomInsertScreenAd();
+//        } else if (Constants.AdStyle.REWARD_VIDEO.equals(style)) {
+//            getRewardVideoAd();
+//        }
+//    }
 
-    /**
-     * 优量汇模板插屏（只有模板插屏）
-     */
-    protected void getCustomInsertScreenAd() {
-        if (mAdView == null) {
-            return;
-        }
-        if (mAdView instanceof YlhTemplateInsertScreenAdView) {
-            mAdView.setAdInfo(mAdInfo);
-            mAdView.setAdListener(mAdListener);
-            mAdView.setPollingAdListener(mFirstAdListener);
-            ((YlhTemplateInsertScreenAdView) mAdView).loadTemplateInsertScreenAd(mActivity, mAppId, mAdId);
-        }
-    }
+//    /**
+//     * 优量汇模板插屏（只有模板插屏）
+//     */
+//    protected void getCustomInsertScreenAd() {
+//        if (mAdView == null) {
+//            return;
+//        }
+//        if (mAdView instanceof YlhTemplateInsertScreenAdView) {
+//            mAdView.setAdListener(mAdListener);
+//            mAdView.setPollingAdListener(mFirstAdListener);
+//            ((YlhTemplateInsertScreenAdView) mAdView).loadTemplateInsertScreenAd(mActivity, mAppId, mAdId);
+//        }
+//    }
 
 
 //    /**
@@ -175,11 +176,11 @@ public class YlhAdView extends CommAdView {
 //            public void onADLoaded(List<NativeUnifiedADData> nativeAdList) {
 //                LogUtils.d(TAG, "onADLoaded->请求优量汇成功");
 //
-//                Boolean requestAdOverTime = AdsUtils.requestAdOverTime(adRequestTimeOut);
-//                if (requestAdOverTime) {
-//                    adError(CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-//                    return;
-//                }
+////                Boolean requestAdOverTime = AdsUtils.requestAdOverTime(adRequestTimeOut);
+////                if (requestAdOverTime) {
+////                    adError(CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+////                    return;
+////                }
 //
 //                if (nativeAdList == null || nativeAdList.isEmpty()) {
 //                    firstAdError(1, "请求结果为空");
@@ -204,7 +205,7 @@ public class YlhAdView extends CommAdView {
 //                    }
 //                }
 //                adSuccess(mAdInfo);
-//                mAdView.setAdInfo(mAdInfo);
+////                mAdView.setAdInfo(mAdInfo);
 //                mAdView.parseYlhAd(nativeAdList);
 //            }
 //
@@ -221,55 +222,55 @@ public class YlhAdView extends CommAdView {
 //        mAdManager.loadData(REQUEST_AD_COUNTS);
 //    }
 
-    /**
-     * 请求开屏广告
-     */
-    protected void getAdBySplashAd() {
-        if (mAdView == null) {
-            return;
-        }
-        if (mAdView instanceof YlhSplashAdView) {
-            mAdView.setAppId(mAppId);
-            mAdView.setAdId(mAdId);
-            mAdView.setAdInfo(mAdInfo);
-            mAdView.setAdListener(mAdListener);
-            mAdView.setPollingAdListener(mFirstAdListener);
-            ((YlhSplashAdView) mAdView).loadSplashAd(mActivity, mAppId, mAdId);
-        }
-    }
+//    /**
+//     * 请求开屏广告
+//     */
+//    protected void getAdBySplashAd() {
+//        if (mAdView == null) {
+//            return;
+//        }
+//        if (mAdView instanceof YlhSplashAdView) {
+//            mAdView.setAppId(mAppId);
+//            mAdView.setAdId(mAdId);
+////            mAdView.setAdInfo(mAdInfo);
+//            mAdView.setAdListener(mAdListener);
+//            mAdView.setPollingAdListener(mFirstAdListener);
+//            ((YlhSplashAdView) mAdView).loadSplashAd(mActivity, mAppId, mAdId);
+//        }
+//    }
 
-    /**
-     * 请求全屏视频广告
-     */
-    protected void getFullScreenVideoAd() {
-        if (mAdView == null) {
-            return;
-        }
-        if (mAdView instanceof YlhFullScreenVideoAdView) {
-            mAdView.setAppId(mAppId);
-            mAdView.setAdId(mAdId);
-            mAdView.setAdInfo(mAdInfo);
-            mAdView.setAdListener(mAdListener);
-            mAdView.setPollingAdListener(mFirstAdListener);
-            ((YlhFullScreenVideoAdView) mAdView).loadFullScreenVideoAd(mAppId, mAdId);
-        }
-    }
+//    /**
+//     * 请求全屏视频广告
+//     */
+//    protected void getFullScreenVideoAd() {
+//        if (mAdView == null) {
+//            return;
+//        }
+//        if (mAdView instanceof YlhFullScreenVideoAdView) {
+//            mAdView.setAppId(mAppId);
+//            mAdView.setAdId(mAdId);
+////            mAdView.setAdInfo(mAdInfo);
+//            mAdView.setAdListener(mAdListener);
+//            mAdView.setPollingAdListener(mFirstAdListener);
+//            ((YlhFullScreenVideoAdView) mAdView).loadFullScreenVideoAd(mAppId, mAdId);
+//        }
+//    }
 
-    /**
-     * 请求激励视频广告
-     */
-    protected void getRewardVideoAd() {
-        if (mAdView == null) {
-            return;
-        }
-        if (mAdView instanceof YlhRewardVideoAdView) {
-            mAdView.setAppId(mAppId);
-            mAdView.setAdId(mAdId);
-            mAdView.setAdInfo(mAdInfo);
-            mAdView.setAdListener(mAdListener);
-            mAdView.setPollingAdListener(mFirstAdListener);
-            ((YlhRewardVideoAdView) mAdView).loadRewardVideoAd(mActivity, mAdId, orientation);
-        }
-    }
+//    /**
+//     * 请求激励视频广告
+//     */
+//    protected void getRewardVideoAd() {
+//        if (mAdView == null) {
+//            return;
+//        }
+//        if (mAdView instanceof YlhRewardVideoAdView) {
+//            mAdView.setAppId(mAppId);
+//            mAdView.setAdId(mAdId);
+////            mAdView.setAdInfo(mAdInfo);
+//            mAdView.setAdListener(mAdListener);
+//            mAdView.setPollingAdListener(mFirstAdListener);
+//            ((YlhRewardVideoAdView) mAdView).loadRewardVideoAd(mActivity, mAdId, orientation);
+//        }
+//    }
 
 }

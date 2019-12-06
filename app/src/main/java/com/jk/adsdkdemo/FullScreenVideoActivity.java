@@ -23,7 +23,6 @@ import com.jk.adsdkdemo.utils.LogUtils;
  */
 public class FullScreenVideoActivity extends AppCompatActivity implements View.OnClickListener {
     private final String TAG = FullScreenVideoActivity.class.getSimpleName();
-    private AdManager adManager;
     private FrameLayout splashContainer;
     private EditText positionEdit;
     private Button refreshBtn;
@@ -41,7 +40,6 @@ public class FullScreenVideoActivity extends AppCompatActivity implements View.O
         refreshBtn = findViewById(R.id.video_refresh);
         positionEdit = findViewById(R.id.splash_position_edit);
         refreshBtn.setOnClickListener(this);
-        adManager = GeekAdSdk.getAdsManger();
         positionEdit.setText("cp_ad_1");
         loadSplashAd("cp_ad_1");
     }
@@ -52,7 +50,7 @@ public class FullScreenVideoActivity extends AppCompatActivity implements View.O
     private void loadSplashAd(String position) {
         // cold_kp 、hot_kp
         splashContainer.removeAllViews();
-        adManager.loadVideoAd(this, position, new VideoAdListener() {
+        GeekAdSdk.getAdsManger().loadVideoAd(this, position, new VideoAdListener() {
             @Override
             public void onVideoResume(AdInfo info) {
 
@@ -71,7 +69,10 @@ public class FullScreenVideoActivity extends AppCompatActivity implements View.O
             @Override
             public void adSuccess(AdInfo info) {
                 LogUtils.d(TAG, "-----adSuccess-----");
-                splashContainer.addView(adManager.getAdView());
+                View addView = info.getAdView();
+                if (addView != null) {
+                    splashContainer.addView(addView);
+                }
             }
 
             @Override
@@ -90,13 +91,15 @@ public class FullScreenVideoActivity extends AppCompatActivity implements View.O
             }
 
             @Override
-            public void adError(int errorCode, String errorMsg) {
+            public void adError(AdInfo info, int errorCode, String errorMsg) {
+                //显示错误信息，调试用
                 LogUtils.d(TAG, "-----adError-----" + errorMsg);
                 TextView textView = new TextView(FullScreenVideoActivity.this);
                 textView.setText("error:" + errorCode + errorMsg);
                 splashContainer.removeAllViews();
                 splashContainer.addView(textView);
             }
+
         });
     }
 

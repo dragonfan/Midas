@@ -55,8 +55,7 @@ public class TemplateInsertScreenAcitvity extends AppCompatActivity implements V
                     Toast.makeText(getApplicationContext(), "accept->输入的位置不能为空", Toast.LENGTH_LONG).show();
                     return;
                 }
-                AdManager adManager = GeekAdSdk.getAdsManger();
-                adManager.loadCustomInsertScreenAd(this, position, 3, new AdListener() {
+                GeekAdSdk.getAdsManger().loadCustomInsertScreenAd(this, position, 3, new AdListener() {
                     @Override
                     public void adSuccess(AdInfo info) {
                         LogUtils.d(TAG, "-----adSuccess-----");
@@ -73,7 +72,7 @@ public class TemplateInsertScreenAcitvity extends AppCompatActivity implements V
                     }
 
                     @Override
-                    public void adError(int errorCode, String errorMsg) {
+                    public void adError(AdInfo info, int errorCode, String errorMsg) {
                         LogUtils.d(TAG, "-----adError-----" + errorMsg);
                     }
                 });

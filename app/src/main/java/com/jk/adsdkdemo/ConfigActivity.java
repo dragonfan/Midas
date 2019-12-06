@@ -1,5 +1,6 @@
 package com.jk.adsdkdemo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
@@ -33,7 +34,7 @@ import java.util.List;
  */
 public class ConfigActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button requestBt, setBidTb, initTb;
+    private Button requestBt, setBidTb, initTb, nextBt;
     private EditText bidEt, editProduct, editChan;
     private TextView stateText;
 
@@ -48,17 +49,22 @@ public class ConfigActivity extends AppCompatActivity implements View.OnClickLis
         editChan = findViewById(R.id.et_chan_id);
         editProduct = findViewById(R.id.et_product_id);
         initTb = findViewById(R.id.button_init);
+        nextBt = findViewById(R.id.next);
+        nextBt.setOnClickListener(this);
         initTb.setOnClickListener(this);
         setBidTb.setOnClickListener(this);
         requestBt.setOnClickListener(this);
         stateText.setTextIsSelectable(true);
-        showConfigList(AdsConfig.getAdsInfoslist());
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_set_bid:
+                if (!GeekAdSdk.isInit()) {
+                    Toast.makeText(getApplicationContext(), "请先初始化", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 try {
                     GeekAdSdk.setBid(Integer.valueOf(bidEt.getText().toString()));
                 } catch (NumberFormatException e) {
@@ -66,6 +72,10 @@ public class ConfigActivity extends AppCompatActivity implements View.OnClickLis
                 }
                 break;
             case R.id.button_request_config:
+                if (!GeekAdSdk.isInit()) {
+                    Toast.makeText(getApplicationContext(), "请先初始化", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 stateText.setText("");
                 GeekAdSdk.requestConfig(new ConfigListener() {
                     @Override
@@ -93,9 +103,24 @@ public class ConfigActivity extends AppCompatActivity implements View.OnClickLis
                 LogUtils.e(">>>渠道号="+chan);
                 GeekAdSdk.init(this, product, "5036430", chan,   false);
                 break;
+            case R.id.next:
+                if (!GeekAdSdk.isInit()) {
+                    Toast.makeText(getApplicationContext(), "请先初始化", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                break;
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (GeekAdSdk.isInit()) {
+            showConfigList(AdsConfig.getAdsInfoslist());
+        }
+    }
 
     /**
      * 展示配置信息

@@ -35,6 +35,11 @@
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/dp_20" />
 
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_marginLeft="@dimen/dimen_12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
         <EditText
             android:layout_marginLeft="@dimen/dimen_12dp"
             android:id="@+id/et_position_id"
@@ -43,7 +48,7 @@
             android:text="newlist_1_1"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/dp_20"
-            android:visibility="visible" />
+            android:visibility="gone" />
     </LinearLayout>
 
     <Button

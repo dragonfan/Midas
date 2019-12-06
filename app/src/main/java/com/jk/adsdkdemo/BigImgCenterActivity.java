@@ -53,8 +53,7 @@ public class BigImgCenterActivity extends AppCompatActivity implements View.OnCl
                     Toast.makeText(getApplicationContext(), "accept->输入的位置不能为空", Toast.LENGTH_LONG).show();
                     return;
                 }
-                AdManager adManager = GeekAdSdk.getAdsManger();
-                adManager.loadAd(this,position, new AdListener() {
+                GeekAdSdk.getAdsManger().loadAd(this,position, new AdListener() {
                     @Override
                     public void adSuccess(AdInfo info) {
                         if (info == null) {
@@ -62,7 +61,7 @@ public class BigImgCenterActivity extends AppCompatActivity implements View.OnCl
                         } else {
                             LogUtils.e("DEMO>>>adSuccess， "+ info.toString());
                         }
-                        adView = adManager.getAdView();
+                        adView = info.getAdView();
                         if (adView != null) {
                             container.removeAllViews();
                             container.addView(adView);
@@ -88,8 +87,9 @@ public class BigImgCenterActivity extends AppCompatActivity implements View.OnCl
                         }
                     }
 
+
                     @Override
-                    public void adError(int errorCode, String errorMsg) {
+                    public void adError(AdInfo info, int errorCode, String errorMsg) {
                         LogUtils.e("DEMO>>>adError： "+errorMsg);
                     }
                 });

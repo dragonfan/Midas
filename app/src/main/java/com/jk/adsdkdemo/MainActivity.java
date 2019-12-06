@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private Button button_configinfo, buttonPreloading, buttonOldStyle, buttonSplashAd, buttonFakeVideo,
-            btnFullScreenVideo, btnRewardVideo, btnNewBigImgFour, btnInsertScreenAd, btnTemplateInsertScreenAd;
+            btnFullScreenVideo, btnRewardVideo, btnNewBigImgFour, btnInsertScreenAd, btnTemplateInsertScreenAd, bigImgBt;
 
     //    private EditText et_ad_pos_id;
 //    public static TextView tvResult;
@@ -50,31 +50,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initView() {
-//        button_ylh_ad = findViewById(R.id.button_ylh_ad);
-//        et_ad_pos_id = findViewById(R.id.et_ad_pos_id);
-
-//        adRlyt = findViewById(R.id.first_weather_adrlyt);
-        button_configinfo = findViewById(R.id.button_configinfo);
-//        tvResult=findViewById(R.id.tv_result);
-        et_chan_id = findViewById(R.id.et_chan_id);
-        et_product_id = findViewById(R.id.et_product_id);
+//        button_configinfo = findViewById(R.id.button_configinfo);
+//        et_chan_id = findViewById(R.id.et_chan_id);
+//        et_product_id = findViewById(R.id.et_product_id);
 
 
 //        button_ylh_ad.setOnClickListener(this);
-        button_configinfo.setOnClickListener(this);
+//        button_configinfo.setOnClickListener(this);
 
-        buttonPreloading = findViewById(R.id.button_preloading);
-        buttonPreloading.setOnClickListener(this);
-
-        buttonOldStyle = findViewById(R.id.button_old_style);
-        buttonOldStyle.setOnClickListener(this);
-
-
-        btnNewBigImgFour = findViewById(R.id.new_big_img);
-        btnNewBigImgFour.setOnClickListener(this);
-
-        buttonFakeVideo = findViewById(R.id.fake_video_img);
-        buttonFakeVideo.setOnClickListener(this);
+//        buttonPreloading = findViewById(R.id.button_preloading);
+//        buttonPreloading.setOnClickListener(this);
+//
+//        buttonOldStyle = findViewById(R.id.button_old_style);
+//        buttonOldStyle.setOnClickListener(this);
+//
+//
+//        btnNewBigImgFour = findViewById(R.id.new_big_img);
+//        btnNewBigImgFour.setOnClickListener(this);
+//
+//        buttonFakeVideo = findViewById(R.id.fake_video_img);
+//        buttonFakeVideo.setOnClickListener(this);
 
         buttonSplashAd = findViewById(R.id.button_splash_ad);
         buttonSplashAd.setOnClickListener(this);
@@ -88,8 +83,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnInsertScreenAd = findViewById(R.id.button_insert_screen_ad);
         btnInsertScreenAd.setOnClickListener(this);
 
-        btnTemplateInsertScreenAd = findViewById(R.id.button_template_insert_screen_ad);
-        btnTemplateInsertScreenAd.setOnClickListener(this);
+//        btnTemplateInsertScreenAd = findViewById(R.id.button_template_insert_screen_ad);
+//        btnTemplateInsertScreenAd.setOnClickListener(this);
+
+        bigImgBt = findViewById(R.id.big_img_bt);
+        bigImgBt.setOnClickListener(this);
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -140,21 +138,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.button_configinfo:
-                startActivity(new Intent(this, ConfigActivity.class));
+            case R.id.big_img_bt:
+                startActivity(new Intent(this, BigImgAcitvity.class));
                 break;
-            case R.id.button_preloading:
-                startActivity(new Intent(this, PreloadingAcitvity.class));
-                break;
-            case R.id.button_old_style:
-                startActivity(new Intent(this, OldBigImgActivity.class));
-                break;
-            case R.id.new_big_img:
-                startActivity(new Intent(this, NewBigImgActivity.class));
-                break;
-            case R.id.fake_video_img:
-                startActivity(new Intent(this, FakeVideoBigImg1Acitvity.class));
-                break;
+//            case R.id.button_configinfo:
+//                startActivity(new Intent(this, ConfigActivity.class));
+//                break;
+//            case R.id.button_preloading:
+//                startActivity(new Intent(this, PreloadingAcitvity.class));
+//                break;
+//            case R.id.button_old_style:
+//                startActivity(new Intent(this, OldBigImgActivity.class));
+//                break;
+//            case R.id.new_big_img:
+//                startActivity(new Intent(this, NewBigImgActivity.class));
+//                break;
+//            case R.id.fake_video_img:
+//                startActivity(new Intent(this, FakeVideoBigImg1Acitvity.class));
+//                break;
             case R.id.button_splash_ad:
                 startActivity(new Intent(this, SplashAdActivity.class));
                 break;
@@ -167,9 +168,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.button_insert_screen_ad:
                 startActivity(new Intent(this, InsertScreenActivity.class));
                 break;
-            case R.id.button_template_insert_screen_ad:
-                startActivity(new Intent(this, TemplateInsertScreenAcitvity.class));
-                break;
+//            case R.id.button_template_insert_screen_ad:
+//                startActivity(new Intent(this, TemplateInsertScreenAcitvity.class));
+//                break;
             default:
                 break;
 

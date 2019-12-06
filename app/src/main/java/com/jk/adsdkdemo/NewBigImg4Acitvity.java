@@ -53,11 +53,10 @@ public class NewBigImg4Acitvity extends AppCompatActivity implements View.OnClic
                     Toast.makeText(getApplicationContext(), "accept->输入的位置不能为空", Toast.LENGTH_LONG).show();
                     return;
                 }
-                AdManager adManager = GeekAdSdk.getAdsManger();
-                adManager.loadAd(this,position, new AdListener() {
+                GeekAdSdk.getAdsManger().loadAd(this,position, new AdListener() {
                     @Override
                     public void adSuccess(AdInfo info) {
-                        adView = adManager.getAdView();
+                        adView = info.getAdView();
                         if (adView != null) {
                             container.removeAllViews();
                             container.addView(adView);
@@ -75,7 +74,7 @@ public class NewBigImg4Acitvity extends AppCompatActivity implements View.OnClic
                     }
 
                     @Override
-                    public void adError(int errorCode, String errorMsg) {
+                    public void adError(AdInfo info, int errorCode, String errorMsg) {
 
                     }
                 });

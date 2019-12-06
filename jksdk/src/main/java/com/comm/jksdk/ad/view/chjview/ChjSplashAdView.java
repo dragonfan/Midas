@@ -37,16 +37,15 @@ public class ChjSplashAdView extends CHJAdView {
     @Override
     public void parseAd(AdInfo adInfo) {
         super.parseAd(adInfo);
-        this.mAdInfo = adInfo;
         TTSplashAd ttSplashAd = adInfo.getTtSplashAd();
-        loadSplashAd(ttSplashAd);
+        loadSplashAd(ttSplashAd, adInfo);
     }
 
     /**
      * 获取开屏广告并加载
      */
-    public void loadSplashAd(TTSplashAd ttSplashAd) {
-        adSuccess(mAdInfo);
+    public void loadSplashAd(TTSplashAd ttSplashAd, AdInfo adInfo) {
+        adSuccess(adInfo);
         splashContainer.removeAllViews();
         splashContainer.addView(ttSplashAd.getSplashView());
         ttSplashAd.setNotAllowSdkCountdown();
@@ -55,13 +54,13 @@ public class ChjSplashAdView extends CHJAdView {
             @Override
             public void onAdClicked(View view, int type) {
                 LogUtils.d(TAG, "onAdClicked");
-                adClicked(mAdInfo);
+                adClicked(adInfo);
             }
 
             @Override
             public void onAdShow(View view, int type) {
                 LogUtils.d(TAG, "onAdShow");
-                adExposed(mAdInfo);
+                adExposed(adInfo);
             }
 
             @Override
@@ -73,7 +72,7 @@ public class ChjSplashAdView extends CHJAdView {
             @Override
             public void onAdTimeOver() {
                 LogUtils.d(TAG, "onAdTimeOver");
-                firstAdError(mAdInfo, CodeFactory.UNKNOWN, "广告加载超时");
+                firstAdError(adInfo, CodeFactory.UNKNOWN, "广告加载超时");
             }
         });
     }

@@ -1,10 +1,15 @@
 package com.comm.jksdk.ad.entity;
 
 import android.os.Parcel;
+import android.view.ViewGroup;
 
 import com.bytedance.sdk.openadsdk.TTFeedAd;
 import com.bytedance.sdk.openadsdk.TTFullScreenVideoAd;
+import com.bytedance.sdk.openadsdk.TTNativeAd;
+import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
+import com.bytedance.sdk.openadsdk.TTRewardVideoAd;
 import com.bytedance.sdk.openadsdk.TTSplashAd;
+import com.qq.e.ads.nativ.NativeUnifiedADData;
 
 /**
  * @ProjectName: GeekAdSdk
@@ -20,6 +25,27 @@ import com.bytedance.sdk.openadsdk.TTSplashAd;
  */
 public class AdInfo extends BaseEntity{
 
+
+    /**
+     * 广告view
+     */
+    private ViewGroup adView;
+    /**
+     * 优量汇图文广告
+     */
+    private NativeUnifiedADData nativeUnifiedADData;
+    /**
+     * 穿山甲原生广告
+     */
+    private TTNativeAd ttNativeAd;
+    /**
+     * 穿山甲模板插屏广告
+     */
+    private TTNativeExpressAd ttNativeExpressAd;
+    /**
+     * 穿山甲激励视频广告
+     */
+    private TTRewardVideoAd ttRewardVideoAd;
     /**
      * 穿山甲全屏视频广告
      */
@@ -73,6 +99,46 @@ public class AdInfo extends BaseEntity{
      */
     private String mPosition;
 
+
+    public NativeUnifiedADData getNativeUnifiedADData() {
+        return nativeUnifiedADData;
+    }
+
+    public void setNativeUnifiedADData(NativeUnifiedADData nativeUnifiedADData) {
+        this.nativeUnifiedADData = nativeUnifiedADData;
+    }
+
+    public TTNativeAd getTtNativeAd() {
+        return ttNativeAd;
+    }
+
+    public void setTtNativeAd(TTNativeAd ttNativeAd) {
+        this.ttNativeAd = ttNativeAd;
+    }
+
+    public TTNativeExpressAd getTtNativeExpressAd() {
+        return ttNativeExpressAd;
+    }
+
+    public void setTtNativeExpressAd(TTNativeExpressAd ttNativeExpressAd) {
+        this.ttNativeExpressAd = ttNativeExpressAd;
+    }
+
+    public TTRewardVideoAd getTtRewardVideoAd() {
+        return ttRewardVideoAd;
+    }
+
+    public void setTtRewardVideoAd(TTRewardVideoAd ttRewardVideoAd) {
+        this.ttRewardVideoAd = ttRewardVideoAd;
+    }
+
+    public ViewGroup getAdView() {
+        return adView;
+    }
+
+    public void setAdView(ViewGroup adView) {
+        this.adView = adView;
+    }
 
     public TTFullScreenVideoAd getTtFullScreenVideoAd() {
         return ttFullScreenVideoAd;

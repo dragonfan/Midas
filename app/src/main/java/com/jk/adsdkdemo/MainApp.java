@@ -19,13 +19,7 @@ public class MainApp extends Application {
 
         super.onCreate();
         // 需要放在接口请求之前
-//        NativesAdManger.getInstance().init(mContext,"5015945","即刻天气");
-
-        //初始化聚合广告sdk
-//        GeekAdSdk.init(this, "13", "jinritoutiao", "5015945",  false);
-        GeekAdSdk.init(this, "18", "5036430", "jinritoutiao",   false);
-
-//        GeekAdSdk.setBid(10);
+//        GeekAdSdk.init(this, "88", "5036430", "jinritoutiao",   false);
 
     }
 

@@ -27,7 +27,6 @@ public class SplashAdActivity extends AppCompatActivity implements View.OnClickL
     private EditText positionEdit;
     private TextView stateTxt;
     private Button refreshBtn;
-    private AdManager adManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,7 +42,6 @@ public class SplashAdActivity extends AppCompatActivity implements View.OnClickL
         positionEdit = findViewById(R.id.splash_position_edit);
         stateTxt = findViewById(R.id.state_txt);
         refreshBtn.setOnClickListener(this);
-        adManager = GeekAdSdk.getAdsManger();
         positionEdit.setText("cold_kp");
         loadSplashAd("cold_kp");
     }
@@ -55,11 +53,12 @@ public class SplashAdActivity extends AppCompatActivity implements View.OnClickL
         // cold_kp 、hot_kp
         splashContainer.removeAllViews();
         stateTxt.setText("");
-        adManager.loadSplashAd(this, position, new AdListener() {
+        GeekAdSdk.getAdsManger().loadSplashAd(this, position, new AdListener() {
             @Override
             public void adSuccess(AdInfo info) {
                 LogUtils.d(TAG, "-----adSuccess-----");
                 stateTxt.setText("-----adSuccess-----");
+                splashContainer.addView(info.getAdView());
             }
 
             @Override
@@ -74,12 +73,13 @@ public class SplashAdActivity extends AppCompatActivity implements View.OnClickL
             }
 
             @Override
-            public void adError(int errorCode, String errorMsg) {
+            public void adError(AdInfo info, int errorCode, String errorMsg) {
                 LogUtils.e(TAG, "-----adError-----" + errorMsg);
                 stateTxt.setText("errorCode:" + errorCode + " errorMsg:" + errorMsg);
             }
+
         });
-        splashContainer.addView(adManager.getAdView());
+
     }
 
     @Override

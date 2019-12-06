@@ -57,7 +57,7 @@ public class FakeVideoBigImg1Acitvity extends AppCompatActivity implements View.
                 adManager.loadAd(this,position, new AdListener() {
                     @Override
                     public void adSuccess(AdInfo info) {
-                        adView = adManager.getAdView();
+                        adView = info.getAdView();
                         if (adView != null) {
                             container.removeAllViews();
                             container.addView(adView);
@@ -75,7 +75,7 @@ public class FakeVideoBigImg1Acitvity extends AppCompatActivity implements View.
                     }
 
                     @Override
-                    public void adError(int errorCode, String errorMsg) {
+                    public void adError(AdInfo info, int errorCode, String errorMsg) {
 
                     }
                 });

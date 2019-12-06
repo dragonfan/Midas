@@ -56,7 +56,7 @@ public class RewardVideoActivity extends AppCompatActivity implements View.OnCli
     private void loadSplashAd(String position) {
         // cp_ad_1
         splashContainer.removeAllViews();
-        adManager.loadRewardVideoAd(this, position, "user123", 1, new VideoAdListener() {
+        GeekAdSdk.getAdsManger().loadRewardVideoAd(this, position, "user123", 1, new VideoAdListener() {
 
             @Override
             public void onVideoResume(AdInfo info) {
@@ -77,7 +77,7 @@ public class RewardVideoActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void adSuccess(AdInfo info) {
                 LogUtils.d(TAG, "-----adSuccess-----");
-                splashContainer.addView(adManager.getAdView());
+                splashContainer.addView(info.getAdView());
             }
 
             @Override
@@ -96,13 +96,14 @@ public class RewardVideoActivity extends AppCompatActivity implements View.OnCli
             }
 
             @Override
-            public void adError(int errorCode, String errorMsg) {
+            public void adError(AdInfo info, int errorCode, String errorMsg) {
                 LogUtils.d(TAG, "-----adError-----" + errorMsg);
                 TextView textView = new TextView(RewardVideoActivity.this);
                 textView.setText("error:" + errorCode + errorMsg);
                 splashContainer.removeAllViews();
                 splashContainer.addView(textView);
             }
+
         });
     }
 

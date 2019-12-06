@@ -30,13 +30,6 @@ public class CommAdView extends AbsAdView {
      */
     protected String mAppId = "";
 
-    //广告信息
-    protected AdInfo mAdInfo;
-
-    public void setAdInfo(AdInfo info){
-        this.mAdInfo = info;
-    }
-
     public void setAdId(String mAdId) {
         this.mAdId = mAdId;
     }
