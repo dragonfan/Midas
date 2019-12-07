@@ -1078,70 +1078,76 @@ public class NativeAdManger implements AdManager {
         rewardVideoAD.loadAD();
     }
 
+    UnifiedInterstitialAD iad = null;
     /**
      * 展示优量插屏广告（优量汇只有模板插屏）
      * @param activity
      * @param info
      */
     private void showYlhInsertScreen(Activity activity, AdInfo info) {
+//        UnifiedInterstitialAD iad = null;
         String UNIFIED_INTERSTITIAL_ID_LARGE_SMALL = "3040652898151811";// 大小规格
-        UnifiedInterstitialAD iad = null;
         if (iad != null) {
             iad.close();
             iad.destroy();
             iad = null;
         }
-        if (iad == null) {
-            UnifiedInterstitialAD finalIad = iad;
-            iad = new UnifiedInterstitialAD(activity, info.getAdAppid(), UNIFIED_INTERSTITIAL_ID_LARGE_SMALL, new UnifiedInterstitialADListener() {
-                @Override
-                public void onADReceive() {
-                    //广告加载成功
+        iad = new UnifiedInterstitialAD(activity, info.getAdAppid(), UNIFIED_INTERSTITIAL_ID_LARGE_SMALL, new UnifiedInterstitialADListener() {
+            @Override
+            public void onADReceive() {
+                //广告加载成功
 //                    if (iad != null) {
 //                        adSuccess(adInfo);
 //                    }
-                    finalIad.showAsPopupWindow();
+                showAd(iad);
+            }
+
+            @Override
+            public void onNoAD(AdError adError) {
+                if (mAdListener != null) {
+                    mAdListener.adError(info, 1, "没有广告");
                 }
+            }
 
-                @Override
-                public void onNoAD(AdError adError) {
-                    if (mAdListener != null) {
-                        mAdListener.adError(info, 1, "没有广告");
-                    }
+            @Override
+            public void onADOpened() {
+
+            }
+
+            @Override
+            public void onADExposure() {
+                if (mAdListener != null) {
+                    mAdListener.adExposed(info);
                 }
+            }
 
-                @Override
-                public void onADOpened() {
-
+            @Override
+            public void onADClicked() {
+                if (mAdListener != null) {
+                    mAdListener.adClicked(info);
                 }
+            }
 
-                @Override
-                public void onADExposure() {
-                    if (mAdListener != null) {
-                        mAdListener.adExposed(info);
-                    }
+            @Override
+            public void onADLeftApplication() {
+
+            }
+
+            @Override
+            public void onADClosed() {
+                if (mAdListener != null) {
+                    mAdListener.adClose(info);
                 }
-
-                @Override
-                public void onADClicked() {
-                    if (mAdListener != null) {
-                        mAdListener.adClicked(info);
-                    }
-                }
-
-                @Override
-                public void onADLeftApplication() {
-
-                }
-
-                @Override
-                public void onADClosed() {
-                    if (mAdListener != null) {
-                        mAdListener.adClose(info);
-                    }
-                }
-            });
-            iad.loadAD();
+            }
+        });
+        iad.loadAD();
+//        if (iad == null) {
+//            UnifiedInterstitialAD finalIad = iad;
+//        }
+    }
+    private void showAd(UnifiedInterstitialAD iad){
+        if (iad != null) {
+            iad.showAsPopupWindow();
         }
     }
 }

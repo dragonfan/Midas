@@ -92,7 +92,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
 
             @Override
             public void onNativeAdLoad(List<TTNativeAd> ads) {
-                if (!CollectionUtils.isEmpty(ads)) {
+                if (CollectionUtils.isEmpty(ads)) {
                     if (listener != null) {
                         listener.adError(info, 1, "没请求到广告数据");
                     }

@@ -81,10 +81,10 @@ public class YlhSplashAdView extends YlhAdView {
             @Override
             public void onADExposure() {
                 LogUtils.d(TAG, "YLH onADClicked:");
-                adSuccess(adInfo);
                 adExposed(adInfo);
             }
         });
         splashAD.fetchAndShowIn(splashContainer);
+//        adSuccess(adInfo);
     }
 }

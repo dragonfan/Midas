@@ -45,7 +45,6 @@ public class ChjSplashAdView extends CHJAdView {
      * 获取开屏广告并加载
      */
     public void loadSplashAd(TTSplashAd ttSplashAd, AdInfo adInfo) {
-        adSuccess(adInfo);
         splashContainer.removeAllViews();
         splashContainer.addView(ttSplashAd.getSplashView());
         ttSplashAd.setNotAllowSdkCountdown();

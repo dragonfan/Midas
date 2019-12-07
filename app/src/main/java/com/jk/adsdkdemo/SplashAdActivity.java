@@ -43,7 +43,7 @@ public class SplashAdActivity extends AppCompatActivity implements View.OnClickL
         stateTxt = findViewById(R.id.state_txt);
         refreshBtn.setOnClickListener(this);
         positionEdit.setText("cold_kp");
-        loadSplashAd("cold_kp");
+//        loadSplashAd("cold_kp");
     }
 
     /**
@@ -58,7 +58,17 @@ public class SplashAdActivity extends AppCompatActivity implements View.OnClickL
             public void adSuccess(AdInfo info) {
                 LogUtils.d(TAG, "-----adSuccess-----");
                 stateTxt.setText("-----adSuccess-----");
-                splashContainer.addView(info.getAdView());
+                View view = info.getAdView();
+                if (view != null) {
+                    splashContainer.addView(view);
+                }
+            }
+
+            @Override
+            public void adClose(AdInfo info) {
+                if (splashContainer != null) {
+                    splashContainer.removeAllViews();
+                }
             }
 
             @Override
