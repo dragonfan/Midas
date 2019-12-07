@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.comm.jksdk.GeekAdSdk;
 import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.ad.listener.AdManager;
+import com.comm.jksdk.ad.listener.AdPreloadingListener;
 import com.comm.jksdk.ad.listener.VideoAdListener;
 import com.jk.adsdkdemo.utils.LogUtils;
 
@@ -77,7 +78,6 @@ public class RewardVideoActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void adSuccess(AdInfo info) {
                 LogUtils.d(TAG, "-----adSuccess-----");
-                splashContainer.addView(info.getAdView());
             }
 
             @Override
@@ -107,10 +107,32 @@ public class RewardVideoActivity extends AppCompatActivity implements View.OnCli
         });
     }
 
+    /**
+     * 预加载
+     */
+    private void preloadingSplashAd(String position) {
+        splashContainer.removeAllViews();
+        GeekAdSdk.getAdsManger().preloadingRewardVideoAd(this, position, "user123", 1, new AdPreloadingListener() {
+            @Override
+            public void adSuccess(AdInfo info) {
+                LogUtils.d(TAG, "-----adSuccess-----");
+                Toast.makeText(getApplicationContext(), "预加载成功", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void adError(AdInfo info, int errorCode, String errorMsg) {
+                LogUtils.d(TAG, "-----adError-----" + errorMsg);
+                Toast.makeText(getApplicationContext(), "预加载失败", Toast.LENGTH_LONG).show();
+            }
+
+        });
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_preloading_ad:
+                preloadingSplashAd(positionEdit.getText().toString().trim());
                 break;
             case R.id.video_refresh:
                 loadSplashAd(positionEdit.getText().toString().trim());

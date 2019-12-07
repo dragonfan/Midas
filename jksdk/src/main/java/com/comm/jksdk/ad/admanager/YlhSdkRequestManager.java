@@ -1,12 +1,16 @@
 package com.comm.jksdk.ad.admanager;
 
 import android.app.Activity;
+import android.text.TextUtils;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bytedance.sdk.openadsdk.AdSlot;
 import com.bytedance.sdk.openadsdk.TTAdConstant;
 import com.bytedance.sdk.openadsdk.TTAdManager;
 import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTFeedAd;
+import com.bytedance.sdk.openadsdk.TTImage;
 import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
 import com.comm.jksdk.GeekAdSdk;
 import com.comm.jksdk.ad.entity.AdInfo;
@@ -58,8 +62,12 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
             getFullScreenVideoAd(activity, adInfo, listener);
         } else if (Constants.AdStyle.CUSTOM_CP.equals(style) || Constants.AdStyle.FULLSCREEN_CP_01.equals(style) || Constants.AdStyle.CP.equals(style)) {
             getCustomInsertScreenAd(activity, adInfo, listener);
-        } else if (Constants.AdStyle.REWARD_VIDEO.equals(style)) {
-            getRewardVideoAd(activity, adInfo, listener);
+//        } else if (Constants.AdStyle.REWARD_VIDEO.equals(style)) {
+//            getRewardVideoAd(activity, adInfo, listener);
+        } else {
+            if (listener != null) {
+                listener.adError(adInfo, 2, "暂不支持该样式");
+            }
         }
     }
 
@@ -90,6 +98,7 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
                 if (nativeUnifiedADData == null) {
                     return;
                 }
+                caheImage(nativeUnifiedADData);
                 String title = nativeUnifiedADData.getTitle();
                 adInfo.setAdTitle(title);
                 if (nativeUnifiedADData.isAppAd()) {
@@ -104,6 +113,21 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
             }
         });
         mAdManager.loadData(REQUEST_AD_COUNTS);
+    }
+
+    private void caheImage(NativeUnifiedADData ad) {
+        String imgUrl = ad.getImgUrl();
+        String icon = ad.getIconUrl();
+        try {
+            if (!TextUtils.isEmpty(imgUrl)) {
+                cacheImg(imgUrl);
+            }
+            if (!TextUtils.isEmpty(icon)) {
+                cacheImg(icon);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -227,65 +251,6 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
         }
     }
 
-    /**
-     * 获取图片类广告
-     * @param adInfo
-     */
-    public void getImageAd(AdInfo adInfo, AdRequestListener listener) {
-        //step1:初始化sdk
-        TTAdManager ttAdManager = TTAdManagerHolder.get();
-        //step2:创建TTAdNative对象,用于调用广告请求接口
-        TTAdNative mTTAdNative = ttAdManager.createAdNative(GeekAdSdk.getContext());
-        //step3:(可选，强烈建议在合适的时机调用):申请部分权限，如read_phone_state,防止获取不了imei时候，下载类广告没有填充的问题。
-//        TTAdManagerHolder.get().requestPermissionIfNecessary(mContext);
-
-        LogUtils.d(TAG, "getImageAd->请求穿山甲图文类广告");
-
-        AdSlot adSlot = new AdSlot.Builder()
-                .setCodeId(adInfo.getAdId().trim())
-                .setSupportDeepLink(true)
-                .setImageAcceptedSize(640, 320)
-                .setAdCount(1)
-                .build();
-        mTTAdNative.loadFeedAd(adSlot, new TTAdNative.FeedAdListener() {
-            @Override
-            public void onError(int i, String s) {
-                LogUtils.d(TAG, "onNoAD->请求穿山甲失败,ErrorCode:" + i + ",ErrorMsg:" + s);
-                if (listener != null) {
-                    listener.adError(adInfo, i, s);
-                }
-            }
-
-            @Override
-            public void onFeedAdLoad(List<TTFeedAd> list) {
-                LogUtils.d(TAG, "onADLoaded->请求穿山甲成功");
-                if (CollectionUtils.isEmpty(list)) {
-                    if (listener != null) {
-                        listener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-                    }
-                    return;
-                }
-                TTFeedAd ttFeedAd = list.get(0);
-                if (ttFeedAd == null) {
-                    if (listener != null) {
-                        listener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-                    }
-                    return;
-                }
-                String title = ttFeedAd.getTitle();
-                adInfo.setAdTitle(title);
-                if (TTAdConstant.INTERACTION_TYPE_DOWNLOAD == ttFeedAd.getInteractionType()) {
-                    adInfo.setAdClickType(1);
-                } else {
-                    adInfo.setAdClickType(2);
-                }
-                adInfo.setTtFeedAd(ttFeedAd);
-                if (listener != null) {
-                    listener.adSuccess(adInfo);
-                }
-            }
-        });
-    }
 
     private AdRequestListener adRequestListener;
 
@@ -308,7 +273,7 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
             return;
         }
         NativeUnifiedADData nativeUnifiedADData = list.get(0);
-        if (nativeUnifiedADData != null) {
+        if (nativeUnifiedADData == null) {
             if (adRequestListener != null) {
                 adRequestListener.adError(adInfo, 1, "没请求到广告数据");
             }

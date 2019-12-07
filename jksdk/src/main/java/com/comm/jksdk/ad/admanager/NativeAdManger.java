@@ -39,6 +39,7 @@ import com.comm.jksdk.ad.view.ylhview.YlhExternalDialogBigImageView;
 import com.comm.jksdk.ad.view.ylhview.YlhFullScreenVideoAdView;
 import com.comm.jksdk.ad.view.ylhview.YlhSplashAdView;
 import com.comm.jksdk.bean.ConfigBean;
+import com.comm.jksdk.cache.CacheAd;
 import com.comm.jksdk.config.AdsConfig;
 import com.comm.jksdk.constant.Constants;
 import com.comm.jksdk.http.utils.LogUtils;
@@ -79,11 +80,6 @@ public class NativeAdManger implements AdManager {
     private AdListener mAdListener;
 
     /**
-     * 广告位置信息
-     */
-    private String mPosition;
-
-    /**
      * 广告预加载监听器
      */
     private AdPreloadingListener mAdPreloadingListener;
@@ -113,15 +109,27 @@ public class NativeAdManger implements AdManager {
             LogUtils.w(TAG, "回传--->请求第一个广告失败");
 
             if (CollectionUtils.isEmpty(adsInfoslist)) {
-                if (mAdListener != null) {
-                    mAdListener.adError(adInfo, errorCode, errorMsg);
+                if (adInfo.isPreload()) {
+                    if (mAdPreloadingListener != null) {
+                        mAdPreloadingListener.adError(adInfo, errorCode, errorMsg);
+                    }
+                } else {
+                    if (mAdListener != null) {
+                        mAdListener.adError(adInfo, errorCode, errorMsg);
+                    }
                 }
                 return;
             }
             ConfigBean.AdListBean.AdsInfosBean mAdsInfosBean = adsInfoslist.remove(0);
             if (mAdsInfosBean == null) {
-                if (mAdListener != null) {
-                    mAdListener.adError(adInfo, errorCode, errorMsg);
+                if (adInfo.isPreload()) {
+                    if (mAdPreloadingListener != null) {
+                        mAdPreloadingListener.adError(adInfo, errorCode, errorMsg);
+                    }
+                } else {
+                    if (mAdListener != null) {
+                        mAdListener.adError(adInfo, errorCode, errorMsg);
+                    }
                 }
                 return;
             }
@@ -136,7 +144,6 @@ public class NativeAdManger implements AdManager {
         mAdListener = listener;
         AdInfo adInfo = new AdInfo();
         try {
-            mPosition = position;
             mActivity = activity;
             //设置广告位置信息
             adInfo.setPosition(position);
@@ -185,47 +192,35 @@ public class NativeAdManger implements AdManager {
 
     @Override
     public void preloadingAd(Activity activity, String position, AdPreloadingListener listener) {
-//        mAdPreloadingListener = listener;
-//        try {
-//            mActivity = activity;
-//            //获取本地配置信息
-//            ConfigBean.AdListBean mConfigInfoBean = AdsConfig.getInstance(GeekAdSdk.getContext()).getConfig(position);
-//            if (mConfigInfoBean == null) {
-//                if (mAdPreloadingListener != null) {
-//                    mAdPreloadingListener.adError(CodeFactory.LOCAL_INFO_EMPTY, CodeFactory.getError(CodeFactory.LOCAL_INFO_EMPTY));
-//                }
-//                return;
-//            }
-//            //当前广告位所对应的配置信息 存储到curAdlist
-//            adStyle = mConfigInfoBean.getAdStyle();
-//            adRequestTimeOut = mConfigInfoBean.getAdRequestTimeOut();
-//            adsInfoslist.clear();
-//            adsInfoslist.addAll(mConfigInfoBean.getAdsInfos());
-//
-//            if (CollectionUtils.isEmpty(adsInfoslist)) {
-//                if (mAdPreloadingListener != null) {
-//                    mAdPreloadingListener.adError(CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-//                }
-//                return;
-//            }
-//            ConfigBean.AdListBean.AdsInfosBean mAdsInfosBean = adsInfoslist.remove(0);
-//            if (mAdsInfosBean == null) {
-//                if (mAdPreloadingListener != null) {
-//                    mAdPreloadingListener.adError(CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-//                }
-//                return;
-//            }
-//            adUnion = mAdsInfosBean.getAdUnion();
-//            mAdId = mAdsInfosBean.getAdId();
-//            mAppId = mAdsInfosBean.getAdsAppId();
-//
-////            loadCsjAd(position);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            if (mAdPreloadingListener != null) {
-//                mAdPreloadingListener.adError(CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-//            }
-//        }
+        mAdPreloadingListener = listener;
+        AdInfo adInfo = new AdInfo();
+        adInfo.setIsPreload(true);
+        try {
+            mActivity = activity;
+            //设置广告位置信息
+            adInfo.setPosition(position);
+            //获取本地配置信息
+            readyInfo(adInfo);
+            if (CollectionUtils.isEmpty(adsInfoslist)) {
+                if (mAdPreloadingListener != null) {
+                    mAdPreloadingListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                }
+                return;
+            }
+            ConfigBean.AdListBean.AdsInfosBean mAdsInfosBean = adsInfoslist.remove(0);
+            if (mAdsInfosBean == null) {
+                if (mAdPreloadingListener != null) {
+                    mAdPreloadingListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                }
+                return;
+            }
+            againRequest(adInfo, mAdsInfosBean);
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (mAdPreloadingListener != null) {
+                mAdPreloadingListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+            }
+        }
     }
 
     @Override
@@ -233,7 +228,6 @@ public class NativeAdManger implements AdManager {
         mAdListener = listener;
         AdInfo adInfo = new AdInfo();
         try {
-            mPosition = position;
             mActivity = activity;
             //设置广告位置信息
             adInfo.setPosition(position);
@@ -266,7 +260,6 @@ public class NativeAdManger implements AdManager {
         mAdListener = listener;
         AdInfo adInfo = new AdInfo();
         try {
-            mPosition = position;
             mActivity = activity;
             //设置广告位置信息
             adInfo.setPosition(position);
@@ -295,11 +288,56 @@ public class NativeAdManger implements AdManager {
     }
 
     @Override
-    public void loadRewardVideoAd(Activity activity, String position, String userId, int orientation, AdListener listener) {
-        mAdListener = listener;
+    public void preloadingVideoAd(Activity activity, String position, AdPreloadingListener listener) {
+        mAdPreloadingListener = listener;
         AdInfo adInfo = new AdInfo();
+        adInfo.setIsPreload(true);
         try {
-            mPosition = position;
+            mActivity = activity;
+            //设置广告位置信息
+            adInfo.setPosition(position);
+            //获取本地配置信息
+            readyInfo(adInfo);
+            if (CollectionUtils.isEmpty(adsInfoslist)) {
+                if (mAdPreloadingListener != null) {
+                    mAdPreloadingListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                }
+                return;
+            }
+            ConfigBean.AdListBean.AdsInfosBean mAdsInfosBean = adsInfoslist.remove(0);
+            if (mAdsInfosBean == null) {
+                if (mAdPreloadingListener != null) {
+                    mAdPreloadingListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                }
+                return;
+            }
+            againRequest(adInfo, mAdsInfosBean);
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (mAdPreloadingListener != null) {
+                mAdPreloadingListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+            }
+        }
+    }
+
+    @Override
+    public void loadRewardVideoAd(Activity activity, String position, String userId, int orientation, AdListener listener) {
+        loadRewardVideoAd(activity, position, userId, orientation, "", 0, listener);
+    }
+
+    @Override
+    public void preloadingRewardVideoAd(Activity activity, String position, String userId, int orientation, AdPreloadingListener listener) {
+        preloadingRewardVideoAd(activity, position, userId, orientation, "", 0, listener);
+    }
+
+    @Override
+    public void loadRewardVideoAd(Activity activity, String position, String userId, int orientation, String rewardName, int rewardAmount, AdListener listener) {
+        AdInfo adInfo = new AdInfo();
+        adInfo.setUserId(userId);
+        adInfo.setRewardName(rewardName);
+        adInfo.setRewardAmount(rewardAmount);
+        mAdListener = listener;
+        try {
             mActivity = activity;
             //设置广告位置信息
             adInfo.setPosition(position);
@@ -323,6 +361,43 @@ public class NativeAdManger implements AdManager {
             e.printStackTrace();
             if (mAdListener != null) {
                 mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+            }
+        }
+    }
+
+    @Override
+    public void preloadingRewardVideoAd(Activity activity, String position, String userId, int orientation, String rewardName, int rewardAmount, AdPreloadingListener listener) {
+        mAdPreloadingListener = listener;
+        AdInfo adInfo = new AdInfo();
+        adInfo.setUserId(userId);
+        adInfo.setRewardName(rewardName);
+        adInfo.setRewardAmount(rewardAmount);
+        adInfo.setIsPreload(true);
+        adInfo.setDisk(true);
+        try {
+            mActivity = activity;
+            //设置广告位置信息
+            adInfo.setPosition(position);
+            //获取本地配置信息
+            readyInfo(adInfo);
+            if (CollectionUtils.isEmpty(adsInfoslist)) {
+                if (mAdPreloadingListener != null) {
+                    mAdPreloadingListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                }
+                return;
+            }
+            ConfigBean.AdListBean.AdsInfosBean mAdsInfosBean = adsInfoslist.remove(0);
+            if (mAdsInfosBean == null) {
+                if (mAdPreloadingListener != null) {
+                    mAdPreloadingListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                }
+                return;
+            }
+            againRequest(adInfo, mAdsInfosBean);
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (mAdPreloadingListener != null) {
+                mAdPreloadingListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
             }
         }
     }
@@ -332,7 +407,6 @@ public class NativeAdManger implements AdManager {
         mAdListener = listener;
         AdInfo adInfo = new AdInfo();
         try {
-            mPosition = position;
             mActivity = activity;
             //设置广告位置信息
             adInfo.setPosition(position);
@@ -365,7 +439,6 @@ public class NativeAdManger implements AdManager {
         mAdListener = listener;
         AdInfo adInfo = new AdInfo();
         try {
-            mPosition = position;
             mActivity = activity;
             //设置广告位置信息
             adInfo.setPosition(position);
@@ -395,6 +468,8 @@ public class NativeAdManger implements AdManager {
 
     /**
      * 轮询请求
+     * @param adInfo
+     * @param adsInfosBean
      */
     public void againRequest(AdInfo adInfo, ConfigBean.AdListBean.AdsInfosBean adsInfosBean) {
         if (adInfo == null) {
@@ -435,25 +510,41 @@ public class NativeAdManger implements AdManager {
     public void sdkRequest(AdInfo adInfo){
         AdRequestManager adRequestManager = new RequestManagerFactory().produce(adInfo);
         if (adRequestManager == null) {
-            if (mAdListener != null) {
-                mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+            if (adInfo.isPreload()) {
+                if (mAdPreloadingListener != null) {
+                    mAdPreloadingListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                }
+            } else {
+                if (mAdListener != null) {
+                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                }
             }
             return;
         }
-//        if (adRequestManager instanceof SdkRequestManager) {
-//            ((SdkRequestManager) adRequestManager).setAdListener(mAdListener);
-//        }
-//        //优量汇的开屏广告因为请求和回调展示同时进行，也不能预加载。所以直接createview
-//        if (Constants.AdType.YouLiangHui.equals(adInfo.getAdSource())) {
-//            String style = adInfo.getAdStyle();
-//            if (Constants.AdStyle.OPEN_ADS.equals(style)) {
-//                createAdView(mActivity, info);
-//                return;
-//            }
-//        }
+        AdInfo temAdinfo = CacheAd.getAd(adInfo.getPosition());
+        if (temAdinfo != null) {
+            if (adInfo.isPreload()) {
+                if (mAdPreloadingListener != null) {
+                    mAdPreloadingListener.adSuccess(temAdinfo);
+                }
+            } else {
+                CacheAd.removeAd(adInfo.getPosition());
+                createAdView(mActivity, temAdinfo);
+            }
+            return;
+        }
         adRequestManager.requestAd(mActivity, adInfo, new AdRequestListener() {
             @Override
             public void adSuccess(AdInfo info) {
+                if (adInfo.isPreload()) {
+//                    if (!adInfo.isDisk()) {
+//                    }
+                    CacheAd.setAd(info.getPosition(), adInfo);
+                    if (mAdPreloadingListener != null) {
+                        mAdPreloadingListener.adSuccess(info);
+                    }
+                    return;
+                }
                 createAdView(mActivity, info);
             }
 
@@ -779,6 +870,9 @@ public class NativeAdManger implements AdManager {
             }
         });
         ttRewardVideoAd.showRewardVideoAd(activity);
+        if (mAdListener != null) {
+            mAdListener.adSuccess(adInfo);
+        }
     }
 
     /**

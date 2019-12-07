@@ -8,10 +8,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.comm.jksdk.GeekAdSdk;
 import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.ad.listener.AdManager;
+import com.comm.jksdk.ad.listener.AdPreloadingListener;
 import com.comm.jksdk.ad.listener.VideoAdListener;
 import com.jk.adsdkdemo.utils.LogUtils;
 
@@ -25,7 +27,7 @@ public class FullScreenVideoActivity extends AppCompatActivity implements View.O
     private final String TAG = FullScreenVideoActivity.class.getSimpleName();
     private FrameLayout splashContainer;
     private EditText positionEdit;
-    private Button refreshBtn;
+    private Button refreshBtn, preloadingAd;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,8 +42,12 @@ public class FullScreenVideoActivity extends AppCompatActivity implements View.O
         refreshBtn = findViewById(R.id.video_refresh);
         positionEdit = findViewById(R.id.splash_position_edit);
         refreshBtn.setOnClickListener(this);
+
+        preloadingAd = findViewById(R.id.button_preloading_ad);
+        preloadingAd.setOnClickListener(this);
+
         positionEdit.setText("cp_ad_1");
-        loadSplashAd("cp_ad_1");
+//        loadSplashAd("cp_ad_1");
     }
 
     /**
@@ -111,12 +117,35 @@ public class FullScreenVideoActivity extends AppCompatActivity implements View.O
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.button_preloading_ad:
+                preloadingSplashAd(positionEdit.getText().toString().trim());
+                break;
             case R.id.video_refresh:
                 loadSplashAd(positionEdit.getText().toString().trim());
                 break;
             default:
                 break;
         }
+    }
+
+    /**
+     * 预加载
+     */
+    private void preloadingSplashAd(String position) {
+        GeekAdSdk.getAdsManger().preloadingVideoAd(this, position, new AdPreloadingListener() {
+            @Override
+            public void adSuccess(AdInfo info) {
+                LogUtils.d(TAG, "-----adSuccess-----");
+                Toast.makeText(getApplicationContext(), "预加载成功", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void adError(AdInfo info, int errorCode, String errorMsg) {
+                LogUtils.d(TAG, "-----adError-----" + errorMsg);
+                Toast.makeText(getApplicationContext(), "预加载失败", Toast.LENGTH_LONG).show();
+            }
+
+        });
     }
 
 }

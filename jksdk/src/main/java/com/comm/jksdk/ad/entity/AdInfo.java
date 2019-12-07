@@ -31,6 +31,21 @@ public class AdInfo extends BaseEntity{
      */
     private ViewGroup adView;
     /**
+     * 激励视频用的的用户id
+     */
+    private String userId;
+
+    /**
+     * 激励广告奖励名称
+     */
+    private String rewardName;
+
+    /**
+     * 激励广告奖励金额
+     */
+    private int rewardAmount;
+
+    /**
      * 优量汇图文广告
      */
     private NativeUnifiedADData nativeUnifiedADData;
@@ -98,7 +113,55 @@ public class AdInfo extends BaseEntity{
      * 位置信息
      */
     private String mPosition;
+    /**
+     * 是否是预加载
+     */
+    private boolean mIsPreload;
 
+    /**
+     * 是否支持磁盘缓存
+     */
+    private boolean isDisk;
+
+    public String getRewardName() {
+        return rewardName;
+    }
+
+    public void setRewardName(String rewardName) {
+        this.rewardName = rewardName;
+    }
+
+    public int getRewardAmount() {
+        return rewardAmount;
+    }
+
+    public void setRewardAmount(int rewardAmount) {
+        this.rewardAmount = rewardAmount;
+    }
+
+    public boolean isDisk() {
+        return isDisk;
+    }
+
+    public void setDisk(boolean disk) {
+        isDisk = disk;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public boolean isPreload() {
+        return mIsPreload;
+    }
+
+    public void setIsPreload(boolean mIsPreload) {
+        this.mIsPreload = mIsPreload;
+    }
 
     public NativeUnifiedADData getNativeUnifiedADData() {
         return nativeUnifiedADData;

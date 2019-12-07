@@ -19,4 +19,5 @@ import com.comm.jksdk.ad.entity.AdInfo;
 public interface AdRequestManager {
     void requestAd(Activity activity, AdInfo adInfo, AdRequestListener listener);
 
+    void cacheImg(String ...url);
 }

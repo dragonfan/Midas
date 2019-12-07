@@ -19,7 +19,7 @@ public interface AdPreloadingListener {
      * @param errorCode
      * @param errorMsg
      */
-    void adError(int errorCode, String errorMsg);
+    void adError(AdInfo info, int errorCode, String errorMsg);
 
 
 }

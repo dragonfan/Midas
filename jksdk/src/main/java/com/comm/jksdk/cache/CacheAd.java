@@ -1,6 +1,6 @@
 package com.comm.jksdk.cache;
 
-import com.bytedance.sdk.openadsdk.TTFeedAd;
+import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.utils.CollectionUtils;
 
 import java.util.Map;
@@ -18,13 +18,21 @@ import java.util.Map;
  * @Version: 1.0
  */
 public class CacheAd {
-    public static Map<String, TTFeedAd> adMap = CollectionUtils.createMap();
+    public static Map<String, AdInfo> adMap = CollectionUtils.createMap();
 
-    public static void setAd(String position, TTFeedAd ttFeedAd){
-        adMap.put(position, ttFeedAd);
+    public static void setAd(String position, AdInfo adInfo){
+        adMap.put(position, adInfo);
     }
 
-    public static TTFeedAd getAd(String position){
+    public static AdInfo getAd(String position){
         return adMap.get(position);
+    }
+
+    public static void removeAd(String position) {
+        adMap.remove(position);
+    }
+
+    public static void setAdByDisk(String position){
+
     }
 }
