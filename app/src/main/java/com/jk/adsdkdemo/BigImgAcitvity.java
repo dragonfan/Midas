@@ -53,7 +53,7 @@ public class BigImgAcitvity extends AppCompatActivity implements View.OnClickLis
         preloadBt = findViewById(R.id.button_preloading_ad);
         preloadBt.setOnClickListener(this);
 
-        String[] ctype = new String[]{"success_page_ad_1", "success_page_ad_2", "success_page_ad_3", "newlist_1_1", "homepage_ad_1","homepage_ad_2", "lock_screen_advertising"};
+        String[] ctype = new String[]{"success_page_ad_1", "success_page_ad_2", "success_page_ad_3", "newlist_1_1", "homepage_ad_1","homepage_ad_2", "lock_screen_advertising", "external_advertising_ad_1"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ctype);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
