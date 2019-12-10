@@ -63,7 +63,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".OldBigImgActivity" />
+        <activity android:name=".CsjFeedTemplateActivity" />
         <activity android:name=".FakeVideoBigImg1Acitvity" />
         <activity android:name=".TemplateInsertScreenAcitvity" />
         <activity android:name=".PreloadingAcitvity" />

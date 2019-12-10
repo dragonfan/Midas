@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private Button button_configinfo, buttonPreloading, buttonOldStyle, buttonSplashAd, buttonFakeVideo,
-            btnFullScreenVideo, btnRewardVideo, btnNewBigImgFour, btnInsertScreenAd, btnTemplateInsertScreenAd, bigImgBt;
+            btnFullScreenVideo, btnRewardVideo, btnNewBigImgFour, btnInsertScreenAd, btnTemplateInsertScreenAd, bigImgBt, csjFeedTemplateBt;
 
     //    private EditText et_ad_pos_id;
 //    public static TextView tvResult;
@@ -88,6 +88,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         bigImgBt = findViewById(R.id.big_img_bt);
         bigImgBt.setOnClickListener(this);
+
+        csjFeedTemplateBt = findViewById(R.id.button_csj_feed_template_ad);
+        csjFeedTemplateBt.setOnClickListener(this);
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -148,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                startActivity(new Intent(this, PreloadingAcitvity.class));
 //                break;
 //            case R.id.button_old_style:
-//                startActivity(new Intent(this, OldBigImgActivity.class));
+//                startActivity(new Intent(this, CsjFeedTemplateActivity.class));
 //                break;
 //            case R.id.new_big_img:
 //                startActivity(new Intent(this, NewBigImgActivity.class));
@@ -171,6 +174,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //            case R.id.button_template_insert_screen_ad:
 //                startActivity(new Intent(this, TemplateInsertScreenAcitvity.class));
 //                break;
+            case R.id.button_csj_feed_template_ad:
+                startActivity(new Intent(this, CsjFeedTemplateActivity.class));
+                break;
             default:
                 break;
 

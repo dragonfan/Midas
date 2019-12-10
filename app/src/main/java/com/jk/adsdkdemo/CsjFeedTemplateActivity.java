@@ -11,7 +11,7 @@ import android.widget.Button;
   * @ProjectName:    ${PROJECT_NAME}
   * @Package:        ${PACKAGE_NAME}
   * @ClassName:      ${NAME}
-  * @Description:     老的大图广告三样式
+  * @Description:     穿山甲信息流模板广告
   * @Author:         fanhailong
   * @CreateDate:     ${DATE} ${TIME}
   * @UpdateUser:     更新者：
@@ -19,7 +19,7 @@ import android.widget.Button;
   * @UpdateRemark:   更新说明：
   * @Version:        1.0
  */
-public class OldBigImgActivity extends AppCompatActivity implements View.OnClickListener {
+public class CsjFeedTemplateActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button buttonBigImg, buttonBigBt, buttonBigImgCenter;
     @Override
@@ -40,13 +40,13 @@ public class OldBigImgActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_big_img:
-                startActivity(new Intent(this, BigImgNormalAcitvity.class));
+//                startActivity(new Intent(this, BigImgNormalAcitvity.class));
                 break;
             case R.id.button_big_bt_img:
-                startActivity(new Intent(this, BigImgNotDownloadAcitvity.class));
+//                startActivity(new Intent(this, BigImgNotDownloadAcitvity.class));
                 break;
             case R.id.button_big_img_center:
-                startActivity(new Intent(this, BigImgCenterActivity.class));
+//                startActivity(new Intent(this, BigImgCenterActivity.class));
                 break;
 
         }
