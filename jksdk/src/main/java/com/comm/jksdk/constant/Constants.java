@@ -80,6 +80,10 @@ public class Constants {
          * 外部弹窗大图广告_02
          */
         String EXTERNAL_DIALOG_BIG_IMAGE_02 = "EXTERNAL_DIALOG_BIG_IMAGE_02";
+        /**
+         * 信息流模板广告
+         */
+        String FEED_TEMPLATE = "FEED_TEMPLATE";
     }
 
 

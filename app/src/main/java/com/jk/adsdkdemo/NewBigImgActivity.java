@@ -40,7 +40,7 @@ public class NewBigImgActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.new_big_img1:
-                startActivity(new Intent(this, NewBigImg1Acitvity.class));
+//                startActivity(new Intent(this, FeedTemplateAcitvity.class));
                 break;
             case R.id.new_big_img2:
                 startActivity(new Intent(this, NewBigImg2Acitvity.class));

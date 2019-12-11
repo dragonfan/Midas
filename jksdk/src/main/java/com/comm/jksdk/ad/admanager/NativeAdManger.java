@@ -2,8 +2,11 @@ package com.comm.jksdk.ad.admanager;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
+import com.bytedance.sdk.openadsdk.TTAdConstant;
 import com.bytedance.sdk.openadsdk.TTAppDownloadListener;
 import com.bytedance.sdk.openadsdk.TTFullScreenVideoAd;
 import com.bytedance.sdk.openadsdk.TTNativeAd;
@@ -140,6 +143,38 @@ public class NativeAdManger implements AdManager {
         }
     };
 
+
+    @Override
+    public void loadNativeTemplateAd(Activity activity, String position, AdListener listener) {
+        mAdListener = listener;
+        AdInfo adInfo = new AdInfo();
+        try {
+            mActivity = activity;
+            //设置广告位置信息
+            adInfo.setPosition(position);
+            //获取本地配置信息
+            readyInfo(adInfo);
+            if (CollectionUtils.isEmpty(adsInfoslist)) {
+                if (mAdListener != null) {
+                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                }
+                return;
+            }
+            ConfigBean.AdListBean.AdsInfosBean mAdsInfosBean = adsInfoslist.remove(0);
+            if (mAdsInfosBean == null) {
+                if (mAdListener != null) {
+                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                }
+                return;
+            }
+            againRequest(adInfo, mAdsInfosBean);
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (mAdListener != null) {
+                mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+            }
+        }
+    }
 
     @Override
     public void loadAd(Activity activity, String position, AdListener listener) {
@@ -604,6 +639,11 @@ public class NativeAdManger implements AdManager {
             return;
         }
         String style = adInfo.getAdStyle();
+        //信息流模板广告
+        if (Constants.AdStyle.FEED_TEMPLATE.equals(style)) {
+            showCsjFeedTemplate(activity, adInfo);
+            return;
+        }
         //全屏视频
         if (Constants.AdStyle.FULL_SCREEN_VIDEO.equals(style)) {
             showCsjFullVideo(activity, adInfo);
@@ -662,6 +702,91 @@ public class NativeAdManger implements AdManager {
         if (mAdListener != null) {
             mAdListener.adSuccess(adInfo);
         }
+    }
+
+    /**
+     * 显示穿山甲信息模板广告
+     * @param activity
+     * @param info
+     */
+    private void showCsjFeedTemplate(Activity activity, AdInfo info) {
+        TTNativeExpressAd ttNativeExpressAd = info.getTtNativeExpressAd();
+        ttNativeExpressAd.setExpressInteractionListener(new TTNativeExpressAd.ExpressAdInteractionListener() {
+            @Override
+            public void onAdClicked(View view, int type) {
+                if (mAdListener != null) {
+                    mAdListener.adClicked(info);
+                }
+            }
+
+            @Override
+            public void onAdShow(View view, int type) {
+                if (mAdListener != null) {
+                    mAdListener.adExposed(info);
+                }
+            }
+
+            @Override
+            public void onRenderFail(View view, String msg, int code) {
+//                Log.e("ExpressView","render fail:"+(System.currentTimeMillis() - startTime));
+                if (mAdListener != null) {
+                    mAdListener.adError(info, code, msg);
+                }
+            }
+
+            @Override
+            public void onRenderSuccess(View view, float width, float height) {
+//                Log.e("ExpressView","render suc:"+(System.currentTimeMillis() - startTime));
+                //返回view的宽高 单位 dp
+//                TToast.show(mContext, "渲染成功");
+//                mExpressContainer.removeAllViews();
+//                mExpressContainer.addView(view);
+                info.setAdView(view);
+                if (mAdListener != null) {
+                    mAdListener.adSuccess(info);
+                }
+            }
+        });
+        //dislike设置
+//        bindDislike(ttNativeExpressAd, false);
+        if (ttNativeExpressAd.getInteractionType() != TTAdConstant.INTERACTION_TYPE_DOWNLOAD){
+            return;
+        }
+        ttNativeExpressAd.setDownloadListener(new TTAppDownloadListener() {
+            @Override
+            public void onIdle() {
+//                TToast.show(NativeExpressActivity.this, "点击开始下载", Toast.LENGTH_LONG);
+            }
+
+            @Override
+            public void onDownloadActive(long totalBytes, long currBytes, String fileName, String appName) {
+//                if (!mHasShowDownloadActive) {
+//                    mHasShowDownloadActive = true;
+//                    TToast.show(NativeExpressActivity.this, "下载中，点击暂停", Toast.LENGTH_LONG);
+//                }
+            }
+
+            @Override
+            public void onDownloadPaused(long totalBytes, long currBytes, String fileName, String appName) {
+//                TToast.show(NativeExpressActivity.this, "下载暂停，点击继续", Toast.LENGTH_LONG);
+            }
+
+            @Override
+            public void onDownloadFailed(long totalBytes, long currBytes, String fileName, String appName) {
+//                TToast.show(NativeExpressActivity.this, "下载失败，点击重新下载", Toast.LENGTH_LONG);
+            }
+
+            @Override
+            public void onInstalled(String fileName, String appName) {
+//                TToast.show(NativeExpressActivity.this, "安装完成，点击图片打开", Toast.LENGTH_LONG);
+            }
+
+            @Override
+            public void onDownloadFinished(long totalBytes, String fileName, String appName) {
+//                TToast.show(NativeExpressActivity.this, "点击安装", Toast.LENGTH_LONG);
+            }
+        });
+        ttNativeExpressAd.render();
     }
 
     /**

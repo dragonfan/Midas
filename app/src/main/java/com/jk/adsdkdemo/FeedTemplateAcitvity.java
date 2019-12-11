@@ -1,14 +1,19 @@
 package com.jk.adsdkdemo;
 
+import android.content.Context;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.bytedance.sdk.openadsdk.TTAdDislike;
+import com.bytedance.sdk.openadsdk.TTAdNative;
+import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
 import com.comm.jksdk.GeekAdSdk;
 import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.ad.listener.AdListener;
@@ -28,27 +33,46 @@ import com.jk.adsdkdemo.utils.LogUtils;
   * @UpdateRemark:   更新说明：
   * @Version:        1.0
  */
-public class NewBigImg1Acitvity extends AppCompatActivity implements View.OnClickListener {
+public class FeedTemplateAcitvity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button requestBt;
-    private FrameLayout container;
-    private EditText positionEt;
+    private TTAdNative mTTAdNative;
+    private FrameLayout mExpressContainer;
+    private Context mContext;
+    private TTAdDislike mTTAdDislike;
+    private Button mButtonLoadAd;
+    private Button mButtonLoadAdVideo;
+    private EditText mEtWidth;
+    private EditText mEtHeight;
+    private TTNativeExpressAd mTTAd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_big_img_new1);
-        container = findViewById(R.id.container);
-        requestBt = findViewById(R.id.button_request_ad);
-        requestBt.setOnClickListener(this);
-        positionEt = findViewById(R.id.et_position_id);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+
+        setContentView(R.layout.activity_feed_template);
+        mContext = this.getApplicationContext();
+        mExpressContainer = (FrameLayout) findViewById(R.id.express_container);
+        mButtonLoadAd = (Button) findViewById(R.id.btn_express_load);
+        mButtonLoadAdVideo = (Button) findViewById(R.id.btn_express_load_video);
+        mEtHeight = (EditText) findViewById(R.id.express_height);
+        mEtWidth = (EditText) findViewById(R.id.express_width);
+        mButtonLoadAd.setOnClickListener(this);
+        mButtonLoadAdVideo.setOnClickListener(this);
+//        //step2:创建TTAdNative对象，createAdNative(Context context) banner广告context需要传入Activity对象
+//        mTTAdNative = TTAdManagerHolder.get().createAdNative(this);
+//        //step3:(可选，强烈建议在合适的时机调用):申请部分权限，如read_phone_state,防止获取不了imei时候，下载类广告没有填充的问题。
+//        TTAdManagerHolder.get().requestPermissionIfNecessary(this);
     }
 
     View adView;
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.button_request_ad:
-                String position = positionEt.getText().toString().trim();
+            case R.id.btn_express_load:
+//                String position = positionEt.getText().toString().trim();
+                String position = "";
                 if (TextUtils.isEmpty(position)) {
                     Toast.makeText(getApplicationContext(), "accept->输入的位置不能为空", Toast.LENGTH_LONG).show();
                     return;
@@ -58,8 +82,8 @@ public class NewBigImg1Acitvity extends AppCompatActivity implements View.OnClic
                     public void adSuccess(AdInfo info) {
                         adView = info.getAdView();
                         if (adView != null) {
-                            container.removeAllViews();
-                            container.addView(adView);
+                            mExpressContainer.removeAllViews();
+                            mExpressContainer.addView(adView);
                         }
                     }
 

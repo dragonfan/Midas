@@ -175,7 +175,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                startActivity(new Intent(this, TemplateInsertScreenAcitvity.class));
 //                break;
             case R.id.button_csj_feed_template_ad:
-                startActivity(new Intent(this, CsjFeedTemplateActivity.class));
+//                startActivity(new Intent(this, CsjFeedTemplateActivity.class));
+                startActivity(new Intent(this, FeedTemplateAcitvity.class));
                 break;
             default:
                 break;
