@@ -18,6 +18,7 @@ public class MainApp extends Application {
       mContext = getApplicationContext();
 
         super.onCreate();
+        //test
         // 需要放在接口请求之前
 //        GeekAdSdk.init(this, "88", "5036430", "jinritoutiao",   false);
 
