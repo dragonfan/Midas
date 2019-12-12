@@ -32,6 +32,10 @@ public class AdInfo extends BaseEntity{
      */
     private View adView;
     /**
+     * 模板广告的宽
+     */
+    private float width;
+    /**
      * 激励视频用的的用户id
      */
     private String userId;
@@ -123,6 +127,14 @@ public class AdInfo extends BaseEntity{
      * 是否支持磁盘缓存
      */
     private boolean isDisk;
+
+    public float getWidth() {
+        return width;
+    }
+
+    public void setWidth(float width) {
+        this.width = width;
+    }
 
     public String getRewardName() {
         return rewardName;

@@ -72,12 +72,16 @@ public class FeedTemplateAcitvity extends AppCompatActivity implements View.OnCl
         switch (view.getId()) {
             case R.id.btn_express_load:
 //                String position = positionEt.getText().toString().trim();
-                String position = "";
+                String position = "FEED_01";
                 if (TextUtils.isEmpty(position)) {
                     Toast.makeText(getApplicationContext(), "accept->输入的位置不能为空", Toast.LENGTH_LONG).show();
                     return;
                 }
-                GeekAdSdk.getAdsManger().loadAd(this,position, new AdListener() {
+                String width = mEtWidth.getText().toString().trim();
+                if (TextUtils.isEmpty(width)) {
+                    width = "350";
+                }
+                GeekAdSdk.getAdsManger().loadNativeTemplateAd(this,position, Float.valueOf(width), new AdListener() {
                     @Override
                     public void adSuccess(AdInfo info) {
                         adView = info.getAdView();

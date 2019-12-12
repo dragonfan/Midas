@@ -15,6 +15,7 @@
         android:hint="输入期望广告view的宽"/>
     <EditText
         android:id="@+id/express_height"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="10dp"
@@ -29,10 +30,11 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/express_height"
-        android:text="加载图文广告"
+        android:text="加载广告"
         android:textSize="14sp" />
     <Button
         android:id="@+id/btn_express_load_video"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"

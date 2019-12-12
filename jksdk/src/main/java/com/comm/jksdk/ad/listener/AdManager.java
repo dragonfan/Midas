@@ -23,7 +23,7 @@ public interface AdManager {
      * @param position
      * @param listener
      */
-    void loadNativeTemplateAd(Activity activity, String position, AdListener listener);
+    void loadNativeTemplateAd(Activity activity, String position,float width, AdListener listener);
 
     /**
      * 加载图文类广告

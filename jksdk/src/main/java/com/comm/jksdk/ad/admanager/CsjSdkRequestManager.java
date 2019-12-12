@@ -60,7 +60,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
             getCustomInsertScreenAd(adInfo, listener);
         } else if(Constants.AdStyle.FEED_TEMPLATE.equals(style)) {
             getFeedTemplate(activity, adInfo, listener);
-        }else {
+        } else {
             if (listener != null) {
                 listener.adError(adInfo, 2, "暂不支持该样式");
             }
@@ -78,7 +78,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                 .setCodeId(info.getAdId()) //广告位id
                 .setSupportDeepLink(true)
                 .setAdCount(1) //请求广告数量为1到3条
-                .setExpressViewAcceptedSize(0,0) //期望模板广告view的size,单位dp
+                .setExpressViewAcceptedSize(info.getWidth(),0) //期望模板广告view的size,单位dp
                 .setImageAcceptedSize(640,320 )//这个参数设置即可，不影响模板广告的size
                 .build();
         //step5:请求广告，对请求回调的广告作渲染处理
