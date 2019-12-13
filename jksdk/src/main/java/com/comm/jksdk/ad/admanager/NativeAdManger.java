@@ -485,6 +485,9 @@ public class NativeAdManger implements AdManager {
     public void loadCustomInsertScreenAd(Activity activity, String position, int showTimeSeconds, AdListener listener, String... pos) {
         mAdListener = listener;
         AdInfo adInfo = new AdInfo();
+        if (!CollectionUtils.isEmpty(pos)) {
+            mProgress = pos[0];
+        }
         try {
             mActivity = activity;
             //设置广告位置信息
