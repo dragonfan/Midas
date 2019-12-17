@@ -1,14 +1,12 @@
 package com.comm.jksdk.config;
 
 import android.content.Context;
-import android.text.TextUtils;
 
 import com.bytedance.sdk.openadsdk.TTAdConfig;
 import com.bytedance.sdk.openadsdk.TTAdConstant;
 import com.bytedance.sdk.openadsdk.TTAdManager;
 import com.bytedance.sdk.openadsdk.TTAdSdk;
 import com.comm.jksdk.BuildConfig;
-import com.comm.jksdk.GeekAdSdk;
 
 /**
  * 可以用一个单例来保存TTAdManager实例，在需要初始化sdk的时候调用
@@ -29,7 +27,7 @@ public class TTAdManagerHolder {
 //        if (!sInit && !TextUtils.isEmpty(appId) && !appId.equals(mAppId)) {
 //            sInit = false;
 //            mAppId = appId;
-//            init(GeekAdSdk.getContext(), mAppId);
+//            init(MidasAdSdk.getContext(), mAppId);
 //        }
 //        if (!sInit) {
 //            throw new RuntimeException("TTAdSdk is not init, please check.");

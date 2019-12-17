@@ -2,20 +2,14 @@ package com.comm.jksdk.http.interceptor;
 
 import android.text.TextUtils;
 
-import com.comm.jksdk.GeekAdSdk;
-import com.comm.jksdk.constant.Constants;
+import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.http.Api;
-import com.comm.jksdk.http.Constant;
 import com.comm.jksdk.http.ErrorCode;
 import com.comm.jksdk.http.OkHttpWrapper;
 import com.comm.jksdk.http.base.BaseResponse;
 import com.comm.jksdk.http.utils.ApiManage;
-import com.comm.jksdk.http.utils.AppEnvironment;
-import com.comm.jksdk.http.utils.AppInfoUtils;
-import com.comm.jksdk.http.utils.ChannelUtil;
 import com.comm.jksdk.http.utils.LogUtils;
 import com.comm.jksdk.http.utils.NetworkUtil;
-import com.comm.jksdk.http.utils.UaUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -78,7 +72,7 @@ public class ApiEventInterceptor implements Interceptor {
     if (request == null) {
       return null;
     }
-    if (!NetworkUtil.isNetworkActive(GeekAdSdk.getContext())) {
+    if (!NetworkUtil.isNetworkActive(MidasAdSdk.getContext())) {
       throw new IOException();
     }
     Response response = chain.proceed(request);

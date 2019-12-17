@@ -1,7 +1,7 @@
 package com.comm.jksdk.ad.view.chjview;
 
 /**
- * @ProjectName: GeekAdSdk
+ * @ProjectName: MidasAdSdk
  * @Package: com.comm.jksdk.ad.view.chjview
  * @ClassName: CsjFeedTemplateView
  * @Description: java类作用描述

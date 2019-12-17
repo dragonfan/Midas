@@ -3,8 +3,7 @@ package com.comm.jksdk.http.utils;
 import android.content.pm.ApplicationInfo;
 import android.text.TextUtils;
 
-import com.comm.jksdk.GeekAdSdk;
-import com.comm.jksdk.constant.Constants;
+import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.http.Constant;
 
 
@@ -45,10 +44,10 @@ public class ChannelUtil {
      */
     private static String getChannelFromApk(String channelKey) {
         //从apk包中获取
-        if(GeekAdSdk.getContext()==null){
+        if(MidasAdSdk.getContext()==null){
             return "";
         }
-        ApplicationInfo appinfo = GeekAdSdk.getContext().getApplicationInfo();
+        ApplicationInfo appinfo = MidasAdSdk.getContext().getApplicationInfo();
         String sourceDir = appinfo.sourceDir;
         //默认放在meta-inf/里， 所以需要再拼接一下
         String key = "META-INF/" + channelKey;

@@ -5,8 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
-import com.comm.jksdk.GeekAdSdk;
-import com.comm.jksdk.constant.Constants;
+import com.comm.jksdk.MidasAdSdk;
 import com.google.gson.Gson;
 
 
@@ -27,13 +26,13 @@ public class AppInfoUtils {
      * @return
      */
     public static String getVersionName() {
-        if(GeekAdSdk.getContext()==null){
+        if(MidasAdSdk.getContext()==null){
             return "";
         }
-        String packageName = GeekAdSdk.getContext().getPackageName();
+        String packageName = MidasAdSdk.getContext().getPackageName();
         String versionName = null;
         try {
-            versionName = GeekAdSdk.getContext().getPackageManager().getPackageInfo(packageName, 0).versionName;
+            versionName = MidasAdSdk.getContext().getPackageManager().getPackageInfo(packageName, 0).versionName;
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -46,12 +45,12 @@ public class AppInfoUtils {
      */
     public static int getVersionCode() {
         int versionCode = 0;
-        if(GeekAdSdk.getContext()==null){
+        if(MidasAdSdk.getContext()==null){
             return 0;
         }
         try {
-            versionCode = GeekAdSdk.getContext().getPackageManager()
-                    .getPackageInfo(GeekAdSdk.getContext().getPackageName(),
+            versionCode = MidasAdSdk.getContext().getPackageManager()
+                    .getPackageInfo(MidasAdSdk.getContext().getPackageName(),
                             0).versionCode;
         } catch (Exception e) {
             versionCode = 0;

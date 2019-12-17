@@ -1,7 +1,7 @@
 package com.comm.jksdk.ad.listener;
 
 /**
- * @ProjectName: GeekAdSdk
+ * @ProjectName: MidasAdSdk
  * @Package: com.comm.jksdk.ad.listener
  * @ClassName: Provider
  * @Description: 广告工厂接口

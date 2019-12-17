@@ -9,10 +9,9 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.comm.jksdk.GeekAdSdk;
+import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.ad.listener.AdListener;
-import com.comm.jksdk.ad.listener.AdManager;
 import com.jk.adsdkdemo.utils.LogUtils;
 
 /**
@@ -53,7 +52,7 @@ public class NewBigImg2Acitvity extends AppCompatActivity implements View.OnClic
                     Toast.makeText(getApplicationContext(), "accept->输入的位置不能为空", Toast.LENGTH_LONG).show();
                     return;
                 }
-                GeekAdSdk.getAdsManger().loadAd(this,position, new AdListener() {
+                MidasAdSdk.getAdsManger().loadAd(this,position, new AdListener() {
                     @Override
                     public void adSuccess(AdInfo info) {
                         adView = info.getAdView();

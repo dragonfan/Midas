@@ -5,7 +5,7 @@ import android.app.Activity;
 import com.comm.jksdk.ad.entity.AdInfo;
 
 /**
- * @ProjectName: GeekAdSdk
+ * @ProjectName: MidasAdSdk
  * @Package: com.comm.jksdk.ad.listener
  * @ClassName: AdRequestManager
  * @Description: 广告请求逻辑接口
@@ -17,7 +17,7 @@ import com.comm.jksdk.ad.entity.AdInfo;
  * @Version: 1.0
  */
 public interface AdRequestManager {
-    void requestAd(Activity activity, AdInfo adInfo, AdRequestListener listener);
+    void requestAd(Activity activity, AdInfo adInfo, AdRequestListener listener, AdListener adListener);
 
     void cacheImg(String ...url);
 }

@@ -10,7 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.comm.jksdk.GeekAdSdk;
+import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.ad.listener.AdManager;
 import com.comm.jksdk.ad.listener.AdPreloadingListener;
@@ -43,7 +43,7 @@ public class RewardVideoActivity extends AppCompatActivity implements View.OnCli
         refreshBtn = findViewById(R.id.video_refresh);
         positionEdit = findViewById(R.id.splash_position_edit);
         refreshBtn.setOnClickListener(this);
-        adManager = GeekAdSdk.getAdsManger();
+        adManager = MidasAdSdk.getAdsManger();
         positionEdit.setText("click_virus_killing_ad");
 
         preloadingAd = findViewById(R.id.button_preloading_ad);
@@ -57,7 +57,7 @@ public class RewardVideoActivity extends AppCompatActivity implements View.OnCli
     private void loadSplashAd(String position) {
         // cp_ad_1
         splashContainer.removeAllViews();
-        GeekAdSdk.getAdsManger().loadRewardVideoAd(this, position, "user123", 1, new VideoAdListener() {
+        MidasAdSdk.getAdsManger().loadRewardVideoAd(this, position, "user123", 1, new VideoAdListener() {
 
             @Override
             public void onVideoResume(AdInfo info) {
@@ -112,7 +112,7 @@ public class RewardVideoActivity extends AppCompatActivity implements View.OnCli
      */
     private void preloadingSplashAd(String position) {
         splashContainer.removeAllViews();
-        GeekAdSdk.getAdsManger().preloadingRewardVideoAd(this, position, "user123", 1, new AdPreloadingListener() {
+        MidasAdSdk.getAdsManger().preloadingRewardVideoAd(this, position, "user123", 1, new AdPreloadingListener() {
             @Override
             public void adSuccess(AdInfo info) {
                 LogUtils.d(TAG, "-----adSuccess-----");

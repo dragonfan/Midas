@@ -5,9 +5,7 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.bytedance.sdk.openadsdk.TTAdConstant;
 import com.bytedance.sdk.openadsdk.TTAppDownloadListener;
@@ -15,14 +13,16 @@ import com.bytedance.sdk.openadsdk.TTFullScreenVideoAd;
 import com.bytedance.sdk.openadsdk.TTNativeAd;
 import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
 import com.bytedance.sdk.openadsdk.TTRewardVideoAd;
-import com.comm.jksdk.GeekAdSdk;
+import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.ad.entity.AdInfo;
+import com.comm.jksdk.ad.entity.MidasSplashAd;
 import com.comm.jksdk.ad.factory.RequestManagerFactory;
 import com.comm.jksdk.ad.listener.AdListener;
 import com.comm.jksdk.ad.listener.AdManager;
 import com.comm.jksdk.ad.listener.AdPreloadingListener;
 import com.comm.jksdk.ad.listener.AdRequestListener;
 import com.comm.jksdk.ad.listener.AdRequestManager;
+import com.comm.jksdk.ad.listener.AdSplashListener;
 import com.comm.jksdk.ad.listener.FirstAdListener;
 import com.comm.jksdk.ad.listener.VideoAdListener;
 import com.comm.jksdk.ad.view.chjview.CHJAdView;
@@ -76,12 +76,12 @@ import java.util.List;
  * @date: 2019/9/7 10:22
  * @description: todo ...
  **/
-public class NativeAdManger implements AdManager {
-    protected final String TAG = "GeekAdSdk-->";
+public class MidasAdManger implements AdManager {
+    protected final String TAG = "MidasAdSdk-->";
 
     private List<ConfigBean.AdListBean.AdsInfosBean> adsInfoslist = new ArrayList();
 
-    public NativeAdManger() {
+    public MidasAdManger() {
     }
 
     /**
@@ -114,7 +114,6 @@ public class NativeAdManger implements AdManager {
      * 插屏的百分比
      */
     private String mProgress;
-
 
 
     private FirstAdListener mFirstAdListener = new FirstAdListener() {
@@ -152,6 +151,41 @@ public class NativeAdManger implements AdManager {
         }
     };
 
+
+    @Override
+    public void loadMidasSplashAd(Activity activity, String position, AdSplashListener listener) {
+        mAdListener = listener;
+        AdInfo adInfo = new AdInfo();
+        adInfo.setAdType(Constants.AdType.SPLASH_TYPE);
+        MidasSplashAd midasSplashAd = new MidasSplashAd();
+        adInfo.setMidasSplashAd(midasSplashAd);
+        try {
+            mActivity = activity;
+            //设置广告位置信息
+            adInfo.setPosition(position);
+            //获取本地配置信息
+            readyInfo(adInfo);
+            if (CollectionUtils.isEmpty(adsInfoslist)) {
+                if (mAdListener != null) {
+                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                }
+                return;
+            }
+            ConfigBean.AdListBean.AdsInfosBean mAdsInfosBean = adsInfoslist.remove(0);
+            if (mAdsInfosBean == null) {
+                if (mAdListener != null) {
+                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                }
+                return;
+            }
+            againRequest(adInfo, mAdsInfosBean);
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (mAdListener != null) {
+                mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+            }
+        }
+    }
 
     @Override
     public void loadNativeTemplateAd(Activity activity, String position, float width, AdListener listener) {
@@ -220,11 +254,12 @@ public class NativeAdManger implements AdManager {
 
     /**
      * 准备数据
+     *
      * @param adInfo
      */
-    public void readyInfo(AdInfo adInfo){
+    public void readyInfo(AdInfo adInfo) {
         //获取本地配置信息
-        ConfigBean.AdListBean mConfigInfoBean = AdsConfig.getInstance(GeekAdSdk.getContext()).getConfig(adInfo.getPosition());
+        ConfigBean.AdListBean mConfigInfoBean = AdsConfig.getInstance(MidasAdSdk.getContext()).getConfig(adInfo.getPosition());
         if (mConfigInfoBean == null) {
             if (mAdListener != null) {
                 mAdListener.adError(adInfo, CodeFactory.LOCAL_INFO_EMPTY, CodeFactory.getError(CodeFactory.LOCAL_INFO_EMPTY));
@@ -518,6 +553,7 @@ public class NativeAdManger implements AdManager {
 
     /**
      * 轮询请求
+     *
      * @param adInfo
      * @param adsInfosBean
      */
@@ -526,8 +562,10 @@ public class NativeAdManger implements AdManager {
             adInfo = new AdInfo();
         }
         //某些特有的数据清空，避免污染下一次请求数据
-        adInfo.setAdTitle("");
-        adInfo.setAdClickType(0);
+//        adInfo.setAdTitle("");
+//        adInfo.setAdClickType(0);
+        adInfo.clear();
+        adInfo.getMidasSplashAd().clear();
 
         //广告源
         adInfo.setAdSource(adsInfosBean.getAdUnion());
@@ -547,7 +585,7 @@ public class NativeAdManger implements AdManager {
     /**
      * api 请求
      */
-    public void apiRequest(AdInfo adInfo){
+    public void apiRequest(AdInfo adInfo) {
         // TODO: 2019/12/3
         if (mAdListener != null) {
             mAdListener.adError(adInfo, 2, "暂时不支持api广告");
@@ -557,7 +595,7 @@ public class NativeAdManger implements AdManager {
     /**
      * sdk 请求
      */
-    public void sdkRequest(AdInfo adInfo){
+    public void sdkRequest(AdInfo adInfo) {
         AdRequestManager adRequestManager = new RequestManagerFactory().produce(adInfo);
         if (adRequestManager == null) {
             if (adInfo.isPreload()) {
@@ -587,14 +625,18 @@ public class NativeAdManger implements AdManager {
             @Override
             public void adSuccess(AdInfo info) {
                 if (adInfo.isPreload()) {
-//                    if (!adInfo.isDisk()) {
-//                    }
                     CacheAd.setAd(info.getPosition(), adInfo);
                     if (mAdPreloadingListener != null) {
                         mAdPreloadingListener.adSuccess(info);
                     }
                     return;
                 }
+//                if (Constants.AdType.SPLASH_TYPE.equals(adInfo.getAdType())) {
+//                    if (mAdListener != null) {
+//                        mAdListener.adSuccess(adInfo);
+//                    }
+//                    return;
+//                }
                 createAdView(mActivity, info);
             }
 
@@ -604,7 +646,7 @@ public class NativeAdManger implements AdManager {
                     mFirstAdListener.firstAdError(info, errorCode, errorMsg);
                 }
             }
-        });
+        }, mAdListener);
     }
 
     /**
@@ -612,9 +654,9 @@ public class NativeAdManger implements AdManager {
      */
     private void createAdView(Activity activity, AdInfo adInfo) {
         String adSource = adInfo.getAdSource();
-        if (Constants.AdType.ChuanShanJia.equals(adSource)) {
+        if (Constants.AdSourceType.ChuanShanJia.equals(adSource)) {
             createCsjAdView(activity, adInfo);
-//            CommAdView mAdView = new CHJAdView(GeekAdSdk.getContext(), activity, adInfo.getAdStyle(), adInfo.getAdAppid(), adInfo.getAdId());
+//            CommAdView mAdView = new CHJAdView(MidasAdSdk.getContext(), activity, adInfo.getAdStyle(), adInfo.getAdAppid(), adInfo.getAdId());
 //            ((CHJAdView) mAdView).setOrientation(orientation);
 //            if (!TextUtils.isEmpty(userId)) {
 //                ((CHJAdView) mAdView).setUserId(userId);
@@ -622,8 +664,8 @@ public class NativeAdManger implements AdManager {
 //            ((CHJAdView) mAdView).setFullScreen(isFullScreen);
 //            ((CHJAdView) mAdView).setShowTimeSeconds(showTimeSeconds);
 //            ((CHJAdView) mAdView).setmProgress(mProgress);
-        } else if (Constants.AdType.YouLiangHui.equals(adSource)) {
-//            AbsAdView mAdView = new YlhAdView(GeekAdSdk.getContext(), activity, adStyle, appId, mAdId);
+        } else if (Constants.AdSourceType.YouLiangHui.equals(adSource)) {
+//            AbsAdView mAdView = new YlhAdView(MidasAdSdk.getContext(), activity, adStyle, appId, mAdId);
             createYlhAdView(activity, adInfo);
         } else {
             // 暂不处理
@@ -635,10 +677,11 @@ public class NativeAdManger implements AdManager {
 
     /**
      * 创建穿山甲view
+     *
      * @param activity
      * @param adInfo
      */
-    private void createCsjAdView(Activity activity, AdInfo adInfo){
+    private void createCsjAdView(Activity activity, AdInfo adInfo) {
         if (activity == null) {
             if (mAdListener != null) {
                 mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
@@ -719,6 +762,7 @@ public class NativeAdManger implements AdManager {
 
     /**
      * 显示穿山甲信息模板广告
+     *
      * @param activity
      * @param info
      */
@@ -762,7 +806,7 @@ public class NativeAdManger implements AdManager {
         });
         //dislike设置
 //        bindDislike(ttNativeExpressAd, false);
-        if (ttNativeExpressAd.getInteractionType() == TTAdConstant.INTERACTION_TYPE_DOWNLOAD){
+        if (ttNativeExpressAd.getInteractionType() == TTAdConstant.INTERACTION_TYPE_DOWNLOAD) {
             ttNativeExpressAd.setDownloadListener(new TTAppDownloadListener() {
                 @Override
                 public void onIdle() {
@@ -804,6 +848,7 @@ public class NativeAdManger implements AdManager {
 
     /**
      * 显示穿山甲自定义全屏插屏广告
+     *
      * @param activity
      * @param info
      */
@@ -838,6 +883,7 @@ public class NativeAdManger implements AdManager {
 
     /**
      * 显示穿山甲自定义插屏
+     *
      * @param activity
      * @param info
      */
@@ -873,6 +919,7 @@ public class NativeAdManger implements AdManager {
 
     /**
      * 显示穿山甲模板插屏
+     *
      * @param activity
      * @param info
      */
@@ -920,6 +967,7 @@ public class NativeAdManger implements AdManager {
 
     /**
      * 显示穿山甲激励视频
+     *
      * @param activity
      * @param adInfo
      */
@@ -1020,10 +1068,11 @@ public class NativeAdManger implements AdManager {
 
     /**
      * 显示穿山甲全屏视频
+     *
      * @param activity
      * @param adInfo
      */
-    private void showCsjFullVideo(Activity activity, AdInfo adInfo){
+    private void showCsjFullVideo(Activity activity, AdInfo adInfo) {
         TTFullScreenVideoAd ttFullScreenVideoAd = adInfo.getTtFullScreenVideoAd();
         if (mAdListener != null) {
             mAdListener.adSuccess(adInfo);
@@ -1069,6 +1118,7 @@ public class NativeAdManger implements AdManager {
 
     /**
      * 创建优量汇view
+     *
      * @param activity
      * @param adInfo
      */
@@ -1144,8 +1194,10 @@ public class NativeAdManger implements AdManager {
     }
 
     NativeExpressADView nativeExpressADView = null;
+
     /**
      * 展示优量汇信息流模板广告
+     *
      * @param activity
      * @param info
      */
@@ -1300,15 +1352,15 @@ public class NativeAdManger implements AdManager {
         nativeExpressAD.loadAD(1);
     }
 
-    public static int getVideoPlayPolicy(int autoPlayPolicy, Context context){
-        if(autoPlayPolicy == VideoOption.AutoPlayPolicy.ALWAYS){
+    public static int getVideoPlayPolicy(int autoPlayPolicy, Context context) {
+        if (autoPlayPolicy == VideoOption.AutoPlayPolicy.ALWAYS) {
             return VideoOption.VideoPlayPolicy.AUTO;
-        }else if(autoPlayPolicy == VideoOption.AutoPlayPolicy.WIFI){
+        } else if (autoPlayPolicy == VideoOption.AutoPlayPolicy.WIFI) {
             ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo wifiNetworkInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
             return wifiNetworkInfo != null && wifiNetworkInfo.isConnected() ? VideoOption.VideoPlayPolicy.AUTO
                     : VideoOption.VideoPlayPolicy.MANUAL;
-        }else if(autoPlayPolicy == VideoOption.AutoPlayPolicy.NEVER){
+        } else if (autoPlayPolicy == VideoOption.AutoPlayPolicy.NEVER) {
             return VideoOption.VideoPlayPolicy.MANUAL;
         }
         return VideoOption.VideoPlayPolicy.UNKNOWN;
@@ -1316,6 +1368,7 @@ public class NativeAdManger implements AdManager {
 
     /**
      * 展示优量汇激励视频
+     *
      * @param activity
      * @param info
      */
@@ -1400,8 +1453,10 @@ public class NativeAdManger implements AdManager {
     }
 
     UnifiedInterstitialAD iad = null;
+
     /**
      * 展示优量插屏广告（优量汇只有模板插屏）
+     *
      * @param activity
      * @param info
      */
@@ -1466,7 +1521,8 @@ public class NativeAdManger implements AdManager {
 //            UnifiedInterstitialAD finalIad = iad;
 //        }
     }
-    private void showAd(UnifiedInterstitialAD iad){
+
+    private void showAd(UnifiedInterstitialAD iad) {
         if (iad != null) {
             iad.showAsPopupWindow();
         }

@@ -3,7 +3,7 @@ package com.comm.jksdk.ad.listener;
 import com.comm.jksdk.ad.entity.AdInfo;
 
 /**
- * @ProjectName: GeekAdSdk
+ * @ProjectName: MidasAdSdk
  * @Package: com.comm.jksdk.ad.listener
  * @ClassName: AdRequestListener
  * @Description: 广告请求回调

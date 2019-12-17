@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import java.util.Map;
 
 /**
- * @ProjectName: GeekAdSdk
+ * @ProjectName: MidasAdSdk
  * @Package: com.comm.jksdk.utils
  * @ClassName: CodeFactory
  * @Description: 返回码定义类

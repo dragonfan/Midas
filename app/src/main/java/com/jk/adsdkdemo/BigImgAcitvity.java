@@ -12,10 +12,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.comm.jksdk.GeekAdSdk;
+import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.ad.listener.AdListener;
-import com.comm.jksdk.ad.listener.AdManager;
 import com.comm.jksdk.ad.listener.AdPreloadingListener;
 import com.jk.adsdkdemo.utils.LogUtils;
 
@@ -70,7 +69,7 @@ public class BigImgAcitvity extends AppCompatActivity implements View.OnClickLis
                     Toast.makeText(getApplicationContext(), "accept->输入的位置不能为空", Toast.LENGTH_LONG).show();
                     return;
                 }
-                GeekAdSdk.getAdsManger().preloadingAd(this,position, new AdPreloadingListener() {
+                MidasAdSdk.getAdsManger().preloadingAd(this,position, new AdPreloadingListener() {
                     @Override
                     public void adSuccess(AdInfo info) {
                         LogUtils.e(TAG, "DEMO>>>adSuccess， "+ info.toString());
@@ -90,7 +89,7 @@ public class BigImgAcitvity extends AppCompatActivity implements View.OnClickLis
                     Toast.makeText(getApplicationContext(), "accept->输入的位置不能为空", Toast.LENGTH_LONG).show();
                     return;
                 }
-                GeekAdSdk.getAdsManger().loadAd(this,position, new AdListener() {
+                MidasAdSdk.getAdsManger().loadAd(this,position, new AdListener() {
                     @Override
                     public void adSuccess(AdInfo info) {
                         LogUtils.e(TAG, "DEMO>>>adSuccess， "+ info.toString());

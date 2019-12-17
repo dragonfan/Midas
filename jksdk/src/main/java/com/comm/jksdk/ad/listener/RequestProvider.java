@@ -3,7 +3,7 @@ package com.comm.jksdk.ad.listener;
 import com.comm.jksdk.ad.entity.AdInfo;
 
 /**
- * @ProjectName: GeekAdSdk
+ * @ProjectName: MidasAdSdk
  * @Package: com.comm.jksdk.ad.listener
  * @ClassName: Provider
  * @Description: 请求广告工厂接口

@@ -9,10 +9,9 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.comm.jksdk.GeekAdSdk;
+import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.ad.listener.AdListener;
-import com.comm.jksdk.ad.listener.AdManager;
 import com.jk.adsdkdemo.utils.LogUtils;
 
 /**
@@ -59,7 +58,7 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
      */
     private void loadCustomInsertScreenAd(String position) {
         LogUtils.d(TAG, "position:" + position );
-        GeekAdSdk.getAdsManger().loadCustomInsertScreenAd(this, position, 3, new AdListener() {
+        MidasAdSdk.getAdsManger().loadCustomInsertScreenAd(this, position, 3, new AdListener() {
             @Override
             public void adSuccess(AdInfo info) {
                 LogUtils.d(TAG, "-----adSuccess-----");
@@ -99,7 +98,7 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
      */
     private void loadCustomInsertScreenAd2(String position) {
         LogUtils.d(TAG, "position:" + position + " isFullScreen:");
-        GeekAdSdk.getAdsManger().loadCustomInsertScreenAd(this, position, 3, new AdListener() {
+        MidasAdSdk.getAdsManger().loadCustomInsertScreenAd(this, position, 3, new AdListener() {
             @Override
             public void adSuccess(AdInfo info) {
                 LogUtils.d(TAG, "-----adSuccess-----");

@@ -8,14 +8,13 @@ import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.comm.jksdk.GeekAdSdk;
-import com.comm.jksdk.ad.listener.AdListener;
+import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.ad.listener.AdRequestManager;
 import com.comm.jksdk.http.utils.LogUtils;
 import com.comm.jksdk.utils.CollectionUtils;
 
 /**
- * @ProjectName: GeekAdSdk
+ * @ProjectName: MidasAdSdk
  * @Package: com.comm.jksdk.ad.admanager
  * @ClassName: ApiRequestManager
  * @Description: Api广告请求
@@ -27,7 +26,7 @@ import com.comm.jksdk.utils.CollectionUtils;
  * @Version: 1.0
  */
 public abstract class ApiRequestManager implements AdRequestManager {
-    protected final String TAG = "GeekAdSdk-->";
+    protected final String TAG = "MidasAdSdk-->";
 
     /**
      * 缓存网络图片+
@@ -39,7 +38,7 @@ public abstract class ApiRequestManager implements AdRequestManager {
             return;
         }
         for (String s : url) {
-            Glide.with(GeekAdSdk.getContext())
+            Glide.with(MidasAdSdk.getContext())
                     .load(s)
                     .into(mSimpleTarget);
         }

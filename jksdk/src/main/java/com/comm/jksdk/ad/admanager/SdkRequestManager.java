@@ -1,5 +1,6 @@
 package com.comm.jksdk.ad.admanager;
 
+import android.app.Activity;
 import android.graphics.drawable.Drawable;
 
 import androidx.annotation.NonNull;
@@ -8,14 +9,18 @@ import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.comm.jksdk.GeekAdSdk;
+import com.comm.jksdk.MidasAdSdk;
+import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.ad.listener.AdListener;
+import com.comm.jksdk.ad.listener.AdRequestListener;
 import com.comm.jksdk.ad.listener.AdRequestManager;
+import com.comm.jksdk.ad.listener.AdSplashListener;
+import com.comm.jksdk.constant.Constants;
 import com.comm.jksdk.http.utils.LogUtils;
 import com.comm.jksdk.utils.CollectionUtils;
 
 /**
- * @ProjectName: GeekAdSdk
+ * @ProjectName: MidasAdSdk
  * @Package: com.comm.jksdk.ad.admanager
  * @ClassName: SdkRequestManager
  * @Description: sdk广告请求
@@ -27,7 +32,7 @@ import com.comm.jksdk.utils.CollectionUtils;
  * @Version: 1.0
  */
 public abstract class SdkRequestManager implements AdRequestManager {
-    protected final String TAG = "GeekAdSdk-->";
+    protected final String TAG = "MidasAdSdk-->";
 
     protected AdListener mAdListener;
 
@@ -39,6 +44,19 @@ public abstract class SdkRequestManager implements AdRequestManager {
         this.mAdListener = mAdListener;
     }
 
+    @Override
+    public void requestAd(Activity activity, AdInfo adInfo, AdRequestListener listener, AdListener adListener) {
+        if (Constants.AdType.SPLASH_TYPE.equals(adInfo.getAdType())) {
+            requestSplashAd(activity, adInfo, listener, (AdSplashListener) adListener);
+        } else if (Constants.AdType.BANNER_TYPE.equals(adInfo.getAdType())) {
+
+        } else {
+
+        }
+    }
+
+    public abstract void requestSplashAd(Activity activity, AdInfo adInfo, AdRequestListener adRequestListener, AdSplashListener adSplashListener);
+
     /**
      * 缓存网络图片+
      * @param url
@@ -49,7 +67,7 @@ public abstract class SdkRequestManager implements AdRequestManager {
             return;
         }
         for (String s : url) {
-            Glide.with(GeekAdSdk.getContext())
+            Glide.with(MidasAdSdk.getContext())
                     .load(s)
                     .into(new SimpleTarget<Drawable>() {
                         @Override

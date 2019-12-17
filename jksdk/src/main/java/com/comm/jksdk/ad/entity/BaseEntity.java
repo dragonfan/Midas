@@ -3,7 +3,7 @@ package com.comm.jksdk.ad.entity;
 import android.os.Parcelable;
 
 /**
- * @ProjectName: GeekAdSdk
+ * @ProjectName: MidasAdSdk
  * @Package: com.comm.jksdk.ad.entity
  * @ClassName: BaseEntity
  * @Description: 序列号基类

@@ -3,9 +3,6 @@ package com.jk.adsdkdemo;
 import android.app.Application;
 import android.content.Context;
 
-import com.bytedance.sdk.openadsdk.TTAdConfig;
-import com.comm.jksdk.GeekAdSdk;
-
 /**
  * @author liupengbing
  * @date 2019/9/21
@@ -20,7 +17,7 @@ public class MainApp extends Application {
         super.onCreate();
         //test
         // 需要放在接口请求之前
-//        GeekAdSdk.init(this, "88", "5036430", "jinritoutiao",   false);
+//        MidasAdSdk.init(this, "88", "5036430", "jinritoutiao",   false);
 
     }
 

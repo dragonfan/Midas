@@ -5,7 +5,7 @@ import com.comm.jksdk.bean.ConfigBean;
 import java.util.List;
 
 /**
- * @ProjectName: GeekAdSdk
+ * @ProjectName: MidasAdSdk
  * @Package: com.comm.jksdk.config.listener
  * @ClassName: ConfigListener
  * @Description: 请求广告配置信息回调

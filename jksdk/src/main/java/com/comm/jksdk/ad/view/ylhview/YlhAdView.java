@@ -191,7 +191,7 @@ public class YlhAdView extends CommAdView {
 //                    return;
 //                }
 //                mAdInfo = new AdInfo();
-//                mAdInfo.setAdSource(Constants.AdType.YouLiangHui);
+//                mAdInfo.setAdSource(Constants.AdSourceType.YouLiangHui);
 //                mAdInfo.setAdAppid(mAppId);
 //                mAdInfo.setAdId(mAdId);
 //                NativeUnifiedADData nativeUnifiedADData = nativeAdList.get(0);

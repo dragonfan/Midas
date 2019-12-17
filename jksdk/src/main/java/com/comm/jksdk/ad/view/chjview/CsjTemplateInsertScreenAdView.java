@@ -55,7 +55,7 @@
 //        //step3:创建TTAdNative对象,用于调用广告请求接口
 //        this.activity = activity;
 //        mAdInfo = new AdInfo();
-//        mAdInfo.setAdSource(Constants.AdType.ChuanShanJia);
+//        mAdInfo.setAdSource(Constants.AdSourceType.ChuanShanJia);
 //        mAdInfo.setAdAppid(mAppId);
 //        mAdInfo.setAdId(adId);
 //

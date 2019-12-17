@@ -1,13 +1,13 @@
 package com.comm.jksdk.ad.factory;
 
-import com.comm.jksdk.ad.admanager.NativeAdManger;
+import com.comm.jksdk.ad.admanager.MidasAdManger;
 import com.comm.jksdk.ad.listener.AdManager;
 import com.comm.jksdk.ad.listener.Provider;
 
 /**
- * @ProjectName: GeekAdSdk
+ * @ProjectName: MidasAdSdk
  * @Package: com.comm.jksdk.ad.factory
- * @ClassName: NativeManagerFactory
+ * @ClassName: MidasAdManagerFactory
  * @Description: java类作用描述
  * @Author: fanhailong
  * @CreateDate: 2019/11/11 19:18
@@ -16,9 +16,9 @@ import com.comm.jksdk.ad.listener.Provider;
  * @UpdateRemark: 更新说明：
  * @Version: 1.0
  */
-public class NativeManagerFactory implements Provider {
+public class MidasAdManagerFactory implements Provider {
     @Override
     public AdManager produce() {
-        return new NativeAdManger();
+        return new MidasAdManger();
     }
 }

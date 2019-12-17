@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.view.ViewGroup;
 
 /**
- * @ProjectName: GeekAdSdk
+ * @ProjectName: MidasAdSdk
  * @Package: com.comm.jksdk.ad.listener
  * @ClassName: AdManager
  * @Description: 广告管理类接口
@@ -16,6 +16,8 @@ import android.view.ViewGroup;
  * @Version: 1.0
  */
 public interface AdManager {
+
+    void loadMidasSplashAd(Activity activity, String position, AdSplashListener listener);
 
     /**
      * 加载原生模板广告

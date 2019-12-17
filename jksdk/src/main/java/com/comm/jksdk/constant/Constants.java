@@ -5,9 +5,46 @@ import android.content.Context;
 public class Constants {
 
     /**
-     * APP内 使用到广告类型
+     * 广告类型
      */
     public interface AdType {
+        /**
+         * 开屏广告类型
+         */
+        String SPLASH_TYPE = "SPLASH_TYPE";
+        /**
+         * banner广告类型
+         */
+        String BANNER_TYPE = "BANNER_TYPE";
+        /**
+         * 原生广告类型
+         */
+        String NATIVE_TYPE = "NATIVE_TYPE";
+        /**
+         * 激励视频广告类型
+         */
+        String REWARD_VIDEO_TYPE = "REWARD_VIDEO_TYPE";
+        /**
+         * 全屏视频广告类型
+         */
+        String FULL_SCREEN_VIDEO_TYPE = "FULL_SCREEN_VIDEO_TYPE";
+        /**
+         * 信息流广告类型
+         */
+        String FEED_TYPE = "FEED_TYPE";
+        /**
+         * 插屏广告类型
+         */
+        String INTERACTION_TYPE = "INTERACTION_TYPE";
+        /**
+         * 竖版视频广告类型
+         */
+        String DRAW_VIDEO = "DRAW_VIDEO";
+    }
+    /**
+     * APP内 使用到广告源
+     */
+    public interface AdSourceType {
         /**
          * 穿山甲
          */

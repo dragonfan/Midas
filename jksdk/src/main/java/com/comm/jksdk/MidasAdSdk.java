@@ -2,17 +2,16 @@ package com.comm.jksdk;
 
 import android.content.Context;
 
-import com.bytedance.sdk.openadsdk.TTAdConfig;
-import com.comm.jksdk.ad.factory.NativeManagerFactory;
+import com.comm.jksdk.ad.factory.MidasAdManagerFactory;
 import com.comm.jksdk.ad.listener.AdManager;
 import com.comm.jksdk.config.AdsConfig;
 import com.comm.jksdk.config.InitBaseConfig;
 import com.comm.jksdk.config.listener.ConfigListener;
 
 /**
- * @ProjectName: GeekAdSdk
+ * @ProjectName: MidasAdSdk
  * @Package: com.comm.jksdk
- * @ClassName: GeekAdSdk
+ * @ClassName: MidasAdSdk
  * @Description: java类作用描述
  * @Author: fanhailong
  * @CreateDate: 2019/11/11 17:13
@@ -21,7 +20,7 @@ import com.comm.jksdk.config.listener.ConfigListener;
  * @UpdateRemark: 更新说明：
  * @Version: 1.0
  */
-public final class GeekAdSdk {
+public final class MidasAdSdk {
 
     private static boolean mIsInit = false;
 
@@ -68,7 +67,7 @@ public final class GeekAdSdk {
      * @return
      */
     public static AdManager getAdsManger(){
-        return new NativeManagerFactory().produce();
+        return new MidasAdManagerFactory().produce();
     }
 
     /**
@@ -121,7 +120,7 @@ public final class GeekAdSdk {
      */
     private static void checkInit() {
         if (!mIsInit) {
-            throw new RuntimeException("GeekAdSdk should  be init");
+            throw new RuntimeException("MidasAdSdk should  be init");
         }
     }
 }

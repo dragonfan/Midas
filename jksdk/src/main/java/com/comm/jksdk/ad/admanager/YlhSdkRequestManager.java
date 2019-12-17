@@ -2,37 +2,30 @@ package com.comm.jksdk.ad.admanager;
 
 import android.app.Activity;
 import android.text.TextUtils;
+import android.view.ViewGroup;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bytedance.sdk.openadsdk.AdSlot;
-import com.bytedance.sdk.openadsdk.TTAdConstant;
-import com.bytedance.sdk.openadsdk.TTAdManager;
 import com.bytedance.sdk.openadsdk.TTAdNative;
-import com.bytedance.sdk.openadsdk.TTFeedAd;
-import com.bytedance.sdk.openadsdk.TTImage;
 import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
-import com.comm.jksdk.GeekAdSdk;
 import com.comm.jksdk.ad.entity.AdInfo;
+import com.comm.jksdk.ad.entity.MidasSplashAd;
 import com.comm.jksdk.ad.listener.AdRequestListener;
+import com.comm.jksdk.ad.listener.AdSplashListener;
 import com.comm.jksdk.config.TTAdManagerHolder;
-import com.comm.jksdk.constant.Constants;
 import com.comm.jksdk.http.utils.LogUtils;
-import com.comm.jksdk.utils.CodeFactory;
 import com.comm.jksdk.utils.CollectionUtils;
 import com.qq.e.ads.cfg.VideoOption;
-import com.qq.e.ads.nativ.ADSize;
 import com.qq.e.ads.nativ.NativeADUnifiedListener;
-import com.qq.e.ads.nativ.NativeExpressAD;
-import com.qq.e.ads.nativ.NativeExpressADView;
 import com.qq.e.ads.nativ.NativeUnifiedAD;
 import com.qq.e.ads.nativ.NativeUnifiedADData;
+import com.qq.e.ads.splash.SplashAD;
+import com.qq.e.ads.splash.SplashADListener;
 import com.qq.e.comm.util.AdError;
 
 import java.util.List;
 
 /**
- * @ProjectName: GeekAdSdk
+ * @ProjectName: MidasAdSdk
  * @Package: com.comm.jksdk.ad.admanager
  * @ClassName: CsjSdkRequestManager
  * @Description: 优量汇广告请求类
@@ -43,41 +36,100 @@ import java.util.List;
  * @UpdateRemark: 更新说明：
  * @Version: 1.0
  */
-public class YlhSdkRequestManager extends SdkRequestManager implements NativeADUnifiedListener{
+public class YlhSdkRequestManager extends SdkRequestManager implements NativeADUnifiedListener {
 
     // 广告请求数量
     protected final static int REQUEST_AD_COUNTS = 1;
 
     private final int MAX_DURATION = 30;
 
+//    @Override
+//    public void requestAd(Activity activity, AdInfo adInfo, AdRequestListener listener) {
+//        //广告样式
+//        String style = adInfo.getAdStyle();
+//        if (Constants.AdStyle.DATU_ICON_TEXT.equals(style) || Constants.AdStyle.DATU_ICON_TEXT_BUTTON_CENTER.equals(style) || Constants.AdStyle.EXTERNAL_DIALOG_BIG_IMAGE_01.equals(style)
+//                || Constants.AdStyle.DATU_ICON_TEXT_BUTTON.equals(style) || Constants.AdStyle.BIG_IMG_BUTTON_LAMP.equals(style) || Constants.AdStyle.BIG_IMG_BUTTON.equals(style) || Constants.AdStyle.EXTERNAL_DIALOG_BIG_IMAGE_02.equals(style)
+//                || Constants.AdStyle.FAKE_VIDEO_IARGE_IMAGE.equals(style)) {
+//            //todo请求大图广告
+//            getAdByBigImg(activity, adInfo, listener);
+//        } else if (Constants.AdStyle.OPEN_ADS.equals(style)) {
+//            getAdBySplashAd(activity, adInfo, listener);
+//        } else if (Constants.AdStyle.FULL_SCREEN_VIDEO.equals(style)) {
+//            getFullScreenVideoAd(activity, adInfo, listener);
+//        } else if (Constants.AdStyle.CUSTOM_CP.equals(style) || Constants.AdStyle.FULLSCREEN_CP_01.equals(style) || Constants.AdStyle.CP.equals(style)) {
+//            getCustomInsertScreenAd(activity, adInfo, listener);
+////        } else if (Constants.AdStyle.REWARD_VIDEO.equals(style)) {
+////            getRewardVideoAd(activity, adInfo, listener);
+//        } else if (Constants.AdStyle.FEED_TEMPLATE.equals(style)) {
+//            getFeedTemplate(activity, adInfo, listener);
+//        } else {
+//            if (listener != null) {
+//                listener.adError(adInfo, 2, "暂不支持该样式");
+//            }
+//        }
+//    }
+
     @Override
-    public void requestAd(Activity activity, AdInfo adInfo, AdRequestListener listener) {
-        //广告样式
-        String style = adInfo.getAdStyle();
-        if (Constants.AdStyle.DATU_ICON_TEXT.equals(style) || Constants.AdStyle.DATU_ICON_TEXT_BUTTON_CENTER.equals(style) || Constants.AdStyle.EXTERNAL_DIALOG_BIG_IMAGE_01.equals(style)
-                || Constants.AdStyle.DATU_ICON_TEXT_BUTTON.equals(style) || Constants.AdStyle.BIG_IMG_BUTTON_LAMP.equals(style) || Constants.AdStyle.BIG_IMG_BUTTON.equals(style) || Constants.AdStyle.EXTERNAL_DIALOG_BIG_IMAGE_02.equals(style)
-                || Constants.AdStyle.FAKE_VIDEO_IARGE_IMAGE.equals(style)) {
-            //todo请求大图广告
-            getAdByBigImg(activity, adInfo, listener);
-        } else if (Constants.AdStyle.OPEN_ADS.equals(style)) {
-            getAdBySplashAd(activity, adInfo, listener);
-        } else if (Constants.AdStyle.FULL_SCREEN_VIDEO.equals(style)) {
-            getFullScreenVideoAd(activity, adInfo, listener);
-        } else if (Constants.AdStyle.CUSTOM_CP.equals(style) || Constants.AdStyle.FULLSCREEN_CP_01.equals(style) || Constants.AdStyle.CP.equals(style)) {
-            getCustomInsertScreenAd(activity, adInfo, listener);
-//        } else if (Constants.AdStyle.REWARD_VIDEO.equals(style)) {
-//            getRewardVideoAd(activity, adInfo, listener);
-        } else if(Constants.AdStyle.FEED_TEMPLATE.equals(style)) {
-            getFeedTemplate(activity, adInfo, listener);
-        } else {
-            if (listener != null) {
-                listener.adError(adInfo, 2, "暂不支持该样式");
+    public void requestSplashAd(Activity activity, AdInfo adInfo, AdRequestListener adRequestListener, AdSplashListener adSplashListener) {
+        SplashAD splashAD = new SplashAD(activity, adInfo.getAdAppid(), adInfo.getAdId(), new SplashADListener() {
+            @Override
+            public void onADDismissed() {
+                LogUtils.d(TAG, "YLH onADDismissed:");
+                if (adSplashListener != null) {
+                    adSplashListener.adClose(adInfo);
+                }
+            }
+
+            @Override
+            public void onNoAD(AdError adError) {
+                LogUtils.d(TAG, "YLH onNoAD:");
+                //优量汇广告加载失败
+                if (adRequestListener != null) {
+                    adRequestListener.adError(adInfo, adError.getErrorCode(), adError.getErrorMsg());
+                }
+            }
+            //广告成功展示时调用，成功展示不等于有效展示（比如广告容器高度不够）
+            @Override
+            public void onADPresent() {
+                //优量汇成功展示的时候代表请求成功
+                if (adSplashListener != null) {
+                    adSplashListener.adSuccess(adInfo);
+                }
+            }
+
+            @Override
+            public void onADClicked() {
+                LogUtils.d(TAG, "YLH onADClicked:");
+                if (adSplashListener != null) {
+                    adSplashListener.adClicked(adInfo);
+                }
+            }
+            //倒计时回调，返回广告还将被展示的剩余时间，单位是 ms
+            @Override
+            public void onADTick(long l) {
+
+            }
+            //广告曝光时调用，此处的曝光不等于有效曝光（如展示时长未满足）
+            @Override
+            public void onADExposure() {
+                LogUtils.d(TAG, "YLH onADClicked:");
+                if (adSplashListener != null) {
+                    adSplashListener.adExposed(adInfo);
+                }
+            }
+        });
+        adInfo.getMidasSplashAd().setSplashAD(splashAD);
+        if (adSplashListener != null) {
+            ViewGroup viewGroup = adSplashListener.getViewGroup();
+            if (viewGroup != null) {
+                splashAD.fetchAndShowIn(viewGroup);
             }
         }
     }
 
     /**
      * 获取信息流模板广告
+     *
      * @param activity
      * @param info
      * @param listener
@@ -90,7 +142,6 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
 
     /**
      * 请求图片广告
-     *
      */
     protected void getAdByBigImg(Activity activity, AdInfo adInfo, AdRequestListener listener) {
         LogUtils.d(TAG, "onADLoaded->请求优量汇广告");
@@ -149,6 +200,7 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
 
     /**
      * 获取自定义插屏广告
+     *
      * @param info
      * @param listener
      */
@@ -160,6 +212,7 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
 
     /**
      * 获取模板插屏广告
+     *
      * @param info
      * @param listener
      */
@@ -170,8 +223,8 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
                 .setCodeId(info.getAdId()) //广告位id
                 .setSupportDeepLink(true)
                 .setAdCount(1) //请求广告数量为1到3条
-                .setExpressViewAcceptedSize(expressViewWidth,expressViewHeight) //期望模板广告view的size,单位dp
-                .setImageAcceptedSize(640,320 )//这个参数设置即可，不影响模板广告的size
+                .setExpressViewAcceptedSize(expressViewWidth, expressViewHeight) //期望模板广告view的size,单位dp
+                .setImageAcceptedSize(640, 320)//这个参数设置即可，不影响模板广告的size
                 .build();
         //step5:请求广告，对请求回调的广告作渲染处理
         TTAdManagerHolder.get().createAdNative(activity).loadInteractionExpressAd(adSlot, new TTAdNative.NativeExpressAdListener() {
@@ -207,6 +260,7 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
 
     /**
      * 获取激励视频广告
+     *
      * @param info
      * @param listener
      */
@@ -218,6 +272,7 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
 
     /**
      * 获取全屏视频广告
+     *
      * @param adInfo
      * @param listener
      */

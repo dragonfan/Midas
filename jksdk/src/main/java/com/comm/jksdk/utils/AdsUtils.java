@@ -10,7 +10,7 @@ import java.util.Random;
  * @date 2019/9/28
  */
 public class AdsUtils {
-    protected final static String TAG = "GeekAdSdk-->";
+    protected final static String TAG = "MidasAdSdk-->";
     public static boolean requestAdOverTime(int adRequestTimeOut){
          boolean requestAdOverTime=false;
          if(adRequestTimeOut>0) {

@@ -3,7 +3,7 @@ package com.comm.jksdk.config;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.comm.jksdk.GeekAdSdk;
+import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.api.ConfigService;
 import com.comm.jksdk.bean.ConfigBean;
 import com.comm.jksdk.bean.PositionInfo;
@@ -35,7 +35,7 @@ import okhttp3.RequestBody;
  */
 public class AdsConfig {
     private static Context mContext;
-    protected final String TAG = "GeekAdSdk-->";
+    protected final String TAG = "MidasAdSdk-->";
     private static AdsConfig mAdsConfig = null;
     private Gson mGson = new Gson();
     private String mConfigInfo;
@@ -158,11 +158,11 @@ public class AdsConfig {
         if (bid > 0) {
             requestParams.put("bid", bid);
         }
-        String productName = GeekAdSdk.getRroductName();
+        String productName = MidasAdSdk.getRroductName();
         requestParams.put("productName", productName);
-        String marketName = GeekAdSdk.getChannel();
+        String marketName = MidasAdSdk.getChannel();
         requestParams.put("marketName", marketName);
-        requestParams.put("versionCode", AppInfoUtils.getVerCode(GeekAdSdk.getContext()));
+        requestParams.put("versionCode", AppInfoUtils.getVerCode(MidasAdSdk.getContext()));
         requestParams.put("osSystem", 1);
         long userActive = AdsConfig.getUserActive();
         if (userActive < 0) {

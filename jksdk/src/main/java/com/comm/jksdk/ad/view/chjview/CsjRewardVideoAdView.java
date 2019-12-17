@@ -47,7 +47,7 @@
 //            throw new NullPointerException("loadFullScreenVideoAd activity is null");
 //        }
 //        mAdInfo = new AdInfo();
-//        mAdInfo.setAdSource(Constants.AdType.ChuanShanJia);
+//        mAdInfo.setAdSource(Constants.AdSourceType.ChuanShanJia);
 //        mAdInfo.setAdAppid(mAppId);
 //        mAdInfo.setAdId(adId);
 //        LogUtils.d(TAG, "adId:" + adId + " userId:" + userId + " orientation:" + orientation);

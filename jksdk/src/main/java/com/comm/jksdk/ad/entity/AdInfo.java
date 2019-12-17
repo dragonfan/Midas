@@ -13,7 +13,7 @@ import com.bytedance.sdk.openadsdk.TTSplashAd;
 import com.qq.e.ads.nativ.NativeUnifiedADData;
 
 /**
- * @ProjectName: GeekAdSdk
+ * @ProjectName: MidasAdSdk
  * @Package: com.comm.jksdk.ad.entity
  * @ClassName: AdInfo
  * @Description: 广告信息（用来回调给业务线）
@@ -24,9 +24,34 @@ import com.qq.e.ads.nativ.NativeUnifiedADData;
  * @UpdateRemark: 更新说明：
  * @Version: 1.0
  */
-public class AdInfo extends BaseEntity{
+public class AdInfo extends BaseEntity implements MidasAdEntity{
+    /**
+     * 开屏广告对象
+     */
+    private MidasSplashAd midasSplashAd;
 
+    /**
+     * 广告分类（目前有八大类）
+     */
+    private String adType;
 
+    public String getAdType() {
+        return adType;
+    }
+
+    public void setAdType(String adType) {
+        this.adType = adType;
+    }
+
+    public MidasSplashAd getMidasSplashAd() {
+        return midasSplashAd;
+    }
+
+    public void setMidasSplashAd(MidasSplashAd midasSplashAd) {
+        this.midasSplashAd = midasSplashAd;
+    }
+
+    /***************************************************************优雅分割线**********************************************************************/
     /**
      * 广告view
      */
@@ -353,5 +378,10 @@ public class AdInfo extends BaseEntity{
                 ", adStyle='" + adStyle + '\'' +
                 ", adClickType=" + adClickType +
                 '}';
+    }
+
+    @Override
+    public void clear() {
+
     }
 }

@@ -14,10 +14,9 @@ import android.widget.Toast;
 import com.bytedance.sdk.openadsdk.TTAdDislike;
 import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
-import com.comm.jksdk.GeekAdSdk;
+import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.ad.listener.AdListener;
-import com.comm.jksdk.ad.listener.AdManager;
 import com.jk.adsdkdemo.utils.LogUtils;
 
 /**
@@ -81,7 +80,7 @@ public class FeedTemplateAcitvity extends AppCompatActivity implements View.OnCl
                 if (TextUtils.isEmpty(width)) {
                     width = "350";
                 }
-                GeekAdSdk.getAdsManger().loadNativeTemplateAd(this,position, Float.valueOf(width), new AdListener() {
+                MidasAdSdk.getAdsManger().loadNativeTemplateAd(this,position, Float.valueOf(width), new AdListener() {
                     @Override
                     public void adSuccess(AdInfo info) {
                         adView = info.getAdView();

@@ -10,7 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bytedance.sdk.openadsdk.TTAdSdk;
-import com.comm.jksdk.GeekAdSdk;
+import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.bean.ConfigBean;
 import com.comm.jksdk.config.AdsConfig;
 import com.comm.jksdk.config.listener.ConfigListener;
@@ -61,23 +61,23 @@ public class ConfigActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_set_bid:
-                if (!GeekAdSdk.isInit()) {
+                if (!MidasAdSdk.isInit()) {
                     Toast.makeText(getApplicationContext(), "请先初始化", Toast.LENGTH_LONG).show();
                     return;
                 }
                 try {
-                    GeekAdSdk.setBid(Integer.valueOf(bidEt.getText().toString()));
+                    MidasAdSdk.setBid(Integer.valueOf(bidEt.getText().toString()));
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
                 }
                 break;
             case R.id.button_request_config:
-                if (!GeekAdSdk.isInit()) {
+                if (!MidasAdSdk.isInit()) {
                     Toast.makeText(getApplicationContext(), "请先初始化", Toast.LENGTH_LONG).show();
                     return;
                 }
                 stateText.setText("");
-                GeekAdSdk.requestConfig(new ConfigListener() {
+                MidasAdSdk.requestConfig(new ConfigListener() {
                     @Override
                     public void adSuccess(List<ConfigBean.AdListBean> configList) {
                         String config = JsonUtils.encode(configList);
@@ -101,10 +101,10 @@ public class ConfigActivity extends AppCompatActivity implements View.OnClickLis
                 String chan = editChan.getText().toString().trim();
                 LogUtils.e(">>>product="+product);
                 LogUtils.e(">>>渠道号="+chan);
-                GeekAdSdk.init(this, product, "5036430", chan,   false);
+                MidasAdSdk.init(this, product, "5036430", chan,   false);
                 break;
             case R.id.next:
-                if (!GeekAdSdk.isInit()) {
+                if (!MidasAdSdk.isInit()) {
                     Toast.makeText(getApplicationContext(), "请先初始化", Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -117,7 +117,7 @@ public class ConfigActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onResume() {
         super.onResume();
-        if (GeekAdSdk.isInit()) {
+        if (MidasAdSdk.isInit()) {
             showConfigList(AdsConfig.getAdsInfoslist());
         }
     }

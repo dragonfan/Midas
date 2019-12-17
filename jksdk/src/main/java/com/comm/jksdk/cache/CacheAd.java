@@ -6,7 +6,7 @@ import com.comm.jksdk.utils.CollectionUtils;
 import java.util.Map;
 
 /**
- * @ProjectName: GeekAdSdk
+ * @ProjectName: MidasAdSdk
  * @Package: com.comm.jksdk.cache
  * @ClassName: CacheAd
  * @Description: java类作用描述

@@ -26,7 +26,7 @@ import java.util.List;
  */
 public abstract class AbsAdView extends RelativeLayout {
 
-    protected final String TAG = "GeekAdSdk-->";
+    protected final String TAG = "MidasAdSdk-->";
 
     public Context mContext = null;
 

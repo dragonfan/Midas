@@ -10,9 +10,8 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.comm.jksdk.GeekAdSdk;
+import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.ad.entity.AdInfo;
-import com.comm.jksdk.ad.listener.AdManager;
 import com.comm.jksdk.ad.listener.AdPreloadingListener;
 import com.comm.jksdk.ad.listener.VideoAdListener;
 import com.jk.adsdkdemo.utils.LogUtils;
@@ -56,7 +55,7 @@ public class FullScreenVideoActivity extends AppCompatActivity implements View.O
     private void loadSplashAd(String position) {
         // cold_kp 、hot_kp
         splashContainer.removeAllViews();
-        GeekAdSdk.getAdsManger().loadVideoAd(this, position, new VideoAdListener() {
+        MidasAdSdk.getAdsManger().loadVideoAd(this, position, new VideoAdListener() {
             @Override
             public void onVideoResume(AdInfo info) {
 
@@ -132,7 +131,7 @@ public class FullScreenVideoActivity extends AppCompatActivity implements View.O
      * 预加载
      */
     private void preloadingSplashAd(String position) {
-        GeekAdSdk.getAdsManger().preloadingVideoAd(this, position, new AdPreloadingListener() {
+        MidasAdSdk.getAdsManger().preloadingVideoAd(this, position, new AdPreloadingListener() {
             @Override
             public void adSuccess(AdInfo info) {
                 LogUtils.d(TAG, "-----adSuccess-----");
