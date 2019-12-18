@@ -15,6 +15,7 @@ import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
 import com.bytedance.sdk.openadsdk.TTRewardVideoAd;
 import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.ad.entity.AdInfo;
+import com.comm.jksdk.ad.entity.MidasRewardVideoAd;
 import com.comm.jksdk.ad.entity.MidasSplashAd;
 import com.comm.jksdk.ad.factory.RequestManagerFactory;
 import com.comm.jksdk.ad.listener.AdListener;
@@ -158,7 +159,7 @@ public class MidasAdManger implements AdManager {
         AdInfo adInfo = new AdInfo();
         adInfo.setAdType(Constants.AdType.SPLASH_TYPE);
         MidasSplashAd midasSplashAd = new MidasSplashAd();
-        adInfo.setMidasSplashAd(midasSplashAd);
+        adInfo.setMidasAd(midasSplashAd);
         try {
             mActivity = activity;
             //设置广告位置信息
@@ -185,6 +186,46 @@ public class MidasAdManger implements AdManager {
                 mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
             }
         }
+    }
+
+    @Override
+    public void loadMidasRewardVideoAd(Activity activity, String position, String userId, int orientation, String rewardName, int rewardAmount, AdListener listener) {
+        AdInfo adInfo = new AdInfo();
+        adInfo.setAdType(Constants.AdType.REWARD_VIDEO_TYPE);
+        MidasRewardVideoAd midasAdEntity = new MidasRewardVideoAd();
+        midasAdEntity.setUserId(userId);
+        midasAdEntity.setOrientation(orientation);
+        midasAdEntity.setRewardName(rewardName);
+        midasAdEntity.setRewardAmount(rewardAmount);
+        adInfo.setMidasAd(midasAdEntity);
+        mAdListener = listener;
+        try {
+            mActivity = activity;
+            //设置广告位置信息
+            adInfo.setPosition(position);
+            //获取本地配置信息
+            readyInfo(adInfo);
+            if (CollectionUtils.isEmpty(adsInfoslist)) {
+                if (mAdListener != null) {
+                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                }
+                return;
+            }
+            ConfigBean.AdListBean.AdsInfosBean mAdsInfosBean = adsInfoslist.remove(0);
+            if (mAdsInfosBean == null) {
+                if (mAdListener != null) {
+                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                }
+                return;
+            }
+            againRequest(adInfo, mAdsInfosBean);
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (mAdListener != null) {
+                mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+            }
+        }
+
     }
 
     @Override
@@ -259,16 +300,16 @@ public class MidasAdManger implements AdManager {
      */
     public void readyInfo(AdInfo adInfo) {
         //获取本地配置信息
+        adsInfoslist.clear();
         ConfigBean.AdListBean mConfigInfoBean = AdsConfig.getInstance(MidasAdSdk.getContext()).getConfig(adInfo.getPosition());
         if (mConfigInfoBean == null) {
-            if (mAdListener != null) {
-                mAdListener.adError(adInfo, CodeFactory.LOCAL_INFO_EMPTY, CodeFactory.getError(CodeFactory.LOCAL_INFO_EMPTY));
-            }
+//            if (mAdListener != null) {
+//                mAdListener.adError(adInfo, CodeFactory.LOCAL_INFO_EMPTY, CodeFactory.getError(CodeFactory.LOCAL_INFO_EMPTY));
+//            }
             return;
         }
         adInfo.setAdStyle(mConfigInfoBean.getAdStyle());
         adInfo.setAdRequestTimeOut(mConfigInfoBean.getAdRequestTimeOut());
-        adsInfoslist.clear();
         adsInfoslist.addAll(mConfigInfoBean.getAdsInfos());
     }
 
@@ -562,17 +603,15 @@ public class MidasAdManger implements AdManager {
             adInfo = new AdInfo();
         }
         //某些特有的数据清空，避免污染下一次请求数据
-//        adInfo.setAdTitle("");
-//        adInfo.setAdClickType(0);
         adInfo.clear();
-        adInfo.getMidasSplashAd().clear();
+        adInfo.getMidasAd().clear();
 
         //广告源
-        adInfo.setAdSource(adsInfosBean.getAdUnion());
+        adInfo.getMidasAd().setAdSource(adsInfosBean.getAdUnion());
         //广告id
-        adInfo.setAdId(adsInfosBean.getAdId());
+        adInfo.getMidasAd().setAdId(adsInfosBean.getAdId());
         //广告对应的appid
-        adInfo.setAdAppid(adsInfosBean.getAdsAppId());
+        adInfo.getMidasAd().setAppId(adsInfosBean.getAdsAppId());
         //请求类型 0 - SDK 1 - API
         requestType = adsInfosBean.getRequestType();
         if (requestType == 0) {
@@ -1373,20 +1412,21 @@ public class MidasAdManger implements AdManager {
      * @param info
      */
     private void showYlhRewardVideo(Activity activity, AdInfo info) {
-        String REWARD_VIDEO_AD_POS_ID_UNSUPPORT_H = "5040942242835423";//不支持竖版出横版视频
-        int orientation = 1;
         if (activity == null) {
             throw new NullPointerException("loadFullScreenVideoAd activity is null");
         }
-        if (orientation == 1) {
-            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        } else if (orientation == 2) {
+        String REWARD_VIDEO_AD_POS_ID_UNSUPPORT_H = "5040942242835423";//不支持竖版出横版视频
+        MidasRewardVideoAd midasRewardVideoAd = (MidasRewardVideoAd) info.getMidasAd();
+        int orientation = midasRewardVideoAd.getOrientation();
+        if (orientation == 2) {
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        } else {
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
         // 1. 初始化激励视频广告
         RewardVideoAD rewardVideoAD = null;
         RewardVideoAD finalRewardVideoAD = rewardVideoAD;
-        rewardVideoAD = new RewardVideoAD(activity, info.getAdAppid(), REWARD_VIDEO_AD_POS_ID_UNSUPPORT_H, new RewardVideoADListener() {
+        rewardVideoAD = new RewardVideoAD(activity, midasRewardVideoAd.getAppId(), midasRewardVideoAd.getAdId(), new RewardVideoADListener() {
             @Override
             public void onADLoad() {
                 //广告加载成功标志

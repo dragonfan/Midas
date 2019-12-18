@@ -2,7 +2,6 @@ package com.comm.jksdk.ad.entity;
 
 import android.os.Parcel;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.bytedance.sdk.openadsdk.TTFeedAd;
 import com.bytedance.sdk.openadsdk.TTFullScreenVideoAd;
@@ -24,16 +23,25 @@ import com.qq.e.ads.nativ.NativeUnifiedADData;
  * @UpdateRemark: 更新说明：
  * @Version: 1.0
  */
-public class AdInfo extends BaseEntity implements MidasAdEntity{
-    /**
-     * 开屏广告对象
-     */
-    private MidasSplashAd midasSplashAd;
+public class AdInfo extends BaseEntity implements Ad {
 
     /**
      * 广告分类（目前有八大类）
      */
     private String adType;
+
+    /**
+     * 广告对象
+     */
+    private MidasAd midasAd;
+
+    public MidasAd getMidasAd() {
+        return midasAd;
+    }
+
+    public void setMidasAd(MidasAd midasAd) {
+        this.midasAd = midasAd;
+    }
 
     public String getAdType() {
         return adType;
@@ -43,13 +51,6 @@ public class AdInfo extends BaseEntity implements MidasAdEntity{
         this.adType = adType;
     }
 
-    public MidasSplashAd getMidasSplashAd() {
-        return midasSplashAd;
-    }
-
-    public void setMidasSplashAd(MidasSplashAd midasSplashAd) {
-        this.midasSplashAd = midasSplashAd;
-    }
 
     /***************************************************************优雅分割线**********************************************************************/
     /**

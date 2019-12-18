@@ -17,11 +17,8 @@ import com.qq.e.ads.splash.SplashAD;
  * @UpdateRemark: 更新说明：
  * @Version: 1.0
  */
-public class MidasSplashAd implements MidasAdEntity{
-    /**
-     * 用来填充的view
-     */
-    private View addView;
+public class MidasSplashAd extends MidasAd {
+
     /**
      * 优量开屏广告对象
      */
@@ -31,13 +28,6 @@ public class MidasSplashAd implements MidasAdEntity{
      */
     private TTSplashAd ttSplashAd;
 
-    public View getAddView() {
-        return addView;
-    }
-
-    public void setAddView(View addView) {
-        this.addView = addView;
-    }
 
     public SplashAD getSplashAD() {
         return splashAD;
@@ -66,5 +56,8 @@ public class MidasSplashAd implements MidasAdEntity{
         if (addView != null) {
             addView = null;
         }
+        appId = null;
+        adId = null;
+        adSource = null;
     }
 }

@@ -1,6 +1,7 @@
 package com.comm.jksdk.ad.admanager;
 
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
@@ -8,9 +9,11 @@ import com.bytedance.sdk.openadsdk.AdSlot;
 import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
 import com.comm.jksdk.ad.entity.AdInfo;
+import com.comm.jksdk.ad.entity.MidasRewardVideoAd;
 import com.comm.jksdk.ad.entity.MidasSplashAd;
 import com.comm.jksdk.ad.listener.AdRequestListener;
 import com.comm.jksdk.ad.listener.AdSplashListener;
+import com.comm.jksdk.ad.listener.VideoAdListener;
 import com.comm.jksdk.config.TTAdManagerHolder;
 import com.comm.jksdk.http.utils.LogUtils;
 import com.comm.jksdk.utils.CollectionUtils;
@@ -18,6 +21,8 @@ import com.qq.e.ads.cfg.VideoOption;
 import com.qq.e.ads.nativ.NativeADUnifiedListener;
 import com.qq.e.ads.nativ.NativeUnifiedAD;
 import com.qq.e.ads.nativ.NativeUnifiedADData;
+import com.qq.e.ads.rewardvideo.RewardVideoAD;
+import com.qq.e.ads.rewardvideo.RewardVideoADListener;
 import com.qq.e.ads.splash.SplashAD;
 import com.qq.e.ads.splash.SplashADListener;
 import com.qq.e.comm.util.AdError;
@@ -118,13 +123,95 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
                 }
             }
         });
-        adInfo.getMidasSplashAd().setSplashAD(splashAD);
+        ((MidasSplashAd)adInfo.getMidasAd()).setSplashAD(splashAD);
         if (adSplashListener != null) {
             ViewGroup viewGroup = adSplashListener.getViewGroup();
             if (viewGroup != null) {
                 splashAD.fetchAndShowIn(viewGroup);
             }
         }
+    }
+
+    @Override
+    public void requestRewardVideoAd(Activity activity, AdInfo adInfo, AdRequestListener adRequestListener, VideoAdListener videoAdListener) {
+        if (activity == null) {
+            throw new NullPointerException("loadFullScreenVideoAd activity is null");
+        }
+        String REWARD_VIDEO_AD_POS_ID_UNSUPPORT_H = "5040942242835423";//不支持竖版出横版视频
+        MidasRewardVideoAd midasRewardVideoAd = (MidasRewardVideoAd) adInfo.getMidasAd();
+        int orientation = midasRewardVideoAd.getOrientation();
+        if (orientation == 2) {
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        } else {
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
+        // 1. 初始化激励视频广告
+        RewardVideoAD rewardVideoAD = null;
+        RewardVideoAD finalRewardVideoAD = rewardVideoAD;
+        rewardVideoAD = new RewardVideoAD(activity, midasRewardVideoAd.getAppId(), midasRewardVideoAd.getAdId(), new RewardVideoADListener() {
+            @Override
+            public void onADLoad() {
+                //广告加载成功标志
+                finalRewardVideoAD.showAD();
+                if (videoAdListener != null) {
+                    videoAdListener.adSuccess(adInfo);
+                }
+            }
+
+            @Override
+            public void onVideoCached() {
+                //视频素材缓存成功，可在此回调后进行广告展示
+
+            }
+
+            @Override
+            public void onADShow() {
+
+            }
+
+            @Override
+            public void onADExpose() {
+                if (videoAdListener != null) {
+                    videoAdListener.adExposed(adInfo);
+                }
+            }
+
+            @Override
+            public void onReward() {
+
+            }
+
+            @Override
+            public void onADClick() {
+                if (videoAdListener != null) {
+                    videoAdListener.adClicked(adInfo);
+                }
+            }
+
+            @Override
+            public void onVideoComplete() {
+                if (videoAdListener != null) {
+                    videoAdListener.onVideoComplete(adInfo);
+                }
+            }
+
+            @Override
+            public void onADClose() {
+                if (videoAdListener != null) {
+                    videoAdListener.adClose(adInfo);
+                }
+            }
+
+            @Override
+            public void onError(AdError adError) {
+                if (videoAdListener != null) {
+                    videoAdListener.adError(adInfo, adError.getErrorCode(), adError.getErrorMsg());
+                }
+            }
+        });
+        midasRewardVideoAd.setRewardVideoAD(rewardVideoAD);
+        // 2. 加载激励视频广告
+        rewardVideoAD.loadAD();
     }
 
     /**
@@ -265,9 +352,68 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
      * @param listener
      */
     private void getRewardVideoAd(Activity activity, AdInfo info, AdRequestListener listener) {
-        if (listener != null) {
-            listener.adSuccess(info);
+        if (activity == null) {
+            throw new NullPointerException("loadFullScreenVideoAd activity is null");
         }
+        String REWARD_VIDEO_AD_POS_ID_UNSUPPORT_H = "5040942242835423";//不支持竖版出横版视频
+        MidasRewardVideoAd midasRewardVideoAd = (MidasRewardVideoAd) info.getMidasAd();
+        int orientation = midasRewardVideoAd.getOrientation();
+        if (orientation == 2) {
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        } else {
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
+        // 1. 初始化激励视频广告
+        RewardVideoAD rewardVideoAD = null;
+        RewardVideoAD finalRewardVideoAD = rewardVideoAD;
+        rewardVideoAD = new RewardVideoAD(activity, midasRewardVideoAd.getAppId(), midasRewardVideoAd.getAdId(), new RewardVideoADListener() {
+            @Override
+            public void onADLoad() {
+                //广告加载成功标志
+                finalRewardVideoAD.showAD();
+//                adSuccess(mAdInfo);
+            }
+
+            @Override
+            public void onVideoCached() {
+                //视频素材缓存成功，可在此回调后进行广告展示
+
+            }
+
+            @Override
+            public void onADShow() {
+
+            }
+
+            @Override
+            public void onADExpose() {
+
+            }
+
+            @Override
+            public void onReward() {
+
+            }
+
+            @Override
+            public void onADClick() {
+
+            }
+
+            @Override
+            public void onVideoComplete() {
+            }
+
+            @Override
+            public void onADClose() {
+            }
+
+            @Override
+            public void onError(AdError adError) {
+            }
+        });
+        // 2. 加载激励视频广告
+        rewardVideoAD.loadAD();
     }
 
     /**

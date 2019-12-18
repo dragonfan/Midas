@@ -15,6 +15,7 @@ import com.comm.jksdk.ad.listener.AdListener;
 import com.comm.jksdk.ad.listener.AdRequestListener;
 import com.comm.jksdk.ad.listener.AdRequestManager;
 import com.comm.jksdk.ad.listener.AdSplashListener;
+import com.comm.jksdk.ad.listener.VideoAdListener;
 import com.comm.jksdk.constant.Constants;
 import com.comm.jksdk.http.utils.LogUtils;
 import com.comm.jksdk.utils.CollectionUtils;
@@ -34,28 +35,21 @@ import com.comm.jksdk.utils.CollectionUtils;
 public abstract class SdkRequestManager implements AdRequestManager {
     protected final String TAG = "MidasAdSdk-->";
 
-    protected AdListener mAdListener;
-
-    public AdListener getAdListener() {
-        return mAdListener;
-    }
-
-    public void setAdListener(AdListener mAdListener) {
-        this.mAdListener = mAdListener;
-    }
 
     @Override
     public void requestAd(Activity activity, AdInfo adInfo, AdRequestListener listener, AdListener adListener) {
         if (Constants.AdType.SPLASH_TYPE.equals(adInfo.getAdType())) {
             requestSplashAd(activity, adInfo, listener, (AdSplashListener) adListener);
-        } else if (Constants.AdType.BANNER_TYPE.equals(adInfo.getAdType())) {
-
+        } else if (Constants.AdType.REWARD_VIDEO_TYPE.equals(adInfo.getAdType())) {
+            requestRewardVideoAd(activity, adInfo, listener, (VideoAdListener) adListener);
         } else {
 
         }
     }
 
     public abstract void requestSplashAd(Activity activity, AdInfo adInfo, AdRequestListener adRequestListener, AdSplashListener adSplashListener);
+
+    public abstract void requestRewardVideoAd(Activity activity, AdInfo adInfo, AdRequestListener adRequestListener, VideoAdListener videoAdListener);
 
     /**
      * 缓存网络图片+

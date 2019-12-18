@@ -22,9 +22,9 @@ import com.comm.jksdk.constant.Constants;
 public class RequestManagerFactory implements RequestProvider {
     @Override
     public AdRequestManager produce(AdInfo adInfo) {
-        if (Constants.AdSourceType.ChuanShanJia.equals(adInfo.getAdSource())) {
+        if (Constants.AdSourceType.ChuanShanJia.equals(adInfo.getMidasAd().getAdSource())) {
             return new CsjSdkRequestManager();
-        } else if (Constants.AdSourceType.YouLiangHui.equals(adInfo.getAdSource())) {
+        } else if (Constants.AdSourceType.YouLiangHui.equals(adInfo.getMidasAd().getAdSource())) {
             return new YlhSdkRequestManager();
         } else {
             return null;

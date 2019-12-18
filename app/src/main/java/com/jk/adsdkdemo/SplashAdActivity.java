@@ -10,10 +10,8 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.bytedance.sdk.openadsdk.TTSplashAd;
 import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.ad.entity.AdInfo;
-import com.comm.jksdk.ad.listener.AdListener;
 import com.comm.jksdk.ad.listener.AdSplashListener;
 import com.comm.jksdk.constant.Constants;
 import com.jk.adsdkdemo.utils.LogUtils;
@@ -105,7 +103,7 @@ public class SplashAdActivity extends AppCompatActivity implements View.OnClickL
                 stateTxt.setText("-----adSuccess-----");
                 //穿山甲广告
                 if (Constants.AdSourceType.ChuanShanJia.equals(info.getAdSource())) {
-                    View view = info.getMidasSplashAd().getAddView();
+                    View view = info.getMidasAd().getAddView();
                     if (view != null) {
                         splashContainer.removeAllViews();
                         splashContainer.addView(view);
