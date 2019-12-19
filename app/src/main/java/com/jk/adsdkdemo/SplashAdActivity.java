@@ -102,7 +102,7 @@ public class SplashAdActivity extends AppCompatActivity implements View.OnClickL
                 LogUtils.d(TAG, "-----adSuccess-----");
                 stateTxt.setText("-----adSuccess-----");
                 //穿山甲广告
-                if (Constants.AdSourceType.ChuanShanJia.equals(info.getAdSource())) {
+                if (Constants.AdSourceType.ChuanShanJia.equals(info.getMidasAd().getAdSource())) {
                     View view = info.getMidasAd().getAddView();
                     if (view != null) {
                         splashContainer.removeAllViews();

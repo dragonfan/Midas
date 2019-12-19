@@ -75,8 +75,16 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
 //    }
 
     @Override
+    protected void requestFullScreenVideoAd(Activity activity, AdInfo info, AdRequestListener listener, VideoAdListener adListener) {
+        if (listener != null) {
+            listener.adError(info, 3, "优量汇暂不支持全屏视频");
+        }
+    }
+
+    @Override
     public void requestSplashAd(Activity activity, AdInfo adInfo, AdRequestListener adRequestListener, AdSplashListener adSplashListener) {
-        SplashAD splashAD = new SplashAD(activity, adInfo.getAdAppid(), adInfo.getAdId(), new SplashADListener() {
+        MidasSplashAd midasSplashAd = (MidasSplashAd) adInfo.getMidasAd();
+        SplashAD splashAD = new SplashAD(activity, midasSplashAd.getAppId(), midasSplashAd.getAdId(), new SplashADListener() {
             @Override
             public void onADDismissed() {
                 LogUtils.d(TAG, "YLH onADDismissed:");

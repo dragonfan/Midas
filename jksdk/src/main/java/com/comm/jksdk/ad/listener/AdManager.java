@@ -19,7 +19,9 @@ public interface AdManager {
 
     void loadMidasSplashAd(Activity activity, String position, AdSplashListener listener);
 
-    void loadMidasRewardVideoAd(Activity activity, String position, String userId, int orientation, String rewardName, int rewardAmount, AdListener listener);
+    void loadMidasRewardVideoAd(Activity activity, String position, String userId, int orientation, String rewardName, int rewardAmount, VideoAdListener listener);
+
+    void loadMidasFullScreenVideoAd(Activity activity, String position, VideoAdListener listener);
     /**
      * 加载原生模板广告
      * @param activity

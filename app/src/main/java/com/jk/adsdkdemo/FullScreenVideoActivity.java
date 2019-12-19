@@ -55,7 +55,7 @@ public class FullScreenVideoActivity extends AppCompatActivity implements View.O
     private void loadSplashAd(String position) {
         // cold_kp 、hot_kp
         splashContainer.removeAllViews();
-        MidasAdSdk.getAdsManger().loadVideoAd(this, position, new VideoAdListener() {
+        MidasAdSdk.getAdsManger().loadMidasFullScreenVideoAd(this, position, new VideoAdListener() {
             @Override
             public void onVideoResume(AdInfo info) {
 

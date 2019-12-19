@@ -42,14 +42,19 @@ public abstract class SdkRequestManager implements AdRequestManager {
             requestSplashAd(activity, adInfo, listener, (AdSplashListener) adListener);
         } else if (Constants.AdType.REWARD_VIDEO_TYPE.equals(adInfo.getAdType())) {
             requestRewardVideoAd(activity, adInfo, listener, (VideoAdListener) adListener);
+        } else if (Constants.AdType.FULL_SCREEN_VIDEO_TYPE.equals(adInfo.getAdType())){
+            requestFullScreenVideoAd(activity, adInfo, listener, (VideoAdListener) adListener);
         } else {
 
         }
     }
 
+    protected abstract void requestFullScreenVideoAd(Activity activity, AdInfo info, AdRequestListener listener, VideoAdListener adListener);
+
     public abstract void requestSplashAd(Activity activity, AdInfo adInfo, AdRequestListener adRequestListener, AdSplashListener adSplashListener);
 
     public abstract void requestRewardVideoAd(Activity activity, AdInfo adInfo, AdRequestListener adRequestListener, VideoAdListener videoAdListener);
+
 
     /**
      * 缓存网络图片+

@@ -18,6 +18,7 @@ import com.bytedance.sdk.openadsdk.TTRewardVideoAd;
 import com.bytedance.sdk.openadsdk.TTSplashAd;
 import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.ad.entity.AdInfo;
+import com.comm.jksdk.ad.entity.MidasFullScreenVideoAd;
 import com.comm.jksdk.ad.entity.MidasRewardVideoAd;
 import com.comm.jksdk.ad.entity.MidasSplashAd;
 import com.comm.jksdk.ad.listener.AdRequestListener;
@@ -73,9 +74,89 @@ public class CsjSdkRequestManager extends SdkRequestManager {
 //    }
 
     @Override
-    public void requestSplashAd(Activity activity, AdInfo adInfo, AdRequestListener adRequestListener, AdSplashListener adSplashListener) {
+    protected void requestFullScreenVideoAd(Activity activity, AdInfo info, AdRequestListener listener, VideoAdListener adListener) {
+        MidasFullScreenVideoAd midasFullScreenVideoAd = (MidasFullScreenVideoAd) info.getMidasAd();
         AdSlot adSlot = new AdSlot.Builder()
-                .setCodeId(adInfo.getAdId())
+                .setCodeId(midasFullScreenVideoAd.getAdId())
+                .setSupportDeepLink(true)
+                .setImageAcceptedSize(720, 1280)
+                .setOrientation(TTAdConstant.VERTICAL)//必填参数，期望视频的播放方向：TTAdConstant.HORIZONTAL 或 TTAdConstant.VERTICAL
+                .build();
+        //step5:请求广告
+        TTAdManagerHolder.get().createAdNative(MidasAdSdk.getContext()).loadFullScreenVideoAd(adSlot, new TTAdNative.FullScreenVideoAdListener() {
+            @Override
+            public void onError(int code, String message) {
+                LogUtils.e(TAG, "loadFullScreenVideoAd error:" + code + " message:" + message);
+                if (listener != null) {
+                    listener.adError(info, code, message);
+                }
+            }
+
+            @Override
+            public void onFullScreenVideoAdLoad(TTFullScreenVideoAd ad) {
+                if (ad != null) {
+                    midasFullScreenVideoAd.setTtFullScreenVideoAd(ad);
+                    ad.setFullScreenVideoAdInteractionListener(new TTFullScreenVideoAd.FullScreenVideoAdInteractionListener() {
+
+                        @Override
+                        public void onAdShow() {
+                            if (adListener != null) {
+                                adListener.adExposed(info);
+                            }
+                        }
+
+                        @Override
+                        public void onAdVideoBarClick() {
+                            if (adListener != null) {
+                                adListener.adClicked(info);
+                            }
+                        }
+
+                        @Override
+                        public void onAdClose() {
+                            if (adListener != null) {
+                                adListener.adClose(info);
+                            }
+                        }
+
+                        @Override
+                        public void onVideoComplete() {
+                            if (adListener != null) {
+                                adListener.onVideoComplete(info);
+                            }
+                        }
+
+                        @Override
+                        public void onSkippedVideo() {
+
+                        }
+                    });
+                    //step6:在获取到广告后展示
+                    ad.showFullScreenVideoAd(activity);
+                    if (adListener != null) {
+                        adListener.adSuccess(info);
+                    }
+                } else {
+                    if (listener != null) {
+                        listener.adError(info, 1, "请求广告为空");
+                    }
+                }
+            }
+
+            @Override
+            public void onFullScreenVideoCached() {
+//                if (listener != null && adInfo.isPreload()) {
+//                    listener.adSuccess(adInfo);
+//                }
+            }
+        });
+    }
+
+    @Override
+    public void requestSplashAd(Activity activity, AdInfo adInfo, AdRequestListener adRequestListener, AdSplashListener adSplashListener) {
+        MidasSplashAd midasSplashAd = (MidasSplashAd) adInfo.getMidasAd();
+        AdSlot adSlot = new AdSlot.Builder()
+                .setCodeId(midasSplashAd.getAdId())
                 .setSupportDeepLink(true)
                 .setImageAcceptedSize(720, 1280)
                 .build();

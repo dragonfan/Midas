@@ -15,6 +15,7 @@ import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
 import com.bytedance.sdk.openadsdk.TTRewardVideoAd;
 import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.ad.entity.AdInfo;
+import com.comm.jksdk.ad.entity.MidasFullScreenVideoAd;
 import com.comm.jksdk.ad.entity.MidasRewardVideoAd;
 import com.comm.jksdk.ad.entity.MidasSplashAd;
 import com.comm.jksdk.ad.factory.RequestManagerFactory;
@@ -189,7 +190,7 @@ public class MidasAdManger implements AdManager {
     }
 
     @Override
-    public void loadMidasRewardVideoAd(Activity activity, String position, String userId, int orientation, String rewardName, int rewardAmount, AdListener listener) {
+    public void loadMidasRewardVideoAd(Activity activity, String position, String userId, int orientation, String rewardName, int rewardAmount, VideoAdListener listener) {
         AdInfo adInfo = new AdInfo();
         adInfo.setAdType(Constants.AdType.REWARD_VIDEO_TYPE);
         MidasRewardVideoAd midasAdEntity = new MidasRewardVideoAd();
@@ -226,6 +227,41 @@ public class MidasAdManger implements AdManager {
             }
         }
 
+    }
+
+    @Override
+    public void loadMidasFullScreenVideoAd(Activity activity, String position, VideoAdListener listener) {
+        mAdListener = listener;
+        AdInfo adInfo = new AdInfo();
+        adInfo.setAdType(Constants.AdType.FULL_SCREEN_VIDEO_TYPE);
+        MidasFullScreenVideoAd midasAdEntity = new MidasFullScreenVideoAd();
+        adInfo.setMidasAd(midasAdEntity);
+        try {
+            mActivity = activity;
+            //设置广告位置信息
+            adInfo.setPosition(position);
+            //获取本地配置信息
+            readyInfo(adInfo);
+            if (CollectionUtils.isEmpty(adsInfoslist)) {
+                if (mAdListener != null) {
+                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                }
+                return;
+            }
+            ConfigBean.AdListBean.AdsInfosBean mAdsInfosBean = adsInfoslist.remove(0);
+            if (mAdsInfosBean == null) {
+                if (mAdListener != null) {
+                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                }
+                return;
+            }
+            againRequest(adInfo, mAdsInfosBean);
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (mAdListener != null) {
+                mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+            }
+        }
     }
 
     @Override

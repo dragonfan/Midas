@@ -372,12 +372,30 @@ public class AdInfo extends BaseEntity implements Ad {
     @Override
     public String toString() {
         return "AdInfo{" +
-                "adAppid='" + adAppid + '\'' +
+                "adType='" + adType + '\'' +
+                ", midasAd=" + midasAd +
+                ", adView=" + adView +
+                ", width=" + width +
+                ", userId='" + userId + '\'' +
+                ", rewardName='" + rewardName + '\'' +
+                ", rewardAmount=" + rewardAmount +
+                ", nativeUnifiedADData=" + nativeUnifiedADData +
+                ", ttNativeAd=" + ttNativeAd +
+                ", ttNativeExpressAd=" + ttNativeExpressAd +
+                ", ttRewardVideoAd=" + ttRewardVideoAd +
+                ", ttFullScreenVideoAd=" + ttFullScreenVideoAd +
+                ", ttFeedAd=" + ttFeedAd +
+                ", ttSplashAd=" + ttSplashAd +
+                ", adAppid='" + adAppid + '\'' +
                 ", adId='" + adId + '\'' +
                 ", adSource='" + adSource + '\'' +
                 ", adTitle='" + adTitle + '\'' +
                 ", adStyle='" + adStyle + '\'' +
+                ", adRequestTimeOut=" + adRequestTimeOut +
                 ", adClickType=" + adClickType +
+                ", mPosition='" + mPosition + '\'' +
+                ", mIsPreload=" + mIsPreload +
+                ", isDisk=" + isDisk +
                 '}';
     }
 
