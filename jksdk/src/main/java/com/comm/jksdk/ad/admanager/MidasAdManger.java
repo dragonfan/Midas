@@ -17,6 +17,7 @@ import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.ad.entity.MidasFullScreenVideoAd;
 import com.comm.jksdk.ad.entity.MidasInteractionAd;
+import com.comm.jksdk.ad.entity.MidasNativeTemplateAd;
 import com.comm.jksdk.ad.entity.MidasRewardVideoAd;
 import com.comm.jksdk.ad.entity.MidasSelfRenderAd;
 import com.comm.jksdk.ad.entity.MidasSplashAd;
@@ -309,6 +310,42 @@ public class MidasAdManger implements AdManager {
         adInfo.setAdType(Constants.AdType.INTERACTION_TYPE);
         MidasInteractionAd midasInteractionAd = new MidasInteractionAd();
         adInfo.setMidasAd(midasInteractionAd);
+        try {
+            mActivity = activity;
+            //设置广告位置信息
+            adInfo.setPosition(position);
+            //获取本地配置信息
+            readyInfo(adInfo);
+            if (CollectionUtils.isEmpty(adsInfoslist)) {
+                if (mAdListener != null) {
+                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                }
+                return;
+            }
+            ConfigBean.AdListBean.AdsInfosBean mAdsInfosBean = adsInfoslist.remove(0);
+            if (mAdsInfosBean == null) {
+                if (mAdListener != null) {
+                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                }
+                return;
+            }
+            againRequest(adInfo, mAdsInfosBean);
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (mAdListener != null) {
+                mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+            }
+        }
+    }
+
+    @Override
+    public void loadMidasNativeTemplateAd(Activity activity, String position, float width, AdListener listener) {
+        mAdListener = listener;
+        AdInfo adInfo = new AdInfo();
+        adInfo.setAdType(Constants.AdType.NATIVE_TEMPLATE);
+        MidasNativeTemplateAd midasNativeTemplateAd = new MidasNativeTemplateAd();
+        midasNativeTemplateAd.setWidth(width);
+        adInfo.setMidasAd(midasNativeTemplateAd);
         try {
             mActivity = activity;
             //设置广告位置信息

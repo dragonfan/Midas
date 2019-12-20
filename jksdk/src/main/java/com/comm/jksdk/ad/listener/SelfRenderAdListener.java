@@ -8,6 +8,6 @@ import com.comm.jksdk.ad.entity.AdInfo;
  * @author fanhailong
  * @since 2019/11/17 13:52
  */
-public interface SelfRenderAdListener extends AdListener {
-    void onVideoLoaded(AdInfo adInfo);
+public interface SelfRenderAdListener<T extends AdInfo> extends AdListener<T> {
+    void onVideoLoaded(T adInfo);
 }

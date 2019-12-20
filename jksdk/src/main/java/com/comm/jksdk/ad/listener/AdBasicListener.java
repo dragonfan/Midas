@@ -14,16 +14,16 @@ import com.comm.jksdk.ad.entity.AdInfo;
  * @UpdateRemark: 更新说明：
  * @Version: 1.0
  */
-public interface AdBasicListener {
+public interface AdBasicListener<T> {
     /**
      * 广告请求成功
      */
-    void adSuccess(AdInfo info);
+    void adSuccess(T info);
 
     /**
      * 广告失败
      * @param errorCode
      * @param errorMsg
      */
-    void adError(AdInfo info, int errorCode, String errorMsg);
+    void adError(T info, int errorCode, String errorMsg);
 }

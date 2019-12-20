@@ -120,7 +120,7 @@ public class BigImgAcitvity extends AppCompatActivity implements View.OnClickLis
 //                        Toast.makeText(getApplicationContext(), "加载广告失败", Toast.LENGTH_LONG).show();
 //                    }
 //                });
-                MidasAdSdk.getAdsManger().loadMidasSelfRenderAd(this, position, new SelfRenderAdListener() {
+                MidasAdSdk.getAdsManger().loadMidasSelfRenderAd(this, position, new SelfRenderAdListener<AdInfo>() {
                     @Override
                     public void onVideoLoaded(AdInfo adInfo) {
 

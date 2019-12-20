@@ -8,16 +8,16 @@ import com.comm.jksdk.ad.entity.AdInfo;
  * @author zixuefei
  * @since 2019/11/17 13:52
  */
-public interface VideoAdListener extends AdListener {
+public interface VideoAdListener<T extends AdInfo> extends AdListener<T> {
     /**
      * 视频恢复
      */
-    void onVideoResume(AdInfo info);
+    void onVideoResume(T info);
 
     /**
      * 激励视频获得激励回调(视频播放完成后，奖励验证回调，rewardVerify：是否有效，rewardAmount：奖励梳理，rewardName：奖励名称)
      */
-    void onVideoRewardVerify(AdInfo info, boolean rewardVerify, int rewardAmount, String rewardName);
+    void onVideoRewardVerify(T info, boolean rewardVerify, int rewardAmount, String rewardName);
 
-    void onVideoComplete(AdInfo info);
+    void onVideoComplete(T info);
 }

@@ -15,23 +15,23 @@ import com.comm.jksdk.ad.entity.AdInfo;
   * @UpdateRemark:   更新说明：
   * @Version:        1.0
  */
-public interface AdListener extends AdBasicListener{
+public interface AdListener<T> extends AdBasicListener<T> {
 
     /**
      * 广告展示
      */
-    void adExposed(AdInfo info);
+    void adExposed(T info);
 
     /**
      * 广告点击
      */
-    void adClicked(AdInfo info);
+    void adClicked(T info);
 
     /**
      * 广告关闭
      * @param info
      */
-    default void adClose(AdInfo info){
+    default void adClose(T info){
 
     }
 

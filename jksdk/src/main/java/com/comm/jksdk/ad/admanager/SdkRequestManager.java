@@ -49,12 +49,14 @@ public abstract class SdkRequestManager implements AdRequestManager {
             requestSelfRenderAd(activity, adInfo, listener, (SelfRenderAdListener)adListener);
         } else if (Constants.AdType.INTERACTION_TYPE.equals(adInfo.getAdType())){
             requestInteractionAd(activity, adInfo, listener, adListener);
-        } else if (Constants.AdType.INTERACTION_TYPE.equals(adInfo.getAdType())) {
-
+        } else if (Constants.AdType.NATIVE_TEMPLATE.equals(adInfo.getAdType())) {
+            requestNativeTemplateAd(activity, adInfo, listener, adListener);
         } else {
 
         }
     }
+
+    protected abstract void requestNativeTemplateAd(Activity activity, AdInfo info, AdRequestListener listener, AdListener listener1);
 
     protected abstract void requestInteractionAd(Activity activity, AdInfo info, AdRequestListener listener, AdListener adListener);
 

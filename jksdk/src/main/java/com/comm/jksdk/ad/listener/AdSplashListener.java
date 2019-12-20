@@ -2,6 +2,8 @@ package com.comm.jksdk.ad.listener;
 
 import android.view.ViewGroup;
 
+import com.comm.jksdk.ad.entity.AdInfo;
+
 /**
  * @ProjectName: Midas
  * @Package: com.comm.jksdk.ad.listener
@@ -14,7 +16,7 @@ import android.view.ViewGroup;
  * @UpdateRemark: 更新说明：
  * @Version: 1.0
  */
-public interface AdSplashListener extends AdListener{
+public interface AdSplashListener<T extends AdInfo> extends AdListener<T>{
     /**
      * 传入view容器：优量广告用到
      * @return

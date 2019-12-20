@@ -49,32 +49,32 @@ public class TemplateInsertScreenAcitvity extends AppCompatActivity implements V
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_request_ad:
-                String position = positionEt.getText().toString().trim();
-                if (TextUtils.isEmpty(position)) {
-                    Toast.makeText(getApplicationContext(), "accept->输入的位置不能为空", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                MidasAdSdk.getAdsManger().loadCustomInsertScreenAd(this, position, 3, new AdListener() {
-                    @Override
-                    public void adSuccess(AdInfo info) {
-                        LogUtils.d(TAG, "-----adSuccess-----");
-                    }
-
-                    @Override
-                    public void adExposed(AdInfo info) {
-                        LogUtils.d(TAG, "-----adExposed-----");
-                    }
-
-                    @Override
-                    public void adClicked(AdInfo info) {
-                        LogUtils.d(TAG, "-----adClicked-----");
-                    }
-
-                    @Override
-                    public void adError(AdInfo info, int errorCode, String errorMsg) {
-                        LogUtils.d(TAG, "-----adError-----" + errorMsg);
-                    }
-                });
+//                String position = positionEt.getText().toString().trim();
+//                if (TextUtils.isEmpty(position)) {
+//                    Toast.makeText(getApplicationContext(), "accept->输入的位置不能为空", Toast.LENGTH_LONG).show();
+//                    return;
+//                }
+//                MidasAdSdk.getAdsManger().loadCustomInsertScreenAd(this, position, 3, new AdListener() {
+//                    @Override
+//                    public void adSuccess(AdInfo info) {
+//                        LogUtils.d(TAG, "-----adSuccess-----");
+//                    }
+//
+//                    @Override
+//                    public void adExposed(AdInfo info) {
+//                        LogUtils.d(TAG, "-----adExposed-----");
+//                    }
+//
+//                    @Override
+//                    public void adClicked(AdInfo info) {
+//                        LogUtils.d(TAG, "-----adClicked-----");
+//                    }
+//
+//                    @Override
+//                    public void adError(AdInfo info, int errorCode, String errorMsg) {
+//                        LogUtils.d(TAG, "-----adError-----" + errorMsg);
+//                    }
+//                });
                 break;
         }
     }

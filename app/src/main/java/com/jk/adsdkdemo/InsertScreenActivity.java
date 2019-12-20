@@ -93,7 +93,7 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
 //            }
 //        }, "80");
 
-        MidasAdSdk.getAdsManger().loadMidasInteractionAd(this, position, new AdListener() {
+        MidasAdSdk.getAdsManger().loadMidasInteractionAd(this, position, new AdListener<AdInfo>() {
             @Override
             public void adExposed(AdInfo info) {
                 LogUtils.d(TAG, "-----adExposed-----");

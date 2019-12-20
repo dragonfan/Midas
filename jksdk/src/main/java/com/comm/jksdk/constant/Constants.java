@@ -29,6 +29,10 @@ public class Constants {
          */
         String INTERACTION_TYPE = "INTERACTION_TYPE";
         /**
+         * 原生模板广告类型
+         */
+        String NATIVE_TEMPLATE = "NATIVE_TEMPLATE";
+        /**
          * banner广告类型
          */
         String BANNER_TYPE = "BANNER_TYPE";

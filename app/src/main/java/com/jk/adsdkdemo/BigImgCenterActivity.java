@@ -13,6 +13,10 @@ import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.ad.listener.AdListener;
 import com.jk.adsdkdemo.utils.LogUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
   *
   * @ProjectName:    ${PROJECT_NAME}
@@ -52,7 +56,8 @@ public class BigImgCenterActivity extends AppCompatActivity implements View.OnCl
                     Toast.makeText(getApplicationContext(), "accept->输入的位置不能为空", Toast.LENGTH_LONG).show();
                     return;
                 }
-                MidasAdSdk.getAdsManger().loadAd(this,position, new AdListener() {
+                List<String> list = new ArrayList<>();
+                MidasAdSdk.getAdsManger().loadAd(this,position, new AdListener<AdInfo>() {
                     @Override
                     public void adSuccess(AdInfo info) {
                         if (info == null) {

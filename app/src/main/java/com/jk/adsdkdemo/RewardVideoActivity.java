@@ -57,7 +57,7 @@ public class RewardVideoActivity extends AppCompatActivity implements View.OnCli
     private void loadSplashAd(String position) {
         // cp_ad_1
         splashContainer.removeAllViews();
-        MidasAdSdk.getAdsManger().loadMidasRewardVideoAd(this, position, "user123", 1,  "金币哈哈哈", 3, new VideoAdListener() {
+        MidasAdSdk.getAdsManger().loadMidasRewardVideoAd(this, position, "user123", 1,  "金币哈哈哈", 3, new VideoAdListener<AdInfo>() {
 
             @Override
             public void onVideoResume(AdInfo info) {

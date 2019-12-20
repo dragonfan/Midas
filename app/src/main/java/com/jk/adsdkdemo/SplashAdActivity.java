@@ -91,7 +91,7 @@ public class SplashAdActivity extends AppCompatActivity implements View.OnClickL
 //
 //        });
 
-        MidasAdSdk.getAdsManger().loadMidasSplashAd(this, position, new AdSplashListener() {
+        MidasAdSdk.getAdsManger().loadMidasSplashAd(this, position, new AdSplashListener<AdInfo>() {
             @Override
             public ViewGroup getViewGroup() {
                 return splashContainer;

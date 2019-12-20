@@ -26,6 +26,8 @@ public interface AdManager {
     void loadMidasSelfRenderAd(Activity activity, String position, SelfRenderAdListener listener);
 
     void loadMidasInteractionAd(Activity activity, String position, AdListener listener);
+
+    void loadMidasNativeTemplateAd(Activity activity, String position, float width, AdListener listener);
     /**
      * 加载原生模板广告
      * @param activity
