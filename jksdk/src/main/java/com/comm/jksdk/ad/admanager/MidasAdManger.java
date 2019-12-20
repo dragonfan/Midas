@@ -16,7 +16,9 @@ import com.bytedance.sdk.openadsdk.TTRewardVideoAd;
 import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.ad.entity.MidasFullScreenVideoAd;
+import com.comm.jksdk.ad.entity.MidasInteractionAd;
 import com.comm.jksdk.ad.entity.MidasRewardVideoAd;
+import com.comm.jksdk.ad.entity.MidasSelfRenderAd;
 import com.comm.jksdk.ad.entity.MidasSplashAd;
 import com.comm.jksdk.ad.factory.RequestManagerFactory;
 import com.comm.jksdk.ad.listener.AdListener;
@@ -26,6 +28,7 @@ import com.comm.jksdk.ad.listener.AdRequestListener;
 import com.comm.jksdk.ad.listener.AdRequestManager;
 import com.comm.jksdk.ad.listener.AdSplashListener;
 import com.comm.jksdk.ad.listener.FirstAdListener;
+import com.comm.jksdk.ad.listener.SelfRenderAdListener;
 import com.comm.jksdk.ad.listener.VideoAdListener;
 import com.comm.jksdk.ad.view.chjview.CHJAdView;
 import com.comm.jksdk.ad.view.chjview.ChjBigImgAdPlayLampView;
@@ -236,6 +239,76 @@ public class MidasAdManger implements AdManager {
         adInfo.setAdType(Constants.AdType.FULL_SCREEN_VIDEO_TYPE);
         MidasFullScreenVideoAd midasAdEntity = new MidasFullScreenVideoAd();
         adInfo.setMidasAd(midasAdEntity);
+        try {
+            mActivity = activity;
+            //设置广告位置信息
+            adInfo.setPosition(position);
+            //获取本地配置信息
+            readyInfo(adInfo);
+            if (CollectionUtils.isEmpty(adsInfoslist)) {
+                if (mAdListener != null) {
+                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                }
+                return;
+            }
+            ConfigBean.AdListBean.AdsInfosBean mAdsInfosBean = adsInfoslist.remove(0);
+            if (mAdsInfosBean == null) {
+                if (mAdListener != null) {
+                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                }
+                return;
+            }
+            againRequest(adInfo, mAdsInfosBean);
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (mAdListener != null) {
+                mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+            }
+        }
+    }
+
+    @Override
+    public void loadMidasSelfRenderAd(Activity activity, String position, SelfRenderAdListener listener) {
+        mAdListener = listener;
+        AdInfo adInfo = new AdInfo();
+        adInfo.setAdType(Constants.AdType.SELF_RENDER);
+        MidasSelfRenderAd midasAdEntity = new MidasSelfRenderAd();
+        adInfo.setMidasAd(midasAdEntity);
+        try {
+            mActivity = activity;
+            //设置广告位置信息
+            adInfo.setPosition(position);
+            //获取本地配置信息
+            readyInfo(adInfo);
+            if (CollectionUtils.isEmpty(adsInfoslist)) {
+                if (mAdListener != null) {
+                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                }
+                return;
+            }
+            ConfigBean.AdListBean.AdsInfosBean mAdsInfosBean = adsInfoslist.remove(0);
+            if (mAdsInfosBean == null) {
+                if (mAdListener != null) {
+                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                }
+                return;
+            }
+            againRequest(adInfo, mAdsInfosBean);
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (mAdListener != null) {
+                mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+            }
+        }
+    }
+
+    @Override
+    public void loadMidasInteractionAd(Activity activity, String position, AdListener listener) {
+        mAdListener = listener;
+        AdInfo adInfo = new AdInfo();
+        adInfo.setAdType(Constants.AdType.INTERACTION_TYPE);
+        MidasInteractionAd midasInteractionAd = new MidasInteractionAd();
+        adInfo.setMidasAd(midasInteractionAd);
         try {
             mActivity = activity;
             //设置广告位置信息

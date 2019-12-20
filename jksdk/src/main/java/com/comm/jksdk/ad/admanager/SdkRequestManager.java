@@ -15,6 +15,7 @@ import com.comm.jksdk.ad.listener.AdListener;
 import com.comm.jksdk.ad.listener.AdRequestListener;
 import com.comm.jksdk.ad.listener.AdRequestManager;
 import com.comm.jksdk.ad.listener.AdSplashListener;
+import com.comm.jksdk.ad.listener.SelfRenderAdListener;
 import com.comm.jksdk.ad.listener.VideoAdListener;
 import com.comm.jksdk.constant.Constants;
 import com.comm.jksdk.http.utils.LogUtils;
@@ -44,10 +45,20 @@ public abstract class SdkRequestManager implements AdRequestManager {
             requestRewardVideoAd(activity, adInfo, listener, (VideoAdListener) adListener);
         } else if (Constants.AdType.FULL_SCREEN_VIDEO_TYPE.equals(adInfo.getAdType())){
             requestFullScreenVideoAd(activity, adInfo, listener, (VideoAdListener) adListener);
+        } else if (Constants.AdType.SELF_RENDER.equals(adInfo.getAdType())){
+            requestSelfRenderAd(activity, adInfo, listener, (SelfRenderAdListener)adListener);
+        } else if (Constants.AdType.INTERACTION_TYPE.equals(adInfo.getAdType())){
+            requestInteractionAd(activity, adInfo, listener, adListener);
+        } else if (Constants.AdType.INTERACTION_TYPE.equals(adInfo.getAdType())) {
+
         } else {
 
         }
     }
+
+    protected abstract void requestInteractionAd(Activity activity, AdInfo info, AdRequestListener listener, AdListener adListener);
+
+    protected abstract void requestSelfRenderAd(Activity activity, AdInfo info, AdRequestListener listener, SelfRenderAdListener adListener);
 
     protected abstract void requestFullScreenVideoAd(Activity activity, AdInfo info, AdRequestListener listener, VideoAdListener adListener);
 

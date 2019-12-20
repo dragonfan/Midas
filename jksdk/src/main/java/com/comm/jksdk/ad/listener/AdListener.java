@@ -15,12 +15,7 @@ import com.comm.jksdk.ad.entity.AdInfo;
   * @UpdateRemark:   更新说明：
   * @Version:        1.0
  */
-public interface AdListener {
-
-    /**
-     * 广告请求成功
-     */
-    void adSuccess(AdInfo info);
+public interface AdListener extends AdBasicListener{
 
     /**
      * 广告展示
@@ -39,13 +34,5 @@ public interface AdListener {
     default void adClose(AdInfo info){
 
     }
-
-    /**
-     * 广告失败
-     * @param errorCode
-     * @param errorMsg
-     */
-    void adError(AdInfo info, int errorCode, String errorMsg);
-
 
 }

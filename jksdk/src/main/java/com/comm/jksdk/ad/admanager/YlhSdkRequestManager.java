@@ -9,15 +9,20 @@ import com.bytedance.sdk.openadsdk.AdSlot;
 import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
 import com.comm.jksdk.ad.entity.AdInfo;
+import com.comm.jksdk.ad.entity.MidasInteractionAd;
 import com.comm.jksdk.ad.entity.MidasRewardVideoAd;
 import com.comm.jksdk.ad.entity.MidasSplashAd;
+import com.comm.jksdk.ad.listener.AdListener;
 import com.comm.jksdk.ad.listener.AdRequestListener;
 import com.comm.jksdk.ad.listener.AdSplashListener;
+import com.comm.jksdk.ad.listener.SelfRenderAdListener;
 import com.comm.jksdk.ad.listener.VideoAdListener;
 import com.comm.jksdk.config.TTAdManagerHolder;
 import com.comm.jksdk.http.utils.LogUtils;
 import com.comm.jksdk.utils.CollectionUtils;
 import com.qq.e.ads.cfg.VideoOption;
+import com.qq.e.ads.interstitial2.UnifiedInterstitialAD;
+import com.qq.e.ads.interstitial2.UnifiedInterstitialADListener;
 import com.qq.e.ads.nativ.NativeADUnifiedListener;
 import com.qq.e.ads.nativ.NativeUnifiedAD;
 import com.qq.e.ads.nativ.NativeUnifiedADData;
@@ -73,6 +78,74 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
 //            }
 //        }
 //    }
+
+    private UnifiedInterstitialAD iad;
+    @Override
+    protected void requestInteractionAd(Activity activity, AdInfo info, AdRequestListener listener, AdListener adListener) {
+        MidasInteractionAd midasInteractionAd = (MidasInteractionAd) info.getMidasAd();
+        if (iad != null) {
+            iad.close();
+            iad.destroy();
+            iad = null;
+        }
+        iad = new UnifiedInterstitialAD(activity, midasInteractionAd.getAppId(), midasInteractionAd.getAdId(), new UnifiedInterstitialADListener() {
+            @Override
+            public void onADReceive() {
+                //广告加载成功
+                if (iad != null) {
+                    iad.showAsPopupWindow();
+                }
+                if (adListener != null) {
+                    adListener.adSuccess(info);
+                }
+            }
+
+            @Override
+            public void onNoAD(AdError adError) {
+                if (listener != null) {
+                    listener.adError(info, adError.getErrorCode(), adError.getErrorMsg());
+                }
+            }
+
+            @Override
+            public void onADOpened() {
+
+            }
+
+            @Override
+            public void onADExposure() {
+                if (adListener != null) {
+                    adListener.adExposed(info);
+                }
+            }
+
+            @Override
+            public void onADClicked() {
+                if (adListener != null) {
+                    adListener.adClicked(info);
+                }
+            }
+
+            @Override
+            public void onADLeftApplication() {
+
+            }
+
+            @Override
+            public void onADClosed() {
+                if (adListener != null) {
+                    adListener.adClose(info);
+                }
+            }
+        });
+        ((MidasInteractionAd) info.getMidasAd()).setUnifiedInterstitialAD(iad);
+        iad.loadAD();
+    }
+
+    @Override
+    protected void requestSelfRenderAd(Activity activity, AdInfo info, AdRequestListener listener, SelfRenderAdListener adListener) {
+
+    }
 
     @Override
     protected void requestFullScreenVideoAd(Activity activity, AdInfo info, AdRequestListener listener, VideoAdListener adListener) {

@@ -22,6 +22,10 @@ public interface AdManager {
     void loadMidasRewardVideoAd(Activity activity, String position, String userId, int orientation, String rewardName, int rewardAmount, VideoAdListener listener);
 
     void loadMidasFullScreenVideoAd(Activity activity, String position, VideoAdListener listener);
+
+    void loadMidasSelfRenderAd(Activity activity, String position, SelfRenderAdListener listener);
+
+    void loadMidasInteractionAd(Activity activity, String position, AdListener listener);
     /**
      * 加载原生模板广告
      * @param activity

@@ -19,10 +19,15 @@ import com.bytedance.sdk.openadsdk.TTSplashAd;
 import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.ad.entity.MidasFullScreenVideoAd;
+import com.comm.jksdk.ad.entity.MidasInteractionAd;
 import com.comm.jksdk.ad.entity.MidasRewardVideoAd;
+import com.comm.jksdk.ad.entity.MidasSelfRenderAd;
 import com.comm.jksdk.ad.entity.MidasSplashAd;
+import com.comm.jksdk.ad.listener.AdBasicListener;
+import com.comm.jksdk.ad.listener.AdListener;
 import com.comm.jksdk.ad.listener.AdRequestListener;
 import com.comm.jksdk.ad.listener.AdSplashListener;
+import com.comm.jksdk.ad.listener.SelfRenderAdListener;
 import com.comm.jksdk.ad.listener.VideoAdListener;
 import com.comm.jksdk.config.TTAdManagerHolder;
 import com.comm.jksdk.http.utils.LogUtils;
@@ -72,6 +77,148 @@ public class CsjSdkRequestManager extends SdkRequestManager {
 //            }
 //        }
 //    }
+
+    @Override
+    protected void requestInteractionAd(Activity activity, AdInfo info, AdRequestListener listener, AdListener adListener) {
+        MidasInteractionAd midasInteractionAd = (MidasInteractionAd) info.getMidasAd();
+        float expressViewWidth = 300;
+        float expressViewHeight = 300;
+        AdSlot adSlot = new AdSlot.Builder()
+                //广告位id
+                .setCodeId(midasInteractionAd.getAdId())
+                .setSupportDeepLink(true)
+                //请求广告数量为1到3条
+                .setAdCount(1)
+                //期望模板广告view的size,单位dp
+                .setExpressViewAcceptedSize(expressViewWidth,expressViewHeight)
+                //这个参数设置即可，不影响模板广告的size
+                .setImageAcceptedSize(640,320 )
+                .build();
+        //step5:请求广告，对请求回调的广告作渲染处理
+        TTAdManagerHolder.get().createAdNative(activity.getApplicationContext()).loadInteractionExpressAd(adSlot, new TTAdNative.NativeExpressAdListener() {
+            @Override
+            public void onError(int code, String message) {
+                if (listener != null) {
+                    listener.adError(info, code, message);
+                }
+            }
+
+            @Override
+            public void onNativeExpressAdLoad(List<TTNativeExpressAd> ads) {
+                if (CollectionUtils.isEmpty(ads)) {
+                    if (listener != null) {
+                        listener.adError(info, 1, "广告获取为空");
+                    }
+                    return;
+                }
+                TTNativeExpressAd ttNativeExpressAd = ads.get(0);
+                if (ttNativeExpressAd == null) {
+                    if (listener != null) {
+                        listener.adError(info, 1, "广告获取为空");
+                    }
+                    return;
+                }
+
+                ((MidasInteractionAd) info.getMidasAd()).setTtNativeExpressAd(ttNativeExpressAd);
+                ttNativeExpressAd.setExpressInteractionListener(new TTNativeExpressAd.AdInteractionListener() {
+                    @Override
+                    public void onAdClicked(View view, int i) {
+                        if (adListener != null) {
+                            adListener.adClicked(info);
+                        }
+                    }
+
+                    @Override
+                    public void onAdShow(View view, int i) {
+                        if (adListener != null) {
+                            adListener.adExposed(info);
+                        }
+                    }
+
+                    @Override
+                    public void onRenderFail(View view, String s, int i) {
+                        if (adListener != null) {
+                            adListener.adError(info, i, s);
+                        }
+                    }
+
+                    @Override
+                    public void onRenderSuccess(View view, float v, float v1) {
+                        if (adListener != null) {
+                            adListener.adSuccess(info);
+                        }
+                        ttNativeExpressAd.showInteractionExpressAd(activity);
+                    }
+
+                    @Override
+                    public void onAdDismiss() {
+                        if (adListener != null) {
+                            adListener.adClose(info);
+                        }
+                    }
+                });
+                ttNativeExpressAd.render();
+            }
+        });
+    }
+
+    @Override
+    protected void requestSelfRenderAd(Activity activity, AdInfo info, AdRequestListener listener, SelfRenderAdListener adListener) {
+        MidasSelfRenderAd midasSelfRenderAd = (MidasSelfRenderAd) info.getMidasAd();
+        //step1:初始化sdk
+        TTAdManager ttAdManager = TTAdManagerHolder.get();
+        //step2:创建TTAdNative对象,用于调用广告请求接口
+        TTAdNative mTTAdNative = ttAdManager.createAdNative(MidasAdSdk.getContext());
+        //step3:(可选，强烈建议在合适的时机调用):申请部分权限，如read_phone_state,防止获取不了imei时候，下载类广告没有填充的问题。
+//        TTAdManagerHolder.get().requestPermissionIfNecessary(mContext);
+
+        AdSlot adSlot = new AdSlot.Builder()
+                .setCodeId(midasSelfRenderAd.getAdId())
+                .setSupportDeepLink(true)
+                .setImageAcceptedSize(640, 320)
+                .setAdCount(1)
+                .build();
+        mTTAdNative.loadFeedAd(adSlot, new TTAdNative.FeedAdListener() {
+            @Override
+            public void onError(int i, String s) {
+                LogUtils.d(TAG, "onNoAD->请求穿山甲失败,ErrorCode:" + i + ",ErrorMsg:" + s);
+                if (listener != null) {
+                    listener.adError(info, i, s);
+                }
+            }
+
+            @Override
+            public void onFeedAdLoad(List<TTFeedAd> list) {
+                LogUtils.d(TAG, "onADLoaded->请求穿山甲成功");
+                if (CollectionUtils.isEmpty(list)) {
+                    if (listener != null) {
+                        listener.adError(info, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                    }
+                    return;
+                }
+                TTFeedAd ttFeedAd = list.get(0);
+                if (ttFeedAd == null) {
+                    if (listener != null) {
+                        listener.adError(info, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                    }
+                    return;
+                }
+//                caheImage(ttFeedAd);
+//                String title = ttFeedAd.getTitle();
+//                adInfo.setAdTitle(title);
+//                if (TTAdConstant.INTERACTION_TYPE_DOWNLOAD == ttFeedAd.getInteractionType()) {
+//                    adInfo.setAdClickType(1);
+//                } else {
+//                    adInfo.setAdClickType(2);
+//                }
+//                adInfo.setTtFeedAd(ttFeedAd);
+                ((MidasSelfRenderAd) info.getMidasAd()).setTtFeedAd(ttFeedAd);
+                if (adListener != null) {
+                    adListener.adSuccess(info);
+                }
+            }
+        });
+    }
 
     @Override
     protected void requestFullScreenVideoAd(Activity activity, AdInfo info, AdRequestListener listener, VideoAdListener adListener) {
@@ -758,5 +905,4 @@ public class CsjSdkRequestManager extends SdkRequestManager {
             }
         }
     }
-
 }

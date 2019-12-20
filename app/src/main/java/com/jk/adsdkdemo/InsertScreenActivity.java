@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.comm.jksdk.MidasAdSdk;
+import com.comm.jksdk.ad.entity.Ad;
 import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.ad.listener.AdListener;
 import com.jk.adsdkdemo.utils.LogUtils;
@@ -37,19 +38,19 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
     private void initView() {
         setTitle("自渲染插屏广告");
         statePoint = findViewById(R.id.txt_point);
-        statePoint2 = findViewById(R.id.txt_point2);
+//        statePoint2 = findViewById(R.id.txt_point2);
         positionEdit = findViewById(R.id.splash_position_edit);
-        positionEdit2 = findViewById(R.id.splash_position_edit2);
+//        positionEdit2 = findViewById(R.id.splash_position_edit2);
         btnNormal = findViewById(R.id.btn_normal_browse);
         btnNormal.setOnClickListener(this);
         container = findViewById(R.id.container);
 
 //        btnNormalDownload = findViewById(R.id.btn_normal_download);
 //        btnNormalDownload.setOnClickListener(this);
-        positionEdit.setText("external_advertising_ad_2");
-        positionEdit2.setText("cp_ad_2");
-        btnFullScreen = findViewById(R.id.btn_fullscreen_download);
-        btnFullScreen.setOnClickListener(this);
+        positionEdit.setText("inside_advertising_ad");
+//        positionEdit2.setText("cp_ad_2");
+//        btnFullScreen = findViewById(R.id.btn_fullscreen_download);
+//        btnFullScreen.setOnClickListener(this);
     }
 
     View adView;
@@ -58,53 +59,41 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
      */
     private void loadCustomInsertScreenAd(String position) {
         LogUtils.d(TAG, "position:" + position );
-        MidasAdSdk.getAdsManger().loadCustomInsertScreenAd(this, position, 3, new AdListener() {
-            @Override
-            public void adSuccess(AdInfo info) {
-                LogUtils.d(TAG, "-----adSuccess-----");
+//        MidasAdSdk.getAdsManger().loadCustomInsertScreenAd(this, position, 3, new AdListener() {
+//            @Override
+//            public void adSuccess(AdInfo info) {
+//                LogUtils.d(TAG, "-----adSuccess-----");
+//
+//                statePoint.setText("state:adSuccess");
+//                String adStyle = info.getAdStyle();
+//                if ("EXTERNAL_CP_01".equals(adStyle)) { //外部插屏广告用addView的形式
+//                    adView = info.getAdView();
+//                    if (adView != null) {
+//                        container.removeAllViews();
+//                        container.addView(adView);
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void adExposed(AdInfo info) {
+//                LogUtils.d(TAG, "-----adExposed-----");
+//            }
+//
+//            @Override
+//            public void adClicked(AdInfo info) {
+//                LogUtils.d(TAG, "-----adClicked-----");
+//            }
+//
+//            @Override
+//            public void adError(AdInfo info, int errorCode, String errorMsg) {
+//                //调试用
+//                LogUtils.d(TAG, "-----adError-----" + errorMsg);
+//                statePoint.setText("error:" + errorCode + " errorMsg:" + errorMsg);
+//            }
+//        }, "80");
 
-                statePoint.setText("state:adSuccess");
-                String adStyle = info.getAdStyle();
-                if ("EXTERNAL_CP_01".equals(adStyle)) { //外部插屏广告用addView的形式
-                    adView = info.getAdView();
-                    if (adView != null) {
-                        container.removeAllViews();
-                        container.addView(adView);
-                    }
-                }
-            }
-
-            @Override
-            public void adExposed(AdInfo info) {
-                LogUtils.d(TAG, "-----adExposed-----");
-            }
-
-            @Override
-            public void adClicked(AdInfo info) {
-                LogUtils.d(TAG, "-----adClicked-----");
-            }
-
-            @Override
-            public void adError(AdInfo info, int errorCode, String errorMsg) {
-                //调试用
-                LogUtils.d(TAG, "-----adError-----" + errorMsg);
-                statePoint.setText("error:" + errorCode + " errorMsg:" + errorMsg);
-            }
-        }, "80");
-    }
-
-    /**
-     * 获取全屏插屏广告并加载
-     */
-    private void loadCustomInsertScreenAd2(String position) {
-        LogUtils.d(TAG, "position:" + position + " isFullScreen:");
-        MidasAdSdk.getAdsManger().loadCustomInsertScreenAd(this, position, 3, new AdListener() {
-            @Override
-            public void adSuccess(AdInfo info) {
-                LogUtils.d(TAG, "-----adSuccess-----");
-                statePoint.setText("state:adSuccess");
-            }
-
+        MidasAdSdk.getAdsManger().loadMidasInteractionAd(this, position, new AdListener() {
             @Override
             public void adExposed(AdInfo info) {
                 LogUtils.d(TAG, "-----adExposed-----");
@@ -116,8 +105,9 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
             }
 
             @Override
-            public void adClose(AdInfo info) {
-                LogUtils.d(TAG, "-----adClose-----");
+            public void adSuccess(AdInfo info) {
+                LogUtils.d(TAG, "-----adSuccess-----");
+                statePoint.setText("state:adSuccess");
             }
 
             @Override
@@ -125,20 +115,59 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
                 LogUtils.d(TAG, "-----adError-----" + errorMsg);
                 statePoint.setText("error:" + errorCode + " errorMsg:" + errorMsg);
             }
-
         });
     }
+
+//    /**
+//     * 获取全屏插屏广告并加载
+//     */
+//    private void loadCustomInsertScreenAd2(String position) {
+//        LogUtils.d(TAG, "position:" + position + " isFullScreen:");
+//        MidasAdSdk.getAdsManger().loadCustomInsertScreenAd(this, position, 3, new AdListener() {
+//            @Override
+//            public void adSuccess(AdInfo info) {
+//                LogUtils.d(TAG, "-----adSuccess-----");
+//                statePoint.setText("state:adSuccess");
+//            }
+//
+//            @Override
+//            public void adExposed(AdInfo info) {
+//                LogUtils.d(TAG, "-----adExposed-----");
+//            }
+//
+//            @Override
+//            public void adClicked(AdInfo info) {
+//                LogUtils.d(TAG, "-----adClicked-----");
+//            }
+//
+//            @Override
+//            public void adClose(AdInfo info) {
+//                LogUtils.d(TAG, "-----adClose-----");
+//            }
+//
+//            @Override
+//            public void adError(AdInfo info, int errorCode, String errorMsg) {
+//                LogUtils.d(TAG, "-----adError-----" + errorMsg);
+//                statePoint.setText("error:" + errorCode + " errorMsg:" + errorMsg);
+//            }
+//
+//        });
+//    }
 
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_fullscreen_download:
-                loadCustomInsertScreenAd2(positionEdit2.getText().toString().trim());
-                break;
+//            case R.id.btn_fullscreen_download:
+//                loadCustomInsertScreenAd2(positionEdit2.getText().toString().trim());
+//                break;
             case R.id.btn_normal_browse:
 //            case R.id.btn_normal_download:
                 loadCustomInsertScreenAd(positionEdit.getText().toString().trim());
+
+
+
+
                 break;
             default:
                 break;

@@ -14,8 +14,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.ad.entity.AdInfo;
+import com.comm.jksdk.ad.entity.MidasSelfRenderAd;
 import com.comm.jksdk.ad.listener.AdListener;
 import com.comm.jksdk.ad.listener.AdPreloadingListener;
+import com.comm.jksdk.ad.listener.SelfRenderAdListener;
 import com.jk.adsdkdemo.utils.LogUtils;
 
 /**
@@ -89,36 +91,67 @@ public class BigImgAcitvity extends AppCompatActivity implements View.OnClickLis
                     Toast.makeText(getApplicationContext(), "accept->输入的位置不能为空", Toast.LENGTH_LONG).show();
                     return;
                 }
-                MidasAdSdk.getAdsManger().loadAd(this,position, new AdListener() {
+//                MidasAdSdk.getAdsManger().loadAd(this,position, new AdListener() {
+//                    @Override
+//                    public void adSuccess(AdInfo info) {
+//                        LogUtils.e(TAG, "DEMO>>>adSuccess， "+ info.toString());
+//                        adView = info.getAdView();
+//                        if (adView != null) {
+//                            container.removeAllViews();
+//                            container.addView(adView);
+//                        }
+//                        Toast.makeText(getApplicationContext(), "加载广告成功", Toast.LENGTH_LONG).show();
+//                    }
+//
+//                    @Override
+//                    public void adExposed(AdInfo info) {
+//                        LogUtils.e(TAG, "DEMO>>>adExposed， "+ info.toString());
+//                    }
+//
+//                    @Override
+//                    public void adClicked(AdInfo info) {
+//                        LogUtils.e(TAG, "DEMO>>>adClicked， "+ info.toString());
+//                    }
+//
+//
+//                    @Override
+//                    public void adError(AdInfo info, int errorCode, String errorMsg) {
+//                        LogUtils.e(TAG, "DEMO>>>adError： "+errorMsg);
+//                        Toast.makeText(getApplicationContext(), "加载广告失败", Toast.LENGTH_LONG).show();
+//                    }
+//                });
+                MidasAdSdk.getAdsManger().loadMidasSelfRenderAd(this, position, new SelfRenderAdListener() {
                     @Override
-                    public void adSuccess(AdInfo info) {
-                        LogUtils.e(TAG, "DEMO>>>adSuccess， "+ info.toString());
-                        adView = info.getAdView();
-                        if (adView != null) {
-                            container.removeAllViews();
-                            container.addView(adView);
-                        }
-                        Toast.makeText(getApplicationContext(), "加载广告成功", Toast.LENGTH_LONG).show();
+                    public void onVideoLoaded(AdInfo adInfo) {
+
                     }
 
                     @Override
                     public void adExposed(AdInfo info) {
-                        LogUtils.e(TAG, "DEMO>>>adExposed， "+ info.toString());
+
                     }
 
                     @Override
                     public void adClicked(AdInfo info) {
-                        LogUtils.e(TAG, "DEMO>>>adClicked， "+ info.toString());
+
                     }
 
+                    @Override
+                    public void adSuccess(AdInfo info) {
+                        MidasSelfRenderAd midasSelfRenderAd = (MidasSelfRenderAd) info.getMidasAd();
+                        bindView(midasSelfRenderAd);
+                    }
 
                     @Override
                     public void adError(AdInfo info, int errorCode, String errorMsg) {
-                        LogUtils.e(TAG, "DEMO>>>adError： "+errorMsg);
-                        Toast.makeText(getApplicationContext(), "加载广告失败", Toast.LENGTH_LONG).show();
+
                     }
                 });
                 break;
         }
+    }
+
+    private void bindView(MidasSelfRenderAd midasSelfRenderAd) {
+
     }
 }
