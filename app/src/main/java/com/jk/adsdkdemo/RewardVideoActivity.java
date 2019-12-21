@@ -1,8 +1,6 @@
 package com.jk.adsdkdemo;
 
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,10 +8,12 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.ad.listener.AdManager;
-import com.comm.jksdk.ad.listener.AdPreloadingListener;
 import com.comm.jksdk.ad.listener.VideoAdListener;
 import com.jk.adsdkdemo.utils.LogUtils;
 
@@ -111,21 +111,21 @@ public class RewardVideoActivity extends AppCompatActivity implements View.OnCli
      * 预加载
      */
     private void preloadingSplashAd(String position) {
-        splashContainer.removeAllViews();
-        MidasAdSdk.getAdsManger().preloadingRewardVideoAd(this, position, "user123", 1, new AdPreloadingListener() {
-            @Override
-            public void adSuccess(AdInfo info) {
-                LogUtils.d(TAG, "-----adSuccess-----");
-                Toast.makeText(getApplicationContext(), "预加载成功", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void adError(AdInfo info, int errorCode, String errorMsg) {
-                LogUtils.d(TAG, "-----adError-----" + errorMsg);
-                Toast.makeText(getApplicationContext(), "预加载失败", Toast.LENGTH_LONG).show();
-            }
-
-        });
+//        splashContainer.removeAllViews();
+//        MidasAdSdk.getAdsManger().preloadingRewardVideoAd(this, position, "user123", 1, new AdPreloadingListener() {
+//            @Override
+//            public void adSuccess(AdInfo info) {
+//                LogUtils.d(TAG, "-----adSuccess-----");
+//                Toast.makeText(getApplicationContext(), "预加载成功", Toast.LENGTH_LONG).show();
+//            }
+//
+//            @Override
+//            public void adError(AdInfo info, int errorCode, String errorMsg) {
+//                LogUtils.d(TAG, "-----adError-----" + errorMsg);
+//                Toast.makeText(getApplicationContext(), "预加载失败", Toast.LENGTH_LONG).show();
+//            }
+//
+//        });
     }
 
     @Override

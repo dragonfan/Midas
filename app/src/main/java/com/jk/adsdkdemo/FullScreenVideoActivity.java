@@ -131,20 +131,20 @@ public class FullScreenVideoActivity extends AppCompatActivity implements View.O
      * 预加载
      */
     private void preloadingSplashAd(String position) {
-        MidasAdSdk.getAdsManger().preloadingVideoAd(this, position, new AdPreloadingListener() {
-            @Override
-            public void adSuccess(AdInfo info) {
-                LogUtils.d(TAG, "-----adSuccess-----");
-                Toast.makeText(getApplicationContext(), "预加载成功", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void adError(AdInfo info, int errorCode, String errorMsg) {
-                LogUtils.d(TAG, "-----adError-----" + errorMsg);
-                Toast.makeText(getApplicationContext(), "预加载失败", Toast.LENGTH_LONG).show();
-            }
-
-        });
+//        MidasAdSdk.getAdsManger().preloadingVideoAd(this, position, new AdPreloadingListener() {
+//            @Override
+//            public void adSuccess(AdInfo info) {
+//                LogUtils.d(TAG, "-----adSuccess-----");
+//                Toast.makeText(getApplicationContext(), "预加载成功", Toast.LENGTH_LONG).show();
+//            }
+//
+//            @Override
+//            public void adError(AdInfo info, int errorCode, String errorMsg) {
+//                LogUtils.d(TAG, "-----adError-----" + errorMsg);
+//                Toast.makeText(getApplicationContext(), "预加载失败", Toast.LENGTH_LONG).show();
+//            }
+//
+//        });
     }
 
 }

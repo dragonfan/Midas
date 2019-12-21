@@ -51,52 +51,52 @@ public class BigImgCenterActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_request_ad:
-                String position = positionEt.getText().toString().trim();
-                if (TextUtils.isEmpty(position)) {
-                    Toast.makeText(getApplicationContext(), "accept->输入的位置不能为空", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                List<String> list = new ArrayList<>();
-                MidasAdSdk.getAdsManger().loadAd(this,position, new AdListener<AdInfo>() {
-                    @Override
-                    public void adSuccess(AdInfo info) {
-                        if (info == null) {
-                            LogUtils.e("DEMO>>>adSuccess， AdInfo is empty");
-                        } else {
-                            LogUtils.e("DEMO>>>adSuccess， "+ info.toString());
-                        }
-                        adView = info.getAdView();
-                        if (adView != null) {
-                            container.removeAllViews();
-                            container.addView(adView);
-                        }
-                    }
-
-                    @Override
-                    public void adExposed(AdInfo info) {
-                        if (info == null) {
-                            LogUtils.e("DEMO>>>adExposed， AdInfo is empty");
-                        } else {
-                            LogUtils.e("DEMO>>>adExposed， "+ info.toString());
-                        }
-                        LogUtils.e("adExposed");
-                    }
-
-                    @Override
-                    public void adClicked(AdInfo info) {
-                        if (info == null) {
-                            LogUtils.e("DEMO>>>adClicked， AdInfo is empty");
-                        } else {
-                            LogUtils.e("DEMO>>>adClicked， "+ info.toString());
-                        }
-                    }
-
-
-                    @Override
-                    public void adError(AdInfo info, int errorCode, String errorMsg) {
-                        LogUtils.e("DEMO>>>adError： "+errorMsg);
-                    }
-                });
+//                String position = positionEt.getText().toString().trim();
+//                if (TextUtils.isEmpty(position)) {
+//                    Toast.makeText(getApplicationContext(), "accept->输入的位置不能为空", Toast.LENGTH_LONG).show();
+//                    return;
+//                }
+//                List<String> list = new ArrayList<>();
+//                MidasAdSdk.getAdsManger().loadAd(this,position, new AdListener<AdInfo>() {
+//                    @Override
+//                    public void adSuccess(AdInfo info) {
+//                        if (info == null) {
+//                            LogUtils.e("DEMO>>>adSuccess， AdInfo is empty");
+//                        } else {
+//                            LogUtils.e("DEMO>>>adSuccess， "+ info.toString());
+//                        }
+//                        adView = info.getAdView();
+//                        if (adView != null) {
+//                            container.removeAllViews();
+//                            container.addView(adView);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void adExposed(AdInfo info) {
+//                        if (info == null) {
+//                            LogUtils.e("DEMO>>>adExposed， AdInfo is empty");
+//                        } else {
+//                            LogUtils.e("DEMO>>>adExposed， "+ info.toString());
+//                        }
+//                        LogUtils.e("adExposed");
+//                    }
+//
+//                    @Override
+//                    public void adClicked(AdInfo info) {
+//                        if (info == null) {
+//                            LogUtils.e("DEMO>>>adClicked， AdInfo is empty");
+//                        } else {
+//                            LogUtils.e("DEMO>>>adClicked， "+ info.toString());
+//                        }
+//                    }
+//
+//
+//                    @Override
+//                    public void adError(AdInfo info, int errorCode, String errorMsg) {
+//                        LogUtils.e("DEMO>>>adError： "+errorMsg);
+//                    }
+//                });
                 break;
         }
     }

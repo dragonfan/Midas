@@ -66,25 +66,25 @@ public class BigImgAcitvity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_preloading_ad:  //预加载广告
-                position = spinner.getSelectedItem().toString();
-                if (TextUtils.isEmpty(position)) {
-                    Toast.makeText(getApplicationContext(), "accept->输入的位置不能为空", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                MidasAdSdk.getAdsManger().preloadingAd(this,position, new AdPreloadingListener() {
-                    @Override
-                    public void adSuccess(AdInfo info) {
-                        LogUtils.e(TAG, "DEMO>>>adSuccess， "+ info.toString());
-                        Toast.makeText(getApplicationContext(), "预加载成功", Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public void adError(AdInfo info, int errorCode, String errorMsg) {
-                        LogUtils.e(TAG, "DEMO>>>adError： "+errorMsg);
-                        Toast.makeText(getApplicationContext(), "预加载失败", Toast.LENGTH_LONG).show();
-                    }
-                });
-                break;
+//                position = spinner.getSelectedItem().toString();
+//                if (TextUtils.isEmpty(position)) {
+//                    Toast.makeText(getApplicationContext(), "accept->输入的位置不能为空", Toast.LENGTH_LONG).show();
+//                    return;
+//                }
+//                MidasAdSdk.getAdsManger().preloadingAd(this,position, new AdPreloadingListener() {
+//                    @Override
+//                    public void adSuccess(AdInfo info) {
+//                        LogUtils.e(TAG, "DEMO>>>adSuccess， "+ info.toString());
+//                        Toast.makeText(getApplicationContext(), "预加载成功", Toast.LENGTH_LONG).show();
+//                    }
+//
+//                    @Override
+//                    public void adError(AdInfo info, int errorCode, String errorMsg) {
+//                        LogUtils.e(TAG, "DEMO>>>adError： "+errorMsg);
+//                        Toast.makeText(getApplicationContext(), "预加载失败", Toast.LENGTH_LONG).show();
+//                    }
+//                });
+//                break;
             case R.id.button_request_ad: //预加载广告
                 position = spinner.getSelectedItem().toString();
                 if (TextUtils.isEmpty(position)) {
