@@ -1,8 +1,7 @@
 package com.comm.jksdk.api;
 
 
-
-import com.comm.jksdk.bean.ConfigBean;
+import com.comm.jksdk.bean.MidasConfigBean;
 import com.comm.jksdk.http.Api;
 import com.comm.jksdk.http.base.BaseResponse;
 
@@ -22,7 +21,7 @@ public interface ConfigService {
      * @return
      */
     @Headers({DOMAIN_NAME_HEADER + Api.WEATHER_DOMAIN_NAME})
-    @POST("/v1/getAdsConfig/getConfig")
-    Observable<BaseResponse<ConfigBean>> getConfig(@Body RequestBody requestBody);
+    @POST("/pizarroadsenseapi/ads/strategyInfo")
+    Observable<BaseResponse<MidasConfigBean>> getConfig(@Body RequestBody requestBody);
 
 }

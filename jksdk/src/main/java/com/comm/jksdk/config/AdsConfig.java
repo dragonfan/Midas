@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.api.ConfigService;
 import com.comm.jksdk.bean.ConfigBean;
+import com.comm.jksdk.bean.MidasConfigBean;
 import com.comm.jksdk.bean.PositionInfo;
 import com.comm.jksdk.config.listener.ConfigListener;
 import com.comm.jksdk.constant.Constants;
@@ -23,8 +24,10 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -65,124 +68,174 @@ public class AdsConfig {
     /**
      * 从cms请求广告配置
      */
-    public void requestConfig(final ConfigListener listener) {
-        getConfigInfo().subscribeOn(Schedulers.io())
+    public void requestConfig(String adpostId, ConfigListener listener) {
+//        getMidasConfigInfo().subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Consumer<BaseResponse<MidasConfigBean>>() {
+//                    @Override
+//                    public void accept(BaseResponse<MidasConfigBean> ConfigInfoBean) {
+//                        if (ConfigInfoBean == null) {
+//                            if (listener != null) {
+//                                listener.adError(1, "配置信息请求失败，请求结果为空");
+//                            }
+//                            return;
+//                        }
+//                        if (!ConfigInfoBean.isSuccess()) {
+//                            if (listener != null) {
+//                                listener.adError(1, "配置信息请求失败,code:"+ConfigInfoBean.getCode()+" msg:"+ConfigInfoBean.getMsg());
+//                            }
+//                            return;
+//                        }
+//
+//                        MidasConfigBean configBean = ConfigInfoBean.getData();
+//                        if (configBean == null) {
+//                            if (listener != null) {
+//                                listener.adError(1, "配置信息请求失败,configBean为空。");
+//                            }
+//                            return;
+//                        }
+//
+////                        List<ConfigBean.AdListBean> configList = configBean.getAdList();
+////                        if (configList == null || configList.size() == 0) {
+////                            LogUtils.d(TAG, "accept->配置信息为空 ");
+//////                            Toast.makeText(mContext, "accept->配置信息为空 ", Toast.LENGTH_LONG).show();
+////                            if (listener != null) {
+////                                listener.adError(1, "配置信息请求失败,configList为空。");
+////                            }
+////                            return;
+////                        }
+////                        if (listener != null) {
+////                            listener.adSuccess(configList);
+////                        }
+////                        setAdsInfoslist(configBean);
+//                    }
+//                }, new Consumer<Throwable>() {
+//                    @Override
+//                    public void accept(Throwable throwable) {
+//                        if (listener != null) {
+//                            listener.adError(1, "配置信息请求失败,"+throwable.getMessage());
+//                        }
+//                    }
+//                });
+        getMidasConfigInfo(adpostId).flatMap(new Function<BaseResponse<MidasConfigBean>, ObservableSource<MidasConfigBean>>() {
+            @Override
+            public ObservableSource<MidasConfigBean> apply(BaseResponse<MidasConfigBean> midasConfigBeanBaseResponse) throws Exception {
+                if (midasConfigBeanBaseResponse == null) {
+                    LogUtils.e("request config error, midasConfigBeanBaseResponse is null");
+                    MidasConfigBean cacheConfigBean = getCacheMidasConfigBean(adpostId);
+                    return Observable.just(cacheConfigBean);
+                }
+                if (!midasConfigBeanBaseResponse.isSuccess()) {
+                    LogUtils.e("request config error, code is " + midasConfigBeanBaseResponse.getCode());
+                    MidasConfigBean cacheConfigBean = getCacheMidasConfigBean(adpostId);
+                    return Observable.just(cacheConfigBean);
+                }
+                MidasConfigBean configBean = midasConfigBeanBaseResponse.getData();
+                if (configBean == null) {
+                    LogUtils.e("request config error, MidasConfigBean is null");
+                    MidasConfigBean cacheConfigBean = getCacheMidasConfigBean(adpostId);
+                    return Observable.just(cacheConfigBean);
+                }
+                String configBeanStr = null;
+                try {
+                    configBeanStr = new Gson().toJson(configBean);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    LogUtils.e("configBean to json string error");
+                }
+                if (!TextUtils.isEmpty(configBeanStr)) {
+                    SpUtils.putString(Constants.SPUtils.MIDAS_PREFIX + adpostId, configBeanStr);
+                }
+                return Observable.just(configBean);
+            }
+        }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<BaseResponse<ConfigBean>>() {
+                .subscribe(new Consumer<MidasConfigBean>() {
                     @Override
-                    public void accept(BaseResponse<ConfigBean> ConfigInfoBean) {
-                        if (ConfigInfoBean == null) {
+                    public void accept(MidasConfigBean midasConfigBean) throws Exception {
+                        if (midasConfigBean == null) {
                             if (listener != null) {
-                                listener.adError(1, "配置信息请求失败，请求结果为空");
-                            }
-                            return;
-                        }
-                        if (!ConfigInfoBean.isSuccess()) {
-                            LogUtils.d(TAG, "accept->配置信息请求失败:" + ConfigInfoBean.getCode()
-                                    +ConfigInfoBean.getMsg());
-//                            Toast.makeText(mContext, "accept->配置信息请求失败:" + ConfigInfoBean.getCode()
-//                                    +ConfigInfoBean.getMsg(), Toast.LENGTH_LONG).show();
-                            if (listener != null) {
-                                listener.adError(1, "配置信息请求失败,code:"+ConfigInfoBean.getCode()+" msg:"+ConfigInfoBean.getMsg());
-                            }
-                            return;
-                        }
-
-                        ConfigBean configBean = ConfigInfoBean.getData();
-                        if (configBean == null) {
-                            LogUtils.d(TAG, "accept->配置信息为空 ");
-//                            Toast.makeText(mContext, "accept->配置信息为空 ", Toast.LENGTH_LONG).show();
-                            if (listener != null) {
-                                listener.adError(1, "配置信息请求失败,configBean为空。");
-                            }
-                            return;
-                        }
-
-                        List<ConfigBean.AdListBean> configList = configBean.getAdList();
-                        if (configList == null || configList.size() == 0) {
-                            LogUtils.d(TAG, "accept->配置信息为空 ");
-//                            Toast.makeText(mContext, "accept->配置信息为空 ", Toast.LENGTH_LONG).show();
-                            if (listener != null) {
-                                listener.adError(1, "配置信息请求失败,configList为空。");
+                                listener.adError(1, "获取配置信息失败");
                             }
                             return;
                         }
                         if (listener != null) {
-                            listener.adSuccess(configList);
+                            listener.adSuccess(midasConfigBean);
                         }
-//                        for (int i = 0; i < configList.size(); i++) {
-//                            // "isChange": 0,//是否变更：0 - 无  1 - 有
-//                            if (configList.get(i).getIsChange() == 1) {
-//                                //更新数据
-//                                //对象转json保存到sp
-//                                String adPosition = configList.get(i).getAdPosition();
-//                                if (TextUtils.isEmpty(adPosition)) {
-//                                    return;
-//                                }
-//
-//                                String configInfo = mGson.toJson(configList.get(i));
-//                                SpUtils.putString(adPosition, configInfo);
-//                            }
-//
-//                        }
-                        //对象转json保存到sp
-                        //保存总json
-                        setAdsInfoslist(configBean);
-                        LogUtils.d(TAG, "accept->配置信息请求成功: ");
-//                        Toast.makeText(mContext, "accept->配置信息请求成功: "+configInfo, Toast.LENGTH_LONG).show();
-
                     }
                 }, new Consumer<Throwable>() {
                     @Override
-                    public void accept(Throwable throwable) {
-                        LogUtils.d(TAG, "accept->配置信息请求失败" + throwable.getMessage());
-//                        Toast.makeText(mContext, "accept->配置信息请求失败" + throwable.getMessage(), Toast.LENGTH_LONG).show();
+                    public void accept(Throwable throwable) throws Exception {
+                        LogUtils.e("get midas config error, "+throwable.getMessage());
                         if (listener != null) {
-                            listener.adError(1, "配置信息请求失败,"+throwable.getMessage());
+                            listener.adError(1, "获取配置信息失败");
                         }
                     }
                 });
-        return;
     }
 
+    /**
+     * 获取缓存的配置信息
+     * @param adpostId
+     * @return
+     */
+    private MidasConfigBean getCacheMidasConfigBean(String adpostId){
+        try {
+            String midasConfigBean = SpUtils.getString(Constants.SPUtils.MIDAS_PREFIX + adpostId, "");
+            if (TextUtils.isEmpty(midasConfigBean)) {
+                return null;
+            }
+            MidasConfigBean configBean = JsonUtils.decode(midasConfigBean, MidasConfigBean.class);
+            return configBean;
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.e("getCacheMidasConfigBean error " + e);
+        }
+        return null;
+    }
 
     /**
      * 发请求
      *
      * @return
      */
-    private Observable<BaseResponse<ConfigBean>> getConfigInfo() {
+    private Observable<BaseResponse<MidasConfigBean>> getMidasConfigInfo(String adpostId) {
         Map<String, Object> requestParams = CollectionUtils.createMap();
         RequestBody requestBody = null;
-        int bid = AdsConfig.getBid();
-        if (bid > 0) {
-            requestParams.put("bid", bid);
-        }
-        String productName = MidasAdSdk.getRroductName();
-        requestParams.put("productName", productName);
-        String marketName = MidasAdSdk.getChannel();
-        requestParams.put("marketName", marketName);
-        requestParams.put("versionCode", AppInfoUtils.getVerCode(MidasAdSdk.getContext()));
-        requestParams.put("osSystem", 1);
-        long userActive = AdsConfig.getUserActive();
-        if (userActive < 0) {
-            userActive = System.currentTimeMillis();
-            AdsConfig.setUserActive(userActive);
-        }
-        requestParams.put("userActive", userActive);
-        requestParams.put("ts", System.currentTimeMillis());
-        String latitude = AdsConfig.getLatitude();
-        if (!TextUtils.isEmpty(latitude)) {
-            requestParams.put("latitude", latitude);
-        }
-        String longitude = AdsConfig.getLongitude();
-        if (!TextUtils.isEmpty(longitude)) {
-            requestParams.put("longitude", longitude);
-        }
-        requestParams.put("province", Constants.province);
-        requestParams.put("city", Constants.city);
-        requestParams.put("modelVersion", "");
-        requestParams.put("sdkVersion", 1);
+//        int bid = AdsConfig.getBid();
+//        if (bid > 0) {
+//            requestParams.put("bid", bid);
+//        }
+        String uuid = MidasAdSdk.getRroductId();
+        requestParams.put("uuid", uuid);
+        requestParams.put("sessionid", uuid+System.currentTimeMillis());
+        requestParams.put("appid", MidasAdSdk.getRroductId());
+        requestParams.put("appversion", AppInfoUtils.getVerCode(MidasAdSdk.getContext()));
+        requestParams.put("adpostId", adpostId);
+        requestParams.put("sdkVersion", Constants.version_code);
+//        String productName = MidasAdSdk.getRroductName();
+//        requestParams.put("productName", productName);
+//        String marketName = MidasAdSdk.getChannel();
+//        requestParams.put("marketName", marketName);
+//        requestParams.put("osSystem", Constants.bid);
+//        long userActive = AdsConfig.getUserActive();
+//        if (userActive < 0) {
+//            userActive = System.currentTimeMillis();
+//            AdsConfig.setUserActive(userActive);
+//        }
+//        requestParams.put("userActive", userActive);
+//        requestParams.put("ts", System.currentTimeMillis());
+//        String latitude = AdsConfig.getLatitude();
+//        if (!TextUtils.isEmpty(latitude)) {
+//            requestParams.put("latitude", latitude);
+//        }
+//        String longitude = AdsConfig.getLongitude();
+//        if (!TextUtils.isEmpty(longitude)) {
+//            requestParams.put("longitude", longitude);
+//        }
+//        requestParams.put("province", Constants.province);
+//        requestParams.put("city", Constants.city);
+//        requestParams.put("modelVersion", "");
 
 //        Boolean posInfosBoolean=getPositionInfos();
 //        if (posInfosBoolean) {
@@ -194,6 +247,54 @@ public class AdsConfig {
         requestBody = RequestBody.create(MediaType.parse("application/json;charset=utf-8"),requstData);
         return OkHttpWrapper.getInstance().getRetrofit().create(ConfigService.class).getConfig(requestBody);
     }
+//    /**
+//     * 发请求
+//     *
+//     * @return
+//     */
+//    private Observable<BaseResponse<ConfigBean>> getConfigInfo() {
+//        Map<String, Object> requestParams = CollectionUtils.createMap();
+//        RequestBody requestBody = null;
+//        int bid = AdsConfig.getBid();
+//        if (bid > 0) {
+//            requestParams.put("bid", bid);
+//        }
+//        String productName = MidasAdSdk.getRroductName();
+//        requestParams.put("productName", productName);
+//        String marketName = MidasAdSdk.getChannel();
+//        requestParams.put("marketName", marketName);
+//        requestParams.put("versionCode", AppInfoUtils.getVerCode(MidasAdSdk.getContext()));
+//        requestParams.put("osSystem", 1);
+//        long userActive = AdsConfig.getUserActive();
+//        if (userActive < 0) {
+//            userActive = System.currentTimeMillis();
+//            AdsConfig.setUserActive(userActive);
+//        }
+//        requestParams.put("userActive", userActive);
+//        requestParams.put("ts", System.currentTimeMillis());
+//        String latitude = AdsConfig.getLatitude();
+//        if (!TextUtils.isEmpty(latitude)) {
+//            requestParams.put("latitude", latitude);
+//        }
+//        String longitude = AdsConfig.getLongitude();
+//        if (!TextUtils.isEmpty(longitude)) {
+//            requestParams.put("longitude", longitude);
+//        }
+//        requestParams.put("province", Constants.province);
+//        requestParams.put("city", Constants.city);
+//        requestParams.put("modelVersion", "");
+//        requestParams.put("sdkVersion", 1);
+//
+////        Boolean posInfosBoolean=getPositionInfos();
+////        if (posInfosBoolean) {
+////            requestParams.put("positionInfos", posInfoList);
+////        }
+//        String requstData=mGson.toJson(requestParams);
+//        LogUtils.d(TAG, "requstData->"+requstData);
+//
+//        requestBody = RequestBody.create(MediaType.parse("application/json;charset=utf-8"),requstData);
+//        return OkHttpWrapper.getInstance().getRetrofit().create(ConfigService.class).getConfig(requestBody);
+//    }
 
     /**
      * 获取所有位置对于信息

@@ -1,8 +1,6 @@
 package com.comm.jksdk.config.listener;
 
-import com.comm.jksdk.bean.ConfigBean;
-
-import java.util.List;
+import com.comm.jksdk.bean.MidasConfigBean;
 
 /**
  * @ProjectName: MidasAdSdk
@@ -21,7 +19,7 @@ public interface ConfigListener {
     /**
      * 配置请求成功
      */
-    void adSuccess(List<ConfigBean.AdListBean> configList);
+    void adSuccess(MidasConfigBean midasConfigBean);
 
     /**
      * 配置请求失败

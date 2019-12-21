@@ -134,6 +134,10 @@ public class Constants {
 
     public interface SPUtils {
         /**
+         * midas广告前缀
+         */
+        String MIDAS_PREFIX = "MIDAS_";
+        /**
          * 配置信息
          */
         String CONFIG_INFO = "AD_SDK_CONFIG_INFO";
@@ -236,6 +240,10 @@ public class Constants {
      * 城市
      */
     public static String city = "";
+    /**
+     * sdk版本code
+     */
+    public static int version_code = 1;
     /**
      * 全局context
      */
