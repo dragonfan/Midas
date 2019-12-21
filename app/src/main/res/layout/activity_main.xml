@@ -15,6 +15,7 @@
 <!--        android:text="获取配置信息" />-->
 
     <Button
+        android:visibility="gone"
         android:id="@+id/big_img_bt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -75,14 +76,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen_10dp"
-        android:text="自渲染插屏广告" />
+        android:text="插屏广告" />
 
     <Button
         android:id="@+id/button_csj_feed_template_ad"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen_10dp"
-        android:text="穿山甲信息流模板广告" />
+        android:text="原生模板广告" />
 
 <!--    <Button-->
 <!--        android:id="@+id/button_template_insert_screen_ad"-->
