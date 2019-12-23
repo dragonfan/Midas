@@ -144,7 +144,7 @@ public class BigImgAcitvity extends AppCompatActivity implements View.OnClickLis
 
                     @Override
                     public void adError(AdInfo info, int errorCode, String errorMsg) {
-
+                        LogUtils.e(TAG, "DEMO>>>adError： "+errorMsg);
                     }
                 });
                 break;

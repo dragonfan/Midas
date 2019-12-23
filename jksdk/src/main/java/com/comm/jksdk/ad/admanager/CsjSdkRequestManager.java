@@ -329,7 +329,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
 //                    adInfo.setAdClickType(2);
 //                }
 //                adInfo.setTtFeedAd(ttFeedAd);
-                ((MidasSelfRenderAd) info.getMidasAd()).setTtFeedAd(ttFeedAd);
+                midasSelfRenderAd.setTtFeedAd(ttFeedAd);
                 if (adListener != null) {
                     adListener.adSuccess(info);
                 }

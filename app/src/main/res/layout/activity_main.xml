@@ -15,12 +15,11 @@
 <!--        android:text="获取配置信息" />-->
 
     <Button
-        android:visibility="gone"
         android:id="@+id/big_img_bt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen_20dp"
-        android:text="大图广告" />
+        android:text="自渲染广告" />
 
 <!--    <Button-->
 <!--        android:id="@+id/button_preloading"-->

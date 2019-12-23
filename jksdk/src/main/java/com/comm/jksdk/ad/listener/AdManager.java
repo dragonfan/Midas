@@ -1,7 +1,6 @@
 package com.comm.jksdk.ad.listener;
 
 import android.app.Activity;
-import android.view.ViewGroup;
 
 /**
  * @ProjectName: MidasAdSdk

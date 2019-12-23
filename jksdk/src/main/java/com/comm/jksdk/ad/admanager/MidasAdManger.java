@@ -1,18 +1,7 @@
 package com.comm.jksdk.ad.admanager;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.pm.ActivityInfo;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.view.View;
 
-import com.bytedance.sdk.openadsdk.TTAdConstant;
-import com.bytedance.sdk.openadsdk.TTAppDownloadListener;
-import com.bytedance.sdk.openadsdk.TTFullScreenVideoAd;
-import com.bytedance.sdk.openadsdk.TTNativeAd;
-import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
-import com.bytedance.sdk.openadsdk.TTRewardVideoAd;
 import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.ad.entity.MidasFullScreenVideoAd;
@@ -33,24 +22,12 @@ import com.comm.jksdk.ad.listener.SelfRenderAdListener;
 import com.comm.jksdk.ad.listener.VideoAdListener;
 import com.comm.jksdk.bean.ConfigBean;
 import com.comm.jksdk.bean.MidasConfigBean;
-import com.comm.jksdk.cache.CacheAd;
 import com.comm.jksdk.config.AdsConfig;
 import com.comm.jksdk.config.listener.ConfigListener;
 import com.comm.jksdk.constant.Constants;
 import com.comm.jksdk.http.utils.LogUtils;
 import com.comm.jksdk.utils.CodeFactory;
 import com.comm.jksdk.utils.CollectionUtils;
-import com.qq.e.ads.cfg.VideoOption;
-import com.qq.e.ads.interstitial2.UnifiedInterstitialAD;
-import com.qq.e.ads.interstitial2.UnifiedInterstitialADListener;
-import com.qq.e.ads.nativ.ADSize;
-import com.qq.e.ads.nativ.NativeExpressAD;
-import com.qq.e.ads.nativ.NativeExpressADView;
-import com.qq.e.ads.nativ.NativeExpressMediaListener;
-import com.qq.e.ads.rewardvideo.RewardVideoAD;
-import com.qq.e.ads.rewardvideo.RewardVideoADListener;
-import com.qq.e.comm.constants.AdPatternType;
-import com.qq.e.comm.util.AdError;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -251,22 +228,23 @@ public class MidasAdManger implements AdManager {
             mActivity = activity;
             //设置广告位置信息
             adInfo.setPosition(position);
-            //获取本地配置信息
-            readyInfo(adInfo);
-            if (CollectionUtils.isEmpty(adsInfoslist)) {
-                if (mAdListener != null) {
-                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-                }
-                return;
-            }
-            ConfigBean.AdListBean.AdsInfosBean mAdsInfosBean = adsInfoslist.remove(0);
-            if (mAdsInfosBean == null) {
-                if (mAdListener != null) {
-                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-                }
-                return;
-            }
-            againRequest(adInfo, mAdsInfosBean);
+            getMidasConfigBean(adInfo, position);
+//            //获取本地配置信息
+//            readyInfo(adInfo);
+//            if (CollectionUtils.isEmpty(adsInfoslist)) {
+//                if (mAdListener != null) {
+//                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+//                }
+//                return;
+//            }
+//            ConfigBean.AdListBean.AdsInfosBean mAdsInfosBean = adsInfoslist.remove(0);
+//            if (mAdsInfosBean == null) {
+//                if (mAdListener != null) {
+//                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+//                }
+//                return;
+//            }
+//            againRequest(adInfo, mAdsInfosBean);
         } catch (Exception e) {
             e.printStackTrace();
             if (mAdListener != null) {
@@ -417,7 +395,8 @@ public class MidasAdManger implements AdManager {
         //广告源
         adInfo.getMidasAd().setAdSource(adsInfosBean.getAdUnion());
         //广告id
-        adInfo.getMidasAd().setAdId(adsInfosBean.getAdId());
+//        adInfo.getMidasAd().setAdId(adsInfosBean.getAdId());
+        adInfo.getMidasAd().setAdId(adsInfosBean.getAdId()); //测试用
         //广告对应的appid
         adInfo.getMidasAd().setAppId(adsInfosBean.getAdsAppId());
         //请求类型 0 - SDK 1 - API
@@ -501,6 +480,7 @@ public class MidasAdManger implements AdManager {
         adRequestManager.requestAd(mActivity, adInfo, new AdRequestListener() {
             @Override
             public void adSuccess(AdInfo info) {
+
             }
 
             @Override
