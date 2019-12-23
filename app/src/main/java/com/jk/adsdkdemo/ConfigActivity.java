@@ -82,22 +82,6 @@ public class ConfigActivity extends AppCompatActivity implements View.OnClickLis
                     return;
                 }
                 stateText.setText("");
-//                MidasAdSdk.requestConfig(new ConfigListener() {
-//                    @Override
-//                    public void adSuccess(List<ConfigBean.AdListBean> configList) {
-//                        String config = JsonUtils.encode(configList);
-//                        LogUtils.d("ConfigActivity", "config:" + config.substring(0, config.length() / 2));
-//                        LogUtils.d("ConfigActivity", "config-------:" + config.substring(config.length() / 2));
-//                        Toast.makeText(getApplicationContext(), "accept->配置信息请求成功", Toast.LENGTH_LONG).show();
-//                        showConfigList(configList);
-//                    }
-//
-//                    @Override
-//                    public void adError(int errorCode, String errorMsg) {
-//                        Toast.makeText(getApplicationContext(), "accept->配置信息请求失败， msg:" + errorMsg, Toast.LENGTH_LONG).show();
-//                        stateText.setText("配置信息请求失败:" + errorCode + " errorMsg:" + errorMsg);
-//                    }
-//                });
                 String visionName = TTAdSdk.getAdManager().getSDKVersion();
                 LogUtils.e("visionName>>>"+visionName);
                 break;

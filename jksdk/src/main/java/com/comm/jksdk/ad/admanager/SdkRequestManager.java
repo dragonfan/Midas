@@ -2,6 +2,7 @@ package com.comm.jksdk.ad.admanager;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,17 +43,17 @@ public abstract class SdkRequestManager implements AdRequestManager {
     @Override
     public void requestAd(Activity activity, AdInfo adInfo, AdRequestListener listener, AdBasicListener adListener) {
         if (Constants.AdType.SPLASH_TYPE.equals(adInfo.getAdType())) {
-            requestSplashAd(activity, adInfo, listener, (AdSplashListener) adListener);
+            requestSplashAd(activity, adInfo, listener, getAdSplashListener((AdSplashListener) adListener));
         } else if (Constants.AdType.REWARD_VIDEO_TYPE.equals(adInfo.getAdType())) {
-            requestRewardVideoAd(activity, adInfo, listener, (VideoAdListener) adListener);
+            requestRewardVideoAd(activity, adInfo, listener, getVideoAdListener((VideoAdListener) adListener));
         } else if (Constants.AdType.FULL_SCREEN_VIDEO_TYPE.equals(adInfo.getAdType())){
-            requestFullScreenVideoAd(activity, adInfo, listener, (VideoAdListener) adListener);
+            requestFullScreenVideoAd(activity, adInfo, listener, getVideoAdListener((VideoAdListener) adListener));
         } else if (Constants.AdType.SELF_RENDER.equals(adInfo.getAdType())){
             requestSelfRenderAd(activity, adInfo, listener, (SelfRenderAdListener)adListener);
         } else if (Constants.AdType.INTERACTION_TYPE.equals(adInfo.getAdType())){
-            requestInteractionAd(activity, adInfo, listener, (InteractionListener) adListener);
+            requestInteractionAd(activity, adInfo, listener, getInteractionListener((InteractionListener) adListener));
         } else if (Constants.AdType.NATIVE_TEMPLATE.equals(adInfo.getAdType())) {
-            requestNativeTemplateAd(activity, adInfo, listener, (NativeTemplateListener) adListener);
+            requestNativeTemplateAd(activity, adInfo, listener, getNativeTemplateListener((NativeTemplateListener) adListener));
         } else {
 
         }
@@ -90,5 +91,184 @@ public abstract class SdkRequestManager implements AdRequestManager {
                         }
                     });
         }
+    }
+
+    /**
+     * 原生模板广告回调中间层（埋点可以埋到这里）
+     * @param listener
+     * @return
+     */
+    private NativeTemplateListener getNativeTemplateListener(NativeTemplateListener listener){
+        return new NativeTemplateListener<AdInfo>(){
+
+            @Override
+            public void adSuccess(AdInfo info) {
+                if (listener != null) {
+                    listener.adSuccess(info);
+                }
+            }
+
+            @Override
+            public void adError(AdInfo info, int errorCode, String errorMsg) {
+                if (listener != null) {
+                    listener.adError(info, errorCode, errorMsg);
+                }
+            }
+
+            @Override
+            public void adExposed(AdInfo info) {
+                if (listener != null) {
+                    listener.adExposed(info);
+                }
+            }
+
+            @Override
+            public void adClicked(AdInfo info) {
+                if (listener != null) {
+                    listener.adClicked(info);
+                }
+            }
+        };
+    }
+
+    /**
+     * 插屏广告回调中间层（埋点可以埋到这里）
+     * @param listener
+     * @return
+     */
+    private InteractionListener getInteractionListener(InteractionListener listener){
+        return new InteractionListener<AdInfo>(){
+
+            @Override
+            public void adSuccess(AdInfo info) {
+                if (listener != null) {
+                    listener.adSuccess(info);
+                }
+            }
+
+            @Override
+            public void adError(AdInfo info, int errorCode, String errorMsg) {
+                if (listener != null) {
+                    listener.adError(info, errorCode, errorMsg);
+                }
+            }
+
+            @Override
+            public void adExposed(AdInfo info) {
+                if (listener != null) {
+                    listener.adExposed(info);
+                }
+            }
+
+            @Override
+            public void adClicked(AdInfo info) {
+                if (listener != null) {
+                    listener.adClicked(info);
+                }
+            }
+        };
+    }
+
+    /**
+     * 激励视频和全屏视频广告回调中间层（埋点可以埋到这里）
+     * @param listener
+     * @return
+     */
+    private VideoAdListener getVideoAdListener(VideoAdListener listener){
+        return new VideoAdListener<AdInfo>() {
+            @Override
+            public void adSuccess(AdInfo info) {
+                if (listener != null) {
+                    listener.adSuccess(info);
+                }
+            }
+
+            @Override
+            public void adError(AdInfo info, int errorCode, String errorMsg) {
+                if (listener != null) {
+                    listener.adError(info, errorCode, errorMsg);
+                }
+            }
+
+            @Override
+            public void adExposed(AdInfo info) {
+                if (listener != null) {
+                    listener.adExposed(info);
+                }
+            }
+
+            @Override
+            public void adClicked(AdInfo info) {
+                if (listener != null) {
+                    listener.adClicked(info);
+                }
+            }
+
+            @Override
+            public void onVideoResume(AdInfo info) {
+                if (listener != null) {
+                    listener.onVideoResume(info);
+                }
+            }
+
+            @Override
+            public void onVideoRewardVerify(AdInfo info, boolean rewardVerify, int rewardAmount, String rewardName) {
+                if (listener != null) {
+                    listener.onVideoRewardVerify(info, rewardVerify, rewardAmount, rewardName);
+                }
+            }
+
+            @Override
+            public void onVideoComplete(AdInfo info) {
+                if (listener != null) {
+                    listener.onVideoComplete(info);
+                }
+            }
+        };
+    }
+
+    /**
+     * 开屏广告回调中间层（埋点可以埋到这里）
+     * @param listener
+     * @return
+     */
+    private AdSplashListener getAdSplashListener(AdSplashListener listener){
+        return new AdSplashListener<AdInfo>() {
+            @Override
+            public void adSuccess(AdInfo info) {
+                if (listener != null) {
+                    listener.adSuccess(info);
+                }
+            }
+
+            @Override
+            public void adError(AdInfo info, int errorCode, String errorMsg) {
+                if (listener != null) {
+                    listener.adError(info, errorCode, errorMsg);
+                }
+            }
+
+            @Override
+            public void adExposed(AdInfo info) {
+                if (listener != null) {
+                    listener.adExposed(info);
+                }
+            }
+
+            @Override
+            public void adClicked(AdInfo info) {
+                if (listener != null) {
+                    listener.adClicked(info);
+                }
+            }
+
+            @Override
+            public ViewGroup getViewGroup() {
+                if (listener != null) {
+                    return listener.getViewGroup();
+                }
+                return null;
+            }
+        };
     }
 }
