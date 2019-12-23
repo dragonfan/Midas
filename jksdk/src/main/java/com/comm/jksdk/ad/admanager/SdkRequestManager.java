@@ -11,10 +11,12 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.ad.entity.AdInfo;
-import com.comm.jksdk.ad.listener.AdListener;
+import com.comm.jksdk.ad.listener.AdBasicListener;
 import com.comm.jksdk.ad.listener.AdRequestListener;
 import com.comm.jksdk.ad.listener.AdRequestManager;
 import com.comm.jksdk.ad.listener.AdSplashListener;
+import com.comm.jksdk.ad.listener.InteractionListener;
+import com.comm.jksdk.ad.listener.NativeTemplateListener;
 import com.comm.jksdk.ad.listener.SelfRenderAdListener;
 import com.comm.jksdk.ad.listener.VideoAdListener;
 import com.comm.jksdk.constant.Constants;
@@ -38,7 +40,7 @@ public abstract class SdkRequestManager implements AdRequestManager {
 
 
     @Override
-    public void requestAd(Activity activity, AdInfo adInfo, AdRequestListener listener, AdListener adListener) {
+    public void requestAd(Activity activity, AdInfo adInfo, AdRequestListener listener, AdBasicListener adListener) {
         if (Constants.AdType.SPLASH_TYPE.equals(adInfo.getAdType())) {
             requestSplashAd(activity, adInfo, listener, (AdSplashListener) adListener);
         } else if (Constants.AdType.REWARD_VIDEO_TYPE.equals(adInfo.getAdType())) {
@@ -48,17 +50,17 @@ public abstract class SdkRequestManager implements AdRequestManager {
         } else if (Constants.AdType.SELF_RENDER.equals(adInfo.getAdType())){
             requestSelfRenderAd(activity, adInfo, listener, (SelfRenderAdListener)adListener);
         } else if (Constants.AdType.INTERACTION_TYPE.equals(adInfo.getAdType())){
-            requestInteractionAd(activity, adInfo, listener, adListener);
+            requestInteractionAd(activity, adInfo, listener, (InteractionListener) adListener);
         } else if (Constants.AdType.NATIVE_TEMPLATE.equals(adInfo.getAdType())) {
-            requestNativeTemplateAd(activity, adInfo, listener, adListener);
+            requestNativeTemplateAd(activity, adInfo, listener, (NativeTemplateListener) adListener);
         } else {
 
         }
     }
 
-    protected abstract void requestNativeTemplateAd(Activity activity, AdInfo info, AdRequestListener listener, AdListener listener1);
+    protected abstract void requestNativeTemplateAd(Activity activity, AdInfo info, AdRequestListener listener, NativeTemplateListener listener1);
 
-    protected abstract void requestInteractionAd(Activity activity, AdInfo info, AdRequestListener listener, AdListener adListener);
+    protected abstract void requestInteractionAd(Activity activity, AdInfo info, AdRequestListener listener, InteractionListener adListener);
 
     protected abstract void requestSelfRenderAd(Activity activity, AdInfo info, AdRequestListener listener, SelfRenderAdListener adListener);
 

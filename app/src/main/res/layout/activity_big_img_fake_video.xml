@@ -36,6 +36,7 @@
             android:textSize="@dimen/dp_20" />
 
         <Spinner
+            android:visibility="gone"
             android:id="@+id/spinner"
             android:layout_marginLeft="@dimen/dimen_12dp"
             android:layout_width="wrap_content"
@@ -45,13 +46,13 @@
             android:id="@+id/et_position_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="newlist_1_1"
+            android:text="49882570_self_render_2"
             android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/dp_20"
-            android:visibility="gone" />
+            android:textSize="@dimen/dp_20"/>
     </LinearLayout>
 
     <Button
+        android:visibility="gone"
         android:layout_marginTop="@dimen/dimen_20dp"
         android:id="@+id/button_preloading_ad"
         android:layout_width="match_parent"

@@ -27,61 +27,34 @@ public final class MidasAdSdk {
     public static Context mContext;
     public static String mRroductName;
     public static String mRroductId;
+    public static String mAppId;
     public static String mChannel;
     public static String mUUID;
     public static boolean mIsFormal;
 
-//    /**
-//     * 聚合广告sdk初始化
-//     * @param context 上下文
-//     * @param productName 业务线名称 12：日历；13：即刻天气 18：悟空清理
-//     * @param channel 渠道名称
-//     * @param isFormal 是否是正式环境 true对应生产环境
-//     */
-//    public static void init(Context context, String productName, String csjAppId, String channel, boolean isFormal){
-//        mContext = context.getApplicationContext();
-//        mRroductName = productName;
-//        mChannel = channel;
-//        mIsFormal = isFormal;
-//        //初始化基本配置信息
-//        InitBaseConfig.getInstance().init(mContext);
-//        InitBaseConfig.getInstance().initChjAd(mContext, csjAppId);
-//        AdsConfig.setProductName(mRroductName);
-//        mIsInit = true;
-//    }
 
     /**
      * 聚合广告sdk初始化
      * @param context 上下文
-     * @param appid 业务线id 大数据提供
-     * @param csjAppId 业务线唯一标识 大数据提供
+     * @param appid 广告业务线id 大数据提供
+     * @param csjAppId
      * @param uuid 设备唯一标识
      * @param isFormal 是否是正式环境 true对应生产环境
+     * @param productId 业务线id 大数据提供 (初始化牛数和初始化穿山甲sdk用到)
+     * @param channel 渠道名称 (初始化牛数用到)
      */
-    public static void init(Context context, String appid, String csjAppId, String uuid, boolean isFormal){
+    public static void init(Context context, String appid, String productId, String channel, String csjAppId, String uuid, boolean isFormal){
         mContext = context.getApplicationContext();
-        mRroductId = appid;
+        mRroductId = productId;
+        mAppId = appid;
         mUUID = uuid;
+        mChannel = channel;
         mIsFormal = isFormal;
         //初始化基本配置信息
         InitBaseConfig.getInstance().init(mContext);
         InitBaseConfig.getInstance().initChjAd(mContext, csjAppId);
-        AdsConfig.setProductName(mRroductName);
         mIsInit = true;
-    }
-
-    /**
-     * 请求广告配置信息
-     * @param listener 回调
-     */
-    public static void requestConfig(ConfigListener listener){
-        checkInit();
-//        AdsConfig.getInstance(mContext).requestConfig(listener);
-    }
-
-    public static void requestConfig(){
-        checkInit();
-//        AdsConfig.getInstance(mContext).requestConfig(null);
+        // TODO: 2019/12/23 初始化牛数
     }
 
     /**
@@ -93,22 +66,22 @@ public final class MidasAdSdk {
     }
 
     /**
-     * 设置经度、纬度
-     * @param longitude
-     * @param latitude
+     * 设置imei
+     * @param imei
      */
-    public static void setLocation(String longitude, String latitude){
-        AdsConfig.setLongitude(longitude);
-        AdsConfig.setLatitude(latitude);
+    public static void setImei(String imei){
+
+        // TODO: 2019/12/23 下面设置imei给牛数
     }
 
-    /**
-     * 设置bid
-     * @param bid
-     */
-    public static void setBid(int bid){
-        AdsConfig.setBid(bid);
-    }
+
+//    /**
+//     * 设置bid
+//     * @param bid
+//     */
+//    public static void setBid(int bid){
+//        AdsConfig.setBid(bid);
+//    }
 
     /**
      * 设置第一次激活时间
@@ -151,6 +124,22 @@ public final class MidasAdSdk {
 
     public static void setUUID(String mUUID) {
         MidasAdSdk.mUUID = mUUID;
+    }
+
+    public static String getmAppId() {
+        return mAppId;
+    }
+
+    public static void setmAppId(String mAppId) {
+        MidasAdSdk.mAppId = mAppId;
+    }
+
+    public static String getmChannel() {
+        return mChannel;
+    }
+
+    public static void setmChannel(String mChannel) {
+        MidasAdSdk.mChannel = mChannel;
     }
 
     /**

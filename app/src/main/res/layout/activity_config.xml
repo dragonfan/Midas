@@ -14,7 +14,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="uuid:"
+            android:text="渠道号:"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/dp_20" />
 
@@ -23,15 +23,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dimen_12dp"
-            android:text="12345678"
+            android:text="vivo"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/dp_20"
             android:visibility="visible" />
 
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="业务线:"
+            android:text="app业务线(大数据提供):"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/dp_20" />
 
@@ -39,7 +47,51 @@
             android:id="@+id/et_product_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="88"
+            android:text="181"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/dp_20"
+            android:visibility="visible" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="广告业务线（大数据提供）:"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/dp_20" />
+
+        <EditText
+            android:id="@+id/et_ad_app_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="181001"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/dp_20"
+            android:visibility="visible" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="UUID:"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/dp_20" />
+
+        <EditText
+            android:id="@+id/et_uuid_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12345678"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/dp_20"
             android:visibility="visible" />

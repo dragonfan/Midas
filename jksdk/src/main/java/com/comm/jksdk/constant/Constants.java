@@ -207,10 +207,6 @@ public class Constants {
      */
     public static int bid = -1;
 
-    /**
-     * 业务线标识
-     */
-    public static String productName = "";
 
     /**
      * 渠道

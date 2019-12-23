@@ -24,10 +24,10 @@ import com.comm.jksdk.ad.entity.MidasNativeTemplateAd;
 import com.comm.jksdk.ad.entity.MidasRewardVideoAd;
 import com.comm.jksdk.ad.entity.MidasSelfRenderAd;
 import com.comm.jksdk.ad.entity.MidasSplashAd;
-import com.comm.jksdk.ad.listener.AdBasicListener;
-import com.comm.jksdk.ad.listener.AdListener;
 import com.comm.jksdk.ad.listener.AdRequestListener;
 import com.comm.jksdk.ad.listener.AdSplashListener;
+import com.comm.jksdk.ad.listener.InteractionListener;
+import com.comm.jksdk.ad.listener.NativeTemplateListener;
 import com.comm.jksdk.ad.listener.SelfRenderAdListener;
 import com.comm.jksdk.ad.listener.VideoAdListener;
 import com.comm.jksdk.config.TTAdManagerHolder;
@@ -80,7 +80,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
 //    }
 
     @Override
-    protected void requestNativeTemplateAd(Activity activity, AdInfo info, AdRequestListener listener, AdListener adListener) {
+    protected void requestNativeTemplateAd(Activity activity, AdInfo info, AdRequestListener listener, NativeTemplateListener adListener) {
         MidasNativeTemplateAd midasNativeTemplateAd = (MidasNativeTemplateAd) info.getMidasAd();
         AdSlot adSlot = new AdSlot.Builder()
                 //广告位id
@@ -196,7 +196,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
     }
 
     @Override
-    protected void requestInteractionAd(Activity activity, AdInfo info, AdRequestListener listener, AdListener adListener) {
+    protected void requestInteractionAd(Activity activity, AdInfo info, AdRequestListener listener, InteractionListener adListener) {
         MidasInteractionAd midasInteractionAd = (MidasInteractionAd) info.getMidasAd();
         float expressViewWidth = 300;
         float expressViewHeight = 300;
@@ -293,7 +293,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                 .setCodeId(midasSelfRenderAd.getAdId())
                 .setSupportDeepLink(true)
                 .setImageAcceptedSize(640, 320)
-                .setAdCount(1)
+                .setAdCount(3)
                 .build();
         mTTAdNative.loadFeedAd(adSlot, new TTAdNative.FeedAdListener() {
             @Override

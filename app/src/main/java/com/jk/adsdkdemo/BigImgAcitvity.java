@@ -86,7 +86,8 @@ public class BigImgAcitvity extends AppCompatActivity implements View.OnClickLis
 //                });
 //                break;
             case R.id.button_request_ad: //预加载广告
-                position = spinner.getSelectedItem().toString();
+//                position = spinner.getSelectedItem().toString();
+                position = positionEt.getText().toString().trim();
                 if (TextUtils.isEmpty(position)) {
                     Toast.makeText(getApplicationContext(), "accept->输入的位置不能为空", Toast.LENGTH_LONG).show();
                     return;
@@ -121,20 +122,6 @@ public class BigImgAcitvity extends AppCompatActivity implements View.OnClickLis
 //                    }
 //                });
                 MidasAdSdk.getAdsManger().loadMidasSelfRenderAd(this, position, new SelfRenderAdListener<AdInfo>() {
-                    @Override
-                    public void onVideoLoaded(AdInfo adInfo) {
-
-                    }
-
-                    @Override
-                    public void adExposed(AdInfo info) {
-
-                    }
-
-                    @Override
-                    public void adClicked(AdInfo info) {
-
-                    }
 
                     @Override
                     public void adSuccess(AdInfo info) {
@@ -152,6 +139,5 @@ public class BigImgAcitvity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void bindView(MidasSelfRenderAd midasSelfRenderAd) {
-
     }
 }

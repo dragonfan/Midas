@@ -35,6 +35,7 @@ public class AdInfo extends BaseEntity implements Ad {
      */
     private MidasAd midasAd;
 
+
     public MidasAd getMidasAd() {
         return midasAd;
     }

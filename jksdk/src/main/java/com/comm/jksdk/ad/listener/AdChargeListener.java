@@ -1,7 +1,5 @@
 package com.comm.jksdk.ad.listener;
 
-import com.comm.jksdk.ad.entity.AdInfo;
-
 /**
  * @ProjectName: Midas
  * @Package: com.comm.jksdk.ad.listener

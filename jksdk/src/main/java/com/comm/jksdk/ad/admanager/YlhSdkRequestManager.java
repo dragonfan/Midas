@@ -16,9 +16,10 @@ import com.comm.jksdk.ad.entity.MidasInteractionAd;
 import com.comm.jksdk.ad.entity.MidasNativeTemplateAd;
 import com.comm.jksdk.ad.entity.MidasRewardVideoAd;
 import com.comm.jksdk.ad.entity.MidasSplashAd;
-import com.comm.jksdk.ad.listener.AdListener;
 import com.comm.jksdk.ad.listener.AdRequestListener;
 import com.comm.jksdk.ad.listener.AdSplashListener;
+import com.comm.jksdk.ad.listener.InteractionListener;
+import com.comm.jksdk.ad.listener.NativeTemplateListener;
 import com.comm.jksdk.ad.listener.SelfRenderAdListener;
 import com.comm.jksdk.ad.listener.VideoAdListener;
 import com.comm.jksdk.config.TTAdManagerHolder;
@@ -91,7 +92,7 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
 
     @Override
     protected void requestNativeTemplateAd(Activity activity, AdInfo info, AdRequestListener listener,
-                                           AdListener adListener) {
+                                           NativeTemplateListener adListener) {
         MidasNativeTemplateAd midasNativeTemplateAd = (MidasNativeTemplateAd) info.getMidasAd();
         NativeExpressAD nativeExpressAD = new NativeExpressAD(activity, new ADSize((int) midasNativeTemplateAd.getWidth(), ADSize.AUTO_HEIGHT), midasNativeTemplateAd.getAppId(), midasNativeTemplateAd.getAdId(), new NativeExpressAD.NativeExpressADListener() {
             @Override
@@ -254,7 +255,7 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
 
     private UnifiedInterstitialAD iad;
     @Override
-    protected void requestInteractionAd(Activity activity, AdInfo info, AdRequestListener listener, AdListener adListener) {
+    protected void requestInteractionAd(Activity activity, AdInfo info, AdRequestListener listener, InteractionListener adListener) {
         MidasInteractionAd midasInteractionAd = (MidasInteractionAd) info.getMidasAd();
         if (iad != null) {
             iad.close();

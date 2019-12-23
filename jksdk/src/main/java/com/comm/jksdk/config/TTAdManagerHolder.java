@@ -50,14 +50,7 @@ public class TTAdManagerHolder {
     }
 
     private static TTAdConfig buildConfig(Context context) {
-//        String chjAppid = SpUtils.getString(Constants.SPUtils.CHJ_APPID, "");
-//        if (TextUtils.isEmpty(chjAppid)) {
-//            chjAppid = Constants.CHJ_APPID;
-//        }
         String chjAppName = AdsConfig.getProductAppName();
-//        if (TextUtils.isEmpty(chjAppName)) {
-//            chjAppName = Constants.CHJ_APPNAME;
-//        }
         boolean adsDebug = false;
         if (BuildConfig.DEBUG) {
             adsDebug = true;
