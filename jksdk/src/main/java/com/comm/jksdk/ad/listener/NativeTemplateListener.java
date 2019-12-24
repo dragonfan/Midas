@@ -12,5 +12,6 @@ package com.comm.jksdk.ad.listener;
  * @UpdateRemark: 更新说明：
  * @Version: 1.0
  */
-public interface NativeTemplateListener<T> extends AdListener<T> {
+public interface NativeTemplateListener<T> extends AdBasicListener<T> {
+
 }

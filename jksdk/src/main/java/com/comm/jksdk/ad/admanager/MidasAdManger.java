@@ -12,13 +12,14 @@ import com.comm.jksdk.ad.entity.MidasSelfRenderAd;
 import com.comm.jksdk.ad.entity.MidasSplashAd;
 import com.comm.jksdk.ad.factory.RequestManagerFactory;
 import com.comm.jksdk.ad.listener.AdBasicListener;
-import com.comm.jksdk.ad.listener.AdListener;
 import com.comm.jksdk.ad.listener.AdManager;
 import com.comm.jksdk.ad.listener.AdPreloadingListener;
 import com.comm.jksdk.ad.listener.AdRequestListener;
 import com.comm.jksdk.ad.listener.AdRequestManager;
 import com.comm.jksdk.ad.listener.AdSplashListener;
 import com.comm.jksdk.ad.listener.FirstAdListener;
+import com.comm.jksdk.ad.listener.InteractionListener;
+import com.comm.jksdk.ad.listener.NativeTemplateListener;
 import com.comm.jksdk.ad.listener.SelfRenderAdListener;
 import com.comm.jksdk.ad.listener.VideoAdListener;
 import com.comm.jksdk.bean.ConfigBean;
@@ -197,21 +198,23 @@ public class MidasAdManger implements AdManager {
             //设置广告位置信息
             adInfo.setPosition(position);
             //获取本地配置信息
-            readyInfo(adInfo);
-            if (CollectionUtils.isEmpty(adsInfoslist)) {
-                if (mAdListener != null) {
-                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-                }
-                return;
-            }
-            ConfigBean.AdListBean.AdsInfosBean mAdsInfosBean = adsInfoslist.remove(0);
-            if (mAdsInfosBean == null) {
-                if (mAdListener != null) {
-                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-                }
-                return;
-            }
-            againRequest(adInfo, mAdsInfosBean);
+//            readyInfo(adInfo);
+//            if (CollectionUtils.isEmpty(adsInfoslist)) {
+//                if (mAdListener != null) {
+//                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+//                }
+//                return;
+//            }
+//            ConfigBean.AdListBean.AdsInfosBean mAdsInfosBean = adsInfoslist.remove(0);
+//            if (mAdsInfosBean == null) {
+//                if (mAdListener != null) {
+//                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+//                }
+//                return;
+//            }
+//            againRequest(adInfo, mAdsInfosBean);
+
+            getMidasConfigBean(adInfo, position);
         } catch (Exception e) {
             e.printStackTrace();
             if (mAdListener != null) {
@@ -257,7 +260,7 @@ public class MidasAdManger implements AdManager {
     }
 
     @Override
-    public void loadMidasInteractionAd(Activity activity, String position, AdListener listener) {
+    public void loadMidasInteractionAd(Activity activity, String position, InteractionListener listener) {
         mAdListener = listener;
         AdInfo adInfo = new AdInfo();
         adInfo.setAdType(Constants.AdType.INTERACTION_TYPE);
@@ -268,21 +271,22 @@ public class MidasAdManger implements AdManager {
             //设置广告位置信息
             adInfo.setPosition(position);
             //获取本地配置信息
-            readyInfo(adInfo);
-            if (CollectionUtils.isEmpty(adsInfoslist)) {
-                if (mAdListener != null) {
-                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-                }
-                return;
-            }
-            ConfigBean.AdListBean.AdsInfosBean mAdsInfosBean = adsInfoslist.remove(0);
-            if (mAdsInfosBean == null) {
-                if (mAdListener != null) {
-                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-                }
-                return;
-            }
-            againRequest(adInfo, mAdsInfosBean);
+//            readyInfo(adInfo);
+//            if (CollectionUtils.isEmpty(adsInfoslist)) {
+//                if (mAdListener != null) {
+//                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+//                }
+//                return;
+//            }
+//            ConfigBean.AdListBean.AdsInfosBean mAdsInfosBean = adsInfoslist.remove(0);
+//            if (mAdsInfosBean == null) {
+//                if (mAdListener != null) {
+//                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+//                }
+//                return;
+//            }
+//            againRequest(adInfo, mAdsInfosBean);
+            getMidasConfigBean(adInfo, position);
         } catch (Exception e) {
             e.printStackTrace();
             if (mAdListener != null) {
@@ -292,7 +296,7 @@ public class MidasAdManger implements AdManager {
     }
 
     @Override
-    public void loadMidasNativeTemplateAd(Activity activity, String position, float width, AdListener listener) {
+    public void loadMidasNativeTemplateAd(Activity activity, String position, float width, NativeTemplateListener listener) {
         mAdListener = listener;
         AdInfo adInfo = new AdInfo();
         adInfo.setAdType(Constants.AdType.NATIVE_TEMPLATE);
@@ -304,21 +308,22 @@ public class MidasAdManger implements AdManager {
             //设置广告位置信息
             adInfo.setPosition(position);
             //获取本地配置信息
-            readyInfo(adInfo);
-            if (CollectionUtils.isEmpty(adsInfoslist)) {
-                if (mAdListener != null) {
-                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-                }
-                return;
-            }
-            ConfigBean.AdListBean.AdsInfosBean mAdsInfosBean = adsInfoslist.remove(0);
-            if (mAdsInfosBean == null) {
-                if (mAdListener != null) {
-                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-                }
-                return;
-            }
-            againRequest(adInfo, mAdsInfosBean);
+//            readyInfo(adInfo);
+//            if (CollectionUtils.isEmpty(adsInfoslist)) {
+//                if (mAdListener != null) {
+//                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+//                }
+//                return;
+//            }
+//            ConfigBean.AdListBean.AdsInfosBean mAdsInfosBean = adsInfoslist.remove(0);
+//            if (mAdsInfosBean == null) {
+//                if (mAdListener != null) {
+//                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+//                }
+//                return;
+//            }
+//            againRequest(adInfo, mAdsInfosBean);
+            getMidasConfigBean(adInfo, position);
         } catch (Exception e) {
             e.printStackTrace();
             if (mAdListener != null) {

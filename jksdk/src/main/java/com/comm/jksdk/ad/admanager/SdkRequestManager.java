@@ -12,7 +12,9 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.ad.entity.AdInfo;
+import com.comm.jksdk.ad.entity.MidasNativeTemplateAd;
 import com.comm.jksdk.ad.listener.AdBasicListener;
+import com.comm.jksdk.ad.listener.AdChargeListener;
 import com.comm.jksdk.ad.listener.AdRequestListener;
 import com.comm.jksdk.ad.listener.AdRequestManager;
 import com.comm.jksdk.ad.listener.AdSplashListener;
@@ -53,13 +55,13 @@ public abstract class SdkRequestManager implements AdRequestManager {
         } else if (Constants.AdType.INTERACTION_TYPE.equals(adInfo.getAdType())){
             requestInteractionAd(activity, adInfo, listener, getInteractionListener((InteractionListener) adListener));
         } else if (Constants.AdType.NATIVE_TEMPLATE.equals(adInfo.getAdType())) {
-            requestNativeTemplateAd(activity, adInfo, listener, getNativeTemplateListener((NativeTemplateListener) adListener));
+            requestNativeTemplateAd(activity, adInfo, listener, getNativeTemplateListener((NativeTemplateListener) adListener), getNativeTemplateAdChargeListener());
         } else {
 
         }
     }
 
-    protected abstract void requestNativeTemplateAd(Activity activity, AdInfo info, AdRequestListener listener, NativeTemplateListener listener1);
+    protected abstract void requestNativeTemplateAd(Activity activity, AdInfo info, AdRequestListener adRequestListener, NativeTemplateListener nativeTemplateListener, AdChargeListener adChargeListener);
 
     protected abstract void requestInteractionAd(Activity activity, AdInfo info, AdRequestListener listener, InteractionListener adListener);
 
@@ -114,18 +116,40 @@ public abstract class SdkRequestManager implements AdRequestManager {
                     listener.adError(info, errorCode, errorMsg);
                 }
             }
+        };
+    }
 
+    /**
+     *原生模板广告回调中间层（埋点可以埋到这里）
+     * @return
+     */
+    private AdChargeListener getNativeTemplateAdChargeListener(){
+        return new AdChargeListener<MidasNativeTemplateAd>() {
             @Override
-            public void adExposed(AdInfo info) {
-                if (listener != null) {
-                    listener.adExposed(info);
+            public void adSuccess(MidasNativeTemplateAd info) {
+                if (info.getAdChargeListener() != null) {
+                    info.getAdChargeListener().adSuccess(info);
                 }
             }
 
             @Override
-            public void adClicked(AdInfo info) {
-                if (listener != null) {
-                    listener.adClicked(info);
+            public void adError(MidasNativeTemplateAd info, int errorCode, String errorMsg) {
+                if (info.getAdChargeListener() != null) {
+                    info.getAdChargeListener().adError(info, errorCode, errorMsg);
+                }
+            }
+
+            @Override
+            public void adExposed(MidasNativeTemplateAd info) {
+                if (info.getAdChargeListener() != null) {
+                    info.getAdChargeListener().adExposed(info);
+                }
+            }
+
+            @Override
+            public void adClicked(MidasNativeTemplateAd info) {
+                if (info.getAdChargeListener() != null) {
+                    info.getAdChargeListener().adClicked(info);
                 }
             }
         };

@@ -24,6 +24,7 @@ import com.comm.jksdk.ad.entity.MidasNativeTemplateAd;
 import com.comm.jksdk.ad.entity.MidasRewardVideoAd;
 import com.comm.jksdk.ad.entity.MidasSelfRenderAd;
 import com.comm.jksdk.ad.entity.MidasSplashAd;
+import com.comm.jksdk.ad.listener.AdChargeListener;
 import com.comm.jksdk.ad.listener.AdRequestListener;
 import com.comm.jksdk.ad.listener.AdSplashListener;
 import com.comm.jksdk.ad.listener.InteractionListener;
@@ -80,7 +81,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
 //    }
 
     @Override
-    protected void requestNativeTemplateAd(Activity activity, AdInfo info, AdRequestListener listener, NativeTemplateListener adListener) {
+    protected void requestNativeTemplateAd(Activity activity, AdInfo info, AdRequestListener listener, NativeTemplateListener adListener, AdChargeListener adChargeListener) {
         MidasNativeTemplateAd midasNativeTemplateAd = (MidasNativeTemplateAd) info.getMidasAd();
         AdSlot adSlot = new AdSlot.Builder()
                 //广告位id
@@ -122,31 +123,31 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                 ttNativeAd.setExpressInteractionListener(new TTNativeExpressAd.ExpressAdInteractionListener() {
                     @Override
                     public void onAdClicked(View view, int type) {
-                        if (midasNativeTemplateAd.getAdChargeListener() != null) {
-                            midasNativeTemplateAd.getAdChargeListener().adClicked(midasNativeTemplateAd);
+                        if (adChargeListener != null) {
+                            adChargeListener.adClicked(midasNativeTemplateAd);
                         }
                     }
 
                     @Override
                     public void onAdShow(View view, int type) {
-                        if (midasNativeTemplateAd.getAdChargeListener() != null) {
-                            midasNativeTemplateAd.getAdChargeListener().adExposed(midasNativeTemplateAd);
+                        if (adChargeListener != null) {
+                            adChargeListener.adExposed(midasNativeTemplateAd);
                         }
                     }
 
                     @Override
                     public void onRenderFail(View view, String msg, int code) {
 //                Log.e("ExpressView","render fail:"+(System.currentTimeMillis() - startTime));
-                        if (midasNativeTemplateAd.getAdChargeListener() != null) {
-                            midasNativeTemplateAd.getAdChargeListener().adError(midasNativeTemplateAd, code, msg);
+                        if (adChargeListener != null) {
+                            adChargeListener.adError(midasNativeTemplateAd, code, msg);
                         }
                     }
 
                     @Override
                     public void onRenderSuccess(View view, float width, float height) {
                         midasNativeTemplateAd.setAddView(view);
-                        if (midasNativeTemplateAd.getAdChargeListener() != null) {
-                            midasNativeTemplateAd.getAdChargeListener().adSuccess(midasNativeTemplateAd);
+                        if (adChargeListener != null) {
+                            adChargeListener.adSuccess(midasNativeTemplateAd);
                         }
                     }
                 });

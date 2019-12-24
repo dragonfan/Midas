@@ -157,10 +157,10 @@ public class AdsConfig {
 //        if (bid > 0) {
 //            requestParams.put("bid", bid);
 //        }
-        String uuid = MidasAdSdk.getRroductId();
+        String uuid = MidasAdSdk.getUUID();
         requestParams.put("uuid", uuid);
         requestParams.put("sessionid", uuid+System.currentTimeMillis());
-        requestParams.put("appid", MidasAdSdk.getRroductId());
+        requestParams.put("appid", MidasAdSdk.getAppId());
         requestParams.put("appversion", AppInfoUtils.getVerCode(MidasAdSdk.getContext()));
         requestParams.put("adpostId", adpostId);
         requestParams.put("sdkVersion", Constants.version_code);

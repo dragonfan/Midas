@@ -16,7 +16,7 @@ import com.comm.jksdk.ad.entity.AdInfo;
  * @UpdateRemark: 更新说明：
  * @Version: 1.0
  */
-public interface AdSplashListener<T extends AdInfo> extends AdListener<T>{
+public interface AdSplashListener<T extends AdInfo> extends AdChargeListener<T>{
     /**
      * 传入view容器：优量广告用到
      * @return

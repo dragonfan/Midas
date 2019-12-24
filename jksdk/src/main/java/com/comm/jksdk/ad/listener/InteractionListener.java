@@ -12,5 +12,5 @@ package com.comm.jksdk.ad.listener;
  * @UpdateRemark: 更新说明：
  * @Version: 1.0
  */
-public interface InteractionListener<T> extends AdListener<T> {
+public interface InteractionListener<T> extends AdChargeListener<T> {
 }

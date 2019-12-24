@@ -1,6 +1,10 @@
 package com.comm.jksdk.ad.entity;
 
+import android.view.ViewGroup;
+
 import com.bytedance.sdk.openadsdk.TTFeedAd;
+import com.comm.jksdk.ad.listener.AdListener;
+import com.comm.jksdk.constant.Constants;
 
 /**
  * @ProjectName: Midas
@@ -16,6 +20,12 @@ import com.bytedance.sdk.openadsdk.TTFeedAd;
  */
 public class MidasSelfRenderAd extends MidasAd{
 
+    private ViewGroup container;
+    /**
+     * 计费回调（埋点用）
+     */
+    private AdListener adListener;
+
     /**
      * 穿山甲自渲染信息流广告
      */
@@ -27,6 +37,36 @@ public class MidasSelfRenderAd extends MidasAd{
 
     public void setTtFeedAd(TTFeedAd ttFeedAd) {
         this.ttFeedAd = ttFeedAd;
+    }
+
+    public AdListener getAdListener() {
+        return adListener;
+    }
+
+    public void setAdListener(AdListener adListener) {
+        this.adListener = adListener;
+    }
+
+    public ViewGroup getContainer() {
+        return container;
+    }
+
+    public void setContainer(ViewGroup container) {
+        this.container = container;
+    }
+
+    private void bindLinstenr(){
+        if (Constants.AdSourceType.ChuanShanJia.equals(getAdSource())) {
+            if (ttFeedAd == null) {
+                return;
+            }
+            if (adListener == null) {
+                return;
+            }
+//            ttFeedAd.registerViewForInteraction();
+        } else {
+
+        }
     }
 
     @Override

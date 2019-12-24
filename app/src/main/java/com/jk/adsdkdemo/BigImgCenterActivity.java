@@ -1,21 +1,12 @@
 package com.jk.adsdkdemo;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
-import com.comm.jksdk.MidasAdSdk;
-import com.comm.jksdk.ad.entity.AdInfo;
-import com.comm.jksdk.ad.listener.AdListener;
-import com.jk.adsdkdemo.utils.LogUtils;
-
-import java.util.ArrayList;
-import java.util.List;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
   *

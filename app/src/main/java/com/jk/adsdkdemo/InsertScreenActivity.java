@@ -1,18 +1,18 @@
 package com.jk.adsdkdemo;
 
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.comm.jksdk.MidasAdSdk;
-import com.comm.jksdk.ad.entity.Ad;
 import com.comm.jksdk.ad.entity.AdInfo;
-import com.comm.jksdk.ad.listener.AdListener;
+import com.comm.jksdk.ad.listener.InteractionListener;
 import com.jk.adsdkdemo.utils.LogUtils;
 
 /**
@@ -93,7 +93,7 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
 //            }
 //        }, "80");
 
-        MidasAdSdk.getAdsManger().loadMidasInteractionAd(this, position, new AdListener<AdInfo>() {
+        MidasAdSdk.getAdsManger().loadMidasInteractionAd(this, position, new InteractionListener<AdInfo>() {
             @Override
             public void adExposed(AdInfo info) {
                 LogUtils.d(TAG, "-----adExposed-----");

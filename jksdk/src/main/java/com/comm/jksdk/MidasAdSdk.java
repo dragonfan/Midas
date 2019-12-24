@@ -7,6 +7,7 @@ import com.comm.jksdk.ad.listener.AdManager;
 import com.comm.jksdk.config.AdsConfig;
 import com.comm.jksdk.config.InitBaseConfig;
 import com.comm.jksdk.config.listener.ConfigListener;
+import com.comm.jksdk.utils.StatisticUtils;
 
 /**
  * @ProjectName: MidasAdSdk
@@ -55,6 +56,7 @@ public final class MidasAdSdk {
         InitBaseConfig.getInstance().initChjAd(mContext, csjAppId);
         mIsInit = true;
         // TODO: 2019/12/23 初始化牛数
+        StatisticUtils.init(context, channel, productId);
     }
 
     /**
@@ -72,6 +74,7 @@ public final class MidasAdSdk {
     public static void setImei(String imei){
 
         // TODO: 2019/12/23 下面设置imei给牛数
+        StatisticUtils.setImei(imei);
     }
 
 
@@ -126,11 +129,11 @@ public final class MidasAdSdk {
         MidasAdSdk.mUUID = mUUID;
     }
 
-    public static String getmAppId() {
+    public static String getAppId() {
         return mAppId;
     }
 
-    public static void setmAppId(String mAppId) {
+    public static void setAppId(String mAppId) {
         MidasAdSdk.mAppId = mAppId;
     }
 

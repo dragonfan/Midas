@@ -1,9 +1,7 @@
 package com.jk.adsdkdemo;
 
 import android.content.Context;
-import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
@@ -12,6 +10,8 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.bytedance.sdk.openadsdk.TTAdDislike;
 import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
@@ -19,7 +19,7 @@ import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.ad.entity.MidasNativeTemplateAd;
 import com.comm.jksdk.ad.listener.AdChargeListener;
-import com.comm.jksdk.ad.listener.AdListener;
+import com.comm.jksdk.ad.listener.NativeTemplateListener;
 import com.jk.adsdkdemo.utils.LogUtils;
 
 /**
@@ -120,21 +120,35 @@ public class FeedTemplateAcitvity extends AppCompatActivity implements View.OnCl
                 if (TextUtils.isEmpty(width)) {
                     width = "350";
                 }
-                MidasAdSdk.getAdsManger().loadMidasNativeTemplateAd(this, position, Float.valueOf(width), new AdListener<AdInfo>() {
+//                MidasAdSdk.getAdsManger().loadMidasNativeTemplateAd(this, position, Float.valueOf(width), new AdListener<AdInfo>() {
+//                    @Override
+//                    public void adSuccess(AdInfo info) {
+//                        MidasNativeTemplateAd midasNativeTemplateAd = (MidasNativeTemplateAd) info.getMidasAd();
+//                        renderAd(midasNativeTemplateAd);
+//                    }
+//
+//                    @Override
+//                    public void adExposed(AdInfo info) {
+//                        LogUtils.e("adExposed");
+//                    }
+//
+//                    @Override
+//                    public void adClicked(AdInfo info) {
+//
+//                    }
+//
+//                    @Override
+//                    public void adError(AdInfo info, int errorCode, String errorMsg) {
+//                        LogUtils.e("adError：" + errorMsg);
+//                    }
+//                });
+
+                MidasAdSdk.getAdsManger().loadMidasNativeTemplateAd(this, position, Float.valueOf(width), new NativeTemplateListener<AdInfo>(){
+
                     @Override
                     public void adSuccess(AdInfo info) {
                         MidasNativeTemplateAd midasNativeTemplateAd = (MidasNativeTemplateAd) info.getMidasAd();
                         renderAd(midasNativeTemplateAd);
-                    }
-
-                    @Override
-                    public void adExposed(AdInfo info) {
-                        LogUtils.e("adExposed");
-                    }
-
-                    @Override
-                    public void adClicked(AdInfo info) {
-
                     }
 
                     @Override

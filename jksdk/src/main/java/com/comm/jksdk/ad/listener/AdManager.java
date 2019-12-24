@@ -16,6 +16,12 @@ import android.app.Activity;
  */
 public interface AdManager {
 
+    /**
+     * 请求开屏广告
+     * @param activity
+     * @param position
+     * @param listener
+     */
     void loadMidasSplashAd(Activity activity, String position, AdSplashListener listener);
 
     void loadMidasRewardVideoAd(Activity activity, String position, String userId, int orientation, String rewardName, int rewardAmount, VideoAdListener listener);
@@ -24,7 +30,7 @@ public interface AdManager {
 
     void loadMidasSelfRenderAd(Activity activity, String position, SelfRenderAdListener listener);
 
-    void loadMidasInteractionAd(Activity activity, String position, AdListener listener);
+    void loadMidasInteractionAd(Activity activity, String position, InteractionListener listener);
 
-    void loadMidasNativeTemplateAd(Activity activity, String position, float width, AdListener listener);
+    void loadMidasNativeTemplateAd(Activity activity, String position, float width, NativeTemplateListener listener);
 }

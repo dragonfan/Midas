@@ -8,7 +8,7 @@ import com.comm.jksdk.ad.entity.AdInfo;
  * @author zixuefei
  * @since 2019/11/17 13:52
  */
-public interface VideoAdListener<T extends AdInfo> extends AdListener<T> {
+public interface VideoAdListener<T extends AdInfo> extends AdChargeListener<T> {
     /**
      * 视频恢复
      */

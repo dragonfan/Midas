@@ -15,8 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.ad.entity.MidasSelfRenderAd;
-import com.comm.jksdk.ad.listener.AdListener;
-import com.comm.jksdk.ad.listener.AdPreloadingListener;
 import com.comm.jksdk.ad.listener.SelfRenderAdListener;
 import com.jk.adsdkdemo.utils.LogUtils;
 
@@ -139,5 +137,6 @@ public class BigImgAcitvity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void bindView(MidasSelfRenderAd midasSelfRenderAd) {
+//        midasSelfRenderAd.setAdListener();
     }
 }

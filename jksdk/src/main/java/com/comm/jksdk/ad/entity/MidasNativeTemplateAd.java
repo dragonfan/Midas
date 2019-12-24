@@ -1,5 +1,9 @@
 package com.comm.jksdk.ad.entity;
 
+import android.view.View;
+
+import com.bytedance.sdk.openadsdk.TTAdConstant;
+import com.bytedance.sdk.openadsdk.TTAppDownloadListener;
 import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
 import com.comm.jksdk.ad.listener.AdChargeListener;
 import com.comm.jksdk.constant.Constants;
@@ -98,6 +102,5 @@ public class MidasNativeTemplateAd extends MidasAd {
 
 
     private void csjBindListener(TTNativeExpressAd ttNativeExpressAd){
-
     }
 }

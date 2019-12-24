@@ -16,6 +16,7 @@ import com.comm.jksdk.ad.entity.MidasInteractionAd;
 import com.comm.jksdk.ad.entity.MidasNativeTemplateAd;
 import com.comm.jksdk.ad.entity.MidasRewardVideoAd;
 import com.comm.jksdk.ad.entity.MidasSplashAd;
+import com.comm.jksdk.ad.listener.AdChargeListener;
 import com.comm.jksdk.ad.listener.AdRequestListener;
 import com.comm.jksdk.ad.listener.AdSplashListener;
 import com.comm.jksdk.ad.listener.InteractionListener;
@@ -92,7 +93,7 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
 
     @Override
     protected void requestNativeTemplateAd(Activity activity, AdInfo info, AdRequestListener listener,
-                                           NativeTemplateListener adListener) {
+                                           NativeTemplateListener adListener, AdChargeListener adChargeListener) {
         MidasNativeTemplateAd midasNativeTemplateAd = (MidasNativeTemplateAd) info.getMidasAd();
         NativeExpressAD nativeExpressAD = new NativeExpressAD(activity, new ADSize((int) midasNativeTemplateAd.getWidth(), ADSize.AUTO_HEIGHT), midasNativeTemplateAd.getAppId(), midasNativeTemplateAd.getAdId(), new NativeExpressAD.NativeExpressADListener() {
             @Override
@@ -167,29 +168,29 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
             @Override
             public void onRenderSuccess(NativeExpressADView nativeExpressADView) {
                 LogUtils.d(TAG, "YLH onRenderSuccess:");
-                if (midasNativeTemplateAd.getAdChargeListener() != null) {
-                    midasNativeTemplateAd.getAdChargeListener().adSuccess(midasNativeTemplateAd);
+                if (adChargeListener != null) {
+                    adChargeListener.adSuccess(midasNativeTemplateAd);
                 }
             }
 
             @Override
             public void onADExposure(NativeExpressADView nativeExpressADView) {
-                if (midasNativeTemplateAd.getAdChargeListener() != null) {
-                    midasNativeTemplateAd.getAdChargeListener().adExposed(midasNativeTemplateAd);
+                if (adChargeListener != null) {
+                    adChargeListener.adExposed(midasNativeTemplateAd);
                 }
             }
 
             @Override
             public void onADClicked(NativeExpressADView nativeExpressADView) {
-                if (midasNativeTemplateAd.getAdChargeListener() != null) {
-                    midasNativeTemplateAd.getAdChargeListener().adClicked(midasNativeTemplateAd);
+                if (adChargeListener != null) {
+                    adChargeListener.adClicked(midasNativeTemplateAd);
                 }
             }
 
             @Override
             public void onADClosed(NativeExpressADView nativeExpressADView) {
-                if (midasNativeTemplateAd.getAdChargeListener() != null) {
-                    midasNativeTemplateAd.getAdChargeListener().adClose(midasNativeTemplateAd);
+                if (adChargeListener != null) {
+                    adChargeListener.adClose(midasNativeTemplateAd);
                 }
             }
 
