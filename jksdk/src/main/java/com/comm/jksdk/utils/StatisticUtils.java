@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.comm.jksdk.bean.StatisticBaseProperties;
+import com.comm.jksdk.bean.StatisticEvent;
 import com.comm.jksdk.http.utils.ApiManage;
 import com.comm.jksdk.http.utils.AppEnvironment;
 import com.xiaoniu.statistic.Configuration;
@@ -68,19 +69,20 @@ public class StatisticUtils {
 
     /**
      * 广告埋点事件
-     * @param eventCode 事件码
-     * @param eventName 事件名
+     * @param statisticEvent 埋点事件
      * @param baseProperties    公共属性
-     * @param extension 额外参数
      */
-    public static void trackCustomEvent(String eventCode, String eventName,
-                                        StatisticBaseProperties baseProperties, JSONObject extension){
-        JSONObject j = new JSONObject();
-        addBasePropertiesToJson(baseProperties, j);
-        if (extension != null){
-            mergeJsonObject(extension, j);
+    public static void trackCustomEvent(StatisticEvent statisticEvent,
+                                        StatisticBaseProperties baseProperties){
+        if (statisticEvent != null && baseProperties != null){
+            JSONObject j = new JSONObject();
+            addBasePropertiesToJson(baseProperties, j);
+            if (statisticEvent.getExtension() != null){
+                mergeJsonObject(statisticEvent.getExtension(), j);
+            }
+            NiuDataAPI.trackCustomEvent(EventType.AD_PROCESS,
+                    statisticEvent.getEventCode(), statisticEvent.getEventName(), j);
         }
-        NiuDataAPI.trackCustomEvent(EventType.AD_PROCESS,eventCode,eventName,j);
     }
 
     /**

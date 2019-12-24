@@ -23,6 +23,16 @@ public class StatisticBaseProperties implements Serializable {
      */
     private String sessionId;
     /**
+     * 当前用户的设备ID信息
+     *      构建规则：
+     * 1、从 IMEI ，MAC， oaid， andriodid 四个标识中选取1个(按照优先级选择）；
+     * 2、 拼接成一个字符串；
+     * 3、计算MD5；
+     * 4、 base 64；
+     * 5、 生成uuid2;
+     */
+    private String uuid2;
+    /**
      * 广告位的位置信息。（一般为英文缩写说明，比如SPB_locker_boost_result）
      */
     private String unitId;
@@ -170,54 +180,75 @@ public class StatisticBaseProperties implements Serializable {
      */
     private String bannerUrl;
 
-    public StatisticBaseProperties(String sessionId, String unitId,
-                                   String adPosId, int strategyId,
-                                   String strategyType, String configResultCode,
-                                   String resultCode, int unitRequestNum,
-                                   int unitRequestType,
-                                   int unitBestWaiting, boolean unitPrepareIcon,
-                                   boolean unitPrepareBanner, String placementId,
-                                   String sourceId, int sourceRequestNum,
-                                   int sourceTimeOut, String style,
-                                   String mediationId, String advertiser,
-                                   String pkg, String bidPrice,
-                                   String chargePrice, int fillCount,
-                                   String resultInfo, String adId,
-                                   String priorityS, long weightL,
-                                   String headLine, String summary,
-                                   String iconUrl, String bannerUrl) {
+    public StatisticBaseProperties(String uuid2,String sessionId) {
         this.sessionId = sessionId;
-        this.unitId = unitId;
-        this.adPosId = adPosId;
-        this.strategyId = strategyId;
-        this.strategyType = strategyType;
-        this.configResultCode = configResultCode;
-        this.resultCode = resultCode;
+        this.uuid2 = uuid2;
+
+        //广告位的位置信息。（一般为英文缩写说明，比如SPB_locker_boost_result）
+        this.unitId = "";
+        //广告位的位置编号，用于向广告系统请求广告位策略。
+        this.adPosId = "";
+        //广告位对应策略编号，每次策略调整均会改变，全库表唯一。
+        this.strategyId = 0;
+        //midas后台和midas sdk业务code
+        this.configResultCode = "";
+        //通讯协议的code
+        this.resultCode = "";
+        //实际请求广告联盟的次数
+        this.unitRequestNum = 0;
+        //广告的单元ID。简称PID或plID
+        this.placementId = "";
+        //穿山甲：chuanshanjia；优量汇：youlianghui
+        this.sourceId = "";
+        //特定广告类型才有多个如信息流广告，其他默认为1
+        this.sourceRequestNum = 1;
+        //只有开屏能设置超时时间，其他没有
+        this.sourceTimeOut = 0;
+        //类型用王通定义的类型
+        this.style = "";
+        //不确定 ：广告主？目前穿山甲部分广告有getSource
+        this.advertiser = "";
+        //实际拿到广告的个数。串行0-1；并行0-n
+        this.fillCount = 0;
+        //联盟异常的code码
+        this.resultInfo = "";
+        //接口文档中requestOrder字段
+        this.priorityS = "";
+        //原生广告标题。
+        this.headLine = "";
+        //原生广告描述。
+        this.summary = "";
+        //原生广告的icon链接。
+        this.iconUrl = "";
+        //原生广告的大图链接。
+        this.bannerUrl = "";
+
+        //预留，现在没有
+        this.adId = "";
+
+        /**
+         * 以下为默认值，外面也可以通过set方法设置更改
+         */
+        //直接获取的BuildConfig里面的版本号
         this.sdkVersion = BuildConfig.VERSION_NAME;
-        this.unitRequestNum = unitRequestNum;
-        this.unitRequestType = unitRequestType;
-        this.unitBestWaiting = unitBestWaiting;
-        this.unitPrepareIcon = unitPrepareIcon;
-        this.unitPrepareBanner = unitPrepareBanner;
-        this.placementId = placementId;
-        this.sourceId = sourceId;
-        this.sourceRequestNum = sourceRequestNum;
-        this.sourceTimeOut = sourceTimeOut;
-        this.style = style;
-        this.mediationId = mediationId;
-        this.advertiser = advertiser;
-        this.pkg = pkg;
-        this.bidPrice = bidPrice;
-        this.chargePrice = chargePrice;
-        this.fillCount = fillCount;
-        this.resultInfo = resultInfo;
-        this.adId = adId;
-        this.priorityS = priorityS;
-        this.weightL = weightL;
-        this.headLine = headLine;
-        this.summary = summary;
-        this.iconUrl = iconUrl;
-        this.bannerUrl = bannerUrl;
+        //自己的聚合：midas,后期用到其他的在定义
+        this.mediationId = "midas";
+        //预留，暂时用3
+        this.strategyType = "3";
+        //预留，暂时用0
+        this.unitRequestType = 0;
+        //预留，暂时用5s
+        this.unitBestWaiting = 5;
+        //预留，暂时没有
+        this.unitPrepareIcon = false;
+        //预留，暂时没有
+        this.unitPrepareBanner = false;
+        //预留，现在没有
+        this.bidPrice = "";
+        //预留，现在没有
+        this.chargePrice = "";
+        //预留，并行请求用到
+        this.weightL = 0;
     }
 
     public String getSessionId() {
@@ -226,6 +257,14 @@ public class StatisticBaseProperties implements Serializable {
 
     public void setSessionId(String sessionId) {
         this.sessionId = sessionId;
+    }
+
+    public String getUuid2() {
+        return uuid2;
+    }
+
+    public void setUuid2(String uuid2) {
+        this.uuid2 = uuid2;
     }
 
     public String getUnitId() {

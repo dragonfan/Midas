@@ -1,0 +1,82 @@
+package com.comm.jksdk.bean;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+/**
+ * Desc:埋点事件
+ * <p>
+ * Author: AnYaBo
+ * Date: 2019/12/24
+ * Copyright: Copyright (c) 2016-2022
+ * Company: @小牛科技
+ * Email:anyabo@xiaoniu.com
+ * Update Comments:
+ *
+ * @author anyabo
+ */
+public enum  StatisticEvent {
+
+    MIDAS_CONFIG_REQUEST("MIDAS_CONFIG_REQUEST","广告策略请求事件");
+
+    private String eventCode;
+    private String eventName;
+    private JSONObject extension;
+
+    StatisticEvent(String eventCode, String eventName) {
+        this.eventCode = eventCode;
+        this.eventName = eventName;
+    }
+
+    public String getEventCode() {
+        return eventCode;
+    }
+
+    public JSONObject getExtension() {
+        return extension;
+    }
+
+    public String getEventName() {
+        return eventName;
+    }
+
+    public StatisticEvent setExtension(JSONObject extension) {
+        if (extension != null) {
+            this.extension = extension;
+        }
+        return this;
+    }
+
+    public StatisticEvent setExtension(String... extension) {
+        if (extension != null && extension.length > 0) {
+            JSONObject jObj = new JSONObject();
+            for (int i = 0; i < extension.length; i++) {
+                try {
+                    String key = extension[i++];
+                    String value = "";
+                    if (i < extension.length) {
+                        value = extension[i];
+                    }
+                    jObj.put(key, value);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            this.extension = jObj;
+        }
+        return this;
+    }
+
+    public StatisticEvent put(String key, Object value) {
+        if (extension == null) {
+            extension = new JSONObject();
+        }
+        try {
+            extension.put(key, value);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return this;
+    }
+
+}

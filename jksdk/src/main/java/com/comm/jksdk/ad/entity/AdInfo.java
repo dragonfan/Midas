@@ -9,6 +9,7 @@ import com.bytedance.sdk.openadsdk.TTNativeAd;
 import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
 import com.bytedance.sdk.openadsdk.TTRewardVideoAd;
 import com.bytedance.sdk.openadsdk.TTSplashAd;
+import com.comm.jksdk.bean.StatisticBaseProperties;
 import com.qq.e.ads.nativ.NativeUnifiedADData;
 
 /**
@@ -24,6 +25,10 @@ import com.qq.e.ads.nativ.NativeUnifiedADData;
  * @Version: 1.0
  */
 public class AdInfo extends BaseEntity implements Ad {
+    /**
+     * 埋点公共属性
+     */
+    private StatisticBaseProperties statisticBaseProperties;
 
     /**
      * 广告分类（目前有八大类）
@@ -35,6 +40,13 @@ public class AdInfo extends BaseEntity implements Ad {
      */
     private MidasAd midasAd;
 
+    public StatisticBaseProperties getStatisticBaseProperties() {
+        return statisticBaseProperties;
+    }
+
+    public void setStatisticBaseProperties(StatisticBaseProperties statisticBaseProperties) {
+        this.statisticBaseProperties = statisticBaseProperties;
+    }
 
     public MidasAd getMidasAd() {
         return midasAd;
