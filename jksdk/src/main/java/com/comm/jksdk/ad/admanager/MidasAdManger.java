@@ -26,9 +26,11 @@ import com.comm.jksdk.bean.MidasConfigBean;
 import com.comm.jksdk.config.AdsConfig;
 import com.comm.jksdk.config.listener.ConfigListener;
 import com.comm.jksdk.constant.Constants;
+import com.comm.jksdk.http.ErrorCode;
 import com.comm.jksdk.http.utils.LogUtils;
 import com.comm.jksdk.utils.CodeFactory;
 import com.comm.jksdk.utils.CollectionUtils;
+import com.comm.jksdk.utils.StatisticUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -342,36 +344,46 @@ public class MidasAdManger implements AdManager {
     }
 
 
-    public void getMidasConfigBean(AdInfo adInfo, String adpostId){
+    public void getMidasConfigBean(AdInfo adInfo, String adPosId){
+        //埋点流程开始
+        long beginTime = System.currentTimeMillis();
+        StatisticUtils.singleStatisticBegin(adInfo,beginTime);
+
         adsInfoslist.clear();
-        AdsConfig.getInstance(MidasAdSdk.getContext()).requestConfig(adpostId, new ConfigListener() {
+        AdsConfig.getInstance(MidasAdSdk.getContext()).requestConfig(adPosId, new ConfigListener() {
             @Override
             public void adSuccess(MidasConfigBean midasConfigBean) {
                 List<MidasConfigBean.AdStrategyBean> adStrategyBeans = midasConfigBean.getAdStrategy();
                 adsInfoslist.addAll(adStrategyBeans);
                 if (CollectionUtils.isEmpty(adsInfoslist)) {
-                    if (mAdListener != null) {
-                        mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-                    }
+                    int code = CodeFactory.UNKNOWN;
+                    adError(200,code,CodeFactory.getError(code));
                     return;
                 }
-                MidasConfigBean.AdStrategyBean mAdsInfosBean = adsInfoslist.remove(0);
-                if (mAdsInfosBean == null) {
-                    if (mAdListener != null) {
-                        mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-                    }
+                MidasConfigBean.AdStrategyBean mAdsInfoBean = adsInfoslist.remove(0);
+                if (mAdsInfoBean == null) {
+                    int code = CodeFactory.UNKNOWN;
+                    adError(200,code,CodeFactory.getError(code));
                     return;
                 }
 
+                againRequest2(adInfo, mAdsInfoBean);
 
-                againRequest2(adInfo, mAdsInfosBean);
+                //广告策略配置请求埋点
+                StatisticUtils.strategyConfigurationRequest(adInfo, adPosId,
+                        midasConfigBean.getAdstrategyid(), 200+"",
+                        ErrorCode.SUCCESS + "", beginTime);
             }
 
             @Override
-            public void adError(int errorCode, String errorMsg) {
+            public void adError(int httpCode,int errorCode, String errorMsg) {
                 if (mAdListener != null) {
                     mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
                 }
+                //广告策略配置请求埋点
+                StatisticUtils.strategyConfigurationRequest(adInfo, adPosId,"",
+                        httpCode+"",errorCode + "", beginTime);
+
             }
         });
     }

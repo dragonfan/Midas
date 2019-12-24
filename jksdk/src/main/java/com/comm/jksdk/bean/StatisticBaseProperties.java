@@ -43,7 +43,7 @@ public class StatisticBaseProperties implements Serializable {
     /**
      * 广告位对应策略编号，每次策略调整均会改变，全库表唯一。
      */
-    private int strategyId;
+    private String strategyId;
     /**
      * 广告策略的类型。0：本地策略。1：内存缓存策略。2：文件缓存策略。3：实时请求策略。
      *      预留，暂时用3
@@ -184,12 +184,10 @@ public class StatisticBaseProperties implements Serializable {
         this.sessionId = sessionId;
         this.uuid2 = uuid2;
 
-        //广告位的位置信息。（一般为英文缩写说明，比如SPB_locker_boost_result）
-        this.unitId = "";
         //广告位的位置编号，用于向广告系统请求广告位策略。
         this.adPosId = "";
         //广告位对应策略编号，每次策略调整均会改变，全库表唯一。
-        this.strategyId = 0;
+        this.strategyId = "";
         //midas后台和midas sdk业务code
         this.configResultCode = "";
         //通讯协议的code
@@ -230,6 +228,8 @@ public class StatisticBaseProperties implements Serializable {
         this.sdkVersion = BuildConfig.VERSION_NAME;
         //自己的聚合：midas,后期用到其他的在定义
         this.mediationId = "midas";
+        //广告位的位置信息。 预留，服务端暂时没有返回，产品那边确认可以通过adPosId后台查询
+        this.unitId = "";
         //预留，暂时用3
         this.strategyType = "3";
         //预留，暂时用0
@@ -282,11 +282,11 @@ public class StatisticBaseProperties implements Serializable {
         this.adPosId = adPosId;
     }
 
-    public int getStrategyId() {
+    public String getStrategyId() {
         return strategyId;
     }
 
-    public void setStrategyId(int strategyId) {
+    public void setStrategyId(String strategyId) {
         this.strategyId = strategyId;
     }
 

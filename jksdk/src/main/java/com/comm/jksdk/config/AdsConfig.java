@@ -12,8 +12,11 @@ import com.comm.jksdk.config.listener.ConfigListener;
 import com.comm.jksdk.constant.Constants;
 import com.comm.jksdk.http.OkHttpWrapper;
 import com.comm.jksdk.http.base.BaseResponse;
+import com.comm.jksdk.http.exception.DataParseException;
+import com.comm.jksdk.http.exception.HttpRequestException;
 import com.comm.jksdk.http.utils.AppInfoUtils;
 import com.comm.jksdk.http.utils.LogUtils;
+import com.comm.jksdk.utils.CodeFactory;
 import com.comm.jksdk.utils.CollectionUtils;
 import com.comm.jksdk.utils.JsonUtils;
 import com.comm.jksdk.utils.SpUtils;
@@ -85,7 +88,12 @@ public class AdsConfig {
                 if (configBean == null) {
                     LogUtils.e("request config error, MidasConfigBean is null");
                     MidasConfigBean cacheConfigBean = getCacheMidasConfigBean(adpostId);
-                    return Observable.just(cacheConfigBean);
+                    if (cacheConfigBean != null){
+                        return Observable.just(cacheConfigBean);
+                    }else {
+                        throw new DataParseException(CodeFactory.CONFIG_DATA_EMPTY,
+                                CodeFactory.getError(CodeFactory.CONFIG_DATA_EMPTY));
+                    }
                 }
                 String configBeanStr = null;
                 try {
@@ -93,6 +101,8 @@ public class AdsConfig {
                 } catch (Exception e) {
                     e.printStackTrace();
                     LogUtils.e("configBean to json string error");
+                    throw new DataParseException(CodeFactory.CONFIG_PARSE_EXCEPTION,
+                            CodeFactory.getError(CodeFactory.CONFIG_PARSE_EXCEPTION));
                 }
                 if (!TextUtils.isEmpty(configBeanStr)) {
                     SpUtils.putString(Constants.SPUtils.MIDAS_PREFIX + adpostId, configBeanStr);
@@ -106,7 +116,7 @@ public class AdsConfig {
                     public void accept(MidasConfigBean midasConfigBean) throws Exception {
                         if (midasConfigBean == null) {
                             if (listener != null) {
-                                listener.adError(1, "获取配置信息失败");
+                                listener.adError(200,1, "获取配置信息失败");
                             }
                             return;
                         }
@@ -114,13 +124,27 @@ public class AdsConfig {
                             listener.adSuccess(midasConfigBean);
                         }
                     }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        LogUtils.e("get midas config error, "+throwable.getMessage());
-                        if (listener != null) {
-                            listener.adError(1, "获取配置信息失败");
+                }, throwable -> {
+                    int httpCode = CodeFactory.HTTP_EXCEPTION;
+                    int errorCode = CodeFactory.HTTP_IO_EXCEPTION;
+                    String errorMsg = CodeFactory.getError(errorCode);
+                    if (throwable != null){
+                        if (throwable instanceof HttpRequestException){
+                            HttpRequestException exception = (HttpRequestException) throwable;
+                            if (exception != null){
+                                httpCode = exception.getCode();
+                            }
+                        }else if(throwable instanceof DataParseException){
+                            DataParseException exception = (DataParseException) throwable;
+                            if (exception != null){
+                                errorCode = exception.getCode();
+                                errorMsg = exception.getMsg();
+                            }
                         }
+                    }
+                    LogUtils.e("get midas config error, "+throwable.getMessage());
+                    if (listener != null) {
+                        listener.adError(httpCode, errorCode,errorMsg);
                     }
                 });
     }

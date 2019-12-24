@@ -23,8 +23,9 @@ public interface ConfigListener {
 
     /**
      * 配置请求失败
+     * @param httpRequestCode   通信协议码
      * @param errorCode
      * @param errorMsg
      */
-    void adError(int errorCode, String errorMsg);
+    void adError(int httpRequestCode,int errorCode, String errorMsg);
 }

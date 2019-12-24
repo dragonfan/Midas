@@ -3,6 +3,7 @@ package com.comm.jksdk.utils;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.bean.StatisticBaseProperties;
 import com.comm.jksdk.bean.StatisticEvent;
 import com.comm.jksdk.http.utils.ApiManage;
@@ -143,6 +144,55 @@ public class StatisticUtils {
             j.put("icon_url",baseProperties.getIconUrl());
             j.put("banner_url",baseProperties.getBannerUrl());
         }catch (Exception e){
+        }
+    }
+
+    /**
+     *单埋点开始位
+     * @param adInfo    广告信息实体类
+     * @param beginTime    开始时间
+     */
+    public static void singleStatisticBegin(AdInfo adInfo,long beginTime){
+        //调试代码
+        String uuid2 = "test";
+        String sessionId = uuid2 + beginTime;
+        if (adInfo != null){
+            StatisticBaseProperties baseProperties
+                    = new StatisticBaseProperties(uuid2, sessionId);
+            adInfo.setStatisticBaseProperties(baseProperties);
+        }
+    }
+
+    /**
+     * 广告策略配置请求埋点
+     * @param adInfo    广告信息
+     * @param adPosId   广告位的位置编号，用于向广告系统请求广告位策略。
+     * @param strategyId   广告位对应策略编号，每次策略调整均会改变，全库表唯一。
+     * @param resultCode    midas后台和midas sdk业务code
+     * @param configResultCode  通讯协议的code
+     * @param beginTime 请求开始的时间
+     */
+    public static void strategyConfigurationRequest(AdInfo adInfo,String adPosId,
+                                                    String strategyId,String resultCode,
+                                                    String configResultCode,
+                                                    long beginTime) {
+        long take = System.currentTimeMillis() - beginTime;
+        StatisticBaseProperties baseProperties = adInfo.getStatisticBaseProperties();
+        if (baseProperties != null){
+            if (!TextUtils.isEmpty(adPosId)){
+                baseProperties.setAdPosId(adPosId);
+            }
+            if (!TextUtils.isEmpty(resultCode)){
+                baseProperties.setResultCode(resultCode);
+            }
+            if (!TextUtils.isEmpty(configResultCode)){
+                baseProperties.setConfigResultCode(configResultCode);
+            }
+            if (TextUtils.isEmpty(strategyId)){
+                baseProperties.setStrategyId(strategyId);
+            }
+            trackCustomEvent(StatisticEvent.MIDAS_CONFIG_REQUEST.put("take", take),
+                    baseProperties);
         }
     }
 

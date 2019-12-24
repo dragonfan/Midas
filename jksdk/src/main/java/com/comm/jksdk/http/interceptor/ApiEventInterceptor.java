@@ -2,17 +2,17 @@ package com.comm.jksdk.http.interceptor;
 
 import android.text.TextUtils;
 
-import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.http.Api;
 import com.comm.jksdk.http.ErrorCode;
 import com.comm.jksdk.http.OkHttpWrapper;
 import com.comm.jksdk.http.base.BaseResponse;
+import com.comm.jksdk.http.exception.DataParseException;
+import com.comm.jksdk.http.exception.HttpRequestException;
 import com.comm.jksdk.http.utils.ApiManage;
 import com.comm.jksdk.http.utils.LogUtils;
-import com.comm.jksdk.http.utils.NetworkUtil;
+import com.comm.jksdk.utils.CodeFactory;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -40,7 +40,7 @@ public class ApiEventInterceptor implements Interceptor {
   private final Charset UTF8 = Charset.forName("UTF-8");
 
   @Override
-  public Response intercept(Chain chain) throws IOException {
+  public Response intercept(Chain chain) throws HttpRequestException {
     Request request = null;
     try {
       Request requestTmp = chain.request();
@@ -65,20 +65,22 @@ public class ApiEventInterceptor implements Interceptor {
         }
       }
     } catch (Exception e) {
-      e.printStackTrace();
       request = null;
     }
 
     if (request == null) {
       return null;
     }
-    if (!NetworkUtil.isNetworkActive(MidasAdSdk.getContext())) {
-      throw new IOException();
+
+    Response response = null;
+    try {
+      response = chain.proceed(request);
+    } catch (IOException e) {
     }
-    Response response = chain.proceed(request);
     String rBody;
     try {
       if (response != null) {
+
         ResponseBody responseBody = response.body();
         Headers headers = response.headers();
         LogUtils.e("ApiEventInterceptor 返回 headers->>>" + headers);
@@ -100,25 +102,37 @@ public class ApiEventInterceptor implements Interceptor {
           }
         }
         rBody = buffer.clone().readString(charset);
-        if (!TextUtils.isEmpty(rBody)) {
-          Gson gson = new Gson();
-          try {
-            LogUtils.e("ApiEventInterceptor 请求 url->>>" + response.request().url().toString());
-            BaseResponse model = gson.fromJson(rBody, BaseResponse.class);
-            code = model.getCode();
-            if (code == ErrorCode.SUCCESS) {
-              long requestAtMillis = response.networkResponse().sentRequestAtMillis();
-              long castTime = System.currentTimeMillis() - requestAtMillis;
-            } else {
+        if (response.code() == 200) {
+          if (!TextUtils.isEmpty(rBody)) {
+            Gson gson = new Gson();
+            try {
+              LogUtils.e("ApiEventInterceptor 请求 url->>>" + response.request().url().toString());
+              BaseResponse model = gson.fromJson(rBody, BaseResponse.class);
+              code = model.getCode();
+              if (code == ErrorCode.SUCCESS) {
+                long requestAtMillis = response.networkResponse().sentRequestAtMillis();
+                long castTime = System.currentTimeMillis() - requestAtMillis;
+              } else {
+                throw new DataParseException(code, model.getMsg());
+              }
+            } catch (JsonSyntaxException e) {
+              throw new DataParseException(CodeFactory.HTTP_PARSE_EXCEPTION,
+                      CodeFactory.getError(CodeFactory.HTTP_PARSE_EXCEPTION));
             }
-          } catch (JsonSyntaxException e) {
-            e.printStackTrace();
           }
+        }else {
+          throw new HttpRequestException(response.code(),
+                  CodeFactory.getError(CodeFactory.HTTP_EXCEPTION));
         }
+      }else {
+        throw new DataParseException(CodeFactory.HTTP_NET_WORK_DISCONNECT,
+                CodeFactory.getError(CodeFactory.HTTP_NET_WORK_DISCONNECT));
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      throw new HttpRequestException(CodeFactory.HTTP_EXCEPTION,
+              CodeFactory.getError(CodeFactory.HTTP_EXCEPTION));
     }
     return response;
   }
+
 }
