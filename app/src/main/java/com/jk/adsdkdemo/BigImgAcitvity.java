@@ -3,6 +3,7 @@ package com.jk.adsdkdemo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,7 +17,10 @@ import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.ad.entity.MidasSelfRenderAd;
 import com.comm.jksdk.ad.listener.SelfRenderAdListener;
+import com.comm.jksdk.ad.listener.SelfRenderChargeListener;
 import com.jk.adsdkdemo.utils.LogUtils;
+
+import java.util.List;
 
 /**
   *
@@ -137,6 +141,37 @@ public class BigImgAcitvity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void bindView(MidasSelfRenderAd midasSelfRenderAd) {
-//        midasSelfRenderAd.setAdListener();
+        midasSelfRenderAd.setAdListener(new SelfRenderChargeListener<MidasSelfRenderAd>(){
+
+            @Override
+            public ViewGroup getViewGroup(MidasSelfRenderAd info) {
+                return null;
+            }
+
+            @Override
+            public List<View> getClickViewList(MidasSelfRenderAd info) {
+                return null;
+            }
+
+            @Override
+            public List<View> getCreativeViewList(MidasSelfRenderAd info) {
+                return null;
+            }
+
+            @Override
+            public void adCreativeClick(MidasSelfRenderAd info) {
+
+            }
+
+            @Override
+            public void adExposed(MidasSelfRenderAd info) {
+
+            }
+
+            @Override
+            public void adClicked(MidasSelfRenderAd info) {
+
+            }
+        });
     }
 }

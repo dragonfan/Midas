@@ -3,6 +3,7 @@ package com.comm.jksdk.ad.admanager;
 import android.app.Activity;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.bytedance.sdk.openadsdk.AdSlot;
 import com.bytedance.sdk.openadsdk.TTAdConstant;
@@ -30,6 +31,7 @@ import com.comm.jksdk.ad.listener.AdSplashListener;
 import com.comm.jksdk.ad.listener.InteractionListener;
 import com.comm.jksdk.ad.listener.NativeTemplateListener;
 import com.comm.jksdk.ad.listener.SelfRenderAdListener;
+import com.comm.jksdk.ad.listener.SelfRenderChargeListener;
 import com.comm.jksdk.ad.listener.VideoAdListener;
 import com.comm.jksdk.config.TTAdManagerHolder;
 import com.comm.jksdk.http.utils.LogUtils;
@@ -281,7 +283,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
     }
 
     @Override
-    protected void requestSelfRenderAd(Activity activity, AdInfo info, AdRequestListener listener, SelfRenderAdListener adListener) {
+    protected void requestSelfRenderAd(Activity activity, AdInfo info, AdRequestListener listener, SelfRenderAdListener adListener, SelfRenderChargeListener selfRenderChargeListener) {
         MidasSelfRenderAd midasSelfRenderAd = (MidasSelfRenderAd) info.getMidasAd();
         //step1:初始化sdk
         TTAdManager ttAdManager = TTAdManagerHolder.get();
@@ -321,16 +323,36 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     }
                     return;
                 }
-//                caheImage(ttFeedAd);
-//                String title = ttFeedAd.getTitle();
-//                adInfo.setAdTitle(title);
-//                if (TTAdConstant.INTERACTION_TYPE_DOWNLOAD == ttFeedAd.getInteractionType()) {
-//                    adInfo.setAdClickType(1);
-//                } else {
-//                    adInfo.setAdClickType(2);
-//                }
-//                adInfo.setTtFeedAd(ttFeedAd);
                 midasSelfRenderAd.setTtFeedAd(ttFeedAd);
+                if (selfRenderChargeListener != null) {
+                    ViewGroup viewGroup = selfRenderChargeListener.getViewGroup();
+                    List<View> clickViewList = selfRenderChargeListener.getClickViewList();
+                    List<View> creativeViewList = selfRenderChargeListener.getCreativeViewList();
+                    if (viewGroup != null && CollectionUtils.isEmpty(clickViewList) && CollectionUtils.isEmpty(creativeViewList)) {
+                        ttFeedAd.registerViewForInteraction(viewGroup, clickViewList, creativeViewList, new TTNativeAd.AdInteractionListener() {
+                            @Override
+                            public void onAdClicked(View view, TTNativeAd ttNativeAd) {
+                                if (selfRenderChargeListener != null) {
+                                    selfRenderChargeListener.adClicked(midasSelfRenderAd);
+                                }
+                            }
+
+                            @Override
+                            public void onAdCreativeClick(View view, TTNativeAd ttNativeAd) {
+                                if (selfRenderChargeListener != null) {
+                                    selfRenderChargeListener.adCreativeClick(midasSelfRenderAd);
+                                }
+                            }
+
+                            @Override
+                            public void onAdShow(TTNativeAd ttNativeAd) {
+                                if (selfRenderChargeListener != null) {
+                                    selfRenderChargeListener.adExposed(midasSelfRenderAd);
+                                }
+                            }
+                        });
+                    }
+                }
                 if (adListener != null) {
                     adListener.adSuccess(info);
                 }

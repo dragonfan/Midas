@@ -4,6 +4,7 @@ import android.view.ViewGroup;
 
 import com.bytedance.sdk.openadsdk.TTFeedAd;
 import com.comm.jksdk.ad.listener.AdListener;
+import com.comm.jksdk.ad.listener.SelfRenderChargeListener;
 import com.comm.jksdk.constant.Constants;
 
 /**
@@ -24,7 +25,7 @@ public class MidasSelfRenderAd extends MidasAd{
     /**
      * 计费回调（埋点用）
      */
-    private AdListener adListener;
+    private SelfRenderChargeListener adListener;
 
     /**
      * 穿山甲自渲染信息流广告
@@ -39,11 +40,11 @@ public class MidasSelfRenderAd extends MidasAd{
         this.ttFeedAd = ttFeedAd;
     }
 
-    public AdListener getAdListener() {
+    public SelfRenderChargeListener getAdListener() {
         return adListener;
     }
 
-    public void setAdListener(AdListener adListener) {
+    public void setAdListener(SelfRenderChargeListener adListener) {
         this.adListener = adListener;
     }
 

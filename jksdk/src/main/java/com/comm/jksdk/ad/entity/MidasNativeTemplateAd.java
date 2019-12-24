@@ -1,11 +1,8 @@
 package com.comm.jksdk.ad.entity;
 
-import android.view.View;
-
-import com.bytedance.sdk.openadsdk.TTAdConstant;
-import com.bytedance.sdk.openadsdk.TTAppDownloadListener;
 import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
 import com.comm.jksdk.ad.listener.AdChargeListener;
+import com.comm.jksdk.ad.listener.SelfRenderChargeListener;
 import com.comm.jksdk.constant.Constants;
 import com.qq.e.ads.nativ.NativeExpressAD;
 import com.qq.e.ads.nativ.NativeExpressADView;
@@ -36,18 +33,18 @@ public class MidasNativeTemplateAd extends MidasAd {
     /**
      * 计费/埋点用到的监听
      */
-    private AdChargeListener adChargeListener;
+    private SelfRenderChargeListener adChargeListener;
     /**
      * 模板广告的宽度
      */
     private float width;
 
 
-    public void setChargeListener(AdChargeListener adChargeListener){
-        this.adChargeListener = adChargeListener;
+    public void setChargeListener(SelfRenderChargeListener selfRenderChargeListener){
+        this.adChargeListener = selfRenderChargeListener;
     }
 
-    public AdChargeListener getAdChargeListener() {
+    public SelfRenderChargeListener getAdChargeListener() {
         return adChargeListener;
     }
 
