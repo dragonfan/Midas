@@ -22,7 +22,6 @@ import com.comm.jksdk.ad.listener.InteractionListener;
 import com.comm.jksdk.ad.listener.NativeTemplateListener;
 import com.comm.jksdk.ad.listener.SelfRenderAdListener;
 import com.comm.jksdk.ad.listener.VideoAdListener;
-import com.comm.jksdk.bean.ConfigBean;
 import com.comm.jksdk.bean.MidasConfigBean;
 import com.comm.jksdk.config.AdsConfig;
 import com.comm.jksdk.config.listener.ConfigListener;
@@ -45,8 +44,7 @@ import java.util.List;
 public class MidasAdManger implements AdManager {
     protected final String TAG = "MidasAdSdk-->";
 
-    private List<ConfigBean.AdListBean.AdsInfosBean> adsInfoslist = new ArrayList();
-    private List<MidasConfigBean.AdStrategyBean> adsInfoslist2 = new ArrayList();
+    private List<MidasConfigBean.AdStrategyBean> adsInfoslist = new ArrayList();
 
     public MidasAdManger() {
     }
@@ -89,7 +87,7 @@ public class MidasAdManger implements AdManager {
                 }
                 return;
             }
-            ConfigBean.AdListBean.AdsInfosBean mAdsInfosBean = adsInfoslist.remove(0);
+            MidasConfigBean.AdStrategyBean mAdsInfosBean = adsInfoslist.remove(0);
             if (mAdsInfosBean == null) {
                 if (adInfo.isPreload()) {
                     if (mAdPreloadingListener != null) {
@@ -332,42 +330,21 @@ public class MidasAdManger implements AdManager {
         }
     }
 
-    /**
-     * 准备数据
-     *
-     * @param adInfo
-     */
-    public void readyInfo(AdInfo adInfo) {
-        //获取本地配置信息
-        adsInfoslist.clear();
-        ConfigBean.AdListBean mConfigInfoBean = AdsConfig.getInstance(MidasAdSdk.getContext()).getConfig(adInfo.getPosition());
-        if (mConfigInfoBean == null) {
-//            if (mAdListener != null) {
-//                mAdListener.adError(adInfo, CodeFactory.LOCAL_INFO_EMPTY, CodeFactory.getError(CodeFactory.LOCAL_INFO_EMPTY));
-//            }
-            return;
-        }
-        adInfo.setAdStyle(mConfigInfoBean.getAdStyle());
-        adInfo.setAdRequestTimeOut(mConfigInfoBean.getAdRequestTimeOut());
-        adsInfoslist.addAll(mConfigInfoBean.getAdsInfos());
-
-
-    }
 
     public void getMidasConfigBean(AdInfo adInfo, String adpostId){
-        adsInfoslist2.clear();
+        adsInfoslist.clear();
         AdsConfig.getInstance(MidasAdSdk.getContext()).requestConfig(adpostId, new ConfigListener() {
             @Override
             public void adSuccess(MidasConfigBean midasConfigBean) {
                 List<MidasConfigBean.AdStrategyBean> adStrategyBeans = midasConfigBean.getAdStrategy();
-                adsInfoslist2.addAll(adStrategyBeans);
-                if (CollectionUtils.isEmpty(adsInfoslist2)) {
+                adsInfoslist.addAll(adStrategyBeans);
+                if (CollectionUtils.isEmpty(adsInfoslist)) {
                     if (mAdListener != null) {
                         mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
                     }
                     return;
                 }
-                MidasConfigBean.AdStrategyBean mAdsInfosBean = adsInfoslist2.remove(0);
+                MidasConfigBean.AdStrategyBean mAdsInfosBean = adsInfoslist.remove(0);
                 if (mAdsInfosBean == null) {
                     if (mAdListener != null) {
                         mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
@@ -394,7 +371,7 @@ public class MidasAdManger implements AdManager {
      * @param adInfo
      * @param adsInfosBean
      */
-    public void againRequest(AdInfo adInfo, ConfigBean.AdListBean.AdsInfosBean adsInfosBean) {
+    public void againRequest(AdInfo adInfo, MidasConfigBean.AdStrategyBean adsInfosBean) {
         if (adInfo == null) {
             adInfo = new AdInfo();
         }
@@ -408,14 +385,14 @@ public class MidasAdManger implements AdManager {
 //        adInfo.getMidasAd().setAdId(adsInfosBean.getAdId());
         adInfo.getMidasAd().setAdId(adsInfosBean.getAdId()); //测试用
         //广告对应的appid
-        adInfo.getMidasAd().setAppId(adsInfosBean.getAdsAppId());
-        //请求类型 0 - SDK 1 - API
-        requestType = adsInfosBean.getRequestType();
-        if (requestType == 0) {
-            sdkRequest(adInfo);
-        } else {
-            apiRequest(adInfo);
-        }
+        adInfo.getMidasAd().setAppId(adsInfosBean.getAdsAppid());
+        sdkRequest(adInfo);
+//        //请求类型 0 - SDK 1 - API
+//        requestType = adsInfosBean.getRequestType();
+//        if (requestType == 0) {
+//        } else {
+//            apiRequest(adInfo);
+//        }
     }
 
     /**

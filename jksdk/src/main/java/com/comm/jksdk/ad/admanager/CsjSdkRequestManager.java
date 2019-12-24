@@ -325,29 +325,29 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                 }
                 midasSelfRenderAd.setTtFeedAd(ttFeedAd);
                 if (selfRenderChargeListener != null) {
-                    ViewGroup viewGroup = selfRenderChargeListener.getViewGroup();
-                    List<View> clickViewList = selfRenderChargeListener.getClickViewList();
-                    List<View> creativeViewList = selfRenderChargeListener.getCreativeViewList();
+                    ViewGroup viewGroup = selfRenderChargeListener.getViewGroup(info);
+                    List<View> clickViewList = selfRenderChargeListener.getClickViewList(info);
+                    List<View> creativeViewList = selfRenderChargeListener.getCreativeViewList(info);
                     if (viewGroup != null && CollectionUtils.isEmpty(clickViewList) && CollectionUtils.isEmpty(creativeViewList)) {
                         ttFeedAd.registerViewForInteraction(viewGroup, clickViewList, creativeViewList, new TTNativeAd.AdInteractionListener() {
                             @Override
                             public void onAdClicked(View view, TTNativeAd ttNativeAd) {
                                 if (selfRenderChargeListener != null) {
-                                    selfRenderChargeListener.adClicked(midasSelfRenderAd);
+                                    selfRenderChargeListener.adClicked(info);
                                 }
                             }
 
                             @Override
                             public void onAdCreativeClick(View view, TTNativeAd ttNativeAd) {
                                 if (selfRenderChargeListener != null) {
-                                    selfRenderChargeListener.adCreativeClick(midasSelfRenderAd);
+                                    selfRenderChargeListener.adCreativeClick(info);
                                 }
                             }
 
                             @Override
                             public void onAdShow(TTNativeAd ttNativeAd) {
                                 if (selfRenderChargeListener != null) {
-                                    selfRenderChargeListener.adExposed(midasSelfRenderAd);
+                                    selfRenderChargeListener.adExposed(info);
                                 }
                             }
                         });

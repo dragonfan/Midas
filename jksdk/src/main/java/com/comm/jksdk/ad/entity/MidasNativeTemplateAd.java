@@ -33,18 +33,18 @@ public class MidasNativeTemplateAd extends MidasAd {
     /**
      * 计费/埋点用到的监听
      */
-    private SelfRenderChargeListener adChargeListener;
+    private AdChargeListener adChargeListener;
     /**
      * 模板广告的宽度
      */
     private float width;
 
 
-    public void setChargeListener(SelfRenderChargeListener selfRenderChargeListener){
+    public void setChargeListener(AdChargeListener<AdInfo> selfRenderChargeListener){
         this.adChargeListener = selfRenderChargeListener;
     }
 
-    public SelfRenderChargeListener getAdChargeListener() {
+    public AdChargeListener getAdChargeListener() {
         return adChargeListener;
     }
 

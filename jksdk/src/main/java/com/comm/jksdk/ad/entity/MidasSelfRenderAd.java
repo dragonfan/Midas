@@ -6,6 +6,7 @@ import com.bytedance.sdk.openadsdk.TTFeedAd;
 import com.comm.jksdk.ad.listener.AdListener;
 import com.comm.jksdk.ad.listener.SelfRenderChargeListener;
 import com.comm.jksdk.constant.Constants;
+import com.qq.e.ads.nativ.NativeUnifiedAD;
 
 /**
  * @ProjectName: Midas
@@ -31,6 +32,10 @@ public class MidasSelfRenderAd extends MidasAd{
      * 穿山甲自渲染信息流广告
      */
     private TTFeedAd ttFeedAd;
+    /**
+     * 优量汇自渲染广告
+     */
+    private NativeUnifiedAD nativeUnifiedAD;
 
     public TTFeedAd getTtFeedAd() {
         return ttFeedAd;
@@ -54,6 +59,14 @@ public class MidasSelfRenderAd extends MidasAd{
 
     public void setContainer(ViewGroup container) {
         this.container = container;
+    }
+
+    public NativeUnifiedAD getNativeUnifiedAD() {
+        return nativeUnifiedAD;
+    }
+
+    public void setNativeUnifiedAD(NativeUnifiedAD nativeUnifiedAD) {
+        this.nativeUnifiedAD = nativeUnifiedAD;
     }
 
     private void bindLinstenr(){

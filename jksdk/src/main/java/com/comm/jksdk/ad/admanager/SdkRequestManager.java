@@ -105,49 +105,49 @@ public abstract class SdkRequestManager implements AdRequestManager {
      * @return
      */
     private SelfRenderChargeListener getSelfRenderChargeListener() {
-        return new SelfRenderChargeListener<MidasNativeTemplateAd>() {
+        return new SelfRenderChargeListener<AdInfo>() {
             @Override
-            public void adExposed(MidasNativeTemplateAd info) {
-                if (info.getAdChargeListener() != null) {
-                    info.getAdChargeListener().adExposed(info);
+            public void adExposed(AdInfo info) {
+                if (((MidasSelfRenderAd)info.getMidasAd()).getAdListener() != null) {
+                    ((MidasSelfRenderAd)info.getMidasAd()).getAdListener().adExposed(info);
                 }
             }
 
             @Override
-            public void adClicked(MidasNativeTemplateAd info) {
-                if (info.getAdChargeListener() != null) {
-                    info.getAdChargeListener().adClicked(info);
+            public void adClicked(AdInfo info) {
+                if (((MidasSelfRenderAd)info.getMidasAd()).getAdListener() != null) {
+                    ((MidasSelfRenderAd)info.getMidasAd()).getAdListener().adClicked(info);
                 }
             }
 
             @Override
-            public ViewGroup getViewGroup(MidasNativeTemplateAd info) {
-                if (info.getAdChargeListener() != null) {
-                    info.getAdChargeListener().getViewGroup(info);
-                }
-                return null;
-            }
-
-            @Override
-            public List<View> getClickViewList(MidasNativeTemplateAd info) {
-                if (info.getAdChargeListener() != null) {
-                    info.getAdChargeListener().getClickViewList(info);
+            public ViewGroup getViewGroup(AdInfo info) {
+                if (((MidasSelfRenderAd)info.getMidasAd()).getAdListener() != null) {
+                    ((MidasSelfRenderAd)info.getMidasAd()).getAdListener().getViewGroup(info);
                 }
                 return null;
             }
 
             @Override
-            public List<View> getCreativeViewList(MidasNativeTemplateAd info) {
-                if (info.getAdChargeListener() != null) {
-                    info.getAdChargeListener().getCreativeViewList(info);
+            public List<View> getClickViewList(AdInfo info) {
+                if (((MidasSelfRenderAd)info.getMidasAd()).getAdListener() != null) {
+                    ((MidasSelfRenderAd)info.getMidasAd()).getAdListener().getClickViewList(info);
                 }
                 return null;
             }
 
             @Override
-            public void adCreativeClick(MidasNativeTemplateAd info) {
-                if (info.getAdChargeListener() != null) {
-                    info.getAdChargeListener().adCreativeClick(info);
+            public List<View> getCreativeViewList(AdInfo info) {
+                if (((MidasSelfRenderAd)info.getMidasAd()).getAdListener() != null) {
+                    ((MidasSelfRenderAd)info.getMidasAd()).getAdListener().getCreativeViewList(info);
+                }
+                return null;
+            }
+
+            @Override
+            public void adCreativeClick(AdInfo info) {
+                if (((MidasSelfRenderAd)info.getMidasAd()).getAdListener() != null) {
+                    ((MidasSelfRenderAd)info.getMidasAd()).getAdListener().adCreativeClick(info);
                 }
             }
         };
@@ -182,32 +182,32 @@ public abstract class SdkRequestManager implements AdRequestManager {
      * @return
      */
     private AdChargeListener getNativeTemplateAdChargeListener(){
-        return new AdChargeListener<MidasNativeTemplateAd>() {
+        return new AdChargeListener<AdInfo>() {
             @Override
-            public void adSuccess(MidasNativeTemplateAd info) {
-                if (info.getAdChargeListener() != null) {
-                    info.getAdChargeListener().adSuccess(info);
+            public void adSuccess(AdInfo info) {
+                if (((MidasNativeTemplateAd)info.getMidasAd()).getAdChargeListener() != null) {
+                    ((MidasNativeTemplateAd)info.getMidasAd()).getAdChargeListener().adSuccess(info);
                 }
             }
 
             @Override
-            public void adError(MidasNativeTemplateAd info, int errorCode, String errorMsg) {
-                if (info.getAdChargeListener() != null) {
-                    info.getAdChargeListener().adError(info, errorCode, errorMsg);
+            public void adError(AdInfo info, int errorCode, String errorMsg) {
+                if (((MidasNativeTemplateAd)info.getMidasAd()).getAdChargeListener() != null) {
+                    ((MidasNativeTemplateAd)info.getMidasAd()).getAdChargeListener().adError(info, errorCode, errorMsg);
                 }
             }
 
             @Override
-            public void adExposed(MidasNativeTemplateAd info) {
-                if (info.getAdChargeListener() != null) {
-                    info.getAdChargeListener().adExposed(info);
+            public void adExposed(AdInfo info) {
+                if (((MidasNativeTemplateAd)info.getMidasAd()).getAdChargeListener() != null) {
+                    ((MidasNativeTemplateAd)info.getMidasAd()).getAdChargeListener().adExposed(info);
                 }
             }
 
             @Override
-            public void adClicked(MidasNativeTemplateAd info) {
-                if (info.getAdChargeListener() != null) {
-                    info.getAdChargeListener().adClicked(info);
+            public void adClicked(AdInfo info) {
+                if (((MidasNativeTemplateAd)info.getMidasAd()).getAdChargeListener() != null) {
+                    ((MidasNativeTemplateAd)info.getMidasAd()).getAdChargeListener().adClicked(info);
                 }
             }
         };

@@ -22,6 +22,7 @@ import com.comm.jksdk.ad.listener.AdSplashListener;
 import com.comm.jksdk.ad.listener.InteractionListener;
 import com.comm.jksdk.ad.listener.NativeTemplateListener;
 import com.comm.jksdk.ad.listener.SelfRenderAdListener;
+import com.comm.jksdk.ad.listener.SelfRenderChargeListener;
 import com.comm.jksdk.ad.listener.VideoAdListener;
 import com.comm.jksdk.config.TTAdManagerHolder;
 import com.comm.jksdk.http.utils.LogUtils;
@@ -318,8 +319,8 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
     }
 
     @Override
-    protected void requestSelfRenderAd(Activity activity, AdInfo info, AdRequestListener listener, SelfRenderAdListener adListener) {
-
+    protected void requestSelfRenderAd(Activity activity, AdInfo info, AdRequestListener listener, SelfRenderAdListener adListener, SelfRenderChargeListener selfRenderChargeListener) {
+//        NativeUnifiedAD mAdManager =
     }
 
     @Override

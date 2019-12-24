@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,7 +21,10 @@ import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.ad.entity.MidasNativeTemplateAd;
 import com.comm.jksdk.ad.listener.AdChargeListener;
 import com.comm.jksdk.ad.listener.NativeTemplateListener;
+import com.comm.jksdk.ad.listener.SelfRenderChargeListener;
 import com.jk.adsdkdemo.utils.LogUtils;
+
+import java.util.List;
 
 /**
   *
@@ -163,11 +167,11 @@ public class FeedTemplateAcitvity extends AppCompatActivity implements View.OnCl
      * 请求到广告后渲染广告
      */
     private void renderAd(MidasNativeTemplateAd midasNativeTemplateAd){
-        midasNativeTemplateAd.setChargeListener(new AdChargeListener<MidasNativeTemplateAd>() {
+        midasNativeTemplateAd.setChargeListener(new AdChargeListener<AdInfo>() {
             @Override
-            public void adSuccess(MidasNativeTemplateAd info) {
+            public void adSuccess(AdInfo info) {
                 LogUtils.e("adSuccess");
-                View addView = info.getAddView();
+                View addView = info.getMidasAd().getAddView();
                 if (addView != null) {
                     mExpressContainer.removeAllViews();
                     mExpressContainer.addView(addView);
@@ -175,17 +179,17 @@ public class FeedTemplateAcitvity extends AppCompatActivity implements View.OnCl
             }
 
             @Override
-            public void adError(MidasNativeTemplateAd info, int errorCode, String errorMsg) {
+            public void adError(AdInfo info, int errorCode, String errorMsg) {
                 LogUtils.e("adError, errorCode= %i, errorMsg = %s"+errorMsg + errorMsg);
             }
 
             @Override
-            public void adExposed(MidasNativeTemplateAd info) {
+            public void adExposed(AdInfo info) {
                 LogUtils.e("adExposed");
             }
 
             @Override
-            public void adClicked(MidasNativeTemplateAd info) {
+            public void adClicked(AdInfo info) {
                 LogUtils.e("adClicked");
             }
         });
