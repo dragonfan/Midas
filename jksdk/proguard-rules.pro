@@ -23,3 +23,6 @@
 -keep class com.bytedance.sdk.openadsdk.** { *; }
 -keep public interface com.bytedance.sdk.openadsdk.downloadnew.** {*;}
 -keep class com.pgl.sys.ces.* {*;}
+#牛数埋点SDK混淆
+-dontwarn com.xiaoniu.statistic.**
+-keep class com.xiaoniu.statistic.**{*;}

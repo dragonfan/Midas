@@ -66,6 +66,8 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
     implementation files('libs/android-query-full.0.26.7.jar')
 //    implementation 'com.novoda:bintray-release:0.2.7'
+    //牛数埋点SDK
+    implementation(name: 'NiuDataSDK_1.2.4.1', ext: 'aar')
 }
 
 //publishing {
