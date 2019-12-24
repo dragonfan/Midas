@@ -110,6 +110,7 @@ public class StatisticUtils {
     private static void addBasePropertiesToJson(StatisticBaseProperties baseProperties,JSONObject j){
         try{
             j.put("session_id", baseProperties.getSessionId());
+            j.put("uuid2", baseProperties.getUuid2());
             j.put("unit_id",baseProperties.getUnitId());
             j.put("adpos_id",baseProperties.getAdPosId());
             j.put("strategy_id",baseProperties.getStrategyId());

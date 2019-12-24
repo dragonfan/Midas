@@ -223,9 +223,6 @@ public class StatisticBaseProperties implements Serializable {
         //原生广告的大图链接。
         this.bannerUrl = "";
 
-        //预留，现在没有
-        this.adId = "";
-
         /**
          * 以下为默认值，外面也可以通过set方法设置更改
          */
@@ -243,6 +240,8 @@ public class StatisticBaseProperties implements Serializable {
         this.unitPrepareIcon = false;
         //预留，暂时没有
         this.unitPrepareBanner = false;
+        //预留，现在没有
+        this.adId = "";
         //预留，现在没有
         this.bidPrice = "";
         //预留，现在没有
