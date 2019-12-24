@@ -32,19 +32,19 @@ public interface SelfRenderChargeListener<T> extends AdChargeListener<T>{
      * view容器
      * @return
      */
-    ViewGroup getViewGroup(T info);
+    ViewGroup getViewGroup();
 
     /**
      * 可以被点击的view
      * @return
      */
-    List<View>  getClickViewList(T info);
+    List<View>  getClickViewList();
 
     /**
      * 触发创意广告的view（点击下载或拨打电话）
      * @return
      */
-    List<View>  getCreativeViewList(T info);
+    List<View>  getCreativeViewList();
 
     /**
      * 被创意按钮被点击

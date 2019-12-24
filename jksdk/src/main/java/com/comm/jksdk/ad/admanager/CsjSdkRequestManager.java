@@ -283,7 +283,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
     }
 
     @Override
-    protected void requestSelfRenderAd(Activity activity, AdInfo info, AdRequestListener listener, SelfRenderAdListener adListener, SelfRenderChargeListener selfRenderChargeListener) {
+    protected void requestSelfRenderAd(Activity activity, AdInfo info, AdRequestListener listener, SelfRenderAdListener adListener) {
         MidasSelfRenderAd midasSelfRenderAd = (MidasSelfRenderAd) info.getMidasAd();
         //step1:初始化sdk
         TTAdManager ttAdManager = TTAdManagerHolder.get();
@@ -324,35 +324,6 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     return;
                 }
                 midasSelfRenderAd.setTtFeedAd(ttFeedAd);
-                if (selfRenderChargeListener != null) {
-                    ViewGroup viewGroup = selfRenderChargeListener.getViewGroup(info);
-                    List<View> clickViewList = selfRenderChargeListener.getClickViewList(info);
-                    List<View> creativeViewList = selfRenderChargeListener.getCreativeViewList(info);
-                    if (viewGroup != null && CollectionUtils.isEmpty(clickViewList) && CollectionUtils.isEmpty(creativeViewList)) {
-                        ttFeedAd.registerViewForInteraction(viewGroup, clickViewList, creativeViewList, new TTNativeAd.AdInteractionListener() {
-                            @Override
-                            public void onAdClicked(View view, TTNativeAd ttNativeAd) {
-                                if (selfRenderChargeListener != null) {
-                                    selfRenderChargeListener.adClicked(info);
-                                }
-                            }
-
-                            @Override
-                            public void onAdCreativeClick(View view, TTNativeAd ttNativeAd) {
-                                if (selfRenderChargeListener != null) {
-                                    selfRenderChargeListener.adCreativeClick(info);
-                                }
-                            }
-
-                            @Override
-                            public void onAdShow(TTNativeAd ttNativeAd) {
-                                if (selfRenderChargeListener != null) {
-                                    selfRenderChargeListener.adExposed(info);
-                                }
-                            }
-                        });
-                    }
-                }
                 if (adListener != null) {
                     adListener.adSuccess(info);
                 }

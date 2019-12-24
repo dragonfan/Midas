@@ -11,6 +11,8 @@ import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.bytedance.sdk.openadsdk.TTFeedAd;
+import com.bytedance.sdk.openadsdk.TTNativeAd;
 import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.ad.entity.MidasNativeTemplateAd;
@@ -20,10 +22,10 @@ import com.comm.jksdk.ad.listener.AdChargeListener;
 import com.comm.jksdk.ad.listener.AdRequestListener;
 import com.comm.jksdk.ad.listener.AdRequestManager;
 import com.comm.jksdk.ad.listener.AdSplashListener;
+import com.comm.jksdk.ad.listener.BindViewListener;
 import com.comm.jksdk.ad.listener.InteractionListener;
 import com.comm.jksdk.ad.listener.NativeTemplateListener;
 import com.comm.jksdk.ad.listener.SelfRenderAdListener;
-import com.comm.jksdk.ad.listener.SelfRenderChargeListener;
 import com.comm.jksdk.ad.listener.VideoAdListener;
 import com.comm.jksdk.constant.Constants;
 import com.comm.jksdk.http.utils.LogUtils;
@@ -56,7 +58,8 @@ public abstract class SdkRequestManager implements AdRequestManager {
         } else if (Constants.AdType.FULL_SCREEN_VIDEO_TYPE.equals(adInfo.getAdType())){
             requestFullScreenVideoAd(activity, adInfo, listener, getVideoAdListener((VideoAdListener) adListener));
         } else if (Constants.AdType.SELF_RENDER.equals(adInfo.getAdType())){
-            requestSelfRenderAd(activity, adInfo, listener, (SelfRenderAdListener)adListener, getSelfRenderChargeListener());
+            requestSelfRenderAd(activity, adInfo, listener, (SelfRenderAdListener)adListener);
+            bindSelfRenderAdListener(adInfo);
         } else if (Constants.AdType.INTERACTION_TYPE.equals(adInfo.getAdType())){
             requestInteractionAd(activity, adInfo, listener, getInteractionListener((InteractionListener) adListener));
         } else if (Constants.AdType.NATIVE_TEMPLATE.equals(adInfo.getAdType())) {
@@ -70,7 +73,7 @@ public abstract class SdkRequestManager implements AdRequestManager {
 
     protected abstract void requestInteractionAd(Activity activity, AdInfo info, AdRequestListener listener, InteractionListener adListener);
 
-    protected abstract void requestSelfRenderAd(Activity activity, AdInfo info, AdRequestListener listener, SelfRenderAdListener adListener, SelfRenderChargeListener selfRenderChargeListener);
+    protected abstract void requestSelfRenderAd(Activity activity, AdInfo info, AdRequestListener listener, SelfRenderAdListener adListener);
 
     protected abstract void requestFullScreenVideoAd(Activity activity, AdInfo info, AdRequestListener listener, VideoAdListener adListener);
 
@@ -102,55 +105,25 @@ public abstract class SdkRequestManager implements AdRequestManager {
 
     /**
      * 自渲染广告回调中间层
-     * @return
+     * @param info
      */
-    private SelfRenderChargeListener getSelfRenderChargeListener() {
-        return new SelfRenderChargeListener<AdInfo>() {
+    private void bindSelfRenderAdListener(AdInfo info) {
+        MidasSelfRenderAd midasSelfRenderAd = (MidasSelfRenderAd) info.getMidasAd();
+        midasSelfRenderAd.setBindViewListener(new BindViewListener () {
             @Override
-            public void adExposed(AdInfo info) {
-                if (((MidasSelfRenderAd)info.getMidasAd()).getAdListener() != null) {
-                    ((MidasSelfRenderAd)info.getMidasAd()).getAdListener().adExposed(info);
+            public void adExposed() {
+                if (midasSelfRenderAd.getAdListener() != null) {
+                    midasSelfRenderAd.getAdListener().adExposed(info);
                 }
             }
 
             @Override
-            public void adClicked(AdInfo info) {
-                if (((MidasSelfRenderAd)info.getMidasAd()).getAdListener() != null) {
-                    ((MidasSelfRenderAd)info.getMidasAd()).getAdListener().adClicked(info);
+            public void adClicked() {
+                if (midasSelfRenderAd.getAdListener() != null) {
+                    midasSelfRenderAd.getAdListener().adClicked(info);
                 }
             }
-
-            @Override
-            public ViewGroup getViewGroup(AdInfo info) {
-                if (((MidasSelfRenderAd)info.getMidasAd()).getAdListener() != null) {
-                    ((MidasSelfRenderAd)info.getMidasAd()).getAdListener().getViewGroup(info);
-                }
-                return null;
-            }
-
-            @Override
-            public List<View> getClickViewList(AdInfo info) {
-                if (((MidasSelfRenderAd)info.getMidasAd()).getAdListener() != null) {
-                    ((MidasSelfRenderAd)info.getMidasAd()).getAdListener().getClickViewList(info);
-                }
-                return null;
-            }
-
-            @Override
-            public List<View> getCreativeViewList(AdInfo info) {
-                if (((MidasSelfRenderAd)info.getMidasAd()).getAdListener() != null) {
-                    ((MidasSelfRenderAd)info.getMidasAd()).getAdListener().getCreativeViewList(info);
-                }
-                return null;
-            }
-
-            @Override
-            public void adCreativeClick(AdInfo info) {
-                if (((MidasSelfRenderAd)info.getMidasAd()).getAdListener() != null) {
-                    ((MidasSelfRenderAd)info.getMidasAd()).getAdListener().adCreativeClick(info);
-                }
-            }
-        };
+        });
     }
 
     /**

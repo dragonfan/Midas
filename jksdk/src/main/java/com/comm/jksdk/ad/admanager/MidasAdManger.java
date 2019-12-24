@@ -232,7 +232,18 @@ public class MidasAdManger implements AdManager {
             mActivity = activity;
             //设置广告位置信息
             adInfo.setPosition(position);
-            getMidasConfigBean(adInfo, position);
+//            getMidasConfigBean(adInfo, position);
+            //测试用
+            //广告源
+            adInfo.getMidasAd().setAdSource(Constants.AdSourceType.ChuanShanJia);
+            //广告id
+//        adInfo.getMidasAd().setAdId(adsInfosBean.getAdId());
+            //测试用
+            adInfo.getMidasAd().setAdId("936430473");
+            //广告对应的appid
+            adInfo.getMidasAd().setAppId("5036430");
+            sdkRequest(adInfo);
+
 //            //获取本地配置信息
 //            readyInfo(adInfo);
 //            if (CollectionUtils.isEmpty(adsInfoslist)) {
@@ -412,7 +423,9 @@ public class MidasAdManger implements AdManager {
         //广告源
         adInfo.getMidasAd().setAdSource(adsInfosBean.getAdUnion());
         //广告id
-        adInfo.getMidasAd().setAdId(adsInfosBean.getAdId());
+//        adInfo.getMidasAd().setAdId(adsInfosBean.getAdId());
+        //测试用
+        adInfo.getMidasAd().setAdId("936430473");
         //广告对应的appid
         adInfo.getMidasAd().setAppId(adsInfosBean.getAdsAppid());
         //请求类型 0 - SDK 1 - API

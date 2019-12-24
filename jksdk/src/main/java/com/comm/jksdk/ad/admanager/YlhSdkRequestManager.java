@@ -2,6 +2,7 @@ package com.comm.jksdk.ad.admanager;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -15,6 +16,7 @@ import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.ad.entity.MidasInteractionAd;
 import com.comm.jksdk.ad.entity.MidasNativeTemplateAd;
 import com.comm.jksdk.ad.entity.MidasRewardVideoAd;
+import com.comm.jksdk.ad.entity.MidasSelfRenderAd;
 import com.comm.jksdk.ad.entity.MidasSplashAd;
 import com.comm.jksdk.ad.listener.AdChargeListener;
 import com.comm.jksdk.ad.listener.AdRequestListener;
@@ -42,8 +44,10 @@ import com.qq.e.ads.rewardvideo.RewardVideoADListener;
 import com.qq.e.ads.splash.SplashAD;
 import com.qq.e.ads.splash.SplashADListener;
 import com.qq.e.comm.constants.AdPatternType;
+import com.qq.e.comm.constants.Constants;
 import com.qq.e.comm.util.AdError;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -319,8 +323,46 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
     }
 
     @Override
-    protected void requestSelfRenderAd(Activity activity, AdInfo info, AdRequestListener listener, SelfRenderAdListener adListener, SelfRenderChargeListener selfRenderChargeListener) {
-//        NativeUnifiedAD mAdManager =
+    protected void requestSelfRenderAd(Activity activity, AdInfo info, AdRequestListener listener, SelfRenderAdListener adListener) {
+        MidasSelfRenderAd midasSelfRenderAd = (MidasSelfRenderAd) info.getMidasAd();
+        NativeUnifiedAD mAdManager = new NativeUnifiedAD(activity, midasSelfRenderAd.getAppId(), midasSelfRenderAd.getAdId(), new NativeADUnifiedListener() {
+            @Override
+            public void onADLoaded(List<NativeUnifiedADData> list) {
+                if (CollectionUtils.isEmpty(list)) {
+                    if (listener != null) {
+                        listener.adError(info, 3, "没广告");
+                    }
+                    return;
+                }
+                NativeUnifiedADData nativeUnifiedADData = list.get(0);
+                if (nativeUnifiedADData == null) {
+                    if (listener != null) {
+                        listener.adError(info, 3, "没广告");
+                    }
+                    return;
+                }
+                midasSelfRenderAd.setNativeUnifiedADData(nativeUnifiedADData);
+                if (listener != null) {
+                    listener.adSuccess(info);
+                }
+
+//                midasSelfRenderAd
+            }
+
+            @Override
+            public void onNoAD(AdError adError) {
+                if (listener != null) {
+                    listener.adError(info, adError.getErrorCode(), adError.getErrorMsg());
+                }
+            }
+        });
+        //设置视频时长
+//        mAdManager.setMaxVideoDuration(12);
+
+//        mAdManager.setVideoPlayPolicy(NativeADUnifiedSampleActivity.getVideoPlayPolicy(getIntent(), this)); // 本次拉回的视频广告，在用户看来是否为自动播放的
+        mAdManager.setVideoADContainerRender(VideoOption.VideoADContainerRender.SDK); // 视频播放前，用户看到的广告容器是由SDK渲染的
+
+        mAdManager.loadData(3);
     }
 
     @Override
