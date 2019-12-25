@@ -154,7 +154,7 @@ public class StatisticUtils {
      */
     public static void singleStatisticBegin(AdInfo adInfo,long beginTime){
         //调试代码
-        String primaryId = "test";
+        String primaryId = "a001";
         String sessionId = primaryId + beginTime;
         if (adInfo != null){
             StatisticBaseProperties baseProperties

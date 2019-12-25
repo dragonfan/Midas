@@ -316,6 +316,9 @@ public class AdsConfig {
             case "19":
                 appName = "最来电";
                 break;
+            case "30":
+                appName = "爱步行";
+                break;
         }
         return appName;
     }

@@ -4,9 +4,6 @@ import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -27,6 +24,9 @@ import com.comm.jksdk.ad.listener.VideoAdListener;
 import com.comm.jksdk.constant.Constants;
 import com.comm.jksdk.http.utils.LogUtils;
 import com.comm.jksdk.utils.CollectionUtils;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * @ProjectName: MidasAdSdk
@@ -303,6 +303,7 @@ public abstract class SdkRequestManager implements AdRequestManager {
                 if (listener != null) {
                     listener.adExposed(info);
                 }
+
             }
 
             @Override
