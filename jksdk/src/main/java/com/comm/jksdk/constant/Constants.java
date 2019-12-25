@@ -11,27 +11,27 @@ public class Constants {
         /**
          * 开屏广告类型
          */
-        String SPLASH_TYPE = "SPLASH_TYPE";
-        /**
-         * 激励视频广告类型
-         */
-        String REWARD_VIDEO_TYPE = "REWARD_VIDEO_TYPE";
-        /**
-         * 全屏视频广告类型
-         */
-        String FULL_SCREEN_VIDEO_TYPE = "FULL_SCREEN_VIDEO_TYPE";
-        /**
-         * 自渲染广告
-         */
-        String SELF_RENDER = "SELF_RENDER";
+        String SPLASH_TYPE = "0";
         /**
          * 插屏广告类型
          */
-        String INTERACTION_TYPE = "INTERACTION_TYPE";
+        String INTERACTION_TYPE = "2";
+        /**
+         * 全屏视频广告类型
+         */
+        String FULL_SCREEN_VIDEO_TYPE = "3";
+        /**
+         * 激励视频广告类型
+         */
+        String REWARD_VIDEO_TYPE = "4";
         /**
          * 原生模板广告类型
          */
-        String NATIVE_TEMPLATE = "NATIVE_TEMPLATE";
+        String NATIVE_TEMPLATE = "5";
+        /**
+         * 自渲染广告
+         */
+        String SELF_RENDER = "6";
         /**
          * banner广告类型
          */

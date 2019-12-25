@@ -1,8 +1,10 @@
 package com.comm.jksdk.ad.entity;
 
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bytedance.sdk.openadsdk.TTAdConstant;
 import com.bytedance.sdk.openadsdk.TTFeedAd;
 import com.bytedance.sdk.openadsdk.TTImage;
 import com.bytedance.sdk.openadsdk.TTNativeAd;
@@ -10,8 +12,11 @@ import com.comm.jksdk.ad.listener.BindViewListener;
 import com.comm.jksdk.ad.listener.SelfRenderChargeListener;
 import com.comm.jksdk.constant.Constants;
 import com.comm.jksdk.utils.CollectionUtils;
-import com.qq.e.ads.nativ.NativeUnifiedAD;
+import com.qq.e.ads.nativ.NativeADEventListener;
 import com.qq.e.ads.nativ.NativeUnifiedADData;
+import com.qq.e.ads.nativ.widget.NativeAdContainer;
+import com.qq.e.comm.constants.AdPatternType;
+import com.qq.e.comm.util.AdError;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +39,7 @@ public class MidasSelfRenderAd extends MidasAd{
     /**
      * 计费回调（埋点用）
      */
-    private SelfRenderChargeListener adListener;
+    private SelfRenderChargeListener selfRenderChargeListener;
 
     /**
      * 穿山甲自渲染信息流广告
@@ -57,13 +62,13 @@ public class MidasSelfRenderAd extends MidasAd{
         this.ttFeedAd = ttFeedAd;
     }
 
-    public SelfRenderChargeListener getAdListener() {
-        return adListener;
+    public SelfRenderChargeListener getSelfRenderChargeListener() {
+        return selfRenderChargeListener;
     }
 
-    public void setAdListener(SelfRenderChargeListener adListener) {
-        this.adListener = adListener;
-        bindLinstenr();
+    public void bindViewToAdListener(Context context, ViewGroup viewGroup, List<View> clickViewList, List<View> creativeViewList, SelfRenderChargeListener selfRenderChargeListener) {
+        this.selfRenderChargeListener = selfRenderChargeListener;
+        bindAd(context, viewGroup, clickViewList, creativeViewList);
     }
 
     public ViewGroup getContainer() {
@@ -90,43 +95,69 @@ public class MidasSelfRenderAd extends MidasAd{
         this.bindViewListener = bindViewListener;
     }
 
-    private void bindLinstenr(){
+    private void bindAd(Context context, ViewGroup viewGroup, List<View> clickViewList, List<View> creativeViewList){
         if (Constants.AdSourceType.ChuanShanJia.equals(getAdSource())) {
             if (ttFeedAd == null) {
                 return;
             }
-            if (adListener == null) {
+            if (selfRenderChargeListener == null) {
                 return;
             }
-            ViewGroup viewGroup = adListener.getViewGroup();
-            List<View> clickViewList = adListener.getClickViewList();
-            List<View> creativeViewList = adListener.getCreativeViewList();
-            if (viewGroup != null && !CollectionUtils.isEmpty(clickViewList) && !CollectionUtils.isEmpty(creativeViewList)) {
-                ttFeedAd.registerViewForInteraction(viewGroup, clickViewList, creativeViewList, new TTNativeAd.AdInteractionListener() {
-                    @Override
-                    public void onAdClicked(View view, TTNativeAd ttNativeAd) {
-                        if (bindViewListener != null) {
-                            bindViewListener.adClicked();
-                        }
+            ttFeedAd.registerViewForInteraction(viewGroup, clickViewList, creativeViewList, new TTNativeAd.AdInteractionListener() {
+                @Override
+                public void onAdClicked(View view, TTNativeAd ttNativeAd) {
+                    if (bindViewListener != null) {
+                        bindViewListener.adClicked();
                     }
+                }
 
-                    @Override
-                    public void onAdCreativeClick(View view, TTNativeAd ttNativeAd) {
-                        if (bindViewListener != null) {
-                            bindViewListener.adClicked();
-                        }
+                @Override
+                public void onAdCreativeClick(View view, TTNativeAd ttNativeAd) {
+                    if (bindViewListener != null) {
+                        bindViewListener.adClicked();
                     }
+                }
 
-                    @Override
-                    public void onAdShow(TTNativeAd ttNativeAd) {
-                        if (bindViewListener != null) {
-                            bindViewListener.adExposed();
-                        }
+                @Override
+                public void onAdShow(TTNativeAd ttNativeAd) {
+                    if (bindViewListener != null) {
+                        bindViewListener.adExposed();
                     }
-                });
-            }
+                }
+            });
+//            if (viewGroup != null && !CollectionUtils.isEmpty(clickViewList) && !CollectionUtils.isEmpty(creativeViewList)) {
+//            }
         } else {
+            if (nativeUnifiedADData == null) {
+                return;
+            }
+            nativeUnifiedADData.bindAdToView(context, (NativeAdContainer) viewGroup, null,
+                    clickViewList);
+            nativeUnifiedADData.setNativeAdEventListener(new NativeADEventListener() {
+                @Override
+                public void onADExposed() {
+                    if (bindViewListener != null) {
+                        bindViewListener.adExposed();
+                    }
+                }
 
+                @Override
+                public void onADClicked() {
+                    if (bindViewListener != null) {
+                        bindViewListener.adClicked();
+                    }
+                }
+
+                @Override
+                public void onADError(AdError adError) {
+
+                }
+
+                @Override
+                public void onADStatusChanged() {
+
+                }
+            });
         }
     }
 
@@ -170,14 +201,11 @@ public class MidasSelfRenderAd extends MidasAd{
             }
             return ttFeedAd.getSource();
         } else {
-            if (nativeUnifiedADData == null) {
-                return null;
-            }
-            return nativeUnifiedADData.getDesc();
+            return null;
         }
     }
 
-    public String getImageUrl(){
+    public String getIconUrl(){
         if (Constants.AdSourceType.ChuanShanJia.equals(getAdSource())) {
             if (ttFeedAd == null) {
                 return null;
@@ -191,7 +219,7 @@ public class MidasSelfRenderAd extends MidasAd{
             if (nativeUnifiedADData == null) {
                 return null;
             }
-            return nativeUnifiedADData.getDesc();
+            return nativeUnifiedADData.getIconUrl();
         }
     }
 
@@ -210,7 +238,67 @@ public class MidasSelfRenderAd extends MidasAd{
             }
             return imgList;
         } else {
+            if (nativeUnifiedADData == null) {
+                return null;
+            }
+            return nativeUnifiedADData.getImgList();
+        }
+    }
+
+    public String getImageUrl(){
+        if (Constants.AdSourceType.ChuanShanJia.equals(getAdSource())) {
             return null;
+        } else {
+            if (nativeUnifiedADData == null) {
+                return null;
+            }
+            return nativeUnifiedADData.getImgUrl();
+        }
+    }
+
+    /**
+     * 判断是否是视频或者图片广告 1=图片广告；2=视频广告; -1=未知
+     * @return
+     */
+    public int getMidasAdPatternType(){
+        if (Constants.AdSourceType.ChuanShanJia.equals(getAdSource())) {
+            if (ttFeedAd == null) {
+                return -1;
+            }
+            if (ttFeedAd.getImageMode() == TTAdConstant.IMAGE_MODE_VIDEO) {
+                return 2;
+            } else {
+                return 1;
+            }
+        } else {
+            if (nativeUnifiedADData == null) {
+                return -1;
+            }
+            if (nativeUnifiedADData.getAdPatternType() == AdPatternType.NATIVE_VIDEO) {
+                return 2;
+            } else {
+                return 1;
+            }
+        }
+    }
+
+    /**
+     * 获取穿山甲图文方式。-1=未知；1=小图；2=大图；3=组图；4=竖版图
+     * @return
+     */
+    public int getCsjImageMode(){
+        if (ttFeedAd == null) {
+            return -1;
+        } else if (ttFeedAd.getImageMode() == TTAdConstant.IMAGE_MODE_SMALL_IMG) {
+            return 1;
+        } else if (ttFeedAd.getImageMode() == TTAdConstant.IMAGE_MODE_LARGE_IMG) {
+            return 2;
+        } else if (ttFeedAd.getImageMode() == TTAdConstant.IMAGE_MODE_GROUP_IMG) {
+            return 3;
+        } else if (ttFeedAd.getImageMode() == TTAdConstant.IMAGE_MODE_VERTICAL_IMG) {//竖版图片
+            return 4;
+        } else {
+            return -1;
         }
     }
 }

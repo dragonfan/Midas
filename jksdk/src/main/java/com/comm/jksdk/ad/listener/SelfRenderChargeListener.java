@@ -1,10 +1,5 @@
 package com.comm.jksdk.ad.listener;
 
-import android.view.View;
-import android.view.ViewGroup;
-
-import java.util.List;
-
 /**
  * @ProjectName: Midas
  * @Package: com.comm.jksdk.ad.listener
@@ -27,24 +22,6 @@ public interface SelfRenderChargeListener<T> extends AdChargeListener<T>{
     default void adError(T info, int errorCode, String errorMsg){
 
     }
-
-    /**
-     * view容器
-     * @return
-     */
-    ViewGroup getViewGroup();
-
-    /**
-     * 可以被点击的view
-     * @return
-     */
-    List<View>  getClickViewList();
-
-    /**
-     * 触发创意广告的view（点击下载或拨打电话）
-     * @return
-     */
-    List<View>  getCreativeViewList();
 
     /**
      * 被创意按钮被点击

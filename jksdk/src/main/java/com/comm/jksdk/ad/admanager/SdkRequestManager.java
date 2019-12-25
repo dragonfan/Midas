@@ -2,7 +2,6 @@ package com.comm.jksdk.ad.admanager;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -11,8 +10,6 @@ import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.bytedance.sdk.openadsdk.TTFeedAd;
-import com.bytedance.sdk.openadsdk.TTNativeAd;
 import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.ad.entity.MidasNativeTemplateAd;
@@ -30,8 +27,6 @@ import com.comm.jksdk.ad.listener.VideoAdListener;
 import com.comm.jksdk.constant.Constants;
 import com.comm.jksdk.http.utils.LogUtils;
 import com.comm.jksdk.utils.CollectionUtils;
-
-import java.util.List;
 
 /**
  * @ProjectName: MidasAdSdk
@@ -112,15 +107,15 @@ public abstract class SdkRequestManager implements AdRequestManager {
         midasSelfRenderAd.setBindViewListener(new BindViewListener () {
             @Override
             public void adExposed() {
-                if (midasSelfRenderAd.getAdListener() != null) {
-                    midasSelfRenderAd.getAdListener().adExposed(info);
+                if (midasSelfRenderAd.getSelfRenderChargeListener() != null) {
+                    midasSelfRenderAd.getSelfRenderChargeListener().adExposed(info);
                 }
             }
 
             @Override
             public void adClicked() {
-                if (midasSelfRenderAd.getAdListener() != null) {
-                    midasSelfRenderAd.getAdListener().adClicked(info);
+                if (midasSelfRenderAd.getSelfRenderChargeListener() != null) {
+                    midasSelfRenderAd.getSelfRenderChargeListener().adClicked(info);
                 }
             }
         });

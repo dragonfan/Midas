@@ -31,7 +31,7 @@ public class AdInfo extends BaseEntity implements Ad {
     private StatisticBaseProperties statisticBaseProperties;
 
     /**
-     * 广告分类（目前有八大类）
+     * 广告分类（目前有6大类）
      */
     private String adType;
 

@@ -2,7 +2,6 @@ package com.comm.jksdk.ad.admanager;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -24,7 +23,6 @@ import com.comm.jksdk.ad.listener.AdSplashListener;
 import com.comm.jksdk.ad.listener.InteractionListener;
 import com.comm.jksdk.ad.listener.NativeTemplateListener;
 import com.comm.jksdk.ad.listener.SelfRenderAdListener;
-import com.comm.jksdk.ad.listener.SelfRenderChargeListener;
 import com.comm.jksdk.ad.listener.VideoAdListener;
 import com.comm.jksdk.config.TTAdManagerHolder;
 import com.comm.jksdk.http.utils.LogUtils;
@@ -44,10 +42,8 @@ import com.qq.e.ads.rewardvideo.RewardVideoADListener;
 import com.qq.e.ads.splash.SplashAD;
 import com.qq.e.ads.splash.SplashADListener;
 import com.qq.e.comm.constants.AdPatternType;
-import com.qq.e.comm.constants.Constants;
 import com.qq.e.comm.util.AdError;
 
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -68,32 +64,6 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
     protected final static int REQUEST_AD_COUNTS = 1;
 
     private final int MAX_DURATION = 30;
-
-//    @Override
-//    public void requestAd(Activity activity, AdInfo adInfo, AdRequestListener listener) {
-//        //广告样式
-//        String style = adInfo.getAdStyle();
-//        if (Constants.AdStyle.DATU_ICON_TEXT.equals(style) || Constants.AdStyle.DATU_ICON_TEXT_BUTTON_CENTER.equals(style) || Constants.AdStyle.EXTERNAL_DIALOG_BIG_IMAGE_01.equals(style)
-//                || Constants.AdStyle.DATU_ICON_TEXT_BUTTON.equals(style) || Constants.AdStyle.BIG_IMG_BUTTON_LAMP.equals(style) || Constants.AdStyle.BIG_IMG_BUTTON.equals(style) || Constants.AdStyle.EXTERNAL_DIALOG_BIG_IMAGE_02.equals(style)
-//                || Constants.AdStyle.FAKE_VIDEO_IARGE_IMAGE.equals(style)) {
-//            //todo请求大图广告
-//            getAdByBigImg(activity, adInfo, listener);
-//        } else if (Constants.AdStyle.OPEN_ADS.equals(style)) {
-//            getAdBySplashAd(activity, adInfo, listener);
-//        } else if (Constants.AdStyle.FULL_SCREEN_VIDEO.equals(style)) {
-//            getFullScreenVideoAd(activity, adInfo, listener);
-//        } else if (Constants.AdStyle.CUSTOM_CP.equals(style) || Constants.AdStyle.FULLSCREEN_CP_01.equals(style) || Constants.AdStyle.CP.equals(style)) {
-//            getCustomInsertScreenAd(activity, adInfo, listener);
-////        } else if (Constants.AdStyle.REWARD_VIDEO.equals(style)) {
-////            getRewardVideoAd(activity, adInfo, listener);
-//        } else if (Constants.AdStyle.FEED_TEMPLATE.equals(style)) {
-//            getFeedTemplate(activity, adInfo, listener);
-//        } else {
-//            if (listener != null) {
-//                listener.adError(adInfo, 2, "暂不支持该样式");
-//            }
-//        }
-//    }
 
 
     @Override
@@ -345,8 +315,9 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
                 if (listener != null) {
                     listener.adSuccess(info);
                 }
-
-//                midasSelfRenderAd
+                if (adListener != null) {
+                    adListener.adSuccess(info);
+                }
             }
 
             @Override
@@ -357,7 +328,7 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
             }
         });
         //设置视频时长
-//        mAdManager.setMaxVideoDuration(12);
+        mAdManager.setMaxVideoDuration(12);
 
 //        mAdManager.setVideoPlayPolicy(NativeADUnifiedSampleActivity.getVideoPlayPolicy(getIntent(), this)); // 本次拉回的视频广告，在用户看来是否为自动播放的
         mAdManager.setVideoADContainerRender(VideoOption.VideoADContainerRender.SDK); // 视频播放前，用户看到的广告容器是由SDK渲染的

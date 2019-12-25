@@ -2,7 +2,6 @@ package com.comm.jksdk.ad.entity;
 
 import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
 import com.comm.jksdk.ad.listener.AdChargeListener;
-import com.comm.jksdk.ad.listener.SelfRenderChargeListener;
 import com.comm.jksdk.constant.Constants;
 import com.qq.e.ads.nativ.NativeExpressAD;
 import com.qq.e.ads.nativ.NativeExpressADView;

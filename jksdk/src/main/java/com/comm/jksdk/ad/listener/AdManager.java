@@ -28,7 +28,7 @@ public interface AdManager {
 
     void loadMidasFullScreenVideoAd(Activity activity, String position, VideoAdListener listener);
 
-    void loadMidasSelfRenderAd(Activity activity, String position, SelfRenderAdListener listener);
+    void loadMidasSelfRenderAd(Activity activity, String position, SelfRenderAdListener listener, int timeOut);
 
     void loadMidasInteractionAd(Activity activity, String position, InteractionListener listener);
 

@@ -87,6 +87,7 @@ public class MidasAdManger implements AdManager {
                         mAdListener.adError(adInfo, errorCode, errorMsg);
                     }
                 }
+
                 return;
             }
             MidasConfigBean.AdStrategyBean mAdsInfosBean = adsInfoslist.remove(0);
@@ -224,11 +225,12 @@ public class MidasAdManger implements AdManager {
     }
 
     @Override
-    public void loadMidasSelfRenderAd(Activity activity, String position, SelfRenderAdListener listener) {
+    public void loadMidasSelfRenderAd(Activity activity, String position, SelfRenderAdListener listener, int timeOut) {
         mAdListener = listener;
         AdInfo adInfo = new AdInfo();
         adInfo.setAdType(Constants.AdType.SELF_RENDER);
         MidasSelfRenderAd midasAdEntity = new MidasSelfRenderAd();
+        midasAdEntity.setTimeOut(timeOut);
         adInfo.setMidasAd(midasAdEntity);
         try {
             mActivity = activity;
@@ -237,13 +239,16 @@ public class MidasAdManger implements AdManager {
 //            getMidasConfigBean(adInfo, position);
             //测试用
             //广告源
-            adInfo.getMidasAd().setAdSource(Constants.AdSourceType.ChuanShanJia);
+//            adInfo.getMidasAd().setAdSource(Constants.AdSourceType.ChuanShanJia);
+            adInfo.getMidasAd().setAdSource(Constants.AdSourceType.YouLiangHui);
             //广告id
 //        adInfo.getMidasAd().setAdId(adsInfosBean.getAdId());
             //测试用
-            adInfo.getMidasAd().setAdId("936430473");
+//            adInfo.getMidasAd().setAdId("936430473");
+            adInfo.getMidasAd().setAdId("2040899184044247");
             //广告对应的appid
-            adInfo.getMidasAd().setAppId("5036430");
+//            adInfo.getMidasAd().setAppId("5036430");
+            adInfo.getMidasAd().setAppId("1110047950");
             sdkRequest(adInfo);
 
 //            //获取本地配置信息
@@ -281,22 +286,6 @@ public class MidasAdManger implements AdManager {
             mActivity = activity;
             //设置广告位置信息
             adInfo.setPosition(position);
-            //获取本地配置信息
-//            readyInfo(adInfo);
-//            if (CollectionUtils.isEmpty(adsInfoslist)) {
-//                if (mAdListener != null) {
-//                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-//                }
-//                return;
-//            }
-//            ConfigBean.AdListBean.AdsInfosBean mAdsInfosBean = adsInfoslist.remove(0);
-//            if (mAdsInfosBean == null) {
-//                if (mAdListener != null) {
-//                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-//                }
-//                return;
-//            }
-//            againRequest(adInfo, mAdsInfosBean);
             getMidasConfigBean(adInfo, position);
         } catch (Exception e) {
             e.printStackTrace();
@@ -309,31 +298,15 @@ public class MidasAdManger implements AdManager {
     @Override
     public void loadMidasNativeTemplateAd(Activity activity, String position, float width, NativeTemplateListener listener) {
         mAdListener = listener;
+        mActivity = activity;
         AdInfo adInfo = new AdInfo();
-        adInfo.setAdType(Constants.AdType.NATIVE_TEMPLATE);
-        MidasNativeTemplateAd midasNativeTemplateAd = new MidasNativeTemplateAd();
-        midasNativeTemplateAd.setWidth(width);
-        adInfo.setMidasAd(midasNativeTemplateAd);
         try {
-            mActivity = activity;
+            adInfo.setAdType(Constants.AdType.NATIVE_TEMPLATE);
+            MidasNativeTemplateAd midasNativeTemplateAd = new MidasNativeTemplateAd();
+            midasNativeTemplateAd.setWidth(width);
+            adInfo.setMidasAd(midasNativeTemplateAd);
             //设置广告位置信息
             adInfo.setPosition(position);
-            //获取本地配置信息
-//            readyInfo(adInfo);
-//            if (CollectionUtils.isEmpty(adsInfoslist)) {
-//                if (mAdListener != null) {
-//                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-//                }
-//                return;
-//            }
-//            ConfigBean.AdListBean.AdsInfosBean mAdsInfosBean = adsInfoslist.remove(0);
-//            if (mAdsInfosBean == null) {
-//                if (mAdListener != null) {
-//                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-//                }
-//                return;
-//            }
-//            againRequest(adInfo, mAdsInfosBean);
             getMidasConfigBean(adInfo, position);
         } catch (Exception e) {
             e.printStackTrace();
@@ -348,7 +321,6 @@ public class MidasAdManger implements AdManager {
         //埋点流程开始
         long beginTime = System.currentTimeMillis();
         StatisticUtils.singleStatisticBegin(adInfo,beginTime);
-
         adsInfoslist.clear();
         AdsConfig.getInstance(MidasAdSdk.getContext()).requestConfig(adPosId, new ConfigListener() {
             @Override
@@ -367,12 +339,13 @@ public class MidasAdManger implements AdManager {
                     return;
                 }
 
-                againRequest2(adInfo, mAdsInfoBean);
-
                 //广告策略请求事件埋点
+                adInfo.getStatisticBaseProperties().setPriorityS(mAdsInfoBean.getRequestOrder());
                 StatisticUtils.strategyConfigurationRequest(adInfo, adPosId,
                         midasConfigBean.getAdstrategyid(), 200+"",
                         ErrorCode.SUCCESS + "", beginTime);
+
+                againRequest2(adInfo, mAdsInfoBean);
             }
 
             @Override
@@ -428,6 +401,7 @@ public class MidasAdManger implements AdManager {
         if (adInfo == null) {
             adInfo = new AdInfo();
         }
+
         //某些特有的数据清空，避免污染下一次请求数据
         adInfo.clear();
         adInfo.getMidasAd().clear();
@@ -466,7 +440,7 @@ public class MidasAdManger implements AdManager {
     public void sdkRequest(AdInfo adInfo) {
 //  unit_request_num    ?
 
-//placement_id          adInfo.getAdId()
+//placement_id          adInfo.getMidasAd().getAdId()
 //      source_id         adInfo.getMidasAd().getAdSource()
 
 //        source_request_num ?
@@ -490,7 +464,12 @@ public class MidasAdManger implements AdManager {
         adRequestManager.requestAd(mActivity, adInfo, new AdRequestListener() {
             @Override
             public void adSuccess(AdInfo info) {
-
+                info.getStatisticBaseProperties().setPlacementId(info.getMidasAd().getAdId());
+                info.getStatisticBaseProperties().setSourceId(info.getMidasAd().getAdSource());
+//                info.getStatisticBaseProperties().setSourceRequestNum(Constants.AdType.FEED_TYPE.equals(info.getAdType()));
+                info.getStatisticBaseProperties().setSourceTimeOut(info.getMidasAd().getTimeOut());
+                info.getStatisticBaseProperties().setStyle(info.getAdType());
+                info.getStatisticBaseProperties().setStyle(info.getAdType());
                 //广告位请求事件埋点[放在广告源后面，可以清晰知道请求次数]
                 StatisticUtils.advertisingPositionRequest(adInfo,1,beginTime);
 

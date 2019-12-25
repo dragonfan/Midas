@@ -3,7 +3,6 @@ package com.comm.jksdk.ad.admanager;
 import android.app.Activity;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.bytedance.sdk.openadsdk.AdSlot;
 import com.bytedance.sdk.openadsdk.TTAdConstant;
@@ -31,7 +30,6 @@ import com.comm.jksdk.ad.listener.AdSplashListener;
 import com.comm.jksdk.ad.listener.InteractionListener;
 import com.comm.jksdk.ad.listener.NativeTemplateListener;
 import com.comm.jksdk.ad.listener.SelfRenderAdListener;
-import com.comm.jksdk.ad.listener.SelfRenderChargeListener;
 import com.comm.jksdk.ad.listener.VideoAdListener;
 import com.comm.jksdk.config.TTAdManagerHolder;
 import com.comm.jksdk.http.utils.LogUtils;

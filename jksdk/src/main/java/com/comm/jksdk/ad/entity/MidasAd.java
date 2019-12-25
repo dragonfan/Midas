@@ -19,6 +19,10 @@ public abstract class MidasAd implements Ad{
     protected String appId;
     protected String adId;
     protected String adSource;
+    /**
+     * 超时时间只有开屏有
+     */
+    protected int timeOut;
 
     protected View addView;
 
@@ -52,5 +56,13 @@ public abstract class MidasAd implements Ad{
 
     public void setAdSource(String adSource) {
         this.adSource = adSource;
+    }
+
+    public int getTimeOut() {
+        return timeOut;
+    }
+
+    public void setTimeOut(int timeOut) {
+        this.timeOut = timeOut;
     }
 }

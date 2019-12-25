@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,10 +20,7 @@ import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.ad.entity.MidasNativeTemplateAd;
 import com.comm.jksdk.ad.listener.AdChargeListener;
 import com.comm.jksdk.ad.listener.NativeTemplateListener;
-import com.comm.jksdk.ad.listener.SelfRenderChargeListener;
 import com.jk.adsdkdemo.utils.LogUtils;
-
-import java.util.List;
 
 /**
   *
