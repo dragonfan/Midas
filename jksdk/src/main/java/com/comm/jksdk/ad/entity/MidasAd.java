@@ -23,6 +23,11 @@ public abstract class MidasAd implements Ad{
      * 超时时间只有开屏有
      */
     protected int timeOut;
+    /**
+     * 广告源请求广告个数。
+     *      特定广告类型才有多个如信息流广告，其他默认为1
+     */
+    private int sourceRequestNum;
 
     protected View addView;
 
@@ -64,5 +69,13 @@ public abstract class MidasAd implements Ad{
 
     public void setTimeOut(int timeOut) {
         this.timeOut = timeOut;
+    }
+
+    public int getSourceRequestNum() {
+        return sourceRequestNum;
+    }
+
+    public void setSourceRequestNum(int sourceRequestNum) {
+        this.sourceRequestNum = sourceRequestNum;
     }
 }

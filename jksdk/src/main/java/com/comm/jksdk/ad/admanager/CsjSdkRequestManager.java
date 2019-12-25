@@ -387,6 +387,11 @@ public class CsjSdkRequestManager extends SdkRequestManager {
 
                         }
                     });
+                    //请求成功回调
+                    if (listener != null) {
+                        listener.adSuccess(info);
+                    }
+
                     //step6:在获取到广告后展示
                     ad.showFullScreenVideoAd(activity);
                     if (adListener != null) {
@@ -423,7 +428,6 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                 if (adRequestListener != null) {
                     adRequestListener.adError(adInfo, 1, "广告对象为空");
                 }
-
             }
 
             @Override
@@ -441,6 +445,10 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     MidasSplashAd midasSplashAd = (MidasSplashAd) adInfo.getMidasAd();
                     midasSplashAd.setTtSplashAd(ttSplashAd);
                     midasSplashAd.setAddView(ttSplashAd.getSplashView());
+                    //请求成功回调
+                    if (adRequestListener != null) {
+                        adRequestListener.adSuccess(adInfo);
+                    }
                     if (adSplashListener != null) {
                         adSplashListener.adSuccess(adInfo);
                     }
@@ -517,29 +525,18 @@ public class CsjSdkRequestManager extends SdkRequestManager {
             @Override
             public void onRewardVideoCached() {
                 LogUtils.e(TAG, "onRewardVideoCached");
-//                if (listener != null && info.isPreload()) {
-//                    listener.adSuccess(info);
-//                }
-//                if (videoAdListener != null) {
-//                    videoAdListener.adSuccess(adInfo);
-//                }
             }
 
             //视频广告的素材加载完毕，比如视频url等，在此回调后，可以播放在线视频，网络不好可能出现加载缓冲，影响体验。
             @Override
             public void onRewardVideoAdLoad(TTRewardVideoAd mttRewardVideoAd) {
                 LogUtils.d(TAG, "rewardVideoAd loaded");
-//                if (mttRewardVideoAd != null) {
-//                    info.setTtRewardVideoAd(mttRewardVideoAd);
-//                    if (listener != null && !info.isPreload()) {
-//                        listener.adSuccess(info);
-//                    }
-//                } else {
-//                    if (listener != null) {
-//                        listener.adError(info, 1, "请求结果为空");
-//                    }
-//                }
                 if (mttRewardVideoAd != null) {
+                    //请求成功回调
+                    if (adRequestListener != null) {
+                        adRequestListener.adSuccess(adInfo);
+                    }
+
                     ((MidasRewardVideoAd) adInfo.getMidasAd()).setTtRewardVideoAd(mttRewardVideoAd);
                     mttRewardVideoAd.setRewardAdInteractionListener(new TTRewardVideoAd.RewardAdInteractionListener() {
                         @Override

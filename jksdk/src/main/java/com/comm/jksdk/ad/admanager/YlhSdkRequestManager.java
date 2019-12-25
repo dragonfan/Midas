@@ -367,6 +367,11 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
             @Override
             public void onADPresent() {
                 //优量汇成功展示的时候代表请求成功
+                //请求成功回调
+                if (adRequestListener != null) {
+                    adRequestListener.adSuccess(adInfo);
+                }
+
                 if (adSplashListener != null) {
                     adSplashListener.adSuccess(adInfo);
                 }
@@ -421,6 +426,11 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
         rewardVideoAD = new RewardVideoAD(activity, midasRewardVideoAd.getAppId(), midasRewardVideoAd.getAdId(), new RewardVideoADListener() {
             @Override
             public void onADLoad() {
+                //请求成功回调
+                if (adRequestListener != null) {
+                    adRequestListener.adSuccess(adInfo);
+                }
+
                 //广告加载成功标志
                 finalRewardVideoAD.showAD();
                 if (videoAdListener != null) {
