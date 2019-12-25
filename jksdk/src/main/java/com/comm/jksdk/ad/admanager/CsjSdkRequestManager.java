@@ -189,6 +189,11 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                         }
                     });
                 }
+                //请求成功回调
+                if (listener != null) {
+                    listener.adSuccess(info);
+                }
+
                 if (adListener != null) {
                     adListener.adSuccess(info);
                 }
@@ -235,6 +240,11 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                         listener.adError(info, 1, "广告获取为空");
                     }
                     return;
+                }
+
+                //请求成功回调
+                if (listener != null) {
+                    listener.adSuccess(info);
                 }
 
                 ((MidasInteractionAd) info.getMidasAd()).setTtNativeExpressAd(ttNativeExpressAd);
@@ -321,6 +331,11 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     }
                     return;
                 }
+                //请求成功回调
+                if (listener != null) {
+                    listener.adSuccess(info);
+                }
+
                 midasSelfRenderAd.setTtFeedAd(ttFeedAd);
                 if (adListener != null) {
                     adListener.adSuccess(info);

@@ -125,6 +125,11 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
                 // 广告可见才会产生曝光，否则将无法产生收益。
                 midasNativeTemplateAd.setAddView(nativeExpressADView);
 //                nativeExpressADView.render();
+                //请求成功回调
+                if (listener != null) {
+                    listener.adSuccess(info);
+                }
+
                 if (adListener != null) {
                     adListener.adSuccess(info);
                 }
@@ -241,6 +246,11 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
         iad = new UnifiedInterstitialAD(activity, midasInteractionAd.getAppId(), midasInteractionAd.getAdId(), new UnifiedInterstitialADListener() {
             @Override
             public void onADReceive() {
+                //请求成功回调
+                if (listener != null) {
+                    listener.adSuccess(info);
+                }
+
                 //广告加载成功
                 if (iad != null) {
                     iad.showAsPopupWindow();
@@ -312,6 +322,7 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
                     return;
                 }
                 midasSelfRenderAd.setNativeUnifiedADData(nativeUnifiedADData);
+                //请求成功回调
                 if (listener != null) {
                     listener.adSuccess(info);
                 }
