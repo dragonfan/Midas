@@ -224,20 +224,20 @@ public class MidasAdManger implements AdManager {
             mActivity = activity;
             //设置广告位置信息
             adInfo.setPosition(position);
-            getMidasConfigBean(adInfo, position);
+//            getMidasConfigBean(adInfo, position);
             //测试用
-//            //广告源
-////            adInfo.getMidasAd().setAdSource(Constants.AdSourceType.ChuanShanJia);
-//            adInfo.getMidasAd().setAdSource(Constants.AdSourceType.YouLiangHui);
-//            //广告id
-////        adInfo.getMidasAd().setAdId(adsInfosBean.getAdId());
-//            //测试用
-////            adInfo.getMidasAd().setAdId("936430473");
-//            adInfo.getMidasAd().setAdId("2040899184044247");
-//            //广告对应的appid
-////            adInfo.getMidasAd().setAppId("5036430");
-//            adInfo.getMidasAd().setAppId("1110047950");
-//            sdkRequest(adInfo);
+            //广告源
+//            adInfo.getMidasAd().setAdSource(Constants.AdSourceType.ChuanShanJia);
+            adInfo.getMidasAd().setAdSource(Constants.AdSourceType.YouLiangHui);
+            //广告id
+//        adInfo.getMidasAd().setAdId(adsInfosBean.getAdId());
+            //测试用
+//            adInfo.getMidasAd().setAdId("936430473");
+            adInfo.getMidasAd().setAdId("2040899184044247");
+            //广告对应的appid
+//            adInfo.getMidasAd().setAppId("5036430");
+            adInfo.getMidasAd().setAppId("1110047950");
+            sdkRequest(adInfo);
         } catch (Exception e) {
             e.printStackTrace();
             if (mAdListener != null) {
