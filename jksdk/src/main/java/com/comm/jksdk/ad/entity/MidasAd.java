@@ -78,4 +78,37 @@ public abstract class MidasAd implements Ad{
     public void setSourceRequestNum(int sourceRequestNum) {
         this.sourceRequestNum = sourceRequestNum;
     }
+
+    /**
+     * 广告标题
+     * @return
+     */
+    public String getTitle(){
+        return null;
+    }
+
+    /**
+     * 广告描述
+     * @return
+     */
+    public String getDescription(){
+        return null;
+    }
+
+    /**
+     * 广告的icon链接。
+     * @return
+     */
+    public String getIconUrl(){
+        return null;
+    }
+
+    /**
+     * 广告的大图链接。
+     * @return
+     */
+    public String getImageUrl(){
+        return null;
+    }
+
 }

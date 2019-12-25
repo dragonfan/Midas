@@ -2,6 +2,11 @@
 apply plugin: 'com.android.library'
 //apply plugin: 'maven-publish'
 
+ext {
+    versionCode = 1
+    versionName = "1.0.0-alpha1"
+}
+
 android {
     compileSdkVersion 28
     buildToolsVersion "28.0.3"
@@ -29,6 +34,12 @@ android {
         targetCompatibility = 1.8
     }
 
+    def libName = "MidasSDK_${project.ext.versionName}.aar"
+    libraryVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = libName
+        }
+    }
 }
 //uploadArchives {
 //    repositories.mavenDeployer{
@@ -49,11 +60,11 @@ dependencies {
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.6'
     //穿山甲 为了适配下载和安装相关功能，在工程中引用的包 com.android.support:support-v4:24.2.0
     //使用24.2.0以及以上版本。
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.0.0'
-    implementation 'com.google.android.material:material:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+//    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+//    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+//    implementation 'androidx.appcompat:appcompat:1.0.0'
+//    implementation 'com.google.android.material:material:1.0.0'
+//    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     //Retrofit2
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
@@ -96,3 +107,24 @@ dependencies {
 //    }
 //}
 
+apply plugin: 'maven'
+
+uploadArchives {
+//    configuration = configurations.archives
+    repositories {
+        mavenDeployer {
+            repository(url: 'http://pre.xnshandai.net/nexus/content/repositories/midas') {
+                authentication(userName: 'admin', password: 'admin_123')
+            }
+
+            pom.project {
+                //版本名称
+                version project.ext.versionName
+                //groupId 和 artifactId 要与服务器上面统一
+                artifactId 'midas'
+                groupId 'com.comm.jksdk'
+                packaging 'aar'
+            }
+        }
+    }
+}

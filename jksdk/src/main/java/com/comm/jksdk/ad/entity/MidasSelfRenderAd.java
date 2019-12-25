@@ -166,6 +166,7 @@ public class MidasSelfRenderAd extends MidasAd{
 
     }
 
+    @Override
     public String getTitle(){
         if (Constants.AdSourceType.ChuanShanJia.equals(getAdSource())) {
             if (ttFeedAd == null) {
@@ -180,6 +181,7 @@ public class MidasSelfRenderAd extends MidasAd{
         }
     }
 
+    @Override
     public String getDescription(){
         if (Constants.AdSourceType.ChuanShanJia.equals(getAdSource())) {
             if (ttFeedAd == null) {
@@ -205,6 +207,7 @@ public class MidasSelfRenderAd extends MidasAd{
         }
     }
 
+    @Override
     public String getIconUrl(){
         if (Constants.AdSourceType.ChuanShanJia.equals(getAdSource())) {
             if (ttFeedAd == null) {
@@ -245,9 +248,21 @@ public class MidasSelfRenderAd extends MidasAd{
         }
     }
 
+    @Override
     public String getImageUrl(){
         if (Constants.AdSourceType.ChuanShanJia.equals(getAdSource())) {
-            return null;
+            if (ttFeedAd == null) {
+                return null;
+            }
+            List<TTImage> images = ttFeedAd.getImageList();
+            if (CollectionUtils.isEmpty(images)) {
+                return null;
+            }
+            List<String> imgList = new ArrayList<>();
+            for (TTImage image : images) {
+                imgList.add(image.getImageUrl());
+            }
+            return imgList.get(0);
         } else {
             if (nativeUnifiedADData == null) {
                 return null;

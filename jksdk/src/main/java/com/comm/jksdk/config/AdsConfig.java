@@ -20,6 +20,7 @@ import com.comm.jksdk.utils.CodeFactory;
 import com.comm.jksdk.utils.CollectionUtils;
 import com.comm.jksdk.utils.JsonUtils;
 import com.comm.jksdk.utils.SpUtils;
+import com.comm.jksdk.utils.StatisticUtils;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -177,45 +178,18 @@ public class AdsConfig {
     private Observable<BaseResponse<MidasConfigBean>> getMidasConfigInfo(String adpostId) {
         Map<String, Object> requestParams = CollectionUtils.createMap();
         RequestBody requestBody = null;
-//        int bid = AdsConfig.getBid();
-//        if (bid > 0) {
-//            requestParams.put("bid", bid);
-//        }
-        String uuid = MidasAdSdk.getUUID();
+        String uuid = StatisticUtils.getNiuDateUUID();
+        LogUtils.d("uuid = "+uuid);
+        //设备ID
         requestParams.put("uuid", uuid);
-        requestParams.put("sessionid", uuid+System.currentTimeMillis());
+        //业务线ID
         requestParams.put("appid", MidasAdSdk.getAppId());
-        requestParams.put("appversion", AppInfoUtils.getVerCode(MidasAdSdk.getContext()));
+        //广告位置ID
         requestParams.put("adpostId", adpostId);
+        //sdk版本号
         requestParams.put("sdkVersion", Constants.version_code);
-//        String productName = MidasAdSdk.getRroductName();
-//        requestParams.put("productName", productName);
-//        String marketName = MidasAdSdk.getChannel();
-//        requestParams.put("marketName", marketName);
-//        requestParams.put("osSystem", Constants.bid);
-//        long userActive = AdsConfig.getUserActive();
-//        if (userActive < 0) {
-//            userActive = System.currentTimeMillis();
-//            AdsConfig.setUserActive(userActive);
-//        }
-//        requestParams.put("userActive", userActive);
-//        requestParams.put("ts", System.currentTimeMillis());
-//        String latitude = AdsConfig.getLatitude();
-//        if (!TextUtils.isEmpty(latitude)) {
-//            requestParams.put("latitude", latitude);
-//        }
-//        String longitude = AdsConfig.getLongitude();
-//        if (!TextUtils.isEmpty(longitude)) {
-//            requestParams.put("longitude", longitude);
-//        }
-//        requestParams.put("province", Constants.province);
-//        requestParams.put("city", Constants.city);
-//        requestParams.put("modelVersion", "");
-
-//        Boolean posInfosBoolean=getPositionInfos();
-//        if (posInfosBoolean) {
-//            requestParams.put("positionInfos", posInfoList);
-//        }
+        //设备唯一标识:可为空
+        requestParams.put("primary_id", "");
         String requstData=mGson.toJson(requestParams);
         LogUtils.d(TAG, "requstData->"+requstData);
 

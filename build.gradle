@@ -8,6 +8,9 @@ buildscript {
         maven {
             url 'http://pre.xnshandai.net/nexus/content/repositories/niudata'
         }
+        maven {
+            url 'http://pre.xnshandai.net/nexus/content/repositories/midas'
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.4.2'
@@ -30,6 +33,9 @@ allprojects {
         maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
         maven {
             url 'http://pre.xnshandai.net/nexus/content/repositories/niudata'
+        }
+        maven {
+            url 'http://pre.xnshandai.net/nexus/content/repositories/midas'
         }
     }
 }

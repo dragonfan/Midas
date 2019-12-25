@@ -1,8 +1,10 @@
 package com.comm.jksdk.utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.text.TextUtils;
 
+import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.bean.StatisticBaseProperties;
 import com.comm.jksdk.bean.StatisticEvent;
@@ -29,6 +31,21 @@ import java.util.Iterator;
  * @author anyabo
  */
 public class StatisticUtils {
+
+    private static String mUuid;
+
+    /**
+     * 获取牛数uuid
+     * @return
+     */
+    public static String getNiuDateUUID(){
+        if (!TextUtils.isEmpty(mUuid)) {
+            return mUuid;
+        }
+        SharedPreferences niu_data_provider = MidasAdSdk.getContext().getSharedPreferences("NIU_DATA_PROVIDER", Context.MODE_PRIVATE);
+        mUuid = niu_data_provider.getString("UUID", "");
+        return mUuid;
+    }
 
     /**
      * 初始化牛数

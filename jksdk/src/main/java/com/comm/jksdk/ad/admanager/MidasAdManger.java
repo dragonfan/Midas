@@ -70,8 +70,6 @@ public class MidasAdManger implements AdManager {
      */
     private int requestType = 0;
 
-    private boolean firstRequestAd = true;
-
     /**
      * 第一次请求广告时间
      */
@@ -108,7 +106,6 @@ public class MidasAdManger implements AdManager {
                 }
                 return;
             }
-            firstRequestAd = false;
             againRequest(adInfo, mAdsInfosBean);
         }
     };
@@ -127,22 +124,6 @@ public class MidasAdManger implements AdManager {
             //设置广告位置信息
             adInfo.setPosition(position);
             getMidasConfigBean(adInfo, position);
-//            //获取本地配置信息
-//            readyInfo(adInfo);
-//            if (CollectionUtils.isEmpty(adsInfoslist)) {
-//                if (mAdListener != null) {
-//                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-//                }
-//                return;
-//            }
-//            ConfigBean.AdListBean.AdsInfosBean mAdsInfosBean = adsInfoslist.remove(0);
-//            if (mAdsInfosBean == null) {
-//                if (mAdListener != null) {
-//                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-//                }
-//                return;
-//            }
-//            againRequest(adInfo, mAdsInfosBean);
         } catch (Exception e) {
             e.printStackTrace();
             if (mAdListener != null) {
@@ -166,22 +147,6 @@ public class MidasAdManger implements AdManager {
             mActivity = activity;
             //设置广告位置信息
             adInfo.setPosition(position);
-//            //获取本地配置信息
-//            readyInfo(adInfo);
-//            if (CollectionUtils.isEmpty(adsInfoslist)) {
-//                if (mAdListener != null) {
-//                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-//                }
-//                return;
-//            }
-//            ConfigBean.AdListBean.AdsInfosBean mAdsInfosBean = adsInfoslist.remove(0);
-//            if (mAdsInfosBean == null) {
-//                if (mAdListener != null) {
-//                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-//                }
-//                return;
-//            }
-//            againRequest(adInfo, mAdsInfosBean);
             getMidasConfigBean(adInfo, position);
         } catch (Exception e) {
             e.printStackTrace();
@@ -224,20 +189,20 @@ public class MidasAdManger implements AdManager {
             mActivity = activity;
             //设置广告位置信息
             adInfo.setPosition(position);
-//            getMidasConfigBean(adInfo, position);
-            //测试用
-            //广告源
-//            adInfo.getMidasAd().setAdSource(Constants.AdSourceType.ChuanShanJia);
-            adInfo.getMidasAd().setAdSource(Constants.AdSourceType.YouLiangHui);
-            //广告id
-//        adInfo.getMidasAd().setAdId(adsInfosBean.getAdId());
-            //测试用
-//            adInfo.getMidasAd().setAdId("936430473");
-            adInfo.getMidasAd().setAdId("2040899184044247");
-            //广告对应的appid
-//            adInfo.getMidasAd().setAppId("5036430");
-            adInfo.getMidasAd().setAppId("1110047950");
-            sdkRequest(adInfo);
+            getMidasConfigBean(adInfo, position);
+//            //测试用
+//            //广告源
+////            adInfo.getMidasAd().setAdSource(Constants.AdSourceType.ChuanShanJia);
+//            adInfo.getMidasAd().setAdSource(Constants.AdSourceType.YouLiangHui);
+//            //广告id
+////        adInfo.getMidasAd().setAdId(adsInfosBean.getAdId());
+//            //测试用
+////            adInfo.getMidasAd().setAdId("936430473");
+//            adInfo.getMidasAd().setAdId("2040899184044247");
+//            //广告对应的appid
+////            adInfo.getMidasAd().setAppId("5036430");
+//            adInfo.getMidasAd().setAppId("1110047950");
+//            sdkRequest(adInfo);
         } catch (Exception e) {
             e.printStackTrace();
             if (mAdListener != null) {
@@ -271,11 +236,11 @@ public class MidasAdManger implements AdManager {
         mAdListener = listener;
         mActivity = activity;
         AdInfo adInfo = new AdInfo();
+        adInfo.setAdType(Constants.AdType.NATIVE_TEMPLATE);
+        MidasNativeTemplateAd midasNativeTemplateAd = new MidasNativeTemplateAd();
+        midasNativeTemplateAd.setWidth(width);
+        adInfo.setMidasAd(midasNativeTemplateAd);
         try {
-            adInfo.setAdType(Constants.AdType.NATIVE_TEMPLATE);
-            MidasNativeTemplateAd midasNativeTemplateAd = new MidasNativeTemplateAd();
-            midasNativeTemplateAd.setWidth(width);
-            adInfo.setMidasAd(midasNativeTemplateAd);
             //设置广告位置信息
             adInfo.setPosition(position);
             getMidasConfigBean(adInfo, position);
@@ -318,7 +283,7 @@ public class MidasAdManger implements AdManager {
 
 
                 firstRequestAdTime = System.currentTimeMillis();
-                againRequest2(adInfo, mAdsInfoBean);
+                againRequest(adInfo, mAdsInfoBean);
             }
 
             @Override
@@ -351,40 +316,7 @@ public class MidasAdManger implements AdManager {
         //广告源
         adInfo.getMidasAd().setAdSource(adsInfosBean.getAdUnion());
         //广告id
-//        adInfo.getMidasAd().setAdId(adsInfosBean.getAdId());
-        adInfo.getMidasAd().setAdId(adsInfosBean.getAdId()); //测试用
-        //广告对应的appid
-        adInfo.getMidasAd().setAppId(adsInfosBean.getAdsAppid());
-        sdkRequest(adInfo);
-//        //请求类型 0 - SDK 1 - API
-//        requestType = adsInfosBean.getRequestType();
-//        if (requestType == 0) {
-//        } else {
-//            apiRequest(adInfo);
-//        }
-    }
-
-    /**
-     * 轮询请求
-     *
-     * @param adInfo
-     * @param adsInfosBean
-     */
-    public void againRequest2(AdInfo adInfo, MidasConfigBean.AdStrategyBean adsInfosBean) {
-        if (adInfo == null) {
-            adInfo = new AdInfo();
-        }
-
-        //某些特有的数据清空，避免污染下一次请求数据
-        adInfo.clear();
-        adInfo.getMidasAd().clear();
-
-        //广告源
-        adInfo.getMidasAd().setAdSource(adsInfosBean.getAdUnion());
-        //广告id
-//        adInfo.getMidasAd().setAdId(adsInfosBean.getAdId());
-        //测试用
-        adInfo.getMidasAd().setAdId("936430473");
+        adInfo.getMidasAd().setAdId(adsInfosBean.getAdId());
         //广告对应的appid
         adInfo.getMidasAd().setAppId(adsInfosBean.getAdsAppid());
         //请求类型 0 - SDK 1 - API

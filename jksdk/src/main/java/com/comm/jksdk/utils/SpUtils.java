@@ -13,11 +13,11 @@ import java.util.concurrent.Executors;
 /**
  * 代码描述<p>
  *
- * @author anhuiqing
+ * @author fanhailong
  * @since 2019/4/1 13:24
  */
 public class SpUtils {
-    public static final String FILE_NAME = "luckCalendar_share_data";
+    public static final String FILE_NAME = "midas_share_data";
     private static SharedPreferences getSharedPreferences() {
         return MidasAdSdk.getContext().getSharedPreferences(FILE_NAME,
                 Context.MODE_PRIVATE);

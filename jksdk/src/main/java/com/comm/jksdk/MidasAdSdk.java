@@ -7,6 +7,8 @@ import com.comm.jksdk.ad.listener.AdManager;
 import com.comm.jksdk.config.AdsConfig;
 import com.comm.jksdk.config.InitBaseConfig;
 import com.comm.jksdk.config.listener.ConfigListener;
+import com.comm.jksdk.http.utils.AppInfoUtils;
+import com.comm.jksdk.http.utils.LogUtils;
 import com.comm.jksdk.utils.StatisticUtils;
 
 /**
@@ -55,7 +57,9 @@ public final class MidasAdSdk {
         InitBaseConfig.getInstance().init(mContext);
         InitBaseConfig.getInstance().initChjAd(mContext, csjAppId);
         mIsInit = true;
-        // TODO: 2019/12/23 初始化牛数
+        int appVersionCode = AppInfoUtils.getVerCode(MidasAdSdk.getContext());
+        LogUtils.e("appVersionCode=="+appVersionCode);
+        //初始化牛数
         StatisticUtils.init(context, channel, productId);
     }
 
@@ -77,14 +81,6 @@ public final class MidasAdSdk {
         StatisticUtils.setImei(imei);
     }
 
-
-//    /**
-//     * 设置bid
-//     * @param bid
-//     */
-//    public static void setBid(int bid){
-//        AdsConfig.setBid(bid);
-//    }
 
     /**
      * 设置第一次激活时间
@@ -119,14 +115,6 @@ public final class MidasAdSdk {
 
     public static void setRroductId(String mRroductId) {
         MidasAdSdk.mRroductId = mRroductId;
-    }
-
-    public static String getUUID() {
-        return mUUID;
-    }
-
-    public static void setUUID(String mUUID) {
-        MidasAdSdk.mUUID = mUUID;
     }
 
     public static String getAppId() {
