@@ -206,13 +206,33 @@ public class StatisticUtils {
         long take = System.currentTimeMillis() - beginTime;
         StatisticBaseProperties baseProperties = adInfo.getStatisticBaseProperties();
         if (baseProperties != null){
-            baseProperties.setUnitRequestNum(baseProperties.getUnitRequestNum() + 1);
-            if (fillCount != 0){
-                baseProperties.setFillCount(fillCount);
-            }
             trackCustomEvent(StatisticEvent.MIDAS_UNIT_REQUEST.put("take", take),
                     baseProperties);
         }
     }
+
+    public static void advertisingSourceRequest(AdInfo adInfo, String placeMentId,
+                                                String sourceId, String sourceRequestNum,
+                                                int sourceTimeOut, String style,
+                                                String mediationId, String advertiser,
+                                                String pck, String priority,
+                                                int fillCount, String resultInfo,
+                                                long beginTime) {
+        long take = System.currentTimeMillis() - beginTime;
+        StatisticBaseProperties baseProperties = adInfo.getStatisticBaseProperties();
+        if (baseProperties != null){
+            baseProperties.setUnitRequestNum(baseProperties.getUnitRequestNum() + 1);
+            if (fillCount != 0){
+                baseProperties.setFillCount(fillCount);
+            }
+
+            trackCustomEvent(StatisticEvent.MIDAS_SOURCE_REQUEST.put("take", take),
+                    baseProperties);
+        }
+    }
+
+
+
+
 
 }

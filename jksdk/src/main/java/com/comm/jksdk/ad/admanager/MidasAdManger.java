@@ -490,18 +490,23 @@ public class MidasAdManger implements AdManager {
         adRequestManager.requestAd(mActivity, adInfo, new AdRequestListener() {
             @Override
             public void adSuccess(AdInfo info) {
-                //广告位请求事件埋点
+
+                //广告位请求事件埋点[放在广告源后面，可以清晰知道请求次数]
                 StatisticUtils.advertisingPositionRequest(adInfo,1,beginTime);
 
             }
 
             @Override
             public void adError(AdInfo info, int errorCode, String errorMsg) {
+
+
+                if (CollectionUtils.isEmpty(adsInfoslist)) {
+                    //广告位请求事件埋点[与监听有时序关系，下面的监听先移除的]
+                    StatisticUtils.advertisingPositionRequest(adInfo,0,beginTime);
+                }
                 if (mFirstAdListener != null) {
                     mFirstAdListener.firstAdError(info, errorCode, errorMsg);
                 }
-                //广告位请求事件埋点
-                StatisticUtils.advertisingPositionRequest(adInfo,0,beginTime);
             }
         }, mAdListener);
     }
