@@ -369,7 +369,7 @@ public class MidasAdManger implements AdManager {
 
                 againRequest2(adInfo, mAdsInfoBean);
 
-                //广告策略配置请求埋点
+                //广告策略请求事件埋点
                 StatisticUtils.strategyConfigurationRequest(adInfo, adPosId,
                         midasConfigBean.getAdstrategyid(), 200+"",
                         ErrorCode.SUCCESS + "", beginTime);
@@ -380,7 +380,7 @@ public class MidasAdManger implements AdManager {
                 if (mAdListener != null) {
                     mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
                 }
-                //广告策略配置请求埋点
+                //广告策略请求事件埋点
                 StatisticUtils.strategyConfigurationRequest(adInfo, adPosId,"",
                         httpCode+"",errorCode + "", beginTime);
 
@@ -464,34 +464,34 @@ public class MidasAdManger implements AdManager {
      * sdk 请求
      */
     public void sdkRequest(AdInfo adInfo) {
+//  unit_request_num    ?
+
+//placement_id          adInfo.getAdId()
+//      source_id         adInfo.getMidasAd().getAdSource()
+
+//        source_request_num ?
+//      source_timeout ?
+//        style     ?
+
+//        advertiser    ?
+//          pkg ?
+
+//        priority      ?
+
+//        fill_count    1/0
+
+//        result_code   ?
+
+//        result_info   ?
+
         AdRequestManager adRequestManager = new RequestManagerFactory().produce(adInfo);
-        if (adRequestManager == null) {
-            if (adInfo.isPreload()) {
-                if (mAdPreloadingListener != null) {
-                    mAdPreloadingListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-                }
-            } else {
-                if (mAdListener != null) {
-                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-                }
-            }
-            return;
-        }
-//        AdInfo temAdinfo = CacheAd.getAd(adInfo.getPosition());
-//        if (temAdinfo != null) {
-//            if (adInfo.isPreload()) {
-//                if (mAdPreloadingListener != null) {
-//                    mAdPreloadingListener.adSuccess(temAdinfo);
-//                }
-//            } else {
-//                CacheAd.removeAd(adInfo.getPosition());
-//                createAdView(mActivity, temAdinfo);
-//            }
-//            return;
-//        }
+
+        long beginTime = System.currentTimeMillis();
         adRequestManager.requestAd(mActivity, adInfo, new AdRequestListener() {
             @Override
             public void adSuccess(AdInfo info) {
+                //广告位请求事件埋点
+                StatisticUtils.advertisingPositionRequest(adInfo,1,beginTime);
 
             }
 
@@ -500,6 +500,8 @@ public class MidasAdManger implements AdManager {
                 if (mFirstAdListener != null) {
                     mFirstAdListener.firstAdError(info, errorCode, errorMsg);
                 }
+                //广告位请求事件埋点
+                StatisticUtils.advertisingPositionRequest(adInfo,0,beginTime);
             }
         }, mAdListener);
     }

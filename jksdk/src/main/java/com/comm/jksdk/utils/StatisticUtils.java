@@ -196,5 +196,23 @@ public class StatisticUtils {
         }
     }
 
+    /**
+     * 广告位请求事件埋点
+     * @param adInfo    广告信息
+     * @param fillCount 填充广告个数（实际拿到广告的个数。串行0-1；并行0-n）
+     * @param beginTime 请求开始的时间
+     */
+    public static void advertisingPositionRequest(AdInfo adInfo, int fillCount, long beginTime) {
+        long take = System.currentTimeMillis() - beginTime;
+        StatisticBaseProperties baseProperties = adInfo.getStatisticBaseProperties();
+        if (baseProperties != null){
+            baseProperties.setUnitRequestNum(baseProperties.getUnitRequestNum() + 1);
+            if (fillCount != 0){
+                baseProperties.setFillCount(fillCount);
+            }
+            trackCustomEvent(StatisticEvent.MIDAS_UNIT_REQUEST.put("take", take),
+                    baseProperties);
+        }
+    }
 
 }

@@ -17,7 +17,9 @@ import org.json.JSONObject;
  */
 public enum  StatisticEvent {
 
-    MIDAS_CONFIG_REQUEST("MIDAS_CONFIG_REQUEST","广告策略请求事件");
+    MIDAS_CONFIG_REQUEST("MIDAS_CONFIG_REQUEST","广告策略请求事件"),
+    MIDAS_UNIT_REQUEST("MIDAS_UNIT_REQUEST","广告位请求事件"),
+    MIDAS_SOURCE_REQUEST("MIDAS_SOURCE_REQUEST","广告源请求事件");
 
     private String eventCode;
     private String eventName;
