@@ -111,7 +111,7 @@ public class StatisticUtils {
     private static void addBasePropertiesToJson(StatisticBaseProperties baseProperties,JSONObject j){
         try{
             j.put("session_id", baseProperties.getSessionId());
-            j.put("uuid2", baseProperties.getUuid2());
+            j.put("primaryid", baseProperties.getPrimaryId());
             j.put("unit_id",baseProperties.getUnitId());
             j.put("adpos_id",baseProperties.getAdPosId());
             j.put("strategy_id",baseProperties.getStrategyId());
@@ -154,11 +154,11 @@ public class StatisticUtils {
      */
     public static void singleStatisticBegin(AdInfo adInfo,long beginTime){
         //调试代码
-        String uuid2 = "test";
-        String sessionId = uuid2 + beginTime;
+        String primaryId = "test";
+        String sessionId = primaryId + beginTime;
         if (adInfo != null){
             StatisticBaseProperties baseProperties
-                    = new StatisticBaseProperties(uuid2, sessionId);
+                    = new StatisticBaseProperties(primaryId, sessionId);
             adInfo.setStatisticBaseProperties(baseProperties);
         }
     }
@@ -199,10 +199,9 @@ public class StatisticUtils {
     /**
      * 广告位请求事件埋点
      * @param adInfo    广告信息
-     * @param fillCount 填充广告个数（实际拿到广告的个数。串行0-1；并行0-n）
      * @param beginTime 请求开始的时间
      */
-    public static void advertisingPositionRequest(AdInfo adInfo, int fillCount, long beginTime) {
+    public static void advertisingPositionRequest(AdInfo adInfo, long beginTime) {
         long take = System.currentTimeMillis() - beginTime;
         StatisticBaseProperties baseProperties = adInfo.getStatisticBaseProperties();
         if (baseProperties != null){
@@ -211,11 +210,14 @@ public class StatisticUtils {
         }
     }
 
-    public static void advertisingSourceRequest(AdInfo adInfo, String placeMentId,
-                                                String sourceId, String sourceRequestNum,
-                                                int sourceTimeOut, String style,
-                                                String mediationId, String advertiser,
-                                                String pck, String priority,
+    /**
+     * 广告源请求事件埋点
+     * @param adInfo    广告信息
+     * @param fillCount 填充广告个数（实际拿到广告的个数。串行0-1；并行0-n）
+     * @param resultInfo    联盟异常的code码
+     * @param beginTime 请求开始的时间
+     */
+    public static void advertisingSourceRequest(AdInfo adInfo,
                                                 int fillCount, String resultInfo,
                                                 long beginTime) {
         long take = System.currentTimeMillis() - beginTime;
@@ -225,12 +227,29 @@ public class StatisticUtils {
             if (fillCount != 0){
                 baseProperties.setFillCount(fillCount);
             }
-
+            if (adInfo.getMidasAd() != null){
+                adInfo.getStatisticBaseProperties().setPlacementId(adInfo.getMidasAd().getAdId());
+                adInfo.getStatisticBaseProperties().setSourceId(adInfo.getMidasAd().getAdSource());
+                adInfo.getStatisticBaseProperties().setSourceTimeOut(adInfo.getMidasAd().getTimeOut());
+                adInfo.getStatisticBaseProperties().setSourceRequestNum(adInfo.getMidasAd().getSourceRequestNum());
+            }
+            adInfo.getStatisticBaseProperties().setStyle(adInfo.getAdType());
             trackCustomEvent(StatisticEvent.MIDAS_SOURCE_REQUEST.put("take", take),
                     baseProperties);
         }
     }
 
+
+    public static void advertisingOfferShow(AdInfo adInfo,long beginTime){
+        long take = System.currentTimeMillis() - beginTime;
+        StatisticBaseProperties baseProperties = adInfo.getStatisticBaseProperties();
+        if (baseProperties != null){
+
+
+            trackCustomEvent(StatisticEvent.MIDAS_IMPRESSION.put("take", take),
+                    baseProperties);
+        }
+    }
 
 
 

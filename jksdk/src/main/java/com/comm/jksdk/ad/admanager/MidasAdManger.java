@@ -72,6 +72,11 @@ public class MidasAdManger implements AdManager {
 
     private boolean firstRequestAd = true;
 
+    /**
+     * 第一次请求广告时间
+     */
+    private long firstRequestAdTime;
+
     private FirstAdListener mFirstAdListener = new FirstAdListener() {
         @Override
         public void firstAdError(AdInfo adInfo, int errorCode, String errorMsg) {
@@ -311,6 +316,8 @@ public class MidasAdManger implements AdManager {
                         midasConfigBean.getAdstrategyid(), 200+"",
                         ErrorCode.SUCCESS + "", beginTime);
 
+
+                firstRequestAdTime = System.currentTimeMillis();
                 againRequest2(adInfo, mAdsInfoBean);
             }
 
@@ -404,49 +411,27 @@ public class MidasAdManger implements AdManager {
      * sdk 请求
      */
     public void sdkRequest(AdInfo adInfo) {
-//  unit_request_num    ?
-
-//placement_id          adInfo.getMidasAd().getAdId()
-//      source_id         adInfo.getMidasAd().getAdSource()
-
-//        source_request_num ?
-//      source_timeout ?
-//        style     ?
-
-//        advertiser    ?
-//          pkg ?
-
-//        priority      ?
-
-//        fill_count    1/0
-
-//        result_code   ?
-
-//        result_info   ?
-
-        AdRequestManager adRequestManager = new RequestManagerFactory().produce(adInfo);
-
         long beginTime = System.currentTimeMillis();
+        AdRequestManager adRequestManager = new RequestManagerFactory().produce(adInfo);
         adRequestManager.requestAd(mActivity, adInfo, new AdRequestListener() {
             @Override
             public void adSuccess(AdInfo info) {
-                info.getStatisticBaseProperties().setPlacementId(info.getMidasAd().getAdId());
-                info.getStatisticBaseProperties().setSourceId(info.getMidasAd().getAdSource());
-                info.getStatisticBaseProperties().setSourceRequestNum(info.getMidasAd().getSourceRequestNum());
-                info.getStatisticBaseProperties().setSourceTimeOut(info.getMidasAd().getTimeOut());
-                info.getStatisticBaseProperties().setStyle(info.getAdType());
+                //广告源请求事件埋点
+                StatisticUtils.advertisingSourceRequest(adInfo, 1,
+                        200 + "", beginTime);
                 //广告位请求事件埋点[放在广告源后面，可以清晰知道请求次数]
-                StatisticUtils.advertisingPositionRequest(adInfo,1,beginTime);
-
+                StatisticUtils.advertisingPositionRequest(adInfo,firstRequestAdTime);
             }
 
             @Override
             public void adError(AdInfo info, int errorCode, String errorMsg) {
-
-
+                //广告源请求事件埋点
+                StatisticUtils.advertisingSourceRequest(adInfo, 0,
+                        errorCode + "", beginTime);
                 if (CollectionUtils.isEmpty(adsInfoslist)) {
-                    //广告位请求事件埋点[与监听有时序关系，下面的监听先移除的]
-                    StatisticUtils.advertisingPositionRequest(adInfo,0,beginTime);
+                    //广告位请求事件埋点[与监听有时序关系，下面的监听先移除的
+                    // ,放在广告源后面，可以清晰知道请求次数]
+                    StatisticUtils.advertisingPositionRequest(adInfo,firstRequestAdTime);
                 }
                 if (mFirstAdListener != null) {
                     mFirstAdListener.firstAdError(info, errorCode, errorMsg);

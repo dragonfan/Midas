@@ -24,14 +24,9 @@ public class StatisticBaseProperties implements Serializable {
     private String sessionId;
     /**
      * 当前用户的设备ID信息
-     *      构建规则：
-     * 1、从 IMEI ，MAC， oaid， andriodid 四个标识中选取1个(按照优先级选择）；
-     * 2、 拼接成一个字符串；
-     * 3、计算MD5；
-     * 4、 base 64；
-     * 5、 生成uuid2;
+     *投票法通过大数据接口生成的
      */
-    private String uuid2;
+    private String primaryId;
     /**
      * 广告位的位置信息。（一般为英文缩写说明，比如SPB_locker_boost_result）
      */
@@ -180,9 +175,9 @@ public class StatisticBaseProperties implements Serializable {
      */
     private String bannerUrl;
 
-    public StatisticBaseProperties(String uuid2,String sessionId) {
+    public StatisticBaseProperties(String primaryId,String sessionId) {
         this.sessionId = sessionId;
-        this.uuid2 = uuid2;
+        this.primaryId = primaryId;
 
         //广告位的位置编号，用于向广告系统请求广告位策略。
         this.adPosId = "";
@@ -258,12 +253,12 @@ public class StatisticBaseProperties implements Serializable {
         this.sessionId = sessionId;
     }
 
-    public String getUuid2() {
-        return uuid2;
+    public String getPrimaryId() {
+        return primaryId;
     }
 
-    public void setUuid2(String uuid2) {
-        this.uuid2 = uuid2;
+    public void setPrimaryId(String primaryId) {
+        this.primaryId = primaryId;
     }
 
     public String getUnitId() {
