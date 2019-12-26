@@ -129,7 +129,7 @@ public class StatisticUtils {
     private static void addBasePropertiesToJson(StatisticBaseProperties baseProperties,JSONObject j){
         try{
             j.put("session_id", baseProperties.getSessionId());
-            j.put("primaryid", baseProperties.getPrimaryId());
+            j.put("xnid", baseProperties.getXnId());
             j.put("unit_id",baseProperties.getUnitId());
             j.put("adpos_id",baseProperties.getAdPosId());
             j.put("strategy_id",baseProperties.getStrategyId());
@@ -171,11 +171,11 @@ public class StatisticUtils {
      * @param beginTime    开始时间
      */
     public static void singleStatisticBegin(AdInfo adInfo,long beginTime){
-        String primaryId = "";
+        String xnId = "";
         String sessionId = getNiuDateUUID() + beginTime;
         if (adInfo != null){
             StatisticBaseProperties baseProperties
-                    = new StatisticBaseProperties(primaryId, sessionId);
+                    = new StatisticBaseProperties(xnId, sessionId);
             adInfo.setStatisticBaseProperties(baseProperties);
         }
     }

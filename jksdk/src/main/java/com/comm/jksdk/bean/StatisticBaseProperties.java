@@ -26,7 +26,7 @@ public class StatisticBaseProperties implements Serializable {
      * 当前用户的设备ID信息
      *投票法通过大数据接口生成的
      */
-    private String primaryId;
+    private String xnid;
     /**
      * 广告位的位置信息。（一般为英文缩写说明，比如SPB_locker_boost_result）
      */
@@ -174,9 +174,9 @@ public class StatisticBaseProperties implements Serializable {
      */
     private String bannerUrl;
 
-    public StatisticBaseProperties(String primaryId,String sessionId) {
+    public StatisticBaseProperties(String xnid,String sessionId) {
         this.sessionId = sessionId;
-        this.primaryId = primaryId;
+        this.xnid = xnid;
 
         //广告位的位置编号，用于向广告系统请求广告位策略。
         this.adPosId = "";
@@ -252,12 +252,12 @@ public class StatisticBaseProperties implements Serializable {
         this.sessionId = sessionId;
     }
 
-    public String getPrimaryId() {
-        return primaryId;
+    public String getXnId() {
+        return xnid;
     }
 
-    public void setPrimaryId(String primaryId) {
-        this.primaryId = primaryId;
+    public void setXnId(String xnId) {
+        this.xnid = xnId;
     }
 
     public String getUnitId() {
