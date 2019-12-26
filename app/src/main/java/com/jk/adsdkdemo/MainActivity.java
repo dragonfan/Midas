@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.big_img_bt:
-                startActivity(new Intent(this, BigImgAcitvity.class));
+                startActivity(new Intent(this, SelfRenderAcitvity.class));
                 break;
 //            case R.id.button_configinfo:
 //                startActivity(new Intent(this, ConfigActivity.class));

@@ -39,7 +39,7 @@ import java.util.List;
   * @ProjectName:    ${PROJECT_NAME}
   * @Package:        ${PACKAGE_NAME}
   * @ClassName:      ${NAME}
-  * @Description:  大图类广告
+  * @Description:  自渲染广告
   * @Author:         fanhailong
   * @CreateDate:     ${DATE} ${TIME}
   * @UpdateUser:     更新者：
@@ -47,9 +47,9 @@ import java.util.List;
   * @UpdateRemark:   更新说明：
   * @Version:        1.0
  */
-public class BigImgAcitvity extends AppCompatActivity implements View.OnClickListener {
+public class SelfRenderAcitvity extends AppCompatActivity implements View.OnClickListener {
 
-    private final String TAG = BigImgAcitvity.class.getSimpleName();
+    private final String TAG = SelfRenderAcitvity.class.getSimpleName();
 
     private Button requestBt, preloadBt;
     private FrameLayout mContainer;

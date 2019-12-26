@@ -44,7 +44,7 @@ public class SplashAdActivity extends AppCompatActivity implements View.OnClickL
         stateTxt = findViewById(R.id.state_txt);
         refreshBtn.setOnClickListener(this);
 //        positionEdit.setText("68870548_0_1");
-        positionEdit.setText("73436770_0_1");
+        positionEdit.setText("68870548_0_1");
 //        loadSplashAd("cold_kp");
     }
 
@@ -55,43 +55,6 @@ public class SplashAdActivity extends AppCompatActivity implements View.OnClickL
         // cold_kp 、hot_kp
         splashContainer.removeAllViews();
         stateTxt.setText("");
-//        MidasAdSdk.getAdsManger().loadSplashAd(this, position, new AdListener() {
-//            @Override
-//            public void adSuccess(AdInfo info) {
-//                LogUtils.d(TAG, "-----adSuccess-----");
-//                stateTxt.setText("-----adSuccess-----");
-//                View view = info.getAdView();
-//                if (view != null) {
-//                    splashContainer.addView(view);
-//                }
-//            }
-//
-//            @Override
-//            public void adClose(AdInfo info) {
-//                if (splashContainer != null) {
-//                    splashContainer.removeAllViews();
-//                }
-//            }
-//
-//            @Override
-//            public void adExposed(AdInfo info) {
-//                LogUtils.d(TAG, "-----adExposed-----");
-//                stateTxt.setText("-----adExposed-----");
-//            }
-//
-//            @Override
-//            public void adClicked(AdInfo info) {
-//                LogUtils.d(TAG, "-----adClicked-----");
-//            }
-//
-//            @Override
-//            public void adError(AdInfo info, int errorCode, String errorMsg) {
-//                LogUtils.e(TAG, "-----adError-----" + errorMsg);
-//                stateTxt.setText("errorCode:" + errorCode + " errorMsg:" + errorMsg);
-//            }
-//
-//        });
-
         MidasAdSdk.getAdsManger().loadMidasSplashAd(this, position, new AdSplashListener<AdInfo>() {
             @Override
             public ViewGroup getViewGroup() {
