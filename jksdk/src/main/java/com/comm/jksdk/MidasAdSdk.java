@@ -34,26 +34,23 @@ public final class MidasAdSdk {
     public static String mRroductId;
     public static String mAppId;
     public static String mChannel;
-    public static String mUUID;
     public static boolean mIsFormal;
 
 
     /**
      * 聚合广告sdk初始化
-     *
-     * @param context   上下文
-     * @param appid     广告业务线id 大数据提供
+     * @param context 上下文
+     * @param appid 广告业务线id 大数据提供
      * @param csjAppId
-     * @param uuid      设备唯一标识
-     * @param isFormal  是否是正式环境 true对应生产环境
+     * @param isFormal 是否是正式环境 true对应生产环境
      * @param productId 业务线id 大数据提供 (初始化牛数和初始化穿山甲sdk用到)
-     * @param channel   渠道名称 (初始化牛数用到)
+     * @param channel 渠道名称 (初始化牛数用到)
+     * @param serverUrl 需指定上传地址，并传入大数据给定的url
      */
-    public static void init(Context context, String appid, String productId, String channel, String csjAppId, String uuid, boolean isFormal) {
+    public static void init(Context context, String appid, String productId, String channel, String csjAppId, String serverUrl, boolean isFormal){
         mContext = context.getApplicationContext();
         mRroductId = productId;
         mAppId = appid;
-        mUUID = uuid;
         mChannel = channel;
         mIsFormal = isFormal;
         //初始化基本配置信息
@@ -61,9 +58,9 @@ public final class MidasAdSdk {
         InitBaseConfig.getInstance().initChjAd(mContext, csjAppId);
         mIsInit = true;
         int appVersionCode = AppInfoUtils.getVerCode(MidasAdSdk.getContext());
-        LogUtils.e("appVersionCode==" + appVersionCode);
+        LogUtils.d("appVersionCode=="+appVersionCode);
         //初始化牛数
-        StatisticUtils.init(context, channel, productId);
+        StatisticUtils.init(context, channel, productId, serverUrl);
 
         //首次上报IMEI
         boolean isReport = SpUtils.getBoolean(Constant.FIRST_REPORT_IMEI, false);
@@ -75,16 +72,14 @@ public final class MidasAdSdk {
 
     /**
      * 获取广告管理类
-     *
      * @return
      */
-    public static AdManager getAdsManger() {
+    public static AdManager getAdsManger(){
         return new MidasAdManagerFactory().produce();
     }
 
     /**
      * 设置imei
-     *
      * @param imei
      */
     public static void setImei(String imei) {

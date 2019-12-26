@@ -259,43 +259,43 @@ public class AdsConfig {
     }
 
 
-    /**
-     * 根据业务线获取app name
-     * @return
-     */
-    public static String getProductAppName(){
-        if (TextUtils.isEmpty(MidasAdSdk.getRroductId())) {
-            return "未知";
-        }
-        String appName = "";
-        switch (MidasAdSdk.getRroductId()) {
-            case "12":
-                appName = "吉日历";
-                break;
-            case "13":
-                appName = "即刻天气";
-                break;
-            case "131":
-                appName = "知心天气";
-                break;
-            case "17":
-                appName = "玲珑视频";
-                break;
-            case "18":
-                appName = "悟空清理";
-                break;
-            case "181":
-                appName = "清理管家极速版";
-                break;
-            case "19":
-                appName = "最来电";
-                break;
-            case "30":
-                appName = "爱步行";
-                break;
-        }
-        return appName;
-    }
+//    /**
+//     * 根据业务线获取app name
+//     * @return
+//     */
+//    public static String getProductAppName(){
+//        if (TextUtils.isEmpty(MidasAdSdk.getRroductId())) {
+//            return "未知";
+//        }
+//        String appName = "";
+//        switch (MidasAdSdk.getRroductId()) {
+//            case "12":
+//                appName = "吉日历";
+//                break;
+//            case "13":
+//                appName = "即刻天气";
+//                break;
+//            case "131":
+//                appName = "知心天气";
+//                break;
+//            case "17":
+//                appName = "玲珑视频";
+//                break;
+//            case "18":
+//                appName = "悟空清理";
+//                break;
+//            case "181":
+//                appName = "清理管家极速版";
+//                break;
+//            case "19":
+//                appName = "最来电";
+//                break;
+//            case "30":
+//                appName = "爱步行";
+//                break;
+//        }
+//        return appName;
+//    }
 
     /**
      * 获取本地配置信息

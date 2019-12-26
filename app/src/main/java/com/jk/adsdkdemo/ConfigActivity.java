@@ -66,15 +66,6 @@ public class ConfigActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_set_bid:
-//                if (!MidasAdSdk.isInit()) {
-//                    Toast.makeText(getApplicationContext(), "请先初始化", Toast.LENGTH_LONG).show();
-//                    return;
-//                }
-//                try {
-//                    MidasAdSdk.setBid(Integer.valueOf(bidEt.getText().toString()));
-//                } catch (NumberFormatException e) {
-//                    e.printStackTrace();
-//                }
                 break;
             case R.id.button_request_config:
                 if (!MidasAdSdk.isInit()) {
@@ -89,16 +80,11 @@ public class ConfigActivity extends AppCompatActivity implements View.OnClickLis
                 String product = editProduct.getText().toString().trim();
                 String chan = editChan.getText().toString().trim();
                 String appid = editAdAppId.getText().toString().trim();
-                String uuid = editUuid.getText().toString().trim();
                 LogUtils.e(">>>product="+product);
                 LogUtils.e(">>>渠道号="+chan);
-//                MidasAdSdk.init(this, product, "5036430", chan,   false);
-//                LogUtils.e("手机型号："+android.os.Build.MODEL);
-//                LogUtils.e("手机厂商："+android.os.Build.MANUFACTURER);
-//                WebView webView = new WebView(this);
-//                String mUserAgent =webView.getSettings().getUserAgentString();
-//                LogUtils.e("ua信息："+mUserAgent);
-                MidasAdSdk.init(this, appid, product, chan,"5036430",  uuid, false);
+                //牛数上报地址
+                String serverUrl = "http://testaidataprobe2.51huihuahua.com/v/v/dataprobe2/ggbx";
+                MidasAdSdk.init(this, appid, product, chan,"5036430", serverUrl, false);
                 break;
             case R.id.next:
                 if (!MidasAdSdk.isInit()) {

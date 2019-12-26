@@ -53,13 +53,14 @@ public class StatisticUtils {
      * @param context   上下文
      * @param channel   渠道
      * @param productId 牛数业务线ID
+     * @param serverUrl 需指定上传地址，并传入大数据给定的url
      */
-    public static void init(Context context,String channel,String productId){
+    public static void init(Context context,String channel,String productId, String serverUrl){
         Configuration configuration = new Configuration();
         //设置渠道
         configuration.channel(channel);
         //牛数服务器地址
-        configuration.serverUrl(ApiManage.getNiuDataURL());
+        configuration.serverUrl(serverUrl);
         //是否开启日志 非成产环境开启，生产环境关闭
         boolean isProduct = AppEnvironment.getServerApiEnvironment()
                 == AppEnvironment.ServerEnvironment.Product;

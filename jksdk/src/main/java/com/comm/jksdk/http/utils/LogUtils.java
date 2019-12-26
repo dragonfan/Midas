@@ -2,6 +2,8 @@ package com.comm.jksdk.http.utils;
 
 import android.util.Log;
 
+import com.comm.jksdk.BuildConfig;
+
 /**
  *
  * 日志工具类
@@ -10,9 +12,10 @@ import android.util.Log;
  * 邮箱：anhuiqing888@163.com
  */
 public class LogUtils {
-    public static boolean isDebug = true;
+//    public static boolean isDebug = true;
+    public static boolean isDebug = BuildConfig.LOG_DEBUG;
 
-    public static final String TAGAN = "lpb";
+    public static final String TAGAN = "midas";
 
     public static void info(String msg){
         if(isDebug) {
@@ -54,9 +57,7 @@ public class LogUtils {
     }
 
     public static void e(String msg) {
-        if (isDebug) {
-            Log.e(TAGAN, msg);
-        }
+        Log.e(TAGAN, msg);
     }
 
     public static void v(String msg) {

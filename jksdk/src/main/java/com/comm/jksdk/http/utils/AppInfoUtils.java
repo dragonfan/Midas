@@ -4,6 +4,7 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.text.TextUtils;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 
@@ -61,6 +62,26 @@ public class AppInfoUtils {
         return versionCode;
     }
 
+    /**
+     * 获取应用程序名称
+     */
+    public static synchronized String getAppName(Context context) {
+        String appName = "";
+        try {
+            PackageManager packageManager = context.getPackageManager();
+            PackageInfo packageInfo = packageManager.getPackageInfo(
+                    context.getPackageName(), 0);
+            int labelRes = packageInfo.applicationInfo.labelRes;
+            appName = context.getResources().getString(labelRes);
+            if (TextUtils.isEmpty(appName)) {
+                return "未知";
+            }
+            return appName;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "未知";
+    }
 
     /**
      * 获取当前进程的名字，一般就是当前app的包名
@@ -68,7 +89,7 @@ public class AppInfoUtils {
      * @param context 当前上下文
      * @return 返回进程的名字
      */
-    public static String getAppName(Context context)
+    public static String getAppPackegeName(Context context)
     {
         int pid = android.os.Process.myPid(); // Returns the identifier of this process
         ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
