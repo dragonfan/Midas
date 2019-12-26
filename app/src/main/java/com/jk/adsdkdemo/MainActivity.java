@@ -14,6 +14,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.comm.jksdk.MidasAdSdk;
+import com.comm.jksdk.http.utils.AppInfoUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -127,6 +130,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1024 && hasAllPermissionsGranted(grantResults)) {
+
+            MidasAdSdk.setImei(AppInfoUtils.getIMEI(this));
 
         } else {
             Toast.makeText(this, "应用缺少必要的权限！请点击\"权限\"，打开所需要的权限。", Toast.LENGTH_LONG).show();

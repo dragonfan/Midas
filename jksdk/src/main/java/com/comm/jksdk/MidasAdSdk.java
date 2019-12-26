@@ -7,8 +7,10 @@ import com.comm.jksdk.ad.listener.AdManager;
 import com.comm.jksdk.config.AdsConfig;
 import com.comm.jksdk.config.InitBaseConfig;
 import com.comm.jksdk.config.listener.ConfigListener;
+import com.comm.jksdk.http.Constant;
 import com.comm.jksdk.http.utils.AppInfoUtils;
 import com.comm.jksdk.http.utils.LogUtils;
+import com.comm.jksdk.utils.SpUtils;
 import com.comm.jksdk.utils.StatisticUtils;
 
 /**
@@ -38,15 +40,16 @@ public final class MidasAdSdk {
 
     /**
      * 聚合广告sdk初始化
-     * @param context 上下文
-     * @param appid 广告业务线id 大数据提供
+     *
+     * @param context   上下文
+     * @param appid     广告业务线id 大数据提供
      * @param csjAppId
-     * @param uuid 设备唯一标识
-     * @param isFormal 是否是正式环境 true对应生产环境
+     * @param uuid      设备唯一标识
+     * @param isFormal  是否是正式环境 true对应生产环境
      * @param productId 业务线id 大数据提供 (初始化牛数和初始化穿山甲sdk用到)
-     * @param channel 渠道名称 (初始化牛数用到)
+     * @param channel   渠道名称 (初始化牛数用到)
      */
-    public static void init(Context context, String appid, String productId, String channel, String csjAppId, String uuid, boolean isFormal){
+    public static void init(Context context, String appid, String productId, String channel, String csjAppId, String uuid, boolean isFormal) {
         mContext = context.getApplicationContext();
         mRroductId = productId;
         mAppId = appid;
@@ -58,34 +61,45 @@ public final class MidasAdSdk {
         InitBaseConfig.getInstance().initChjAd(mContext, csjAppId);
         mIsInit = true;
         int appVersionCode = AppInfoUtils.getVerCode(MidasAdSdk.getContext());
-        LogUtils.e("appVersionCode=="+appVersionCode);
+        LogUtils.e("appVersionCode==" + appVersionCode);
         //初始化牛数
         StatisticUtils.init(context, channel, productId);
+
+        //首次上报IMEI
+        boolean isReport = SpUtils.getBoolean(Constant.FIRST_REPORT_IMEI, false);
+        if (!isReport) {
+            StatisticUtils.setImei(AppInfoUtils.getIMEI(mContext));
+            SpUtils.putBoolean(Constant.FIRST_REPORT_IMEI, true);
+        }
     }
 
     /**
      * 获取广告管理类
+     *
      * @return
      */
-    public static AdManager getAdsManger(){
+    public static AdManager getAdsManger() {
         return new MidasAdManagerFactory().produce();
     }
 
     /**
      * 设置imei
+     *
      * @param imei
      */
-    public static void setImei(String imei){
-
-        // TODO: 2019/12/23 下面设置imei给牛数
-        StatisticUtils.setImei(imei);
+    public static void setImei(String imei) {
+        boolean isReport = SpUtils.getBoolean(Constant.FIRST_REPORT_IMEI, false);
+        if (!isReport) {
+            StatisticUtils.setImei(imei);
+            SpUtils.putBoolean(Constant.FIRST_REPORT_IMEI, true);
+        }
     }
 
 
     /**
      * 设置第一次激活时间
      */
-    public static void setActivationTime(long time){
+    public static void setActivationTime(long time) {
         AdsConfig.setUserActive(time);
     }
 
