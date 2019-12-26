@@ -9,7 +9,6 @@ import com.comm.jksdk.ad.entity.AdInfo;
 import com.comm.jksdk.ad.entity.MidasAd;
 import com.comm.jksdk.bean.StatisticBaseProperties;
 import com.comm.jksdk.bean.StatisticEvent;
-import com.comm.jksdk.http.utils.ApiManage;
 import com.comm.jksdk.http.utils.AppEnvironment;
 import com.xiaoniu.statistic.Configuration;
 import com.xiaoniu.statistic.EventType;
@@ -206,7 +205,7 @@ public class StatisticUtils {
             if (!TextUtils.isEmpty(configResultCode)){
                 baseProperties.setConfigResultCode(configResultCode);
             }
-            if (TextUtils.isEmpty(strategyId)){
+            if (!TextUtils.isEmpty(strategyId)){
                 baseProperties.setStrategyId(strategyId);
             }
             trackCustomEvent(StatisticEvent.MIDAS_CONFIG_REQUEST.put("take", take),
