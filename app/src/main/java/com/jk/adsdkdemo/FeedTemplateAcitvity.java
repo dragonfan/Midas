@@ -44,7 +44,7 @@ public class FeedTemplateAcitvity extends AppCompatActivity implements View.OnCl
     private Button mButtonLoadAd;
     private Button mButtonLoadAdVideo;
     private EditText mEtWidth;
-    private EditText mEtHeight;
+    private EditText mEtHeight, mEtPosition;
     private TTNativeExpressAd mTTAd;
 
     @Override
@@ -60,6 +60,7 @@ public class FeedTemplateAcitvity extends AppCompatActivity implements View.OnCl
         mButtonLoadAdVideo = (Button) findViewById(R.id.btn_express_load_video);
         mEtHeight = (EditText) findViewById(R.id.express_height);
         mEtWidth = (EditText) findViewById(R.id.express_width);
+        mEtPosition = findViewById(R.id.et_position_id);
         mButtonLoadAd.setOnClickListener(this);
         mButtonLoadAdVideo.setOnClickListener(this);
 //        //step2:创建TTAdNative对象，createAdNative(Context context) banner广告context需要传入Activity对象
@@ -73,45 +74,7 @@ public class FeedTemplateAcitvity extends AppCompatActivity implements View.OnCl
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_express_load:
-//                String position = positionEt.getText().toString().trim();
-//                String position = "FEED_01";
-//                if (TextUtils.isEmpty(position)) {
-//                    Toast.makeText(getApplicationContext(), "accept->输入的位置不能为空", Toast.LENGTH_LONG).show();
-//                    return;
-//                }
-//                String width = mEtWidth.getText().toString().trim();
-//                if (TextUtils.isEmpty(width)) {
-//                    width = "350";
-//                }
-//                MidasAdSdk.getAdsManger().loadNativeTemplateAd(this,position, Float.valueOf(width), new AdListener() {
-//                    @Override
-//                    public void adSuccess(AdInfo info) {
-//                        adView = info.getAdView();
-//                        if (adView != null) {
-//                            mExpressContainer.removeAllViews();
-//                            mExpressContainer.addView(adView);
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void adExposed(AdInfo info) {
-//                        LogUtils.e("adExposed");
-//                    }
-//
-//                    @Override
-//                    public void adClicked(AdInfo info) {
-//
-//                    }
-//
-//                    @Override
-//                    public void adError(AdInfo info, int errorCode, String errorMsg) {
-//                        LogUtils.e("adError："+errorMsg);
-//                    }
-//                });
-//                break;
-
-
-                String position = "FEED_01";
+                String position = mEtPosition.getText().toString().trim();
                 if (TextUtils.isEmpty(position)) {
                     Toast.makeText(getApplicationContext(), "accept->输入的位置不能为空", Toast.LENGTH_LONG).show();
                     return;
@@ -120,28 +83,6 @@ public class FeedTemplateAcitvity extends AppCompatActivity implements View.OnCl
                 if (TextUtils.isEmpty(width)) {
                     width = "350";
                 }
-//                MidasAdSdk.getAdsManger().loadMidasNativeTemplateAd(this, position, Float.valueOf(width), new AdListener<AdInfo>() {
-//                    @Override
-//                    public void adSuccess(AdInfo info) {
-//                        MidasNativeTemplateAd midasNativeTemplateAd = (MidasNativeTemplateAd) info.getMidasAd();
-//                        renderAd(midasNativeTemplateAd);
-//                    }
-//
-//                    @Override
-//                    public void adExposed(AdInfo info) {
-//                        LogUtils.e("adExposed");
-//                    }
-//
-//                    @Override
-//                    public void adClicked(AdInfo info) {
-//
-//                    }
-//
-//                    @Override
-//                    public void adError(AdInfo info, int errorCode, String errorMsg) {
-//                        LogUtils.e("adError：" + errorMsg);
-//                    }
-//                });
 
                 MidasAdSdk.getAdsManger().loadMidasNativeTemplateAd(this, position, Float.valueOf(width), new NativeTemplateListener<AdInfo>(){
 

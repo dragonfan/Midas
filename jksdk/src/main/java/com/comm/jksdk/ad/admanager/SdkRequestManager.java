@@ -58,11 +58,15 @@ public abstract class SdkRequestManager implements AdRequestManager {
         } else if (Constants.AdType.INTERACTION_TYPE.equals(adInfo.getAdType())){
             requestInteractionAd(activity, adInfo, listener, getInteractionListener((InteractionListener) adListener));
         } else if (Constants.AdType.NATIVE_TEMPLATE.equals(adInfo.getAdType())) {
-            requestNativeTemplateAd(activity, adInfo, listener, getNativeTemplateListener((NativeTemplateListener) adListener), getNativeTemplateAdChargeListener());
+            requestNativeTemplateAd(activity, adInfo, listener, (NativeTemplateListener) adListener, getNativeTemplateAdChargeListener());
+//            bindNativeTempLateListener(adInfo);
         } else {
-
+            if (listener != null) {
+                listener.adError(adInfo, 3, "没有该广告类型 ");
+            }
         }
     }
+
 
     protected abstract void requestNativeTemplateAd(Activity activity, AdInfo info, AdRequestListener adRequestListener, NativeTemplateListener nativeTemplateListener, AdChargeListener adChargeListener);
 
@@ -121,29 +125,6 @@ public abstract class SdkRequestManager implements AdRequestManager {
         });
     }
 
-    /**
-     * 原生模板广告回调中间层（埋点可以埋到这里）
-     * @param listener
-     * @return
-     */
-    private NativeTemplateListener getNativeTemplateListener(NativeTemplateListener listener){
-        return new NativeTemplateListener<AdInfo>(){
-
-            @Override
-            public void adSuccess(AdInfo info) {
-                if (listener != null) {
-                    listener.adSuccess(info);
-                }
-            }
-
-            @Override
-            public void adError(AdInfo info, int errorCode, String errorMsg) {
-                if (listener != null) {
-                    listener.adError(info, errorCode, errorMsg);
-                }
-            }
-        };
-    }
 
     /**
      *原生模板广告回调中间层（埋点可以埋到这里）

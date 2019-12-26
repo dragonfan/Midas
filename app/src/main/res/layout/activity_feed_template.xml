@@ -4,8 +4,32 @@
     tools:ignore="HardcodedText"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/position_layout"
+        android:layout_marginTop="@dimen/dimen_20dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="位置:"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/dp_20" />
+
+        <EditText
+            android:layout_marginLeft="@dimen/dimen_12dp"
+            android:id="@+id/et_position_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="49937095_5_1"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/dp_20"
+            android:visibility="visible" />
+    </LinearLayout>
 
     <EditText
+        android:layout_below="@+id/position_layout"
         android:id="@+id/express_width"
         android:layout_width="match_parent"
         android:layout_height="50dp"

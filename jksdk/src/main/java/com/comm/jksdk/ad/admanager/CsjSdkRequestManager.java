@@ -88,7 +88,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                 .setCodeId(midasNativeTemplateAd.getAdId())
                 .setSupportDeepLink(true)
                 //请求广告数量为1到3条
-                .setAdCount(1)
+                .setAdCount(3)
                 //期望模板广告view的size,单位dp
                 .setExpressViewAcceptedSize(midasNativeTemplateAd.getWidth(), 0)
                 //这个参数设置即可，不影响模板广告的size
@@ -124,14 +124,14 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     @Override
                     public void onAdClicked(View view, int type) {
                         if (adChargeListener != null) {
-                            adChargeListener.adClicked(midasNativeTemplateAd);
+                            adChargeListener.adClicked(info);
                         }
                     }
 
                     @Override
                     public void onAdShow(View view, int type) {
                         if (adChargeListener != null) {
-                            adChargeListener.adExposed(midasNativeTemplateAd);
+                            adChargeListener.adExposed(info);
                         }
                     }
 
@@ -139,7 +139,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     public void onRenderFail(View view, String msg, int code) {
 //                Log.e("ExpressView","render fail:"+(System.currentTimeMillis() - startTime));
                         if (adChargeListener != null) {
-                            adChargeListener.adError(midasNativeTemplateAd, code, msg);
+                            adChargeListener.adError(info, code, msg);
                         }
                     }
 
@@ -147,7 +147,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     public void onRenderSuccess(View view, float width, float height) {
                         midasNativeTemplateAd.setAddView(view);
                         if (adChargeListener != null) {
-                            adChargeListener.adSuccess(midasNativeTemplateAd);
+                            adChargeListener.adSuccess(info);
                         }
                     }
                 });
