@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.ad.entity.AdInfo;
+import com.comm.jksdk.ad.entity.MidasAd;
 import com.comm.jksdk.bean.StatisticBaseProperties;
 import com.comm.jksdk.bean.StatisticEvent;
 import com.comm.jksdk.http.utils.ApiManage;
@@ -170,9 +171,8 @@ public class StatisticUtils {
      * @param beginTime    开始时间
      */
     public static void singleStatisticBegin(AdInfo adInfo,long beginTime){
-        //调试代码
-        String primaryId = "a001";
-        String sessionId = primaryId + beginTime;
+        String primaryId = "";
+        String sessionId = getNiuDateUUID() + beginTime;
         if (adInfo != null){
             StatisticBaseProperties baseProperties
                     = new StatisticBaseProperties(primaryId, sessionId);
@@ -245,30 +245,212 @@ public class StatisticUtils {
                 baseProperties.setFillCount(fillCount);
             }
             if (adInfo.getMidasAd() != null){
-                adInfo.getStatisticBaseProperties().setPlacementId(adInfo.getMidasAd().getAdId());
-                adInfo.getStatisticBaseProperties().setSourceId(adInfo.getMidasAd().getAdSource());
-                adInfo.getStatisticBaseProperties().setSourceTimeOut(adInfo.getMidasAd().getTimeOut());
-                adInfo.getStatisticBaseProperties().setSourceRequestNum(adInfo.getMidasAd().getSourceRequestNum());
+                MidasAd midasAd = adInfo.getMidasAd();
+                if (!TextUtils.isEmpty(midasAd.getAdId())){
+                    baseProperties.setPlacementId(midasAd.getAdId());
+                }
+                if (!TextUtils.isEmpty(midasAd.getAdSource())){
+                    baseProperties.setSourceId(midasAd.getAdSource());
+                }
+                baseProperties.setSourceTimeOut(midasAd.getTimeOut());
+                baseProperties.setSourceRequestNum(midasAd.getSourceRequestNum());
+                if (!TextUtils.isEmpty(midasAd.getTitle())){
+                    baseProperties.setHeadLine(midasAd.getTitle());
+                }
+                if (!TextUtils.isEmpty(midasAd.getDescription())){
+                    baseProperties.setSummary(midasAd.getDescription());
+                }
+                if (!TextUtils.isEmpty(midasAd.getIconUrl())){
+                    baseProperties.setIconUrl(midasAd.getIconUrl());
+                }
+                if (!TextUtils.isEmpty(midasAd.getImageUrl())){
+                    baseProperties.setBannerUrl(midasAd.getImageUrl());
+                }
             }
-            adInfo.getStatisticBaseProperties().setStyle(adInfo.getAdType());
+            baseProperties.setStyle(adInfo.getAdType());
+            if (!TextUtils.isEmpty(resultInfo)){
+                baseProperties.setResultInfo(resultInfo);
+            }
             trackCustomEvent(StatisticEvent.MIDAS_SOURCE_REQUEST.put("take", take),
                     baseProperties);
         }
     }
 
-
-    public static void advertisingOfferShow(AdInfo adInfo,long beginTime){
+    /**
+     * 广告offer下图事件埋点
+     * @param adInfo    广告信息
+     * @param beginTime 请求开始的时间
+     *                  备注:因V1.0.0功能暂无，放在后面版本埋，暂时预留
+     */
+    public static void advertistingImageLoad(AdInfo adInfo,long beginTime){
         long take = System.currentTimeMillis() - beginTime;
         StatisticBaseProperties baseProperties = adInfo.getStatisticBaseProperties();
         if (baseProperties != null){
+            if (adInfo.getMidasAd() != null) {
+                MidasAd midasAd = adInfo.getMidasAd();
+                if (!TextUtils.isEmpty(midasAd.getTitle())){
+                    baseProperties.setHeadLine(midasAd.getTitle());
+                }
+                if (!TextUtils.isEmpty(midasAd.getDescription())){
+                    baseProperties.setSummary(midasAd.getDescription());
+                }
+                if (!TextUtils.isEmpty(midasAd.getIconUrl())){
+                    baseProperties.setIconUrl(midasAd.getIconUrl());
+                }
+                if (!TextUtils.isEmpty(midasAd.getImageUrl())){
+                    baseProperties.setBannerUrl(midasAd.getImageUrl());
+                }
+            }
+            trackCustomEvent(StatisticEvent.MIDAS_IMAGE_LOAD.put("take", take),
+                    baseProperties);
+        }
+    }
 
-
+    /**
+     * 广告offer展示事件埋点
+     * @param adInfo    广告信息
+     * @param fillTime 广告填充时的时间戳
+     */
+    public static void advertisingOfferShow(AdInfo adInfo,long fillTime){
+//        long take = System.currentTimeMillis() - fillTime;
+        //description------暂时因下图以及填充事件未开发，未能拿到填充时间戳，take临时用0
+        long take = 0;
+        StatisticBaseProperties baseProperties = adInfo.getStatisticBaseProperties();
+        if (baseProperties != null){
+            if (adInfo.getMidasAd() != null) {
+                MidasAd midasAd = adInfo.getMidasAd();
+                if (!TextUtils.isEmpty(midasAd.getTitle())){
+                    baseProperties.setHeadLine(midasAd.getTitle());
+                }
+                if (!TextUtils.isEmpty(midasAd.getDescription())){
+                    baseProperties.setSummary(midasAd.getDescription());
+                }
+                if (!TextUtils.isEmpty(midasAd.getIconUrl())){
+                    baseProperties.setIconUrl(midasAd.getIconUrl());
+                }
+                if (!TextUtils.isEmpty(midasAd.getImageUrl())){
+                    baseProperties.setBannerUrl(midasAd.getImageUrl());
+                }
+            }
             trackCustomEvent(StatisticEvent.MIDAS_IMPRESSION.put("take", take),
                     baseProperties);
         }
     }
 
+    /**
+     * 广告offer点击事件埋点
+     * @param adInfo    广告信息
+     * @param beginTime 请求开始的时间
+     */
+    public static void advertisingClick(AdInfo adInfo, long beginTime) {
+        long take = System.currentTimeMillis() - beginTime;
+        StatisticBaseProperties baseProperties = adInfo.getStatisticBaseProperties();
+        if (baseProperties != null){
+            if (adInfo.getMidasAd() != null) {
+                MidasAd midasAd = adInfo.getMidasAd();
+                if (!TextUtils.isEmpty(midasAd.getTitle())){
+                    baseProperties.setHeadLine(midasAd.getTitle());
+                }
+                if (!TextUtils.isEmpty(midasAd.getDescription())){
+                    baseProperties.setSummary(midasAd.getDescription());
+                }
+                if (!TextUtils.isEmpty(midasAd.getIconUrl())){
+                    baseProperties.setIconUrl(midasAd.getIconUrl());
+                }
+                if (!TextUtils.isEmpty(midasAd.getImageUrl())){
+                    baseProperties.setBannerUrl(midasAd.getImageUrl());
+                }
+            }
+            trackCustomEvent(StatisticEvent.MIDAS_CLICK.put("take", take),
+                    baseProperties);
+        }
+    }
 
 
+    /**
+     * 激励视频广告激励事件埋点
+     * @param adInfo    广告信息
+     * @param beginTime 请求开始的时间
+     */
+    public static void advertisingRewarded(AdInfo adInfo, long beginTime){
+        long take = System.currentTimeMillis() - beginTime;
+        StatisticBaseProperties baseProperties = adInfo.getStatisticBaseProperties();
+        if (baseProperties != null){
+            if (adInfo.getMidasAd() != null) {
+                MidasAd midasAd = adInfo.getMidasAd();
+                if (!TextUtils.isEmpty(midasAd.getTitle())){
+                    baseProperties.setHeadLine(midasAd.getTitle());
+                }
+                if (!TextUtils.isEmpty(midasAd.getDescription())){
+                    baseProperties.setSummary(midasAd.getDescription());
+                }
+                if (!TextUtils.isEmpty(midasAd.getIconUrl())){
+                    baseProperties.setIconUrl(midasAd.getIconUrl());
+                }
+                if (!TextUtils.isEmpty(midasAd.getImageUrl())){
+                    baseProperties.setBannerUrl(midasAd.getImageUrl());
+                }
+            }
+            trackCustomEvent(StatisticEvent.MIDAS_REWARDED.put("take", take),
+                    baseProperties);
+        }
+    }
 
+    /**
+     * 激励视频广告关闭事件埋点
+     * @param adInfo    广告信息
+     * @param beginTime 请求开始的时间
+     */
+    public static void advertisingRewardedClose(AdInfo adInfo, long beginTime){
+        long take = System.currentTimeMillis() - beginTime;
+        StatisticBaseProperties baseProperties = adInfo.getStatisticBaseProperties();
+        if (baseProperties != null){
+            if (adInfo.getMidasAd() != null) {
+                MidasAd midasAd = adInfo.getMidasAd();
+                if (!TextUtils.isEmpty(midasAd.getTitle())){
+                    baseProperties.setHeadLine(midasAd.getTitle());
+                }
+                if (!TextUtils.isEmpty(midasAd.getDescription())){
+                    baseProperties.setSummary(midasAd.getDescription());
+                }
+                if (!TextUtils.isEmpty(midasAd.getIconUrl())){
+                    baseProperties.setIconUrl(midasAd.getIconUrl());
+                }
+                if (!TextUtils.isEmpty(midasAd.getImageUrl())){
+                    baseProperties.setBannerUrl(midasAd.getImageUrl());
+                }
+            }
+            trackCustomEvent(StatisticEvent.MIDAS_REWARDED_CLOSE.put("take", take),
+                    baseProperties);
+        }
+    }
+
+    /**
+     * 除激励视频外广告窗口关闭事件埋点
+     * @param adInfo    广告信息
+     * @param beginTime 请求开始的时间
+     */
+    public static void advertisingClose(AdInfo adInfo, long beginTime){
+        long take = System.currentTimeMillis() - beginTime;
+        StatisticBaseProperties baseProperties = adInfo.getStatisticBaseProperties();
+        if (baseProperties != null){
+            if (adInfo.getMidasAd() != null) {
+                MidasAd midasAd = adInfo.getMidasAd();
+                if (!TextUtils.isEmpty(midasAd.getTitle())){
+                    baseProperties.setHeadLine(midasAd.getTitle());
+                }
+                if (!TextUtils.isEmpty(midasAd.getDescription())){
+                    baseProperties.setSummary(midasAd.getDescription());
+                }
+                if (!TextUtils.isEmpty(midasAd.getIconUrl())){
+                    baseProperties.setIconUrl(midasAd.getIconUrl());
+                }
+                if (!TextUtils.isEmpty(midasAd.getImageUrl())){
+                    baseProperties.setBannerUrl(midasAd.getImageUrl());
+                }
+            }
+            trackCustomEvent(StatisticEvent.MIDAS_CLOSE.put("take", take),
+                    baseProperties);
+        }
+    }
 }

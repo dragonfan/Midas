@@ -20,7 +20,12 @@ public enum  StatisticEvent {
     MIDAS_CONFIG_REQUEST("MIDAS_CONFIG_REQUEST","广告策略请求事件"),
     MIDAS_UNIT_REQUEST("MIDAS_UNIT_REQUEST","广告位请求事件"),
     MIDAS_SOURCE_REQUEST("MIDAS_SOURCE_REQUEST","广告源请求事件"),
-    MIDAS_IMPRESSION("MIDAS_IMPRESSION","广告offer展示事件");
+    MIDAS_IMAGE_LOAD("MIDAS_IMAGE_LOAD","广告offer下图事件"),
+    MIDAS_IMPRESSION("MIDAS_IMPRESSION","广告offer展示事件"),
+    MIDAS_CLICK("MIDAS_CLICK","广告offer点击事件"),
+    MIDAS_REWARDED("MIDAS_REWARDED","激励视频广告激励事件"),
+    MIDAS_REWARDED_CLOSE("MIDAS_REWARDED_CLOSE","激励视频广告关闭事件"),
+    MIDAS_CLOSE("MIDAS_CLOSE","除激励视频外广告窗口关闭事件");
 
     private String eventCode;
     private String eventName;

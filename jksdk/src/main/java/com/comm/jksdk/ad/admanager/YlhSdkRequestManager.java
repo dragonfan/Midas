@@ -139,9 +139,9 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
             @Override
             public void onRenderFail(NativeExpressADView nativeExpressADView) {
                 LogUtils.d(TAG, "YLH onRenderFail:");
-//                if (adListener != null) {
-//                    adListener.adError(midasNativeTemplateAd, 2, "on render fail");
-//                }
+                if (adChargeListener != null) {
+                    adChargeListener.adError(info, 2, "on render fail");
+                }
             }
 
             //NativeExpressADView 渲染广告成功
@@ -149,28 +149,28 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
             public void onRenderSuccess(NativeExpressADView nativeExpressADView) {
                 LogUtils.d(TAG, "YLH onRenderSuccess:");
                 if (adChargeListener != null) {
-                    adChargeListener.adSuccess(midasNativeTemplateAd);
+                    adChargeListener.adSuccess(info);
                 }
             }
 
             @Override
             public void onADExposure(NativeExpressADView nativeExpressADView) {
                 if (adChargeListener != null) {
-                    adChargeListener.adExposed(midasNativeTemplateAd);
+                    adChargeListener.adExposed(info);
                 }
             }
 
             @Override
             public void onADClicked(NativeExpressADView nativeExpressADView) {
                 if (adChargeListener != null) {
-                    adChargeListener.adClicked(midasNativeTemplateAd);
+                    adChargeListener.adClicked(info);
                 }
             }
 
             @Override
             public void onADClosed(NativeExpressADView nativeExpressADView) {
                 if (adChargeListener != null) {
-                    adChargeListener.adClose(midasNativeTemplateAd);
+                    adChargeListener.adClose(info);
                 }
             }
 
@@ -341,7 +341,7 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
         //设置视频时长
         mAdManager.setMaxVideoDuration(12);
 
-//        mAdManager.setVideoPlayPolicy(NativeADUnifiedSampleActivity.getVideoPlayPolicy(getIntent(), this)); // 本次拉回的视频广告，在用户看来是否为自动播放的
+        mAdManager.setVideoPlayPolicy(VideoOption.VideoPlayPolicy.AUTO); // 本次拉回的视频广告，在用户看来是否为自动播放的
         mAdManager.setVideoADContainerRender(VideoOption.VideoADContainerRender.SDK); // 视频播放前，用户看到的广告容器是由SDK渲染的
 
         mAdManager.loadData(3);

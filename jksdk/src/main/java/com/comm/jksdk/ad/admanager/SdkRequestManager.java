@@ -2,6 +2,7 @@ package com.comm.jksdk.ad.admanager;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
@@ -24,6 +25,7 @@ import com.comm.jksdk.ad.listener.VideoAdListener;
 import com.comm.jksdk.constant.Constants;
 import com.comm.jksdk.http.utils.LogUtils;
 import com.comm.jksdk.utils.CollectionUtils;
+import com.comm.jksdk.utils.StatisticUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,6 +45,11 @@ import androidx.annotation.Nullable;
 public abstract class SdkRequestManager implements AdRequestManager {
     protected final String TAG = "MidasAdSdk-->";
 
+    /**
+     * 时间间隔
+     * 记录填充到展示，展示到点击间隔
+     */
+    private long intervalTime = 0L;
 
     @Override
     public void requestAd(Activity activity, AdInfo adInfo, AdRequestListener listener, AdBasicListener adListener) {
@@ -58,11 +65,15 @@ public abstract class SdkRequestManager implements AdRequestManager {
         } else if (Constants.AdType.INTERACTION_TYPE.equals(adInfo.getAdType())){
             requestInteractionAd(activity, adInfo, listener, getInteractionListener((InteractionListener) adListener));
         } else if (Constants.AdType.NATIVE_TEMPLATE.equals(adInfo.getAdType())) {
-            requestNativeTemplateAd(activity, adInfo, listener, getNativeTemplateListener((NativeTemplateListener) adListener), getNativeTemplateAdChargeListener());
+            requestNativeTemplateAd(activity, adInfo, listener, (NativeTemplateListener) adListener, getNativeTemplateAdChargeListener());
+//            bindNativeTempLateListener(adInfo);
         } else {
-
+            if (listener != null) {
+                listener.adError(adInfo, 3, "没有该广告类型 ");
+            }
         }
     }
+
 
     protected abstract void requestNativeTemplateAd(Activity activity, AdInfo info, AdRequestListener adRequestListener, NativeTemplateListener nativeTemplateListener, AdChargeListener adChargeListener);
 
@@ -105,11 +116,18 @@ public abstract class SdkRequestManager implements AdRequestManager {
     private void bindSelfRenderAdListener(AdInfo info) {
         MidasSelfRenderAd midasSelfRenderAd = (MidasSelfRenderAd) info.getMidasAd();
         midasSelfRenderAd.setBindViewListener(new BindViewListener () {
+
+            @Override
+            public void adClose() {
+                StatisticUtils.advertisingClose(info,intervalTime);
+            }
+
             @Override
             public void adExposed() {
                 if (midasSelfRenderAd.getSelfRenderChargeListener() != null) {
                     midasSelfRenderAd.getSelfRenderChargeListener().adExposed(info);
                 }
+                advertisingOfferShow(info);
             }
 
             @Override
@@ -117,33 +135,11 @@ public abstract class SdkRequestManager implements AdRequestManager {
                 if (midasSelfRenderAd.getSelfRenderChargeListener() != null) {
                     midasSelfRenderAd.getSelfRenderChargeListener().adClicked(info);
                 }
+                StatisticUtils.advertisingClick(info,intervalTime);
             }
         });
     }
 
-    /**
-     * 原生模板广告回调中间层（埋点可以埋到这里）
-     * @param listener
-     * @return
-     */
-    private NativeTemplateListener getNativeTemplateListener(NativeTemplateListener listener){
-        return new NativeTemplateListener<AdInfo>(){
-
-            @Override
-            public void adSuccess(AdInfo info) {
-                if (listener != null) {
-                    listener.adSuccess(info);
-                }
-            }
-
-            @Override
-            public void adError(AdInfo info, int errorCode, String errorMsg) {
-                if (listener != null) {
-                    listener.adError(info, errorCode, errorMsg);
-                }
-            }
-        };
-    }
 
     /**
      *原生模板广告回调中间层（埋点可以埋到这里）
@@ -151,6 +147,12 @@ public abstract class SdkRequestManager implements AdRequestManager {
      */
     private AdChargeListener getNativeTemplateAdChargeListener(){
         return new AdChargeListener<AdInfo>() {
+
+            @Override
+            public void adClose(AdInfo info) {
+                StatisticUtils.advertisingClose(info,intervalTime);
+            }
+
             @Override
             public void adSuccess(AdInfo info) {
                 if (((MidasNativeTemplateAd)info.getMidasAd()).getAdChargeListener() != null) {
@@ -170,6 +172,7 @@ public abstract class SdkRequestManager implements AdRequestManager {
                 if (((MidasNativeTemplateAd)info.getMidasAd()).getAdChargeListener() != null) {
                     ((MidasNativeTemplateAd)info.getMidasAd()).getAdChargeListener().adExposed(info);
                 }
+                advertisingOfferShow(info);
             }
 
             @Override
@@ -177,6 +180,7 @@ public abstract class SdkRequestManager implements AdRequestManager {
                 if (((MidasNativeTemplateAd)info.getMidasAd()).getAdChargeListener() != null) {
                     ((MidasNativeTemplateAd)info.getMidasAd()).getAdChargeListener().adClicked(info);
                 }
+                StatisticUtils.advertisingClick(info,intervalTime);
             }
         };
     }
@@ -190,6 +194,11 @@ public abstract class SdkRequestManager implements AdRequestManager {
         return new InteractionListener<AdInfo>(){
 
             @Override
+            public void adClose(AdInfo info) {
+                StatisticUtils.advertisingClose(info,intervalTime);
+            }
+
+            @Override
             public void adSuccess(AdInfo info) {
                 if (listener != null) {
                     listener.adSuccess(info);
@@ -208,6 +217,7 @@ public abstract class SdkRequestManager implements AdRequestManager {
                 if (listener != null) {
                     listener.adExposed(info);
                 }
+                advertisingOfferShow(info);
             }
 
             @Override
@@ -215,6 +225,7 @@ public abstract class SdkRequestManager implements AdRequestManager {
                 if (listener != null) {
                     listener.adClicked(info);
                 }
+                StatisticUtils.advertisingClick(info,intervalTime);
             }
         };
     }
@@ -226,6 +237,16 @@ public abstract class SdkRequestManager implements AdRequestManager {
      */
     private VideoAdListener getVideoAdListener(VideoAdListener listener){
         return new VideoAdListener<AdInfo>() {
+
+            @Override
+            public void adClose(AdInfo info) {
+                if (TextUtils.equals(Constants.AdType.REWARD_VIDEO_TYPE,info.getAdType())){
+                    StatisticUtils.advertisingRewardedClose(info,intervalTime);
+                }else {
+                    StatisticUtils.advertisingClose(info,intervalTime);
+                }
+            }
+
             @Override
             public void adSuccess(AdInfo info) {
                 if (listener != null) {
@@ -245,6 +266,7 @@ public abstract class SdkRequestManager implements AdRequestManager {
                 if (listener != null) {
                     listener.adExposed(info);
                 }
+                advertisingOfferShow(info);
             }
 
             @Override
@@ -252,6 +274,7 @@ public abstract class SdkRequestManager implements AdRequestManager {
                 if (listener != null) {
                     listener.adClicked(info);
                 }
+                StatisticUtils.advertisingClick(info,intervalTime);
             }
 
             @Override
@@ -266,6 +289,9 @@ public abstract class SdkRequestManager implements AdRequestManager {
                 if (listener != null) {
                     listener.onVideoRewardVerify(info, rewardVerify, rewardAmount, rewardName);
                 }
+                if (TextUtils.equals(Constants.AdType.REWARD_VIDEO_TYPE,info.getAdType())){
+                    StatisticUtils.advertisingRewarded(info,intervalTime);
+                }
             }
 
             @Override
@@ -274,6 +300,7 @@ public abstract class SdkRequestManager implements AdRequestManager {
                     listener.onVideoComplete(info);
                 }
             }
+
         };
     }
 
@@ -284,6 +311,12 @@ public abstract class SdkRequestManager implements AdRequestManager {
      */
     private AdSplashListener getAdSplashListener(AdSplashListener listener){
         return new AdSplashListener<AdInfo>() {
+
+            @Override
+            public void adClose(AdInfo info) {
+                StatisticUtils.advertisingClose(info,intervalTime);
+            }
+
             @Override
             public void adSuccess(AdInfo info) {
                 if (listener != null) {
@@ -304,6 +337,7 @@ public abstract class SdkRequestManager implements AdRequestManager {
                     listener.adExposed(info);
                 }
 
+                advertisingOfferShow(info);
             }
 
             @Override
@@ -311,6 +345,7 @@ public abstract class SdkRequestManager implements AdRequestManager {
                 if (listener != null) {
                     listener.adClicked(info);
                 }
+                StatisticUtils.advertisingClick(info,intervalTime);
             }
 
             @Override
@@ -322,4 +357,14 @@ public abstract class SdkRequestManager implements AdRequestManager {
             }
         };
     }
+
+    /**
+     * 广告offer展示
+     * @param adInfo    广告信息
+     */
+    private void advertisingOfferShow(AdInfo adInfo){
+        StatisticUtils.advertisingOfferShow(adInfo,0);
+        intervalTime = System.currentTimeMillis();
+    }
+
 }

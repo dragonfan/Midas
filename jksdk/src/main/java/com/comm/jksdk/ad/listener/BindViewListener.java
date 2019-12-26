@@ -29,4 +29,20 @@ public interface BindViewListener {
     default void adClose(){
 
     }
+
+    /**
+     * 广告请求成功
+     */
+    default void adSuccess() {
+
+    }
+
+    /**
+     * 广告失败
+     * @param errorCode
+     * @param errorMsg
+     */
+    default void adError(int errorCode, String errorMsg){
+
+    }
 }

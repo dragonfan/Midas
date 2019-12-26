@@ -104,8 +104,7 @@ public class StatisticBaseProperties implements Serializable {
      */
     private int sourceTimeOut;
     /**
-     * 广告类型。0：原生，1：插屏，2：Banner，3：激励视频。
-     *      类型用王通定义的类型
+     * 广告类型。开屏-0 banner-1 插屏-2 全屏视频-3 激励视频-4 原生广告-5 自渲染-6
      */
     private String style;
     /**

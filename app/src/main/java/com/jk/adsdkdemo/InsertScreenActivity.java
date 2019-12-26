@@ -47,7 +47,7 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
 
 //        btnNormalDownload = findViewById(R.id.btn_normal_download);
 //        btnNormalDownload.setOnClickListener(this);
-        positionEdit.setText("inside_advertising_ad");
+        positionEdit.setText("53338336_2_1");
 //        positionEdit2.setText("cp_ad_2");
 //        btnFullScreen = findViewById(R.id.btn_fullscreen_download);
 //        btnFullScreen.setOnClickListener(this);
@@ -59,39 +59,6 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
      */
     private void loadCustomInsertScreenAd(String position) {
         LogUtils.d(TAG, "position:" + position );
-//        MidasAdSdk.getAdsManger().loadCustomInsertScreenAd(this, position, 3, new AdListener() {
-//            @Override
-//            public void adSuccess(AdInfo info) {
-//                LogUtils.d(TAG, "-----adSuccess-----");
-//
-//                statePoint.setText("state:adSuccess");
-//                String adStyle = info.getAdStyle();
-//                if ("EXTERNAL_CP_01".equals(adStyle)) { //外部插屏广告用addView的形式
-//                    adView = info.getAdView();
-//                    if (adView != null) {
-//                        container.removeAllViews();
-//                        container.addView(adView);
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void adExposed(AdInfo info) {
-//                LogUtils.d(TAG, "-----adExposed-----");
-//            }
-//
-//            @Override
-//            public void adClicked(AdInfo info) {
-//                LogUtils.d(TAG, "-----adClicked-----");
-//            }
-//
-//            @Override
-//            public void adError(AdInfo info, int errorCode, String errorMsg) {
-//                //调试用
-//                LogUtils.d(TAG, "-----adError-----" + errorMsg);
-//                statePoint.setText("error:" + errorCode + " errorMsg:" + errorMsg);
-//            }
-//        }, "80");
 
         MidasAdSdk.getAdsManger().loadMidasInteractionAd(this, position, new InteractionListener<AdInfo>() {
             @Override

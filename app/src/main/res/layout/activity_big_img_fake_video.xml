@@ -46,7 +46,7 @@
             android:id="@+id/et_position_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="49882570_self_render_2"
+            android:text="62137164_6_1"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/dp_20"/>
     </LinearLayout>
