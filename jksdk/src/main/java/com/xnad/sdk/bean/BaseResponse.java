@@ -1,7 +1,6 @@
-package com.xnad.sdk.http.base;
+package com.xnad.sdk.bean;
 
 
-import com.xnad.sdk.http.ErrorCode;
 
 import java.io.Serializable;
 
@@ -45,7 +44,7 @@ public class BaseResponse<T> implements Serializable {
 
 
     public boolean isSuccess(){
-        if (code == ErrorCode.SUCCESS){
+        if (code == 0){
             return true;
         }else {
             return false;

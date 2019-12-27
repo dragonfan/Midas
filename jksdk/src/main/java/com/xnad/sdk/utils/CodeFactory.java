@@ -2,6 +2,7 @@ package com.xnad.sdk.utils;
 
 import android.text.TextUtils;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -48,7 +49,7 @@ public class CodeFactory {
 
     public final static int LOCAL_INFO_EMPTY = 101;
 
-    private final static Map<Integer, String> map = CollectionUtils.createMap();
+    private final static Map<Integer, String> map = new HashMap<>();
 
     static {
         map.put(900, "未知错误");

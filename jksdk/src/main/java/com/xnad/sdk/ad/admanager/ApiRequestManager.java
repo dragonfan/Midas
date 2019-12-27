@@ -10,8 +10,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.listener.AdRequestManager;
-import com.xnad.sdk.http.utils.LogUtils;
-import com.xnad.sdk.utils.CollectionUtils;
+import com.xnad.sdk.utils.LogUtils;
 
 /**
  * @ProjectName: MidasAdSdk
@@ -34,7 +33,7 @@ public abstract class ApiRequestManager implements AdRequestManager {
      */
     @Override
     public void cacheImg(String... url){
-        if (CollectionUtils.isEmpty(url)) {
+        if (url==null||url.length==0) {
             return;
         }
         for (String s : url) {

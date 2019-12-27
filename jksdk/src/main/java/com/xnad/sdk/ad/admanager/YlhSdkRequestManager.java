@@ -25,8 +25,6 @@ import com.xnad.sdk.ad.listener.NativeTemplateListener;
 import com.xnad.sdk.ad.listener.SelfRenderAdListener;
 import com.xnad.sdk.ad.listener.VideoAdListener;
 import com.xnad.sdk.config.TTAdManagerHolder;
-import com.xnad.sdk.http.utils.LogUtils;
-import com.xnad.sdk.utils.CollectionUtils;
 import com.qq.e.ads.cfg.VideoOption;
 import com.qq.e.ads.interstitial2.UnifiedInterstitialAD;
 import com.qq.e.ads.interstitial2.UnifiedInterstitialADListener;
@@ -43,6 +41,7 @@ import com.qq.e.ads.splash.SplashAD;
 import com.qq.e.ads.splash.SplashADListener;
 import com.qq.e.comm.constants.AdPatternType;
 import com.qq.e.comm.util.AdError;
+import com.xnad.sdk.utils.LogUtils;
 
 import java.util.List;
 
@@ -308,7 +307,7 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
         NativeUnifiedAD mAdManager = new NativeUnifiedAD(activity, midasSelfRenderAd.getAppId(), midasSelfRenderAd.getAdId(), new NativeADUnifiedListener() {
             @Override
             public void onADLoaded(List<NativeUnifiedADData> list) {
-                if (CollectionUtils.isEmpty(list)) {
+                if (list==null||list.size()==0) {
                     if (listener != null) {
                         listener.adError(info, 3, "没广告");
                     }
@@ -536,7 +535,7 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
 
             @Override
             public void onADLoaded(List<NativeUnifiedADData> list) {
-                if (CollectionUtils.isEmpty(list)) {
+                if (list==null||list.size()==0) {
                     if (listener != null) {
                         listener.adError(adInfo, 1, "广告数据为空");
                     }
@@ -617,7 +616,7 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
 
             @Override
             public void onNativeExpressAdLoad(List<TTNativeExpressAd> ads) {
-                if (CollectionUtils.isEmpty(ads)) {
+                if (ads==null||ads.size()==0) {
                     if (listener != null) {
                         listener.adError(info, 1, "广告获取为空");
                     }
@@ -777,7 +776,7 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
 
     @Override
     public void onADLoaded(List<NativeUnifiedADData> list) {
-        if (CollectionUtils.isEmpty(list)) {
+        if (list==null||list.size()==0) {
             if (adRequestListener != null) {
                 adRequestListener.adError(adInfo, 1, "没请求到广告数据");
             }

@@ -7,7 +7,7 @@ import com.bytedance.sdk.openadsdk.TTAdConstant;
 import com.bytedance.sdk.openadsdk.TTAdManager;
 import com.bytedance.sdk.openadsdk.TTAdSdk;
 import com.xnad.sdk.BuildConfig;
-import com.xnad.sdk.http.utils.AppInfoUtils;
+import com.xnad.sdk.utils.AppUtils;
 
 /**
  * 可以用一个单例来保存TTAdManager实例，在需要初始化sdk的时候调用
@@ -51,7 +51,7 @@ public class TTAdManagerHolder {
     }
 
     private static TTAdConfig buildConfig(Context context) {
-        String chjAppName = AppInfoUtils.getAppName(context);
+        String chjAppName = AppUtils.getAppName(context);
         boolean adsDebug = false;
         if (BuildConfig.DEBUG) {
             adsDebug = true;

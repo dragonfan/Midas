@@ -23,8 +23,7 @@ import com.xnad.sdk.ad.listener.NativeTemplateListener;
 import com.xnad.sdk.ad.listener.SelfRenderAdListener;
 import com.xnad.sdk.ad.listener.VideoAdListener;
 import com.xnad.sdk.constant.Constants;
-import com.xnad.sdk.http.utils.LogUtils;
-import com.xnad.sdk.utils.CollectionUtils;
+import com.xnad.sdk.utils.LogUtils;
 import com.xnad.sdk.utils.StatisticUtils;
 
 import androidx.annotation.NonNull;
@@ -94,7 +93,7 @@ public abstract class SdkRequestManager implements AdRequestManager {
      */
     @Override
     public void cacheImg(String... url){
-        if (CollectionUtils.isEmpty(url)) {
+        if (url==null||url.length==0) {
             return;
         }
         for (String s : url) {
@@ -115,7 +114,7 @@ public abstract class SdkRequestManager implements AdRequestManager {
      */
     private void bindSelfRenderAdListener(AdInfo info) {
         MidasSelfRenderAd midasSelfRenderAd = (MidasSelfRenderAd) info.getMidasAd();
-        midasSelfRenderAd.setBindViewListener(new BindViewListener () {
+        midasSelfRenderAd.setBindViewListener(new BindViewListener() {
 
             @Override
             public void adClose() {

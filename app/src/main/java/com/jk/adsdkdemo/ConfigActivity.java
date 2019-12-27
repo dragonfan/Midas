@@ -11,9 +11,6 @@ import android.widget.Toast;
 import com.bytedance.sdk.openadsdk.TTAdSdk;
 import com.jk.adsdkdemo.utils.LogUtils;
 import com.xnad.sdk.MidasAdSdk;
-import com.xnad.sdk.bean.ConfigBean;
-import com.xnad.sdk.utils.CollectionUtils;
-import com.xnad.sdk.utils.JsonUtils;
 
 import java.util.List;
 
@@ -100,19 +97,4 @@ public class ConfigActivity extends AppCompatActivity implements View.OnClickLis
         super.onResume();
     }
 
-    /**
-     * 展示配置信息
-     */
-    private void showConfigList(List<ConfigBean.AdListBean> configList) {
-        if (!CollectionUtils.isEmpty(configList)) {
-            StringBuffer config = new StringBuffer();
-            config.append("配置信息:" + configList.size() + "条\n");
-            config.append("*********************************************\n");
-            for (ConfigBean.AdListBean adListBean : configList) {
-                config.append(JsonUtils.encode(adListBean) + "\n");
-                config.append("*********************************************\n");
-            }
-            stateText.setText(config.toString().trim());
-        }
-    }
 }

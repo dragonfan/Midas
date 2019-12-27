@@ -25,7 +25,6 @@ import com.xnad.sdk.ad.entity.MidasSelfRenderAd;
 import com.xnad.sdk.ad.listener.SelfRenderAdListener;
 import com.xnad.sdk.ad.listener.SelfRenderChargeListener;
 import com.xnad.sdk.constant.Constants;
-import com.xnad.sdk.utils.CollectionUtils;
 import com.jk.adsdkdemo.utils.LogUtils;
 import com.qq.e.ads.nativ.MediaView;
 import com.qq.e.ads.nativ.widget.NativeAdContainer;
@@ -34,17 +33,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
-  *
-  * @ProjectName:    ${PROJECT_NAME}
-  * @Package:        ${PACKAGE_NAME}
-  * @ClassName:      ${NAME}
-  * @Description:  自渲染广告
-  * @Author:         fanhailong
-  * @CreateDate:     ${DATE} ${TIME}
-  * @UpdateUser:     更新者：
-  * @UpdateDate:     ${DATE} ${TIME}
-  * @UpdateRemark:   更新说明：
-  * @Version:        1.0
+ * @ProjectName: ${PROJECT_NAME}
+ * @Package: ${PACKAGE_NAME}
+ * @ClassName: ${NAME}
+ * @Description: 自渲染广告
+ * @Author: fanhailong
+ * @CreateDate: ${DATE} ${TIME}
+ * @UpdateUser: 更新者：
+ * @UpdateDate: ${DATE} ${TIME}
+ * @UpdateRemark: 更新说明：
+ * @Version: 1.0
  */
 public class SelfRenderAcitvity extends AppCompatActivity implements View.OnClickListener {
 
@@ -68,7 +66,7 @@ public class SelfRenderAcitvity extends AppCompatActivity implements View.OnClic
         preloadBt = findViewById(R.id.button_preloading_ad);
         preloadBt.setOnClickListener(this);
 
-        String[] ctype = new String[]{"success_page_ad_1", "success_page_ad_2", "success_page_ad_3", "newlist_1_1", "homepage_ad_1","homepage_ad_2", "lock_screen_advertising", "external_advertising_ad_1", "external_big_image_02"};
+        String[] ctype = new String[]{"success_page_ad_1", "success_page_ad_2", "success_page_ad_3", "newlist_1_1", "homepage_ad_1", "homepage_ad_2", "lock_screen_advertising", "external_advertising_ad_1", "external_big_image_02"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ctype);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -76,6 +74,7 @@ public class SelfRenderAcitvity extends AppCompatActivity implements View.OnClic
 
     View adView;
     String position = null;
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -101,7 +100,7 @@ public class SelfRenderAcitvity extends AppCompatActivity implements View.OnClic
 
                     @Override
                     public void adError(AdInfo info, int errorCode, String errorMsg) {
-                        LogUtils.e(TAG, "DEMO>>>adError： "+errorMsg);
+                        LogUtils.e(TAG, "DEMO>>>adError： " + errorMsg);
                     }
                 });
                 break;
@@ -190,7 +189,7 @@ public class SelfRenderAcitvity extends AppCompatActivity implements View.OnClic
         ImageView mLargeImage;
         ViewGroup container;
 
-        View view  = LayoutInflater.from(this).inflate(R.layout.news_item_csj, null);
+        View view = LayoutInflater.from(this).inflate(R.layout.news_item_csj, null);
 
 
         container = view.findViewById(R.id.container);
@@ -218,7 +217,7 @@ public class SelfRenderAcitvity extends AppCompatActivity implements View.OnClic
 //            creativeViewList.add(convertView);
         //重要! 这个涉及到广告计费，必须正确调用。convertView必须使用ViewGroup。
 
-        midasSelfRenderAd.bindViewToAdListener(this, container, clickViewList, creativeViewList, new SelfRenderChargeListener<AdInfo>(){
+        midasSelfRenderAd.bindViewToAdListener(this, container, clickViewList, creativeViewList, new SelfRenderChargeListener<AdInfo>() {
 
             @Override
             public void adCreativeClick(AdInfo info) {
@@ -243,7 +242,7 @@ public class SelfRenderAcitvity extends AppCompatActivity implements View.OnClic
             Glide.with(this).load(iconUrl).into(mIcon);
         }
         List<String> imgs = midasSelfRenderAd.getImageList();
-        if (!CollectionUtils.isEmpty(imgs)) {
+        if (imgs != null && imgs.size() > 0) {
             Glide.with(this).load(imgs.get(0)).into(mLargeImage);
         }
 //        Button adCreativeButton = adViewHolder.mCreativeButton;

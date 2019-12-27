@@ -4,15 +4,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
+import com.xiaoniu.statistic.Configuration;
+import com.xiaoniu.statistic.EventType;
+import com.xiaoniu.statistic.NiuDataAPI;
 import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.entity.MidasAd;
 import com.xnad.sdk.bean.StatisticBaseProperties;
 import com.xnad.sdk.bean.StatisticEvent;
-import com.xnad.sdk.http.utils.AppEnvironment;
-import com.xiaoniu.statistic.Configuration;
-import com.xiaoniu.statistic.EventType;
-import com.xiaoniu.statistic.NiuDataAPI;
 
 import org.json.JSONObject;
 
@@ -60,14 +59,7 @@ public class StatisticUtils {
         configuration.channel(channel);
         //牛数服务器地址
         configuration.serverUrl(serverUrl);
-        //是否开启日志 非成产环境开启，生产环境关闭
-        boolean isProduct = AppEnvironment.getServerApiEnvironment()
-                == AppEnvironment.ServerEnvironment.Product;
-        if (isProduct){
-            configuration.logClose();
-        }else {
-            configuration.logOpen();
-        }
+        configuration.logClose();
         if (!TextUtils.isEmpty(productId)){
             configuration.setProductId(productId);
         }
@@ -170,7 +162,7 @@ public class StatisticUtils {
      * @param adInfo    广告信息实体类
      * @param beginTime    开始时间
      */
-    public static void singleStatisticBegin(AdInfo adInfo,long beginTime){
+    public static void singleStatisticBegin(AdInfo adInfo, long beginTime){
         String xnId = "";
         String sessionId = getNiuDateUUID() + beginTime;
         if (adInfo != null){

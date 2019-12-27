@@ -5,12 +5,13 @@ import android.content.Context;
 import com.xnad.sdk.ad.factory.MidasAdManagerFactory;
 import com.xnad.sdk.ad.listener.AdManager;
 import com.xnad.sdk.config.AdsConfig;
-import com.xnad.sdk.config.InitBaseConfig;
-import com.xnad.sdk.http.Constant;
-import com.xnad.sdk.http.utils.AppInfoUtils;
-import com.xnad.sdk.http.utils.LogUtils;
+import com.xnad.sdk.config.TTAdManagerHolder;
+import com.xnad.sdk.constant.Constants;
+import com.xnad.sdk.utils.AppUtils;
+import com.xnad.sdk.utils.LogUtils;
 import com.xnad.sdk.utils.SpUtils;
 import com.xnad.sdk.utils.StatisticUtils;
+
 
 /**
  * @ProjectName: MidasAdSdk
@@ -53,19 +54,17 @@ public final class MidasAdSdk {
         mChannel = channel;
         mIsFormal = isFormal;
         //初始化基本配置信息
-        InitBaseConfig.getInstance().init(mContext);
-        InitBaseConfig.getInstance().initChjAd(mContext, csjAppId);
+        //强烈建议在应用对应的Application#onCreate()方法中调用，避免出现content为null的异常
+        TTAdManagerHolder.init(context, csjAppId);
         mIsInit = true;
-        int appVersionCode = AppInfoUtils.getVerCode(MidasAdSdk.getContext());
-        LogUtils.d("appVersionCode=="+appVersionCode);
         //初始化牛数
         StatisticUtils.init(context, channel, productId, serverUrl);
 
         //首次上报IMEI
-        boolean isReport = SpUtils.getBoolean(Constant.FIRST_REPORT_IMEI, false);
+        boolean isReport = SpUtils.getBoolean(Constants.FIRST_REPORT_IMEI, false);
         if (!isReport) {
-            StatisticUtils.setImei(AppInfoUtils.getIMEI(mContext));
-            SpUtils.putBoolean(Constant.FIRST_REPORT_IMEI, true);
+            StatisticUtils.setImei(AppUtils.getIMEI(mContext));
+            SpUtils.putBoolean(Constants.FIRST_REPORT_IMEI, true);
         }
     }
 
@@ -82,10 +81,10 @@ public final class MidasAdSdk {
      * @param imei
      */
     public static void setImei(String imei) {
-        boolean isReport = SpUtils.getBoolean(Constant.FIRST_REPORT_IMEI, false);
+        boolean isReport = SpUtils.getBoolean(Constants.FIRST_REPORT_IMEI, false);
         if (!isReport) {
             StatisticUtils.setImei(imei);
-            SpUtils.putBoolean(Constant.FIRST_REPORT_IMEI, true);
+            SpUtils.putBoolean(Constants.FIRST_REPORT_IMEI, true);
         }
     }
 

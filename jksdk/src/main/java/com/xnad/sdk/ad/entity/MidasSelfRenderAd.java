@@ -11,7 +11,6 @@ import com.bytedance.sdk.openadsdk.TTNativeAd;
 import com.xnad.sdk.ad.listener.BindViewListener;
 import com.xnad.sdk.ad.listener.SelfRenderChargeListener;
 import com.xnad.sdk.constant.Constants;
-import com.xnad.sdk.utils.CollectionUtils;
 import com.qq.e.ads.nativ.NativeADEventListener;
 import com.qq.e.ads.nativ.NativeUnifiedADData;
 import com.qq.e.ads.nativ.widget.NativeAdContainer;
@@ -232,7 +231,7 @@ public class MidasSelfRenderAd extends MidasAd{
                 return null;
             }
             List<TTImage> images = ttFeedAd.getImageList();
-            if (CollectionUtils.isEmpty(images)) {
+            if (images==null||images.size()==0) {
                 return null;
             }
             List<String> imgList = new ArrayList<>();
@@ -255,7 +254,7 @@ public class MidasSelfRenderAd extends MidasAd{
                 return null;
             }
             List<TTImage> images = ttFeedAd.getImageList();
-            if (CollectionUtils.isEmpty(images)) {
+            if (images==null||images.size()==0) {
                 return null;
             }
             List<String> imgList = new ArrayList<>();

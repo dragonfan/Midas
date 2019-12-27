@@ -59,18 +59,4 @@ public class JsonUtils {
     }
 
 
-//    public static <T> BaseResponse<List<T>> fromJsonArray(String reader, Class<T> clazz) {
-//        // 生成List<T> 中的 List<T>
-//        Type listType = new ParameterizedTypeImpl(List.class, new Class[]{clazz});
-//        // 根据List<T>生成完整的Result<List<T>>
-//        Type type = new ParameterizedTypeImpl(BaseResponse.class, new Type[]{listType});
-//        return new Gson().fromJson(reader, type);
-//    }
-//
-//    public static <T> BaseResponse<T> fromJsonObject(String reader, Class<T> clazz) {
-//        Type type = new ParameterizedTypeImpl(BaseResponse.class, new Class[]{clazz});
-//
-//        return new Gson().fromJson(reader, type);
-//    }
-
 }

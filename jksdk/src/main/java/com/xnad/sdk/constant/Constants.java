@@ -182,30 +182,8 @@ public class Constants {
         String CHJ_APPNAME = "AD_SDK_CHJ_APPNAME";
     }
 
-    /**
-     * 优量汇广告APPID
-     */
-    public static String YLH_APPID = "";
 
-    /**
-     * 穿山甲广告APPID
-     */
-    public static String CHJ_APPID = "";
 
-    /**
-     * 优量汇广告APPNAME
-     */
-    public static String YLH_APPNAME = "";
-
-    /**
-     * 穿山甲广告APPNAME
-     */
-    public static String CHJ_APPNAME = "";
-
-    /**
-     * 客户端随机参数(第一次安装的时候产生)
-     */
-    public static int bid = -1;
 
 
     /**
@@ -244,4 +222,19 @@ public class Constants {
      * 全局context
      */
     public static Context mContext;
+
+
+    public static final String CHANNEL_TEST = "wt_test";
+    public static final String CHANNEL_RELEASE = "wt_guanwang";
+
+
+    /**
+     * 一个项目只能上报两次IMEI，第一次上报为空，第二次上报为真是IMEI
+     * 首次上报IMEI
+     */
+    public static final String FIRST_REPORT_IMEI = "first_report_imei";
+    /**
+     * 第二次上报IMEI
+     */
+    public static final String AGAIN_REPORT_IMEI = "again_report_imei";
 }

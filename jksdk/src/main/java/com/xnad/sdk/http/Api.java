@@ -12,16 +12,19 @@ public interface Api {
 
     String WEATHER_DOMAIN_NAME = "weather";
 
+
+    String STRATEGY_INFO = "pizarroadsenseapi/ads/strategyInfo";
+
     class URL_DEV{//开发环境
         public static final String APP_WEATHER_DOMAIN = "http://devpizarroadsenseapi.hellogeek.com/";
     }
 
     class URL_TEST{//测试环境
-        public static final String APP_WEATHER_DOMAIN = "http://testpizarroadsenseapi.hellogeek.com"; //测试环境
+        public static final String APP_WEATHER_DOMAIN = "http://testpizarroadsenseapi.hellogeek.com/"; //测试环境
     }
 
     class URL_UAT{//预发布环境
-        public static final String APP_WEATHER_DOMAIN = "http://testpizarroadsenseapi.hellogeek.com";//预发布域名
+        public static final String APP_WEATHER_DOMAIN = "http://testpizarroadsenseapi.hellogeek.com/";//预发布域名
     }
 
     class URL_PRODUCT{//生产环境

@@ -2,6 +2,7 @@ package com.xnad.sdk.ad.admanager;
 
 import android.app.Activity;
 
+
 import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.entity.MidasFullScreenVideoAd;
@@ -17,8 +18,8 @@ import com.xnad.sdk.ad.listener.AdPreloadingListener;
 import com.xnad.sdk.ad.listener.AdRequestListener;
 import com.xnad.sdk.ad.listener.AdRequestManager;
 import com.xnad.sdk.ad.listener.AdSplashListener;
-import com.xnad.sdk.ad.listener.LoopAdListener;
 import com.xnad.sdk.ad.listener.InteractionListener;
+import com.xnad.sdk.ad.listener.LoopAdListener;
 import com.xnad.sdk.ad.listener.NativeTemplateListener;
 import com.xnad.sdk.ad.listener.SelfRenderAdListener;
 import com.xnad.sdk.ad.listener.VideoAdListener;
@@ -26,10 +27,8 @@ import com.xnad.sdk.bean.MidasConfigBean;
 import com.xnad.sdk.config.AdsConfig;
 import com.xnad.sdk.config.listener.ConfigListener;
 import com.xnad.sdk.constant.Constants;
-import com.xnad.sdk.http.ErrorCode;
-import com.xnad.sdk.http.utils.LogUtils;
 import com.xnad.sdk.utils.CodeFactory;
-import com.xnad.sdk.utils.CollectionUtils;
+import com.xnad.sdk.utils.LogUtils;
 import com.xnad.sdk.utils.StatisticUtils;
 
 import java.util.ArrayList;
@@ -80,7 +79,7 @@ public class MidasAdManger implements AdManager {
         public void loopAdError(AdInfo adInfo, int errorCode, String errorMsg) {
             LogUtils.w(TAG, "回传--->请求第一个广告失败");
 
-            if (CollectionUtils.isEmpty(adsInfoslist)) {
+            if (adsInfoslist==null||adsInfoslist.size()==0) {
                 if (adInfo.isPreload()) {
                     if (mAdPreloadingListener != null) {
                         mAdPreloadingListener.adError(adInfo, errorCode, errorMsg);
@@ -250,7 +249,7 @@ public class MidasAdManger implements AdManager {
             public void adSuccess(MidasConfigBean midasConfigBean) {
                 List<MidasConfigBean.AdStrategyBean> adStrategyBeans = midasConfigBean.getAdStrategy();
                 adsInfoslist.addAll(adStrategyBeans);
-                if (CollectionUtils.isEmpty(adsInfoslist)) {
+                if (adsInfoslist==null||adsInfoslist.size()==0) {
                     int code = CodeFactory.UNKNOWN;
                     adError(200,code,CodeFactory.getError(code));
                     return;
@@ -266,7 +265,7 @@ public class MidasAdManger implements AdManager {
                 adInfo.getStatisticBaseProperties().setPriorityS(mAdsInfoBean.getRequestOrder());
                 StatisticUtils.strategyConfigurationRequest(adInfo, adPosId,
                         midasConfigBean.getAdstrategyid(), 200+"",
-                        ErrorCode.SUCCESS + "", beginTime);
+                        0 + "", beginTime);
 
 
                 firstRequestAdTime = System.currentTimeMillis();
@@ -347,7 +346,7 @@ public class MidasAdManger implements AdManager {
                 //广告源请求事件埋点
                 StatisticUtils.advertisingSourceRequest(adInfo, 0,
                         errorCode + "", beginTime);
-                if (CollectionUtils.isEmpty(adsInfoslist)) {
+                if (adsInfoslist==null||adsInfoslist.size()==0) {
                     //广告位请求事件埋点[与监听有时序关系，下面的监听先移除的
                     // ,放在广告源后面，可以清晰知道请求次数]
                     StatisticUtils.advertisingPositionRequest(adInfo,firstRequestAdTime);

@@ -32,10 +32,10 @@ import com.xnad.sdk.ad.listener.NativeTemplateListener;
 import com.xnad.sdk.ad.listener.SelfRenderAdListener;
 import com.xnad.sdk.ad.listener.VideoAdListener;
 import com.xnad.sdk.config.TTAdManagerHolder;
-import com.xnad.sdk.http.utils.LogUtils;
 import com.xnad.sdk.utils.CodeFactory;
-import com.xnad.sdk.utils.CollectionUtils;
+import com.xnad.sdk.utils.LogUtils;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -77,7 +77,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
 
             @Override
             public void onNativeExpressAdLoad(List<TTNativeExpressAd> ads) {
-                if (CollectionUtils.isEmpty(ads)) {
+                if (ads == null || ads.size() == 0) {
                     if (listener != null) {
                         listener.adError(info, 1, "没请求到广告数据");
                     }
@@ -200,7 +200,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
 
             @Override
             public void onNativeExpressAdLoad(List<TTNativeExpressAd> ads) {
-                if (CollectionUtils.isEmpty(ads)) {
+                if (ads == null || ads.size() == 0) {
                     if (listener != null) {
                         listener.adError(info, 1, "广告获取为空");
                     }
@@ -290,7 +290,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
             @Override
             public void onFeedAdLoad(List<TTFeedAd> list) {
                 LogUtils.d(TAG, "onADLoaded->请求穿山甲成功");
-                if (CollectionUtils.isEmpty(list)) {
+                if (list == null || list.size() == 0) {
                     if (listener != null) {
                         listener.adError(info, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
                     }
@@ -661,7 +661,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
 //                bindAdListener(mTTAd);
 //                startTime = System.currentTimeMillis();
 //                mTTAd.render();
-                if (CollectionUtils.isEmpty(ads)) {
+                if (ads == null || ads.size() == 0) {
                     if (listener != null) {
                         listener.adError(info, 1, "没请求到广告数据");
                     }
@@ -710,7 +710,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
 
             @Override
             public void onNativeAdLoad(List<TTNativeAd> ads) {
-                if (CollectionUtils.isEmpty(ads)) {
+                if (ads == null || ads.size() == 0) {
                     if (listener != null) {
                         listener.adError(info, 1, "没请求到广告数据");
                     }
@@ -758,7 +758,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
 
             @Override
             public void onNativeExpressAdLoad(List<TTNativeExpressAd> ads) {
-                if (CollectionUtils.isEmpty(ads)) {
+                if (ads == null || ads.size() == 0) {
                     if (listener != null) {
                         listener.adError(info, 1, "广告获取为空");
                     }
@@ -963,7 +963,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
             @Override
             public void onFeedAdLoad(List<TTFeedAd> list) {
                 LogUtils.d(TAG, "onADLoaded->请求穿山甲成功");
-                if (CollectionUtils.isEmpty(list)) {
+                if (list == null || list.size() == 0) {
                     if (listener != null) {
                         listener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
                     }

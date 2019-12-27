@@ -1,8 +1,9 @@
-package com.xnad.sdk.http.utils;
+package com.xnad.sdk.utils;
 
 import android.util.Log;
 
 import com.xnad.sdk.BuildConfig;
+
 
 /**
  *
