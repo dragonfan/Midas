@@ -10,10 +10,10 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.comm.jksdk.MidasAdSdk;
-import com.comm.jksdk.ad.entity.AdInfo;
-import com.comm.jksdk.ad.listener.AdSplashListener;
-import com.comm.jksdk.constant.Constants;
+import com.xnad.sdk.MidasAdSdk;
+import com.xnad.sdk.ad.entity.AdInfo;
+import com.xnad.sdk.ad.listener.AdSplashListener;
+import com.xnad.sdk.constant.Constants;
 import com.jk.adsdkdemo.utils.LogUtils;
 
 /**

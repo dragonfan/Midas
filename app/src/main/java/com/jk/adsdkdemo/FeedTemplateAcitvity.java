@@ -13,13 +13,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bytedance.sdk.openadsdk.TTAdDislike;
-import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
-import com.comm.jksdk.MidasAdSdk;
-import com.comm.jksdk.ad.entity.AdInfo;
-import com.comm.jksdk.ad.entity.MidasNativeTemplateAd;
-import com.comm.jksdk.ad.listener.AdChargeListener;
-import com.comm.jksdk.ad.listener.NativeTemplateListener;
+import com.xnad.sdk.MidasAdSdk;
+import com.xnad.sdk.ad.entity.AdInfo;
+import com.xnad.sdk.ad.entity.MidasNativeTemplateAd;
+import com.xnad.sdk.ad.listener.AdChargeListener;
+import com.xnad.sdk.ad.listener.NativeTemplateListener;
 import com.jk.adsdkdemo.utils.LogUtils;
 
 /**

@@ -2,24 +2,22 @@ package com.jk.adsdkdemo;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bytedance.sdk.openadsdk.TTAdSdk;
-import com.comm.jksdk.MidasAdSdk;
-import com.comm.jksdk.bean.ConfigBean;
-import com.comm.jksdk.config.AdsConfig;
-import com.comm.jksdk.config.listener.ConfigListener;
-import com.comm.jksdk.utils.CollectionUtils;
-import com.comm.jksdk.utils.JsonUtils;
 import com.jk.adsdkdemo.utils.LogUtils;
+import com.xnad.sdk.MidasAdSdk;
+import com.xnad.sdk.bean.ConfigBean;
+import com.xnad.sdk.utils.CollectionUtils;
+import com.xnad.sdk.utils.JsonUtils;
 
 import java.util.List;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * @ProjectName: ${PROJECT_NAME}

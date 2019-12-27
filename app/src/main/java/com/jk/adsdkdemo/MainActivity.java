@@ -14,8 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.comm.jksdk.MidasAdSdk;
-import com.comm.jksdk.http.utils.AppInfoUtils;
+import com.xnad.sdk.MidasAdSdk;
+import com.xnad.sdk.http.utils.AppInfoUtils;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -11,10 +11,10 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.comm.jksdk.MidasAdSdk;
-import com.comm.jksdk.ad.entity.AdInfo;
-import com.comm.jksdk.ad.listener.AdManager;
-import com.comm.jksdk.ad.listener.VideoAdListener;
+import com.xnad.sdk.MidasAdSdk;
+import com.xnad.sdk.ad.entity.AdInfo;
+import com.xnad.sdk.ad.listener.AdManager;
+import com.xnad.sdk.ad.listener.VideoAdListener;
 import com.jk.adsdkdemo.utils.LogUtils;
 
 /**
