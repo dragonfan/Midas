@@ -52,34 +52,6 @@ import java.util.List;
  */
 public class CsjSdkRequestManager extends SdkRequestManager {
 
-//    @Override
-//    public void requestAd(Activity activity, AdInfo adInfo, AdRequestListener listener) {
-//        //广告样式
-//        String style = adInfo.getAdStyle();
-//        if (Constants.AdStyle.DATU_ICON_TEXT.equals(style) || Constants.AdStyle.DATU_ICON_TEXT_BUTTON_CENTER.equals(style) || Constants.AdStyle.EXTERNAL_DIALOG_BIG_IMAGE_01.equals(style)
-//                || Constants.AdStyle.DATU_ICON_TEXT_BUTTON.equals(style) || Constants.AdStyle.BIG_IMG_BUTTON_LAMP.equals(style) || Constants.AdStyle.EXTERNAL_DIALOG_BIG_IMAGE_02.equals(style)
-//                || Constants.AdStyle.BIG_IMG_BUTTON.equals(style) || Constants.AdStyle.FAKE_VIDEO_IARGE_IMAGE.equals(style)) {
-//            //todo请求大图广告
-//            getImageAd(adInfo, listener);
-//        } else if (Constants.AdStyle.OPEN_ADS.equals(style)) {
-//            getAdBySplashAd(adInfo, listener);
-//        } else if (Constants.AdStyle.FULL_SCREEN_VIDEO.equals(style)) {
-//            getFullScreenVideoAd(adInfo, listener);
-//        } else if (Constants.AdStyle.REWARD_VIDEO.equals(style)) {
-//            getRewardVideoAd(adInfo, listener);
-//        } else if(Constants.AdStyle.CP.equals(style)) {
-//            getTemplateInsertScreenAd(activity, adInfo, listener);
-//        } else if (Constants.AdStyle.CUSTOM_CP.equals(style) || Constants.AdStyle.FULLSCREEN_CP_01.equals(style)) {
-//            getCustomInsertScreenAd(adInfo, listener);
-//        } else if(Constants.AdStyle.FEED_TEMPLATE.equals(style)) {
-//            getFeedTemplate(activity, adInfo, listener);
-//        } else {
-//            if (listener != null) {
-//                listener.adError(adInfo, 2, "暂不支持该样式");
-//            }
-//        }
-//    }
-
     @Override
     protected void requestNativeTemplateAd(Activity activity, AdInfo info, AdRequestListener listener, NativeTemplateListener adListener, AdChargeListener adChargeListener) {
         MidasNativeTemplateAd midasNativeTemplateAd = (MidasNativeTemplateAd) info.getMidasAd();

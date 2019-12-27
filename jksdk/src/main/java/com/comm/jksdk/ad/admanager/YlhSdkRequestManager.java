@@ -341,8 +341,10 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
         //设置视频时长
         mAdManager.setMaxVideoDuration(12);
 
-        mAdManager.setVideoPlayPolicy(VideoOption.VideoPlayPolicy.AUTO); // 本次拉回的视频广告，在用户看来是否为自动播放的
-        mAdManager.setVideoADContainerRender(VideoOption.VideoADContainerRender.SDK); // 视频播放前，用户看到的广告容器是由SDK渲染的
+        // 本次拉回的视频广告，在用户看来是否为自动播放的
+        mAdManager.setVideoPlayPolicy(VideoOption.VideoPlayPolicy.AUTO);
+        // 视频播放前，用户看到的广告容器是由SDK渲染的
+        mAdManager.setVideoADContainerRender(VideoOption.VideoADContainerRender.SDK);
 
         mAdManager.loadData(3);
     }

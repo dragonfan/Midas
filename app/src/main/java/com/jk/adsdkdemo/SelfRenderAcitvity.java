@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.androidquery.AQuery;
 import com.bumptech.glide.Glide;
 import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.ad.entity.AdInfo;
@@ -119,7 +118,7 @@ public class SelfRenderAcitvity extends AppCompatActivity implements View.OnClic
         Button download;
         Button ctaButton;
         NativeAdContainer container;
-        AQuery logoAQ;
+//        AQuery logoAQ;
         View btnsContainer;
         Button btnPlay;
         Button btnPause;
