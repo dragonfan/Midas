@@ -44,7 +44,7 @@ public class FullScreenVideoActivity extends AppCompatActivity implements View.O
         preloadingAd = findViewById(R.id.button_preloading_ad);
         preloadingAd.setOnClickListener(this);
 
-        positionEdit.setText("69875466_3_1");
+        positionEdit.setText("8861663631");
 //        loadSplashAd("cp_ad_1");
     }
 

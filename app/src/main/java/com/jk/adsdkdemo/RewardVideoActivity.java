@@ -44,7 +44,7 @@ public class RewardVideoActivity extends AppCompatActivity implements View.OnCli
         positionEdit = findViewById(R.id.splash_position_edit);
         refreshBtn.setOnClickListener(this);
         adManager = MidasAdSdk.getAdsManger();
-        positionEdit.setText("86428913_4_1");
+        positionEdit.setText("2569743941");
 
         preloadingAd = findViewById(R.id.button_preloading_ad);
         preloadingAd.setOnClickListener(this);

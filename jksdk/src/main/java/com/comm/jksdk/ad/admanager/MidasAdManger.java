@@ -112,12 +112,13 @@ public class MidasAdManger implements AdManager {
 
 
     @Override
-    public void loadMidasSplashAd(Activity activity, String position, AdSplashListener listener) {
+    public void loadMidasSplashAd(Activity activity, String position, AdSplashListener listener, int timeOut) {
 
         mAdListener = listener;
         AdInfo adInfo = new AdInfo();
         adInfo.setAdType(Constants.AdType.SPLASH_TYPE);
         MidasSplashAd midasSplashAd = new MidasSplashAd();
+        midasSplashAd.setTimeOut(timeOut);
         adInfo.setMidasAd(midasSplashAd);
         try {
             mActivity = activity;
@@ -178,12 +179,11 @@ public class MidasAdManger implements AdManager {
     }
 
     @Override
-    public void loadMidasSelfRenderAd(Activity activity, String position, SelfRenderAdListener listener, int timeOut) {
+    public void loadMidasSelfRenderAd(Activity activity, String position, SelfRenderAdListener listener) {
         mAdListener = listener;
         AdInfo adInfo = new AdInfo();
         adInfo.setAdType(Constants.AdType.SELF_RENDER);
         MidasSelfRenderAd midasAdEntity = new MidasSelfRenderAd();
-        midasAdEntity.setTimeOut(timeOut);
         adInfo.setMidasAd(midasAdEntity);
         try {
             mActivity = activity;

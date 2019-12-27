@@ -27,7 +27,7 @@ import com.jk.adsdkdemo.utils.LogUtils;
   * @ProjectName:    ${PROJECT_NAME}
   * @Package:        ${PACKAGE_NAME}
   * @ClassName:      ${NAME}
-  * @Description:     大图美女
+  * @Description:     原生广告
   * @Author:         fanhailong
   * @CreateDate:     ${DATE} ${TIME}
   * @UpdateUser:     更新者：
@@ -37,7 +37,6 @@ import com.jk.adsdkdemo.utils.LogUtils;
  */
 public class FeedTemplateAcitvity extends AppCompatActivity implements View.OnClickListener {
 
-    private TTAdNative mTTAdNative;
     private FrameLayout mExpressContainer;
     private Context mContext;
     private TTAdDislike mTTAdDislike;
@@ -61,6 +60,7 @@ public class FeedTemplateAcitvity extends AppCompatActivity implements View.OnCl
         mEtHeight = (EditText) findViewById(R.id.express_height);
         mEtWidth = (EditText) findViewById(R.id.express_width);
         mEtPosition = findViewById(R.id.et_position_id);
+        mEtPosition.setText("8200604151");
         mButtonLoadAd.setOnClickListener(this);
         mButtonLoadAdVideo.setOnClickListener(this);
 //        //step2:创建TTAdNative对象，createAdNative(Context context) banner广告context需要传入Activity对象

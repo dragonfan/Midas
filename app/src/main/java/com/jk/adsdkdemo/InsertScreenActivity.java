@@ -47,7 +47,7 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
 
 //        btnNormalDownload = findViewById(R.id.btn_normal_download);
 //        btnNormalDownload.setOnClickListener(this);
-        positionEdit.setText("53338336_2_1");
+        positionEdit.setText("2562642921");
 //        positionEdit2.setText("cp_ad_2");
 //        btnFullScreen = findViewById(R.id.btn_fullscreen_download);
 //        btnFullScreen.setOnClickListener(this);

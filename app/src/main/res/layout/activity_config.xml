@@ -47,7 +47,7 @@
             android:id="@+id/et_product_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="181"
+            android:text="30"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/dp_20"
             android:visibility="visible" />

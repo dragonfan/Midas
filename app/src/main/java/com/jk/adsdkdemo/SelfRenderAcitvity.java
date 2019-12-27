@@ -63,6 +63,7 @@ public class SelfRenderAcitvity extends AppCompatActivity implements View.OnClic
         requestBt = findViewById(R.id.button_request_ad);
         requestBt.setOnClickListener(this);
         positionEt = findViewById(R.id.et_position_id);
+        positionEt.setText("6711347261");
         spinner = findViewById(R.id.spinner);
         preloadBt = findViewById(R.id.button_preloading_ad);
         preloadBt.setOnClickListener(this);
