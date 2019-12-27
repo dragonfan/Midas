@@ -103,7 +103,7 @@ public class SelfRenderAcitvity extends AppCompatActivity implements View.OnClic
                     public void adError(AdInfo info, int errorCode, String errorMsg) {
                         LogUtils.e(TAG, "DEMO>>>adError： "+errorMsg);
                     }
-                }, 3);
+                });
                 break;
         }
     }

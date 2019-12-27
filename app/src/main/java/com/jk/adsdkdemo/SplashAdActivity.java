@@ -98,7 +98,7 @@ public class SplashAdActivity extends AppCompatActivity implements View.OnClickL
                     splashContainer.removeAllViews();
                 }
             }
-        });
+        }, 3);
     }
 
     @Override
