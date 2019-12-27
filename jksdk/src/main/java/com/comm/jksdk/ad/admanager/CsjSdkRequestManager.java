@@ -861,7 +861,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     listener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
                 }
 //                adError(code, message);
-//                firstAdError(code, message);
+//                loopAdError(code, message);
             }
 
             @Override

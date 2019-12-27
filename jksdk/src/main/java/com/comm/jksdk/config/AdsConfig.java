@@ -5,16 +5,13 @@ import android.text.TextUtils;
 
 import com.comm.jksdk.MidasAdSdk;
 import com.comm.jksdk.api.ConfigService;
-import com.comm.jksdk.bean.ConfigBean;
 import com.comm.jksdk.bean.MidasConfigBean;
-import com.comm.jksdk.bean.PositionInfo;
 import com.comm.jksdk.config.listener.ConfigListener;
 import com.comm.jksdk.constant.Constants;
 import com.comm.jksdk.http.OkHttpWrapper;
 import com.comm.jksdk.http.base.BaseResponse;
 import com.comm.jksdk.http.exception.DataParseException;
 import com.comm.jksdk.http.exception.HttpRequestException;
-import com.comm.jksdk.http.utils.AppInfoUtils;
 import com.comm.jksdk.http.utils.LogUtils;
 import com.comm.jksdk.utils.CodeFactory;
 import com.comm.jksdk.utils.CollectionUtils;
@@ -23,8 +20,6 @@ import com.comm.jksdk.utils.SpUtils;
 import com.comm.jksdk.utils.StatisticUtils;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
@@ -41,22 +36,15 @@ import okhttp3.RequestBody;
  * @date 2019/9/27
  */
 public class AdsConfig {
-    private static Context mContext;
     protected final String TAG = "MidasAdSdk-->";
     private static AdsConfig mAdsConfig = null;
     private Gson mGson = new Gson();
-    private String mConfigInfo;
-    private ArrayList<PositionInfo> posInfoList;
-
-    //本地的配置信息
-    private static List<ConfigBean.AdListBean> adsInfoslist = new ArrayList();
 
     private AdsConfig() {
 
     }
 
     public static AdsConfig getInstance(Context context) {
-        mContext = context;
         if (mAdsConfig == null) {
             synchronized (AdsConfig.class) {
                 if (mAdsConfig == null) {
@@ -198,25 +186,6 @@ public class AdsConfig {
     }
 
     /**
-     * 获取本地保存配置信息
-     */
-    public ConfigBean.AdListBean getConfig(String postion) {
-        if (TextUtils.isEmpty(postion)) {
-            return null;
-        }
-        List<ConfigBean.AdListBean> adListBeans = getAdsInfoslist();
-        if (CollectionUtils.isEmpty(adListBeans)) {
-            return null;
-        }
-        for (ConfigBean.AdListBean adListBean : adListBeans) {
-            if (postion.equals(adListBean.getAdPosition())) {
-                return adListBean;
-            }
-        }
-        return null;
-    }
-
-    /**
      * 获取bid
      * @return
      */
@@ -256,62 +225,6 @@ public class AdsConfig {
     public static void setUserActive(long userActive){
         SpUtils.putLong(Constants.SPUtils.USER_ACTIVE, userActive);
         Constants.userActive = userActive;
-    }
-
-
-//    /**
-//     * 根据业务线获取app name
-//     * @return
-//     */
-//    public static String getProductAppName(){
-//        if (TextUtils.isEmpty(MidasAdSdk.getRroductId())) {
-//            return "未知";
-//        }
-//        String appName = "";
-//        switch (MidasAdSdk.getRroductId()) {
-//            case "12":
-//                appName = "吉日历";
-//                break;
-//            case "13":
-//                appName = "即刻天气";
-//                break;
-//            case "131":
-//                appName = "知心天气";
-//                break;
-//            case "17":
-//                appName = "玲珑视频";
-//                break;
-//            case "18":
-//                appName = "悟空清理";
-//                break;
-//            case "181":
-//                appName = "清理管家极速版";
-//                break;
-//            case "19":
-//                appName = "最来电";
-//                break;
-//            case "30":
-//                appName = "爱步行";
-//                break;
-//        }
-//        return appName;
-//    }
-
-    /**
-     * 获取本地配置信息
-     * @return
-     */
-    public static List<ConfigBean.AdListBean> getAdsInfoslist(){
-        if (!CollectionUtils.isEmpty(adsInfoslist)) {
-            return adsInfoslist;
-        }
-        String adInfo = SpUtils.getString(Constants.SPUtils.CONFIG_INFO, "");
-        if (TextUtils.isEmpty(adInfo)) {
-            return adsInfoslist;
-        }
-        ConfigBean configBean = JsonUtils.decode(adInfo, ConfigBean.class);
-        adsInfoslist = configBean.getAdList();
-        return adsInfoslist;
     }
 
 }

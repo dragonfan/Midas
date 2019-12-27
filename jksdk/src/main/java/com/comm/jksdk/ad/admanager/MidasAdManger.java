@@ -17,7 +17,7 @@ import com.comm.jksdk.ad.listener.AdPreloadingListener;
 import com.comm.jksdk.ad.listener.AdRequestListener;
 import com.comm.jksdk.ad.listener.AdRequestManager;
 import com.comm.jksdk.ad.listener.AdSplashListener;
-import com.comm.jksdk.ad.listener.FirstAdListener;
+import com.comm.jksdk.ad.listener.LoopAdListener;
 import com.comm.jksdk.ad.listener.InteractionListener;
 import com.comm.jksdk.ad.listener.NativeTemplateListener;
 import com.comm.jksdk.ad.listener.SelfRenderAdListener;
@@ -75,9 +75,9 @@ public class MidasAdManger implements AdManager {
      */
     private long firstRequestAdTime;
 
-    private FirstAdListener mFirstAdListener = new FirstAdListener() {
+    private LoopAdListener mLoopAdListener = new LoopAdListener() {
         @Override
-        public void firstAdError(AdInfo adInfo, int errorCode, String errorMsg) {
+        public void loopAdError(AdInfo adInfo, int errorCode, String errorMsg) {
             LogUtils.w(TAG, "回传--->请求第一个广告失败");
 
             if (CollectionUtils.isEmpty(adsInfoslist)) {
@@ -352,8 +352,8 @@ public class MidasAdManger implements AdManager {
                     // ,放在广告源后面，可以清晰知道请求次数]
                     StatisticUtils.advertisingPositionRequest(adInfo,firstRequestAdTime);
                 }
-                if (mFirstAdListener != null) {
-                    mFirstAdListener.firstAdError(info, errorCode, errorMsg);
+                if (mLoopAdListener != null) {
+                    mLoopAdListener.loopAdError(info, errorCode, errorMsg);
                 }
             }
         }, mAdListener);
