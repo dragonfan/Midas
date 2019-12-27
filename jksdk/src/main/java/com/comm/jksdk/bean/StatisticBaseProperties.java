@@ -145,7 +145,7 @@ public class StatisticBaseProperties implements Serializable {
      * 广告offer ID
      *      预留，现在没有
      */
-    private String adId;
+    private String offlineId;
     /**
      *广告源（offer）在策略中的优先级。（行数）
      *      接口文档中requestOrder字段
@@ -236,7 +236,7 @@ public class StatisticBaseProperties implements Serializable {
         //预留，暂时没有
         this.unitPrepareBanner = false;
         //预留，现在没有
-        this.adId = "";
+        this.offlineId = "";
         //预留，现在没有
         this.bidPrice = "";
         //预留，现在没有
@@ -453,12 +453,12 @@ public class StatisticBaseProperties implements Serializable {
         this.resultInfo = resultInfo;
     }
 
-    public String getAdId() {
-        return adId;
+    public String getOfflineId() {
+        return offlineId;
     }
 
-    public void setAdId(String adId) {
-        this.adId = adId;
+    public void setOfflineId(String offlineId) {
+        this.offlineId = offlineId;
     }
 
     public String getPriorityS() {

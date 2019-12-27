@@ -154,7 +154,7 @@ public class StatisticUtils {
             j.put("charge_price",baseProperties.getChargePrice());
             j.put("fill_count",baseProperties.getFillCount());
             j.put("result_info",baseProperties.getResultInfo());
-            j.put("ad_id",baseProperties.getAdId());
+            j.put("offlineid",baseProperties.getOfflineId());
             j.put("priority",baseProperties.getPriorityS());
             j.put("weight",baseProperties.getWeightL());
             j.put("headline",baseProperties.getHeadLine());
@@ -207,6 +207,9 @@ public class StatisticUtils {
             }
             if (!TextUtils.isEmpty(strategyId)){
                 baseProperties.setStrategyId(strategyId);
+            }
+            if (!TextUtils.isEmpty(adInfo.getAdType())){
+                baseProperties.setStyle(adInfo.getAdType());
             }
             trackCustomEvent(StatisticEvent.MIDAS_CONFIG_REQUEST.put("take", take),
                     baseProperties);
