@@ -26,7 +26,7 @@ public class StatisticBaseProperties implements Serializable {
      * 当前用户的设备ID信息
      *投票法通过大数据接口生成的
      */
-    private String xnid;
+    private String xnId;
     /**
      * 广告位的位置信息。（一般为英文缩写说明，比如SPB_locker_boost_result）
      */
@@ -119,7 +119,6 @@ public class StatisticBaseProperties implements Serializable {
     private String advertiser;
     /**
      * offer包名（下载类型对应下载app的包名）
-     *      不确定 是否能拿到
      */
     private String pkg;
     /**
@@ -174,9 +173,9 @@ public class StatisticBaseProperties implements Serializable {
      */
     private String bannerUrl;
 
-    public StatisticBaseProperties(String xnid,String sessionId) {
+    public StatisticBaseProperties(String xnId,String sessionId) {
         this.sessionId = sessionId;
-        this.xnid = xnid;
+        this.xnId = xnId;
 
         //广告位的位置编号，用于向广告系统请求广告位策略。
         this.adPosId = "";
@@ -200,6 +199,8 @@ public class StatisticBaseProperties implements Serializable {
         this.style = "";
         //不确定 ：广告主？目前穿山甲部分广告有getSource
         this.advertiser = "";
+        //offer包名（下载类型对应下载app的包名）
+        this.pkg = "";
         //实际拿到广告的个数。串行0-1；并行0-n
         this.fillCount = 0;
         //联盟异常的code码
@@ -253,11 +254,11 @@ public class StatisticBaseProperties implements Serializable {
     }
 
     public String getXnId() {
-        return xnid;
+        return xnId;
     }
 
     public void setXnId(String xnId) {
-        this.xnid = xnId;
+        this.xnId = xnId;
     }
 
     public String getUnitId() {
