@@ -101,17 +101,14 @@ public class MidasNativeTemplateAd extends MidasAd {
      * 优量汇广告用到
      */
     public void destroy(){
-        if (nativeExpressAD == null) {
-            return;
+        try {
+            if (Constants.AdSourceType.YouLiangHui.equals(getAdSource())) {
+                if (getAddView() != null) {
+                    ((NativeExpressADView)getAddView()).destroy();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        View view = getAddView();
-        if (view == null) {
-            return;
-        }
-        NativeExpressADView nativeExpressADView = (NativeExpressADView)view;
-        if (nativeExpressADView == null) {
-            return;
-        }
-        nativeExpressADView.destroy();
     }
 }

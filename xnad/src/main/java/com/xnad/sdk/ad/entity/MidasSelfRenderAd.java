@@ -320,8 +320,15 @@ public class MidasSelfRenderAd extends MidasAd{
      * 优量汇广告用到
      */
     public void resume(){
-        if (nativeUnifiedADData != null) {
-            nativeUnifiedADData.resume();
+        try {
+            if (!Constants.AdSourceType.YouLiangHui.equals(getSource())) {
+                return;
+            }
+            if (nativeUnifiedADData != null) {
+                nativeUnifiedADData.resume();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -329,8 +336,15 @@ public class MidasSelfRenderAd extends MidasAd{
      * 优量汇广告用到
      */
     public void destroy(){
-        if (nativeUnifiedADData != null) {
-            nativeUnifiedADData.destroy();
+        try {
+            if (!Constants.AdSourceType.YouLiangHui.equals(getSource())) {
+                return;
+            }
+            if (nativeUnifiedADData != null) {
+                nativeUnifiedADData.destroy();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
