@@ -18,7 +18,7 @@ import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.entity.MidasNativeTemplateAd;
 import com.xnad.sdk.ad.listener.AdChargeListener;
-import com.xnad.sdk.ad.listener.NativeTemplateListener;
+import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
 import com.jk.adsdkdemo.utils.LogUtils;
 
 /**
@@ -83,7 +83,7 @@ public class FeedTemplateAcitvity extends AppCompatActivity implements View.OnCl
                     width = "350";
                 }
 
-                MidasAdSdk.getAdsManger().loadMidasNativeTemplateAd(this, position, Float.valueOf(width), new NativeTemplateListener<AdInfo>(){
+                MidasAdSdk.getAdsManger().loadMidasNativeTemplateAd(this, position, Float.valueOf(width), new AdNativeTemplateListener<AdInfo>(){
 
                     @Override
                     public void adSuccess(AdInfo info) {

@@ -1,10 +1,12 @@
-package com.xnad.sdk.ad.listener;
+package com.xnad.sdk.ad.outlistener;
+
+import com.xnad.sdk.ad.listener.AdChargeListener;
 
 /**
  * @ProjectName: Midas
  * @Package: com.comm.jksdk.ad.listener
- * @ClassName: InteractionListener
- * @Description: 插屏接口
+ * @ClassName: AdInteractionListener
+ * @Description: 插屏接口(对外)
  * @Author: fanhailong
  * @CreateDate: 2019/12/23 16:47
  * @UpdateUser: 更新者：
@@ -12,5 +14,5 @@ package com.xnad.sdk.ad.listener;
  * @UpdateRemark: 更新说明：
  * @Version: 1.0
  */
-public interface InteractionListener<T> extends AdChargeListener<T> {
+public interface AdInteractionListener<T> extends AdChargeListener<T> {
 }

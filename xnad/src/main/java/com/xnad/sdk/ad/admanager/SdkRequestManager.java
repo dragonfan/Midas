@@ -5,6 +5,9 @@ import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -15,18 +18,16 @@ import com.xnad.sdk.ad.entity.MidasSelfRenderAd;
 import com.xnad.sdk.ad.listener.AdBasicListener;
 import com.xnad.sdk.ad.listener.AdChargeListener;
 import com.xnad.sdk.ad.listener.AdRequestListener;
-import com.xnad.sdk.ad.listener.AdSplashListener;
 import com.xnad.sdk.ad.listener.BindViewListener;
-import com.xnad.sdk.ad.listener.InteractionListener;
-import com.xnad.sdk.ad.listener.NativeTemplateListener;
-import com.xnad.sdk.ad.listener.SelfRenderAdListener;
-import com.xnad.sdk.ad.listener.VideoAdListener;
+import com.xnad.sdk.ad.outlistener.AdFullScreenVideoListener;
+import com.xnad.sdk.ad.outlistener.AdInteractionListener;
+import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
+import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
+import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
+import com.xnad.sdk.ad.outlistener.AdSplashListener;
 import com.xnad.sdk.constant.Constants;
 import com.xnad.sdk.utils.LogUtils;
 import com.xnad.sdk.utils.StatisticUtils;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 /**
  * @ProjectName: MidasAdSdk
@@ -54,17 +55,16 @@ public abstract class SdkRequestManager implements AdRequestManager {
         if (Constants.AdType.SPLASH_TYPE.equals(adInfo.getAdType())) {
             requestSplashAd(activity, adInfo, listener, getAdSplashListener((AdSplashListener) adListener));
         } else if (Constants.AdType.REWARD_VIDEO_TYPE.equals(adInfo.getAdType())) {
-            requestRewardVideoAd(activity, adInfo, listener, getVideoAdListener((VideoAdListener) adListener));
+            requestRewardVideoAd(activity, adInfo, listener, getRewardVideoAdListener((AdRewardVideoListener) adListener));
         } else if (Constants.AdType.FULL_SCREEN_VIDEO_TYPE.equals(adInfo.getAdType())){
-            requestFullScreenVideoAd(activity, adInfo, listener, getVideoAdListener((VideoAdListener) adListener));
+            requestFullScreenVideoAd(activity, adInfo, listener, getFullScreenVideoAdListener((AdFullScreenVideoListener) adListener));
         } else if (Constants.AdType.SELF_RENDER.equals(adInfo.getAdType())){
-            requestSelfRenderAd(activity, adInfo, listener, (SelfRenderAdListener)adListener);
+            requestSelfRenderAd(activity, adInfo, listener, (AdSelfRenderListener)adListener);
             bindSelfRenderAdListener(adInfo);
         } else if (Constants.AdType.INTERACTION_TYPE.equals(adInfo.getAdType())){
-            requestInteractionAd(activity, adInfo, listener, getInteractionListener((InteractionListener) adListener));
+            requestInteractionAd(activity, adInfo, listener, getInteractionListener((AdInteractionListener) adListener));
         } else if (Constants.AdType.NATIVE_TEMPLATE.equals(adInfo.getAdType())) {
-            requestNativeTemplateAd(activity, adInfo, listener, (NativeTemplateListener) adListener, getNativeTemplateAdChargeListener());
-//            bindNativeTempLateListener(adInfo);
+            requestNativeTemplateAd(activity, adInfo, listener, (AdNativeTemplateListener) adListener, getNativeTemplateAdChargeListener());
         } else {
             if (listener != null) {
                 listener.adError(adInfo, 3, "没有该广告类型 ");
@@ -73,17 +73,17 @@ public abstract class SdkRequestManager implements AdRequestManager {
     }
 
 
-    protected abstract void requestNativeTemplateAd(Activity activity, AdInfo info, AdRequestListener adRequestListener, NativeTemplateListener nativeTemplateListener, AdChargeListener adChargeListener);
+    protected abstract void requestNativeTemplateAd(Activity activity, AdInfo info, AdRequestListener adRequestListener, AdNativeTemplateListener adNativeTemplateListener, AdChargeListener adChargeListener);
 
-    protected abstract void requestInteractionAd(Activity activity, AdInfo info, AdRequestListener listener, InteractionListener adListener);
+    protected abstract void requestInteractionAd(Activity activity, AdInfo info, AdRequestListener listener, AdInteractionListener adListener);
 
-    protected abstract void requestSelfRenderAd(Activity activity, AdInfo info, AdRequestListener listener, SelfRenderAdListener adListener);
+    protected abstract void requestSelfRenderAd(Activity activity, AdInfo info, AdRequestListener listener, AdSelfRenderListener adListener);
 
-    protected abstract void requestFullScreenVideoAd(Activity activity, AdInfo info, AdRequestListener listener, VideoAdListener adListener);
+    protected abstract void requestFullScreenVideoAd(Activity activity, AdInfo info, AdRequestListener listener, AdFullScreenVideoListener adListener);
 
     public abstract void requestSplashAd(Activity activity, AdInfo adInfo, AdRequestListener adRequestListener, AdSplashListener adSplashListener);
 
-    public abstract void requestRewardVideoAd(Activity activity, AdInfo adInfo, AdRequestListener adRequestListener, VideoAdListener videoAdListener);
+    public abstract void requestRewardVideoAd(Activity activity, AdInfo adInfo, AdRequestListener adRequestListener, AdRewardVideoListener adRewardVideoListener);
 
 
     /**
@@ -188,8 +188,8 @@ public abstract class SdkRequestManager implements AdRequestManager {
      * @param listener
      * @return
      */
-    private InteractionListener getInteractionListener(InteractionListener listener){
-        return new InteractionListener<AdInfo>(){
+    private AdInteractionListener getInteractionListener(AdInteractionListener listener){
+        return new AdInteractionListener<AdInfo>(){
 
             @Override
             public void adClose(AdInfo info) {
@@ -229,15 +229,18 @@ public abstract class SdkRequestManager implements AdRequestManager {
     }
 
     /**
-     * 激励视频和全屏视频广告回调中间层（埋点可以埋到这里）
+     * 激励视频广告回调中间层（埋点可以埋到这里）
      * @param listener
      * @return
      */
-    private VideoAdListener getVideoAdListener(VideoAdListener listener){
-        return new VideoAdListener<AdInfo>() {
+    private AdRewardVideoListener getRewardVideoAdListener(AdRewardVideoListener listener){
+        return new AdRewardVideoListener<AdInfo>() {
 
             @Override
             public void adClose(AdInfo info) {
+                if (listener != null) {
+                    listener.adClose(info);
+                }
                 if (TextUtils.equals(Constants.AdType.REWARD_VIDEO_TYPE,info.getAdType())){
                     StatisticUtils.advertisingRewardedClose(info,intervalTime);
                 }else {
@@ -276,13 +279,6 @@ public abstract class SdkRequestManager implements AdRequestManager {
             }
 
             @Override
-            public void onVideoResume(AdInfo info) {
-                if (listener != null) {
-                    listener.onVideoResume(info);
-                }
-            }
-
-            @Override
             public void onVideoRewardVerify(AdInfo info, boolean rewardVerify, int rewardAmount, String rewardName) {
                 if (listener != null) {
                     listener.onVideoRewardVerify(info, rewardVerify, rewardAmount, rewardName);
@@ -296,6 +292,73 @@ public abstract class SdkRequestManager implements AdRequestManager {
             public void onVideoComplete(AdInfo info) {
                 if (listener != null) {
                     listener.onVideoComplete(info);
+                }
+            }
+
+        };
+    }
+
+    /**
+     * 全屏视频广告回调中间层（埋点可以埋到这里）
+     * @param listener
+     * @return
+     */
+    private AdFullScreenVideoListener getFullScreenVideoAdListener(AdFullScreenVideoListener listener){
+        return new AdFullScreenVideoListener<AdInfo>() {
+
+            @Override
+            public void adClose(AdInfo info) {
+                if (listener != null) {
+                    listener.adClose(info);
+                }
+                if (TextUtils.equals(Constants.AdType.REWARD_VIDEO_TYPE,info.getAdType())){
+                    StatisticUtils.advertisingRewardedClose(info,intervalTime);
+                }else {
+                    StatisticUtils.advertisingClose(info,intervalTime);
+                }
+            }
+
+            @Override
+            public void adSuccess(AdInfo info) {
+                if (listener != null) {
+                    listener.adSuccess(info);
+                }
+            }
+
+            @Override
+            public void adError(AdInfo info, int errorCode, String errorMsg) {
+                if (listener != null) {
+                    listener.adError(info, errorCode, errorMsg);
+                }
+            }
+
+            @Override
+            public void adExposed(AdInfo info) {
+                if (listener != null) {
+                    listener.adExposed(info);
+                }
+                advertisingOfferShow(info);
+            }
+
+            @Override
+            public void adClicked(AdInfo info) {
+                if (listener != null) {
+                    listener.adClicked(info);
+                }
+                StatisticUtils.advertisingClick(info,intervalTime);
+            }
+
+            @Override
+            public void adVideoComplete(AdInfo info) {
+                if (listener != null) {
+                    listener.adVideoComplete(info);
+                }
+            }
+
+            @Override
+            public void adSkippedVideo(AdInfo info) {
+                if (listener != null) {
+                    listener.adSkippedVideo(info);
                 }
             }
 

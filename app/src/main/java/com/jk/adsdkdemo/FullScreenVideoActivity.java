@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.entity.AdInfo;
-import com.xnad.sdk.ad.listener.VideoAdListener;
+import com.xnad.sdk.ad.outlistener.AdFullScreenVideoListener;
 import com.jk.adsdkdemo.utils.LogUtils;
 
 /**
@@ -45,29 +45,25 @@ public class FullScreenVideoActivity extends AppCompatActivity implements View.O
         preloadingAd.setOnClickListener(this);
 
         positionEdit.setText("8861663631");
-//        loadSplashAd("cp_ad_1");
+//        loadFullScreenVideoAd("cp_ad_1");
     }
 
     /**
      * 获取视频广告并加载
      */
-    private void loadSplashAd(String position) {
+    private void loadFullScreenVideoAd(String position) {
         // cold_kp 、hot_kp
         splashContainer.removeAllViews();
-        MidasAdSdk.getAdsManger().loadMidasFullScreenVideoAd(this, position, new VideoAdListener<AdInfo>() {
-            @Override
-            public void onVideoResume(AdInfo info) {
+        MidasAdSdk.getAdsManger().loadMidasFullScreenVideoAd(this, position, new AdFullScreenVideoListener<AdInfo>() {
 
+            @Override
+            public void adVideoComplete(AdInfo info) {
+                LogUtils.d(TAG, "-----adVideoComplete-----");
             }
 
             @Override
-            public void onVideoRewardVerify(AdInfo info, boolean rewardVerify, int rewardAmount, String rewardName) {
-
-            }
-
-            @Override
-            public void onVideoComplete(AdInfo info) {
-                LogUtils.d(TAG, "-----onVideoComplete-----");
+            public void adSkippedVideo(AdInfo info) {
+                LogUtils.d(TAG, "-----adSkippedVideo-----");
             }
 
             @Override
@@ -119,7 +115,7 @@ public class FullScreenVideoActivity extends AppCompatActivity implements View.O
                 preloadingSplashAd(positionEdit.getText().toString().trim());
                 break;
             case R.id.video_refresh:
-                loadSplashAd(positionEdit.getText().toString().trim());
+                loadFullScreenVideoAd(positionEdit.getText().toString().trim());
                 break;
             default:
                 break;

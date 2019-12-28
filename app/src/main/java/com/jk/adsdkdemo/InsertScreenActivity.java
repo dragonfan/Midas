@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.entity.AdInfo;
-import com.xnad.sdk.ad.listener.InteractionListener;
+import com.xnad.sdk.ad.outlistener.AdInteractionListener;
 import com.jk.adsdkdemo.utils.LogUtils;
 
 /**
@@ -60,7 +60,7 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
     private void loadCustomInsertScreenAd(String position) {
         LogUtils.d(TAG, "position:" + position );
 
-        MidasAdSdk.getAdsManger().loadMidasInteractionAd(this, position, new InteractionListener<AdInfo>() {
+        MidasAdSdk.getAdsManger().loadMidasInteractionAd(this, position, new AdInteractionListener<AdInfo>() {
             @Override
             public void adExposed(AdInfo info) {
                 LogUtils.d(TAG, "-----adExposed-----");

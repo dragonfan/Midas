@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.entity.AdInfo;
-import com.xnad.sdk.ad.listener.AdSplashListener;
+import com.xnad.sdk.ad.outlistener.AdSplashListener;
 import com.xnad.sdk.constant.Constants;
 import com.jk.adsdkdemo.utils.LogUtils;
 

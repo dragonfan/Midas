@@ -22,7 +22,7 @@ import com.bumptech.glide.Glide;
 import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.entity.MidasSelfRenderAd;
-import com.xnad.sdk.ad.listener.SelfRenderAdListener;
+import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
 import com.xnad.sdk.ad.listener.SelfRenderChargeListener;
 import com.xnad.sdk.constant.Constants;
 import com.jk.adsdkdemo.utils.LogUtils;
@@ -86,7 +86,7 @@ public class SelfRenderAcitvity extends AppCompatActivity implements View.OnClic
                     Toast.makeText(getApplicationContext(), "accept->输入的位置不能为空", Toast.LENGTH_LONG).show();
                     return;
                 }
-                MidasAdSdk.getAdsManger().loadMidasSelfRenderAd(this, position, new SelfRenderAdListener<AdInfo>() {
+                MidasAdSdk.getAdsManger().loadMidasSelfRenderAd(this, position, new AdSelfRenderListener<AdInfo>() {
 
                     @Override
                     public void adSuccess(AdInfo info) {
