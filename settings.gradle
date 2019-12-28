@@ -1,1 +1,1 @@
-include ':app', ':jksdk'
+include ':app', ':xnad'
