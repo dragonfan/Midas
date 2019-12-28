@@ -244,6 +244,7 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
             iad = null;
         }
         iad = new UnifiedInterstitialAD(activity, midasInteractionAd.getAppId(), midasInteractionAd.getAdId(), new UnifiedInterstitialADListener() {
+            //插屏2.0广告加载完毕，此回调后才可以调用 show 方法
             @Override
             public void onADReceive() {
                 //请求成功回调
@@ -266,31 +267,31 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
                     listener.adError(info, adError.getErrorCode(), adError.getErrorMsg());
                 }
             }
-
+            //插屏2.0广告展开时回调
             @Override
             public void onADOpened() {
 
             }
-
+            //插屏2.0广告曝光时回调
             @Override
             public void onADExposure() {
                 if (adListener != null) {
                     adListener.adExposed(info);
                 }
             }
-
+            //插屏2.0广告点击时回调
             @Override
             public void onADClicked() {
                 if (adListener != null) {
                     adListener.adClicked(info);
                 }
             }
-
+            //插屏2.0广告点击离开应用时回调
             @Override
             public void onADLeftApplication() {
 
             }
-
+            //插屏2.0广告关闭时回调
             @Override
             public void onADClosed() {
                 if (adListener != null) {

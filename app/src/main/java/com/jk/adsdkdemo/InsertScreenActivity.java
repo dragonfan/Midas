@@ -78,6 +78,11 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
             }
 
             @Override
+            public void adClose(AdInfo info) {
+                LogUtils.d(TAG, "-----adClose-----");
+            }
+
+            @Override
             public void adError(AdInfo info, int errorCode, String errorMsg) {
                 LogUtils.d(TAG, "-----adError-----" + errorMsg);
                 statePoint.setText("error:" + errorCode + " errorMsg:" + errorMsg);
@@ -85,41 +90,6 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
         });
     }
 
-//    /**
-//     * 获取全屏插屏广告并加载
-//     */
-//    private void loadCustomInsertScreenAd2(String position) {
-//        LogUtils.d(TAG, "position:" + position + " isFullScreen:");
-//        MidasAdSdk.getAdsManger().loadCustomInsertScreenAd(this, position, 3, new AdListener() {
-//            @Override
-//            public void adSuccess(AdInfo info) {
-//                LogUtils.d(TAG, "-----adSuccess-----");
-//                statePoint.setText("state:adSuccess");
-//            }
-//
-//            @Override
-//            public void adExposed(AdInfo info) {
-//                LogUtils.d(TAG, "-----adExposed-----");
-//            }
-//
-//            @Override
-//            public void adClicked(AdInfo info) {
-//                LogUtils.d(TAG, "-----adClicked-----");
-//            }
-//
-//            @Override
-//            public void adClose(AdInfo info) {
-//                LogUtils.d(TAG, "-----adClose-----");
-//            }
-//
-//            @Override
-//            public void adError(AdInfo info, int errorCode, String errorMsg) {
-//                LogUtils.d(TAG, "-----adError-----" + errorMsg);
-//                statePoint.setText("error:" + errorCode + " errorMsg:" + errorMsg);
-//            }
-//
-//        });
-//    }
 
 
     @Override
@@ -131,10 +101,6 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
             case R.id.btn_normal_browse:
 //            case R.id.btn_normal_download:
                 loadCustomInsertScreenAd(positionEdit.getText().toString().trim());
-
-
-
-
                 break;
             default:
                 break;

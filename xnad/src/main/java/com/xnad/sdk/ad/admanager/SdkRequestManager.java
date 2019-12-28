@@ -193,6 +193,9 @@ public abstract class SdkRequestManager implements AdRequestManager {
 
             @Override
             public void adClose(AdInfo info) {
+                if (listener != null) {
+                    listener.adClose(info);
+                }
                 StatisticUtils.advertisingClose(info,intervalTime);
             }
 

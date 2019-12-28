@@ -26,7 +26,7 @@ import com.jk.adsdkdemo.utils.LogUtils;
   * @ProjectName:    ${PROJECT_NAME}
   * @Package:        ${PACKAGE_NAME}
   * @ClassName:      ${NAME}
-  * @Description:     原生广告
+  * @Description:     原生广告(模板广告)
   * @Author:         fanhailong
   * @CreateDate:     ${DATE} ${TIME}
   * @UpdateUser:     更新者：

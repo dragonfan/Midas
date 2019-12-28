@@ -53,7 +53,10 @@
             android:screenOrientation="portrait" />
         <activity android:name=".BigImgNotDownloadAcitvity" />
         <activity android:name=".NewBigImgActivity" />
-        <activity android:name=".FeedTemplateAcitvity" />
+        <activity android:name=".FeedTemplateAcitvity"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"
+            android:configChanges="orientation|keyboardHidden">
+        </activity>
         <activity android:name=".NewBigImg4Acitvity" />
         <activity android:name=".NewBigImg3Acitvity" />
         <activity android:name=".NewBigImg2Acitvity" />
