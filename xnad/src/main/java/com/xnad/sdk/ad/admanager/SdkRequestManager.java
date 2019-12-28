@@ -16,12 +16,12 @@ import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.entity.MidasNativeTemplateAd;
 import com.xnad.sdk.ad.entity.MidasSelfRenderAd;
 import com.xnad.sdk.ad.listener.AdBasicListener;
-import com.xnad.sdk.ad.listener.AdChargeListener;
 import com.xnad.sdk.ad.listener.AdRequestListener;
 import com.xnad.sdk.ad.listener.BindViewListener;
 import com.xnad.sdk.ad.outlistener.AdFullScreenVideoListener;
 import com.xnad.sdk.ad.outlistener.AdInteractionListener;
 import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
+import com.xnad.sdk.ad.outlistener.AdOutChargeListener;
 import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
 import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
 import com.xnad.sdk.ad.outlistener.AdSplashListener;
@@ -73,7 +73,7 @@ public abstract class SdkRequestManager implements AdRequestManager {
     }
 
 
-    protected abstract void requestNativeTemplateAd(Activity activity, AdInfo info, AdRequestListener adRequestListener, AdNativeTemplateListener adNativeTemplateListener, AdChargeListener adChargeListener);
+    protected abstract void requestNativeTemplateAd(Activity activity, AdInfo info, AdRequestListener adRequestListener, AdNativeTemplateListener adNativeTemplateListener, AdOutChargeListener adOutChargeListener);
 
     protected abstract void requestInteractionAd(Activity activity, AdInfo info, AdRequestListener listener, AdInteractionListener adListener);
 
@@ -143,40 +143,43 @@ public abstract class SdkRequestManager implements AdRequestManager {
      *原生模板广告回调中间层（埋点可以埋到这里）
      * @return
      */
-    private AdChargeListener getNativeTemplateAdChargeListener(){
-        return new AdChargeListener<AdInfo>() {
+    private AdOutChargeListener getNativeTemplateAdChargeListener(){
+        return new AdOutChargeListener<AdInfo>() {
 
             @Override
             public void adClose(AdInfo info) {
+                if (((MidasNativeTemplateAd)info.getMidasAd()).getAdOutChargeListener() != null) {
+                    ((MidasNativeTemplateAd)info.getMidasAd()).getAdOutChargeListener().adClose(info);
+                }
                 StatisticUtils.advertisingClose(info,intervalTime);
             }
 
             @Override
             public void adSuccess(AdInfo info) {
-                if (((MidasNativeTemplateAd)info.getMidasAd()).getAdChargeListener() != null) {
-                    ((MidasNativeTemplateAd)info.getMidasAd()).getAdChargeListener().adSuccess(info);
+                if (((MidasNativeTemplateAd)info.getMidasAd()).getAdOutChargeListener() != null) {
+                    ((MidasNativeTemplateAd)info.getMidasAd()).getAdOutChargeListener().adSuccess(info);
                 }
             }
 
             @Override
             public void adError(AdInfo info, int errorCode, String errorMsg) {
-                if (((MidasNativeTemplateAd)info.getMidasAd()).getAdChargeListener() != null) {
-                    ((MidasNativeTemplateAd)info.getMidasAd()).getAdChargeListener().adError(info, errorCode, errorMsg);
+                if (((MidasNativeTemplateAd)info.getMidasAd()).getAdOutChargeListener() != null) {
+                    ((MidasNativeTemplateAd)info.getMidasAd()).getAdOutChargeListener().adError(info, errorCode, errorMsg);
                 }
             }
 
             @Override
             public void adExposed(AdInfo info) {
-                if (((MidasNativeTemplateAd)info.getMidasAd()).getAdChargeListener() != null) {
-                    ((MidasNativeTemplateAd)info.getMidasAd()).getAdChargeListener().adExposed(info);
+                if (((MidasNativeTemplateAd)info.getMidasAd()).getAdOutChargeListener() != null) {
+                    ((MidasNativeTemplateAd)info.getMidasAd()).getAdOutChargeListener().adExposed(info);
                 }
                 advertisingOfferShow(info);
             }
 
             @Override
             public void adClicked(AdInfo info) {
-                if (((MidasNativeTemplateAd)info.getMidasAd()).getAdChargeListener() != null) {
-                    ((MidasNativeTemplateAd)info.getMidasAd()).getAdChargeListener().adClicked(info);
+                if (((MidasNativeTemplateAd)info.getMidasAd()).getAdOutChargeListener() != null) {
+                    ((MidasNativeTemplateAd)info.getMidasAd()).getAdOutChargeListener().adClicked(info);
                 }
                 StatisticUtils.advertisingClick(info,intervalTime);
             }

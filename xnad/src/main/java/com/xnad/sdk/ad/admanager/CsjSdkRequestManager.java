@@ -27,6 +27,7 @@ import com.xnad.sdk.ad.entity.MidasSplashAd;
 import com.xnad.sdk.ad.listener.AdChargeListener;
 import com.xnad.sdk.ad.listener.AdRequestListener;
 import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
+import com.xnad.sdk.ad.outlistener.AdOutChargeListener;
 import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
 import com.xnad.sdk.ad.outlistener.AdSplashListener;
 import com.xnad.sdk.ad.outlistener.AdInteractionListener;
@@ -53,7 +54,7 @@ import java.util.List;
 public class CsjSdkRequestManager extends SdkRequestManager {
 
     @Override
-    protected void requestNativeTemplateAd(Activity activity, AdInfo info, AdRequestListener listener, AdNativeTemplateListener adListener, AdChargeListener adChargeListener) {
+    protected void requestNativeTemplateAd(Activity activity, AdInfo info, AdRequestListener listener, AdNativeTemplateListener adListener, AdOutChargeListener adOutChargeListener) {
         MidasNativeTemplateAd midasNativeTemplateAd = (MidasNativeTemplateAd) info.getMidasAd();
         AdSlot adSlot = new AdSlot.Builder()
                 //广告位id
@@ -95,31 +96,31 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                 ttNativeAd.setExpressInteractionListener(new TTNativeExpressAd.ExpressAdInteractionListener() {
                     @Override
                     public void onAdClicked(View view, int type) {
-                        if (adChargeListener != null) {
-                            adChargeListener.adClicked(info);
+                        if (adOutChargeListener != null) {
+                            adOutChargeListener.adClicked(info);
                         }
                     }
 
                     @Override
                     public void onAdShow(View view, int type) {
-                        if (adChargeListener != null) {
-                            adChargeListener.adExposed(info);
+                        if (adOutChargeListener != null) {
+                            adOutChargeListener.adExposed(info);
                         }
                     }
 
                     @Override
                     public void onRenderFail(View view, String msg, int code) {
 //                Log.e("ExpressView","render fail:"+(System.currentTimeMillis() - startTime));
-                        if (adChargeListener != null) {
-                            adChargeListener.adError(info, code, msg);
+                        if (adOutChargeListener != null) {
+                            adOutChargeListener.adError(info, code, msg);
                         }
                     }
 
                     @Override
                     public void onRenderSuccess(View view, float width, float height) {
                         midasNativeTemplateAd.setAddView(view);
-                        if (adChargeListener != null) {
-                            adChargeListener.adSuccess(info);
+                        if (adOutChargeListener != null) {
+                            adOutChargeListener.adSuccess(info);
                         }
                     }
                 });

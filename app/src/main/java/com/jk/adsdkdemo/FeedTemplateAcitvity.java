@@ -20,6 +20,7 @@ import com.xnad.sdk.ad.entity.MidasNativeTemplateAd;
 import com.xnad.sdk.ad.listener.AdChargeListener;
 import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
 import com.jk.adsdkdemo.utils.LogUtils;
+import com.xnad.sdk.ad.outlistener.AdOutChargeListener;
 
 /**
   *
@@ -68,7 +69,7 @@ public class FeedTemplateAcitvity extends AppCompatActivity implements View.OnCl
 //        TTAdManagerHolder.get().requestPermissionIfNecessary(this);
     }
 
-    View adView;
+    MidasNativeTemplateAd midasNativeTemplateAd;
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -87,7 +88,7 @@ public class FeedTemplateAcitvity extends AppCompatActivity implements View.OnCl
 
                     @Override
                     public void adSuccess(AdInfo info) {
-                        MidasNativeTemplateAd midasNativeTemplateAd = (MidasNativeTemplateAd) info.getMidasAd();
+                        midasNativeTemplateAd = (MidasNativeTemplateAd) info.getMidasAd();
                         renderAd(midasNativeTemplateAd);
                     }
 
@@ -103,7 +104,7 @@ public class FeedTemplateAcitvity extends AppCompatActivity implements View.OnCl
      * 请求到广告后渲染广告
      */
     private void renderAd(MidasNativeTemplateAd midasNativeTemplateAd){
-        midasNativeTemplateAd.setChargeListener(new AdChargeListener<AdInfo>() {
+        midasNativeTemplateAd.setAdOutChargeListener(new AdOutChargeListener<AdInfo>() {
             @Override
             public void adSuccess(AdInfo info) {
                 LogUtils.e("adSuccess");
@@ -128,7 +129,23 @@ public class FeedTemplateAcitvity extends AppCompatActivity implements View.OnCl
             public void adClicked(AdInfo info) {
                 LogUtils.e("adClicked");
             }
+            //优量点击移除广告
+            @Override
+            public void adClose(AdInfo info) {
+                LogUtils.e("adClicked");
+                if (mExpressContainer != null) {
+                    mExpressContainer.removeAllViews();
+                }
+            }
         });
         midasNativeTemplateAd.render();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (midasNativeTemplateAd != null) {
+            midasNativeTemplateAd.destroy();
+        }
     }
 }

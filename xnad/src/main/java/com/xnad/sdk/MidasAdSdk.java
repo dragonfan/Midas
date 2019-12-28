@@ -7,6 +7,7 @@ import com.xnad.sdk.ad.factory.MidasAdManagerFactory;
 import com.xnad.sdk.config.TTAdManagerHolder;
 import com.xnad.sdk.config.Constants;
 import com.xnad.sdk.utils.AppUtils;
+import com.xnad.sdk.utils.LogUtils;
 import com.xnad.sdk.utils.SpUtils;
 import com.xnad.sdk.utils.StatisticUtils;
 
@@ -46,6 +47,8 @@ public final class MidasAdSdk {
      * @param serverUrl 需指定上传地址，并传入大数据给定的url
      */
     public static void init(Context context, String appid, String productId, String channel, String csjAppId, String serverUrl, boolean isFormal){
+
+        long beginTime = System.currentTimeMillis();
         mContext = context.getApplicationContext();
         mRroductId = productId;
         mAppId = appid;
@@ -53,17 +56,19 @@ public final class MidasAdSdk {
         mIsFormal = isFormal;
         //初始化基本配置信息
         //强烈建议在应用对应的Application#onCreate()方法中调用，避免出现content为null的异常
+        AppUtils.init(mContext);
         TTAdManagerHolder.init(context, csjAppId);
         mIsInit = true;
+        LogUtils.d("Midas sdk init time="+(System.currentTimeMillis()-beginTime));
         //初始化牛数
         StatisticUtils.init(context, channel, productId, serverUrl);
-        AppUtils.init(mContext);
         //首次上报imei
         boolean isReport = com.xnad.sdk.utils.SpUtils.getBoolean(Constants.SpUtils.FIRST_REPORT_IMEI, false);
         if (!isReport) {
             StatisticUtils.setImei(AppUtils.getIMEI(mContext));
             com.xnad.sdk.utils.SpUtils.putBoolean(Constants.SpUtils.FIRST_REPORT_IMEI, true);
         }
+        LogUtils.d("Midas and niuDate sdk init time="+(System.currentTimeMillis()-beginTime));
     }
 
     /**

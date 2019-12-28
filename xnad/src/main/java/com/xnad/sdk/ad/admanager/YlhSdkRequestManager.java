@@ -11,21 +11,6 @@ import android.view.ViewGroup;
 import com.bytedance.sdk.openadsdk.AdSlot;
 import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
-import com.xnad.sdk.ad.entity.AdInfo;
-import com.xnad.sdk.ad.entity.MidasInteractionAd;
-import com.xnad.sdk.ad.entity.MidasNativeTemplateAd;
-import com.xnad.sdk.ad.entity.MidasRewardVideoAd;
-import com.xnad.sdk.ad.entity.MidasSelfRenderAd;
-import com.xnad.sdk.ad.entity.MidasSplashAd;
-import com.xnad.sdk.ad.listener.AdChargeListener;
-import com.xnad.sdk.ad.listener.AdRequestListener;
-import com.xnad.sdk.ad.outlistener.AdInteractionListener;
-import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
-import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
-import com.xnad.sdk.ad.outlistener.AdSplashListener;
-import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
-import com.xnad.sdk.ad.outlistener.AdFullScreenVideoListener;
-import com.xnad.sdk.config.TTAdManagerHolder;
 import com.qq.e.ads.cfg.VideoOption;
 import com.qq.e.ads.interstitial2.UnifiedInterstitialAD;
 import com.qq.e.ads.interstitial2.UnifiedInterstitialADListener;
@@ -42,6 +27,21 @@ import com.qq.e.ads.splash.SplashAD;
 import com.qq.e.ads.splash.SplashADListener;
 import com.qq.e.comm.constants.AdPatternType;
 import com.qq.e.comm.util.AdError;
+import com.xnad.sdk.ad.entity.AdInfo;
+import com.xnad.sdk.ad.entity.MidasInteractionAd;
+import com.xnad.sdk.ad.entity.MidasNativeTemplateAd;
+import com.xnad.sdk.ad.entity.MidasRewardVideoAd;
+import com.xnad.sdk.ad.entity.MidasSelfRenderAd;
+import com.xnad.sdk.ad.entity.MidasSplashAd;
+import com.xnad.sdk.ad.listener.AdRequestListener;
+import com.xnad.sdk.ad.outlistener.AdFullScreenVideoListener;
+import com.xnad.sdk.ad.outlistener.AdInteractionListener;
+import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
+import com.xnad.sdk.ad.outlistener.AdOutChargeListener;
+import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
+import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
+import com.xnad.sdk.ad.outlistener.AdSplashListener;
+import com.xnad.sdk.config.TTAdManagerHolder;
 import com.xnad.sdk.utils.LogUtils;
 
 import java.util.List;
@@ -68,7 +68,7 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
 
     @Override
     protected void requestNativeTemplateAd(Activity activity, AdInfo info, AdRequestListener listener,
-                                           AdNativeTemplateListener adListener, AdChargeListener adChargeListener) {
+                                           AdNativeTemplateListener adListener, AdOutChargeListener adOutChargeListener) {
         MidasNativeTemplateAd midasNativeTemplateAd = (MidasNativeTemplateAd) info.getMidasAd();
         NativeExpressAD nativeExpressAD = new NativeExpressAD(activity, new ADSize((int) midasNativeTemplateAd.getWidth(), ADSize.AUTO_HEIGHT), midasNativeTemplateAd.getAppId(), midasNativeTemplateAd.getAdId(), new NativeExpressAD.NativeExpressADListener() {
             @Override
@@ -139,8 +139,8 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
             @Override
             public void onRenderFail(NativeExpressADView nativeExpressADView) {
                 LogUtils.d(TAG, "YLH onRenderFail:");
-                if (adChargeListener != null) {
-                    adChargeListener.adError(info, 2, "on render fail");
+                if (adOutChargeListener != null) {
+                    adOutChargeListener.adError(info, 2, "on render fail");
                 }
             }
 
@@ -148,29 +148,29 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
             @Override
             public void onRenderSuccess(NativeExpressADView nativeExpressADView) {
                 LogUtils.d(TAG, "YLH onRenderSuccess:");
-                if (adChargeListener != null) {
-                    adChargeListener.adSuccess(info);
+                if (adOutChargeListener != null) {
+                    adOutChargeListener.adSuccess(info);
                 }
             }
 
             @Override
             public void onADExposure(NativeExpressADView nativeExpressADView) {
-                if (adChargeListener != null) {
-                    adChargeListener.adExposed(info);
+                if (adOutChargeListener != null) {
+                    adOutChargeListener.adExposed(info);
                 }
             }
 
             @Override
             public void onADClicked(NativeExpressADView nativeExpressADView) {
-                if (adChargeListener != null) {
-                    adChargeListener.adClicked(info);
+                if (adOutChargeListener != null) {
+                    adOutChargeListener.adClicked(info);
                 }
             }
 
             @Override
             public void onADClosed(NativeExpressADView nativeExpressADView) {
-                if (adChargeListener != null) {
-                    adChargeListener.adClose(info);
+                if (adOutChargeListener != null) {
+                    adOutChargeListener.adClose(info);
                 }
             }
 
