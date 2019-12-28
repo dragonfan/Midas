@@ -71,8 +71,8 @@ public class ADConfigBuild {
         return this;
     }
 
-    public ADConfigBuild setProductId(String ProductId) {
-        this.mProductId = mProductId;
+    public ADConfigBuild setProductId(String productId) {
+        this.mProductId = productId;
         return this;
     }
 
