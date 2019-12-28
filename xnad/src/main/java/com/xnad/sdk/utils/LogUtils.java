@@ -13,8 +13,7 @@ import com.xnad.sdk.BuildConfig;
  * 邮箱：anhuiqing888@163.com
  */
 public class LogUtils {
-//    public static boolean isDebug = true;
-    public static boolean isDebug = BuildConfig.LOG_DEBUG;
+    public static boolean isDebug = BuildConfig.DEBUG;
 
     public static final String TAGAN = "midas";
 

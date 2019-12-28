@@ -62,74 +62,24 @@ public class Constants {
         String YouLiangHui = "youlianghui";
     }
 
-    public interface SPUtils {
+    /**
+     * 本地存储常量
+     */
+    public interface SpUtils {
         /**
          * midas广告前缀
          */
         String MIDAS_PREFIX = "MIDAS_";
         /**
-         * 配置信息
+         * 一个项目只能上报两次IMEI，第一次上报为空，第二次上报为真是IMEI
+         * 首次上报IMEI
          */
-        String CONFIG_INFO = "AD_SDK_CONFIG_INFO";
+        String FIRST_REPORT_IMEI = "first_report_imei";
         /**
-         * 第一次请求广告系统时间
+         * 第二次上报IMEI
          */
-        String FIRST_REQUEST_AD_TIME = "AD_SDK_FIRST_REQUEST_AD_TIME";
-        /**
-         * bid
-         */
-        String BID = "AD_SDK_BID";
-        /**
-         * 用户激活时间
-         */
-        String USER_ACTIVE = "AD_SDK_USER_ACTIVE";
-        /**
-         * 经度
-         */
-        String LONGITUDE = "AD_SDK_LONGITUDE";
-
-        /**
-         * 纬度
-         */
-        String LATITUDE = "AD_SDK_LATITUDE";
-        /**
-         * 优量汇广告APPID
-         */
-        String YLH_APPID = "AD_SDK_YLH_APPID";
-        /**
-         * 穿山甲广告APPID
-         */
-        String CHJ_APPID = "AD_SDK_CHJ_APPID";
-
-        /**
-         * 优量汇广告APPNAME
-         */
-        String YLH_APPNAME = "AD_SDK_YLH_APPNAME";
-
-        /**
-         * 穿山甲广告APPNAME
-         */
-        String CHJ_APPNAME = "AD_SDK_CHJ_APPNAME";
+        String AGAIN_REPORT_IMEI = "again_report_imei";
     }
 
 
-
-
-
-
-    /**
-     * sdk版本code
-     */
-    public static int version_code = 1;
-
-
-    /**
-     * 一个项目只能上报两次IMEI，第一次上报为空，第二次上报为真是IMEI
-     * 首次上报IMEI
-     */
-    public static final String FIRST_REPORT_IMEI = "first_report_imei";
-    /**
-     * 第二次上报IMEI
-     */
-    public static final String AGAIN_REPORT_IMEI = "again_report_imei";
 }

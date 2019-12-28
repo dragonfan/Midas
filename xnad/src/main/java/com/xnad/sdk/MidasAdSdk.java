@@ -7,7 +7,6 @@ import com.xnad.sdk.ad.admanager.AdManager;
 import com.xnad.sdk.config.TTAdManagerHolder;
 import com.xnad.sdk.constant.Constants;
 import com.xnad.sdk.utils.AppUtils;
-import com.xnad.sdk.utils.SpUtils;
 import com.xnad.sdk.utils.StatisticUtils;
 
 
@@ -59,10 +58,10 @@ public final class MidasAdSdk {
         StatisticUtils.init(context, channel, productId, serverUrl);
 
         //首次上报imei
-        boolean isReport = SpUtils.getBoolean(Constants.FIRST_REPORT_IMEI, false);
+        boolean isReport = com.xnad.sdk.utils.SpUtils.getBoolean(Constants.SpUtils.FIRST_REPORT_IMEI, false);
         if (!isReport) {
             StatisticUtils.setImei(AppUtils.getIMEI(mContext));
-            SpUtils.putBoolean(Constants.FIRST_REPORT_IMEI, true);
+            com.xnad.sdk.utils.SpUtils.putBoolean(Constants.SpUtils.FIRST_REPORT_IMEI, true);
         }
     }
 
@@ -79,10 +78,10 @@ public final class MidasAdSdk {
      * @param imei
      */
     public static void setImei(String imei) {
-        boolean isReport = SpUtils.getBoolean(Constants.AGAIN_REPORT_IMEI, false);
+        boolean isReport = com.xnad.sdk.utils.SpUtils.getBoolean(Constants.SpUtils.AGAIN_REPORT_IMEI, false);
         if (!isReport) {
             StatisticUtils.setImei(imei);
-            SpUtils.putBoolean(Constants.AGAIN_REPORT_IMEI, true);
+            com.xnad.sdk.utils.SpUtils.putBoolean(Constants.SpUtils.AGAIN_REPORT_IMEI, true);
         }
     }
 

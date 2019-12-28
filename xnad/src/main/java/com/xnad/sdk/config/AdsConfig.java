@@ -3,6 +3,7 @@ package com.xnad.sdk.config;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.xnad.sdk.BuildConfig;
 import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.http.bean.BaseResponse;
 import com.xnad.sdk.bean.MidasConfigBean;
@@ -11,7 +12,6 @@ import com.xnad.sdk.constant.Constants;
 import com.xnad.sdk.http.Api;
 import com.xnad.sdk.http.OkHttpHelp;
 import com.xnad.sdk.utils.LogUtils;
-import com.xnad.sdk.utils.SpUtils;
 import com.xnad.sdk.utils.StatisticUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -59,7 +59,7 @@ public class AdsConfig {
         //广告位置ID
         requestParams.put("adpostId", adpostId);
         //sdk版本号
-        requestParams.put("sdkVersion", Constants.version_code);
+        requestParams.put("sdkVersion", BuildConfig.VERSION_CODE);
         //设备唯一标识:可为空
         requestParams.put("primary_id", "");
         String requstData = mGson.toJson(requestParams);
@@ -93,7 +93,7 @@ public class AdsConfig {
                     if (cacheConfigBean != null) {
                         String configBeanStr = gson.toJson(cacheConfigBean);
                         if (!TextUtils.isEmpty(configBeanStr)) {
-                            SpUtils.putString(Constants.SPUtils.MIDAS_PREFIX + adpostId, configBeanStr);
+                            com.xnad.sdk.utils.SpUtils.putString(Constants.SpUtils.MIDAS_PREFIX + adpostId, configBeanStr);
                         }
                     }
 
@@ -121,7 +121,7 @@ public class AdsConfig {
      */
     private MidasConfigBean getCacheMidasConfigBean(String adpostId) {
         try {
-            String midasConfigBean = SpUtils.getString(Constants.SPUtils.MIDAS_PREFIX + adpostId, "");
+            String midasConfigBean = com.xnad.sdk.utils.SpUtils.getString(Constants.SpUtils.MIDAS_PREFIX + adpostId, "");
             if (TextUtils.isEmpty(midasConfigBean)) {
                 return null;
             }

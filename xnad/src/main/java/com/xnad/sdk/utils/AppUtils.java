@@ -10,7 +10,7 @@ import android.text.TextUtils;
 import java.lang.reflect.Method;
 
 /**
- * Desc:
+ * Desc:app工具类
  * <p>
  * Author: ZhouTao
  * Date: 2019/12/27
@@ -22,11 +22,14 @@ import java.lang.reflect.Method;
  * @author zhoutao
  */
 public class AppUtils {
+
     /**
      * 获取应用程序名称
+     * @param context   上下文
+     * @return  String app名称
      */
     public static synchronized String getAppName(Context context) {
-        String appName = "";
+        String appName;
         try {
             PackageManager packageManager = context.getPackageManager();
             PackageInfo packageInfo = packageManager.getPackageInfo(
@@ -38,14 +41,13 @@ public class AppUtils {
             }
             return appName;
         } catch (Exception e) {
-            e.printStackTrace();
+            return "未知";
         }
-        return "未知";
     }
     /**
      * 获取IMEI
-     * @param mContext
-     * @return
+     * @param mContext  上下文
+     * @return  String  imei
      */
     public static String getIMEI(Context mContext) {
         String imei = "";
@@ -65,6 +67,7 @@ public class AppUtils {
         }
         return imei;
     }
+
     /**
      * 检测权限
      *
