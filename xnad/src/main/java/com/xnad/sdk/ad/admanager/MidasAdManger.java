@@ -241,12 +241,12 @@ public class MidasAdManger implements AdManager {
             @Override
             public void onSuccess(int httpResponseCode, MidasConfigBean midasConfigBean) {
                 List<MidasConfigBean.AdStrategyBean> adStrategyBeans = midasConfigBean.getAdStrategy();
-                adsInfoslist.addAll(adStrategyBeans);
-                if (adsInfoslist==null || adsInfoslist.size()==0) {
+                if (adStrategyBeans==null || adStrategyBeans.size()==0) {
                     onFailure(httpResponseCode, ErrorCode.STRATEGY_DATA_EMPTY.errorCode
                             ,ErrorCode.STRATEGY_DATA_EMPTY.errorMsg);
                     return;
                 }
+                adsInfoslist.addAll(adStrategyBeans);
                 MidasConfigBean.AdStrategyBean mAdsInfoBean = adsInfoslist.remove(0);
                 if (mAdsInfoBean == null) {
                     onFailure(httpResponseCode, ErrorCode.STRATEGY_DATA_EMPTY.errorCode

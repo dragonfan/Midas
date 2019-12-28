@@ -66,6 +66,9 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
     private final int MAX_DURATION = 30;
 
 
+
+
+
     @Override
     protected void requestNativeTemplateAd(Activity activity, AdInfo info, AdRequestListener listener,
                                            AdNativeTemplateListener adListener, AdOutChargeListener adOutChargeListener) {

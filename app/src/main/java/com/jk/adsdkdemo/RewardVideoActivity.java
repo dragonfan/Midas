@@ -13,8 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.entity.AdInfo;
-import com.xnad.sdk.ad.admanager.AdManager;
-import com.xnad.sdk.ad.outlistener.AdFullScreenVideoListener;
 import com.jk.adsdkdemo.utils.LogUtils;
 import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
 
@@ -26,7 +24,6 @@ import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
  */
 public class RewardVideoActivity extends AppCompatActivity implements View.OnClickListener {
     private final String TAG = RewardVideoActivity.class.getSimpleName();
-    private AdManager adManager;
     private EditText positionEdit;
     private FrameLayout splashContainer;
     private Button refreshBtn, preloadingAd;
@@ -44,7 +41,6 @@ public class RewardVideoActivity extends AppCompatActivity implements View.OnCli
         refreshBtn = findViewById(R.id.video_refresh);
         positionEdit = findViewById(R.id.splash_position_edit);
         refreshBtn.setOnClickListener(this);
-        adManager = MidasAdSdk.getAdsManger();
         positionEdit.setText("2569743941");
 
         preloadingAd = findViewById(R.id.button_preloading_ad);

@@ -11,8 +11,7 @@ import android.widget.Toast;
 import com.bytedance.sdk.openadsdk.TTAdSdk;
 import com.jk.adsdkdemo.utils.LogUtils;
 import com.xnad.sdk.MidasAdSdk;
-
-import java.util.List;
+import com.xnad.sdk.config.ADConfigBuild;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -69,17 +68,26 @@ public class ConfigActivity extends AppCompatActivity implements View.OnClickLis
                 }
                 stateText.setText("");
                 String visionName = TTAdSdk.getAdManager().getSDKVersion();
-                LogUtils.e("visionName>>>"+visionName);
+                LogUtils.e("visionName>>>" + visionName);
                 break;
             case R.id.button_init:
                 String product = editProduct.getText().toString().trim();
-                String chan = editChan.getText().toString().trim();
-                String appid = editAdAppId.getText().toString().trim();
-                LogUtils.e(">>>product="+product);
-                LogUtils.e(">>>渠道号="+chan);
+                String channel = editChan.getText().toString().trim();
+                String appId = editAdAppId.getText().toString().trim();
+                LogUtils.e(">>>product=" + product);
+                LogUtils.e(">>>渠道号=" + channel);
                 //牛数上报地址
                 String serverUrl = "http://testaidataprobe2.51huihuahua.com/v/v/dataprobe2/ggbx";
-                MidasAdSdk.init(this, appid, product, chan,"5036430", serverUrl, false);
+
+                //appid, product, chan,"5036430", serverUrl, false
+                ADConfigBuild configBuild = new ADConfigBuild()
+                        .setAppId(appId)
+                        .setProductId(product)
+                        .setCsjAppId("5036430")
+                        .setChannel(channel)
+                        .setServerUrl(serverUrl)
+                        .setIsFormal(false);
+                MidasAdSdk.init(this, configBuild);
                 break;
             case R.id.next:
                 if (!MidasAdSdk.isInit()) {
