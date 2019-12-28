@@ -98,7 +98,13 @@ public class SplashAdActivity extends AppCompatActivity implements View.OnClickL
                     splashContainer.removeAllViews();
                 }
             }
-        }, 3);
+
+            //优量广告倒计时回调，时间单位ms
+            @Override
+            public void adTick(AdInfo info, long l) {
+
+            }
+        }, 3000);
     }
 
     @Override

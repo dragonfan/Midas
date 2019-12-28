@@ -3,7 +3,7 @@ package com.xnad.sdk.ad.factory;
 import com.xnad.sdk.ad.admanager.CsjSdkRequestManager;
 import com.xnad.sdk.ad.admanager.YlhSdkRequestManager;
 import com.xnad.sdk.ad.entity.AdInfo;
-import com.xnad.sdk.ad.listener.AdRequestManager;
+import com.xnad.sdk.ad.admanager.AdRequestManager;
 import com.xnad.sdk.ad.listener.RequestProvider;
 import com.xnad.sdk.constant.Constants;
 

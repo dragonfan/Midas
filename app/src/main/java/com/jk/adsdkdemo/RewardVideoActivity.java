@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.entity.AdInfo;
-import com.xnad.sdk.ad.listener.AdManager;
+import com.xnad.sdk.ad.admanager.AdManager;
 import com.xnad.sdk.ad.listener.VideoAdListener;
 import com.jk.adsdkdemo.utils.LogUtils;
 

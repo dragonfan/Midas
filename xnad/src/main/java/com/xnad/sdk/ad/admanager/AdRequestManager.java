@@ -1,8 +1,10 @@
-package com.xnad.sdk.ad.listener;
+package com.xnad.sdk.ad.admanager;
 
 import android.app.Activity;
 
 import com.xnad.sdk.ad.entity.AdInfo;
+import com.xnad.sdk.ad.listener.AdBasicListener;
+import com.xnad.sdk.ad.listener.AdRequestListener;
 
 /**
  * @ProjectName: MidasAdSdk

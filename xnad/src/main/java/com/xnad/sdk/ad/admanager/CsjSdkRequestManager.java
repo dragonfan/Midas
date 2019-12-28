@@ -403,6 +403,10 @@ public class CsjSdkRequestManager extends SdkRequestManager {
     @Override
     public void requestSplashAd(Activity activity, AdInfo adInfo, AdRequestListener adRequestListener, AdSplashListener adSplashListener) {
         MidasSplashAd midasSplashAd = (MidasSplashAd) adInfo.getMidasAd();
+        int timeOut = midasSplashAd.getTimeOut();
+        if (timeOut == 0) {
+            timeOut = 3000;
+        }
         AdSlot adSlot = new AdSlot.Builder()
                 .setCodeId(midasSplashAd.getAdId())
                 .setSupportDeepLink(true)
@@ -476,7 +480,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     }
                 }
             }
-        });
+        }, timeOut);
     }
 
     @Override

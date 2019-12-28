@@ -358,6 +358,10 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
     @Override
     public void requestSplashAd(Activity activity, AdInfo adInfo, AdRequestListener adRequestListener, AdSplashListener adSplashListener) {
         MidasSplashAd midasSplashAd = (MidasSplashAd) adInfo.getMidasAd();
+        int timeOut = midasSplashAd.getTimeOut();
+        if (timeOut == 0) {
+            timeOut = 3000;
+        }
         SplashAD splashAD = new SplashAD(activity, midasSplashAd.getAppId(), midasSplashAd.getAdId(), new SplashADListener() {
             @Override
             public void onADDismissed() {
@@ -399,7 +403,9 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
             //倒计时回调，返回广告还将被展示的剩余时间，单位是 ms
             @Override
             public void onADTick(long l) {
-
+                if (adSplashListener != null) {
+                    adSplashListener.adTick(adInfo, l);
+                }
             }
             //广告曝光时调用，此处的曝光不等于有效曝光（如展示时长未满足）
             @Override
@@ -409,7 +415,7 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
                     adSplashListener.adExposed(adInfo);
                 }
             }
-        });
+        }, timeOut);
         ((MidasSplashAd)adInfo.getMidasAd()).setSplashAD(splashAD);
         if (adSplashListener != null) {
             ViewGroup viewGroup = adSplashListener.getViewGroup();

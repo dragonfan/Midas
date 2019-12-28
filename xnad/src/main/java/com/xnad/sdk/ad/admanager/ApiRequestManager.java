@@ -9,7 +9,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.xnad.sdk.MidasAdSdk;
-import com.xnad.sdk.ad.listener.AdRequestManager;
 import com.xnad.sdk.utils.LogUtils;
 
 /**

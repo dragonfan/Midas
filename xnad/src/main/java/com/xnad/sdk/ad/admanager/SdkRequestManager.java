@@ -15,7 +15,6 @@ import com.xnad.sdk.ad.entity.MidasSelfRenderAd;
 import com.xnad.sdk.ad.listener.AdBasicListener;
 import com.xnad.sdk.ad.listener.AdChargeListener;
 import com.xnad.sdk.ad.listener.AdRequestListener;
-import com.xnad.sdk.ad.listener.AdRequestManager;
 import com.xnad.sdk.ad.listener.AdSplashListener;
 import com.xnad.sdk.ad.listener.BindViewListener;
 import com.xnad.sdk.ad.listener.InteractionListener;
@@ -313,6 +312,9 @@ public abstract class SdkRequestManager implements AdRequestManager {
 
             @Override
             public void adClose(AdInfo info) {
+                if (listener != null) {
+                    listener.adClose(info);
+                }
                 StatisticUtils.advertisingClose(info,intervalTime);
             }
 
@@ -345,6 +347,13 @@ public abstract class SdkRequestManager implements AdRequestManager {
                     listener.adClicked(info);
                 }
                 StatisticUtils.advertisingClick(info,intervalTime);
+            }
+
+            @Override
+            public void adTick(AdInfo info, long l) {
+                if (listener != null) {
+                    listener.adTick(info, l);
+                }
             }
 
             @Override

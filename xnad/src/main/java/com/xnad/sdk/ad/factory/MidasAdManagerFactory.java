@@ -1,8 +1,7 @@
 package com.xnad.sdk.ad.factory;
 
 import com.xnad.sdk.ad.admanager.MidasAdManger;
-import com.xnad.sdk.ad.listener.AdManager;
-import com.xnad.sdk.ad.listener.Provider;
+import com.xnad.sdk.ad.admanager.AdManager;
 
 /**
  * @ProjectName: MidasAdSdk
@@ -16,8 +15,7 @@ import com.xnad.sdk.ad.listener.Provider;
  * @UpdateRemark: 更新说明：
  * @Version: 1.0
  */
-public class MidasAdManagerFactory implements Provider {
-    @Override
+public class MidasAdManagerFactory {
     public AdManager produce() {
         return new MidasAdManger();
     }

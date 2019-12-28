@@ -3,7 +3,7 @@ package com.xnad.sdk;
 import android.content.Context;
 
 import com.xnad.sdk.ad.factory.MidasAdManagerFactory;
-import com.xnad.sdk.ad.listener.AdManager;
+import com.xnad.sdk.ad.admanager.AdManager;
 import com.xnad.sdk.config.TTAdManagerHolder;
 import com.xnad.sdk.constant.Constants;
 import com.xnad.sdk.utils.AppUtils;

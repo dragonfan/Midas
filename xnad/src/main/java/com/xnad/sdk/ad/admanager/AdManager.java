@@ -1,6 +1,12 @@
-package com.xnad.sdk.ad.listener;
+package com.xnad.sdk.ad.admanager;
 
 import android.app.Activity;
+
+import com.xnad.sdk.ad.listener.AdSplashListener;
+import com.xnad.sdk.ad.listener.InteractionListener;
+import com.xnad.sdk.ad.listener.NativeTemplateListener;
+import com.xnad.sdk.ad.listener.SelfRenderAdListener;
+import com.xnad.sdk.ad.listener.VideoAdListener;
 
 /**
  * @ProjectName: MidasAdSdk
@@ -21,7 +27,7 @@ public interface AdManager {
      * @param activity 上下文
      * @param position 位置code
      * @param listener 回调
-     * @param timeOut 超时时间
+     * @param timeOut 超时时间(单位ms)
      */
     void loadMidasSplashAd(Activity activity, String position, AdSplashListener listener, int timeOut);
 

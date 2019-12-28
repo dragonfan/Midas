@@ -22,4 +22,12 @@ public interface AdSplashListener<T extends AdInfo> extends AdChargeListener<T>{
      * @return
      */
     ViewGroup getViewGroup();
+
+    /**
+     * 倒计时回调，返回广告还将被展示的剩余时间，单位是 ms
+     * @param l
+     */
+    default void adTick(T info, long l) {
+
+    }
 }

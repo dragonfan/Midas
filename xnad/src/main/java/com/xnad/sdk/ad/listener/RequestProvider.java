@@ -1,5 +1,6 @@
 package com.xnad.sdk.ad.listener;
 
+import com.xnad.sdk.ad.admanager.AdRequestManager;
 import com.xnad.sdk.ad.entity.AdInfo;
 
 /**
