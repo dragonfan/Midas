@@ -25,7 +25,7 @@ import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
 import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
 import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
 import com.xnad.sdk.ad.outlistener.AdSplashListener;
-import com.xnad.sdk.constant.Constants;
+import com.xnad.sdk.config.Constants;
 import com.xnad.sdk.utils.LogUtils;
 import com.xnad.sdk.utils.StatisticUtils;
 

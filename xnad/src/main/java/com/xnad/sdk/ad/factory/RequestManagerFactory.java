@@ -5,7 +5,7 @@ import com.xnad.sdk.ad.admanager.YlhSdkRequestManager;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.admanager.AdRequestManager;
 import com.xnad.sdk.ad.listener.RequestProvider;
-import com.xnad.sdk.constant.Constants;
+import com.xnad.sdk.config.Constants;
 
 /**
  * @ProjectName: MidasAdSdk

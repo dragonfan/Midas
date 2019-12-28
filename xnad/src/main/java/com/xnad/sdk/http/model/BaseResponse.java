@@ -1,4 +1,4 @@
-package com.xnad.sdk.http.bean;
+package com.xnad.sdk.http.model;
 
 
 

@@ -51,9 +51,9 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
     //libs 目录下库说明
-    //1.    穿山甲 GDTSDK.TBS.4.90.960.aar
+    //1.    穿山甲 open_ad_sdk.aar
     //2.    网络请求 kotlin-stdlib-1.3.61.jar okhttp-3.14.4.jar okio-2.4.3.jar
-    //3.    优量汇 open_ad_sdk.aar
+    //3.    优量汇 GDTSDK.TBS.4.90.960.aar
     //4.    牛数  NiuDataSDK_1.2.5.aar
     //5.    解析  gson-2.8.6.jar
 }

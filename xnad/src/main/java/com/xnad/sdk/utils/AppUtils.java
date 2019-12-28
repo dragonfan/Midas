@@ -23,6 +23,29 @@ import java.lang.reflect.Method;
  */
 public class AppUtils {
 
+    private static Context sContext;
+
+    private AppUtils() {
+    }
+
+    /**
+     * 初始化工具类
+     *
+     * @param context 上下文
+     */
+    public static void init(Context context) {
+        sContext = context;
+    }
+
+    /**
+     * 获取ApplicationContext
+     *
+     * @return ApplicationContext
+     */
+    public static Context getContext() {
+        return sContext;
+    }
+
     /**
      * 获取应用程序名称
      * @param context   上下文

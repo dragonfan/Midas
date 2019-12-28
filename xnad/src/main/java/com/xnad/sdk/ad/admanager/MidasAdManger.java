@@ -2,8 +2,6 @@ package com.xnad.sdk.ad.admanager;
 
 import android.app.Activity;
 
-
-import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.entity.MidasFullScreenVideoAd;
 import com.xnad.sdk.ad.entity.MidasInteractionAd;
@@ -23,9 +21,10 @@ import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
 import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
 import com.xnad.sdk.ad.outlistener.AdFullScreenVideoListener;
 import com.xnad.sdk.bean.MidasConfigBean;
-import com.xnad.sdk.config.AdsConfig;
-import com.xnad.sdk.config.listener.ConfigListener;
-import com.xnad.sdk.constant.Constants;
+import com.xnad.sdk.config.ErrorCode;
+import com.xnad.sdk.config.Constants;
+import com.xnad.sdk.http.ApiProvider;
+import com.xnad.sdk.http.callback.HttpCallback;
 import com.xnad.sdk.utils.CodeFactory;
 import com.xnad.sdk.utils.LogUtils;
 import com.xnad.sdk.utils.StatisticUtils;
@@ -243,23 +242,34 @@ public class MidasAdManger implements AdManager {
         long beginTime = System.currentTimeMillis();
         StatisticUtils.singleStatisticBegin(adInfo,beginTime);
         adsInfoslist.clear();
-        AdsConfig.getInstance(MidasAdSdk.getContext()).requestConfig(adPosId, new ConfigListener() {
+
+
+        ApiProvider.getStrategyInfo(adPosId, new HttpCallback<MidasConfigBean>() {
             @Override
-            public void adSuccess(MidasConfigBean midasConfigBean) {
+            public void onFailure(int httpResponseCode, int errorCode, String message) {
+                if (mAdListener != null) {
+                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                }
+                //广告策略请求事件埋点
+                StatisticUtils.strategyConfigurationRequest(adInfo, adPosId,"",
+                        httpResponseCode+"",errorCode + "", beginTime);
+            }
+
+            @Override
+            public void onSuccess(int httpResponseCode, MidasConfigBean midasConfigBean) {
                 List<MidasConfigBean.AdStrategyBean> adStrategyBeans = midasConfigBean.getAdStrategy();
                 adsInfoslist.addAll(adStrategyBeans);
-                if (adsInfoslist==null||adsInfoslist.size()==0) {
-                    int code = CodeFactory.UNKNOWN;
-                    adError(200,code,CodeFactory.getError(code));
+                if (adsInfoslist==null || adsInfoslist.size()==0) {
+                    onFailure(httpResponseCode, ErrorCode.STRATEGY_DATA_EMPTY.errorCode
+                            ,ErrorCode.STRATEGY_DATA_EMPTY.errorMsg);
                     return;
                 }
                 MidasConfigBean.AdStrategyBean mAdsInfoBean = adsInfoslist.remove(0);
                 if (mAdsInfoBean == null) {
-                    int code = CodeFactory.UNKNOWN;
-                    adError(200,code,CodeFactory.getError(code));
+                    onFailure(httpResponseCode, ErrorCode.STRATEGY_DATA_EMPTY.errorCode
+                            ,ErrorCode.STRATEGY_DATA_EMPTY.errorMsg);
                     return;
                 }
-
                 //广告策略请求事件埋点
                 adInfo.getStatisticBaseProperties().setPriorityS(mAdsInfoBean.getRequestOrder());
                 StatisticUtils.strategyConfigurationRequest(adInfo, adPosId,
@@ -269,17 +279,6 @@ public class MidasAdManger implements AdManager {
 
                 firstRequestAdTime = System.currentTimeMillis();
                 againRequest(adInfo, mAdsInfoBean);
-            }
-
-            @Override
-            public void adError(int httpCode,int errorCode, String errorMsg) {
-                if (mAdListener != null) {
-                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-                }
-                //广告策略请求事件埋点
-                StatisticUtils.strategyConfigurationRequest(adInfo, adPosId,"",
-                        httpCode+"",errorCode + "", beginTime);
-
             }
         });
     }

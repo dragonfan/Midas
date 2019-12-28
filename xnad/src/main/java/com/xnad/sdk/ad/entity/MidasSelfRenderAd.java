@@ -10,7 +10,7 @@ import com.bytedance.sdk.openadsdk.TTImage;
 import com.bytedance.sdk.openadsdk.TTNativeAd;
 import com.xnad.sdk.ad.listener.BindViewListener;
 import com.xnad.sdk.ad.listener.SelfRenderChargeListener;
-import com.xnad.sdk.constant.Constants;
+import com.xnad.sdk.config.Constants;
 import com.qq.e.ads.nativ.NativeADEventListener;
 import com.qq.e.ads.nativ.NativeUnifiedADData;
 import com.qq.e.ads.nativ.widget.NativeAdContainer;

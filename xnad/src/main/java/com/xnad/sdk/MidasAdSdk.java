@@ -2,11 +2,12 @@ package com.xnad.sdk;
 
 import android.content.Context;
 
-import com.xnad.sdk.ad.factory.MidasAdManagerFactory;
 import com.xnad.sdk.ad.admanager.AdManager;
+import com.xnad.sdk.ad.factory.MidasAdManagerFactory;
 import com.xnad.sdk.config.TTAdManagerHolder;
-import com.xnad.sdk.constant.Constants;
+import com.xnad.sdk.config.Constants;
 import com.xnad.sdk.utils.AppUtils;
+import com.xnad.sdk.utils.SpUtils;
 import com.xnad.sdk.utils.StatisticUtils;
 
 
@@ -56,7 +57,7 @@ public final class MidasAdSdk {
         mIsInit = true;
         //初始化牛数
         StatisticUtils.init(context, channel, productId, serverUrl);
-
+        AppUtils.init(mContext);
         //首次上报imei
         boolean isReport = com.xnad.sdk.utils.SpUtils.getBoolean(Constants.SpUtils.FIRST_REPORT_IMEI, false);
         if (!isReport) {
@@ -78,10 +79,10 @@ public final class MidasAdSdk {
      * @param imei
      */
     public static void setImei(String imei) {
-        boolean isReport = com.xnad.sdk.utils.SpUtils.getBoolean(Constants.SpUtils.AGAIN_REPORT_IMEI, false);
+        boolean isReport = SpUtils.getBoolean(Constants.SpUtils.AGAIN_REPORT_IMEI, false);
         if (!isReport) {
             StatisticUtils.setImei(imei);
-            com.xnad.sdk.utils.SpUtils.putBoolean(Constants.SpUtils.AGAIN_REPORT_IMEI, true);
+            SpUtils.putBoolean(Constants.SpUtils.AGAIN_REPORT_IMEI, true);
         }
     }
 

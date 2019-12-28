@@ -16,21 +16,21 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.bumptech.glide.Glide;
-import com.xnad.sdk.MidasAdSdk;
-import com.xnad.sdk.ad.entity.AdInfo;
-import com.xnad.sdk.ad.entity.MidasSelfRenderAd;
-import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
-import com.xnad.sdk.ad.listener.SelfRenderChargeListener;
-import com.xnad.sdk.constant.Constants;
 import com.jk.adsdkdemo.utils.LogUtils;
 import com.qq.e.ads.nativ.MediaView;
 import com.qq.e.ads.nativ.widget.NativeAdContainer;
+import com.xnad.sdk.MidasAdSdk;
+import com.xnad.sdk.ad.entity.AdInfo;
+import com.xnad.sdk.ad.entity.MidasSelfRenderAd;
+import com.xnad.sdk.ad.listener.SelfRenderChargeListener;
+import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
+import com.xnad.sdk.config.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * @ProjectName: ${PROJECT_NAME}

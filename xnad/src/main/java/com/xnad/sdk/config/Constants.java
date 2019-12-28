@@ -1,4 +1,4 @@
-package com.xnad.sdk.constant;
+package com.xnad.sdk.config;
 
 public class Constants {
 

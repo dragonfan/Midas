@@ -7,7 +7,7 @@ import com.bytedance.sdk.openadsdk.TTAppDownloadListener;
 import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
 import com.xnad.sdk.ad.listener.AdChargeListener;
 import com.xnad.sdk.ad.listener.BindViewListener;
-import com.xnad.sdk.constant.Constants;
+import com.xnad.sdk.config.Constants;
 import com.qq.e.ads.nativ.NativeExpressAD;
 import com.qq.e.ads.nativ.NativeExpressADView;
 
