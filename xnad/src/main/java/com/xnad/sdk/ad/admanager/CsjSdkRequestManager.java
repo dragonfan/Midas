@@ -26,16 +26,16 @@ import com.xnad.sdk.ad.entity.MidasSelfRenderAd;
 import com.xnad.sdk.ad.entity.MidasSplashAd;
 import com.xnad.sdk.ad.listener.AdChargeListener;
 import com.xnad.sdk.ad.listener.AdRequestListener;
-import com.xnad.sdk.ad.listener.AdSplashListener;
-import com.xnad.sdk.ad.listener.InteractionListener;
-import com.xnad.sdk.ad.listener.NativeTemplateListener;
-import com.xnad.sdk.ad.listener.SelfRenderAdListener;
-import com.xnad.sdk.ad.listener.VideoAdListener;
+import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
+import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
+import com.xnad.sdk.ad.outlistener.AdSplashListener;
+import com.xnad.sdk.ad.outlistener.AdInteractionListener;
+import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
+import com.xnad.sdk.ad.outlistener.AdFullScreenVideoListener;
 import com.xnad.sdk.config.TTAdManagerHolder;
 import com.xnad.sdk.utils.CodeFactory;
 import com.xnad.sdk.utils.LogUtils;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -53,7 +53,7 @@ import java.util.List;
 public class CsjSdkRequestManager extends SdkRequestManager {
 
     @Override
-    protected void requestNativeTemplateAd(Activity activity, AdInfo info, AdRequestListener listener, NativeTemplateListener adListener, AdChargeListener adChargeListener) {
+    protected void requestNativeTemplateAd(Activity activity, AdInfo info, AdRequestListener listener, AdNativeTemplateListener adListener, AdChargeListener adChargeListener) {
         MidasNativeTemplateAd midasNativeTemplateAd = (MidasNativeTemplateAd) info.getMidasAd();
         AdSlot adSlot = new AdSlot.Builder()
                 //广告位id
@@ -174,7 +174,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
     }
 
     @Override
-    protected void requestInteractionAd(Activity activity, AdInfo info, AdRequestListener listener, InteractionListener adListener) {
+    protected void requestInteractionAd(Activity activity, AdInfo info, AdRequestListener listener, AdInteractionListener adListener) {
         MidasInteractionAd midasInteractionAd = (MidasInteractionAd) info.getMidasAd();
         float expressViewWidth = 300;
         float expressViewHeight = 300;
@@ -263,7 +263,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
     }
 
     @Override
-    protected void requestSelfRenderAd(Activity activity, AdInfo info, AdRequestListener listener, SelfRenderAdListener adListener) {
+    protected void requestSelfRenderAd(Activity activity, AdInfo info, AdRequestListener listener, AdSelfRenderListener adListener) {
         MidasSelfRenderAd midasSelfRenderAd = (MidasSelfRenderAd) info.getMidasAd();
         //step1:初始化sdk
         TTAdManager ttAdManager = TTAdManagerHolder.get();
@@ -317,7 +317,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
     }
 
     @Override
-    protected void requestFullScreenVideoAd(Activity activity, AdInfo info, AdRequestListener listener, VideoAdListener adListener) {
+    protected void requestFullScreenVideoAd(Activity activity, AdInfo info, AdRequestListener listener, AdFullScreenVideoListener adListener) {
         MidasFullScreenVideoAd midasFullScreenVideoAd = (MidasFullScreenVideoAd) info.getMidasAd();
         AdSlot adSlot = new AdSlot.Builder()
                 .setCodeId(midasFullScreenVideoAd.getAdId())
@@ -348,6 +348,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                             }
                         }
 
+                        //广告下载bar点击回调
                         @Override
                         public void onAdVideoBarClick() {
                             if (adListener != null) {
@@ -361,17 +362,20 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                                 adListener.adClose(info);
                             }
                         }
-
+                        //广告播放完成回调
                         @Override
                         public void onVideoComplete() {
                             if (adListener != null) {
-                                adListener.onVideoComplete(info);
+                                adListener.adVideoComplete(info);
                             }
                         }
 
+                        //广告跳过视频播放回调
                         @Override
                         public void onSkippedVideo() {
-
+                            if (adListener != null) {
+                                adListener.adSkippedVideo(info);
+                            }
                         }
                     });
                     //请求成功回调
@@ -484,7 +488,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
     }
 
     @Override
-    public void requestRewardVideoAd(Activity activity, AdInfo adInfo, AdRequestListener adRequestListener, VideoAdListener videoAdListener) {
+    public void requestRewardVideoAd(Activity activity, AdInfo adInfo, AdRequestListener adRequestListener, AdRewardVideoListener adRewardVideoListener) {
         MidasRewardVideoAd midasRewardVideoAd = (MidasRewardVideoAd) adInfo.getMidasAd();
         //step4:创建广告请求参数AdSlot,具体参数含义参考文档
         AdSlot adSlot = new AdSlot.Builder()
@@ -528,28 +532,28 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                         adRequestListener.adSuccess(adInfo);
                     }
 
-                    ((MidasRewardVideoAd) adInfo.getMidasAd()).setTtRewardVideoAd(mttRewardVideoAd);
+                    midasRewardVideoAd.setTtRewardVideoAd(mttRewardVideoAd);
                     mttRewardVideoAd.setRewardAdInteractionListener(new TTRewardVideoAd.RewardAdInteractionListener() {
                         @Override
                         public void onAdShow() {
-                            if (videoAdListener != null) {
-                                videoAdListener.adExposed(adInfo);
+                            if (adRewardVideoListener != null) {
+                                adRewardVideoListener.adExposed(adInfo);
                             }
                         }
 
                         @Override
                         public void onAdVideoBarClick() {
                             LogUtils.d(TAG, "rewardVideoAd bar click");
-                            if (videoAdListener != null) {
-                                videoAdListener.adClicked(adInfo);
+                            if (adRewardVideoListener != null) {
+                                adRewardVideoListener.adClicked(adInfo);
                             }
                         }
 
                         @Override
                         public void onAdClose() {
                             LogUtils.d(TAG, "rewardVideoAd close");
-                            if (videoAdListener != null) {
-                                videoAdListener.adClose(adInfo);
+                            if (adRewardVideoListener != null) {
+                                adRewardVideoListener.adClose(adInfo);
                             }
                         }
 
@@ -557,16 +561,16 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                         @Override
                         public void onVideoComplete() {
                             LogUtils.d(TAG, "rewardVideoAd complete");
-                            if (videoAdListener != null) {
-                                videoAdListener.onVideoComplete(adInfo);
+                            if (adRewardVideoListener != null) {
+                                adRewardVideoListener.onVideoComplete(adInfo);
                             }
                         }
 
                         @Override
                         public void onVideoError() {
                             LogUtils.d(TAG, "rewardVideoAd error");
-                            if (videoAdListener != null) {
-                                videoAdListener.adError(adInfo, 1, "rewardVideoAd error");
+                            if (adRewardVideoListener != null) {
+                                adRewardVideoListener.adError(adInfo, 1, "rewardVideoAd error");
                             }
                         }
 
@@ -574,8 +578,8 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                         @Override
                         public void onRewardVerify(boolean rewardVerify, int rewardAmount, String rewardName) {
                             LogUtils.d(TAG, "verify:" + rewardVerify + " amount:" + rewardAmount + " name:" + rewardName);
-                            if (videoAdListener != null) {
-                                videoAdListener.onVideoRewardVerify(adInfo, rewardVerify, rewardAmount, rewardName);
+                            if (adRewardVideoListener != null) {
+                                adRewardVideoListener.onVideoRewardVerify(adInfo, rewardVerify, rewardAmount, rewardName);
                             }
                         }
 
@@ -617,8 +621,8 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                         }
                     });
                     mttRewardVideoAd.showRewardVideoAd(activity);
-                    if (videoAdListener != null) {
-                        videoAdListener.adSuccess(adInfo);
+                    if (adRewardVideoListener != null) {
+                        adRewardVideoListener.adSuccess(adInfo);
                     }
                 } else {
                     if (adRequestListener != null) {
@@ -929,68 +933,6 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     if (listener != null) {
                         listener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
                     }
-                }
-            }
-        });
-    }
-
-    /**
-     * 获取图片类广告
-     *
-     * @param adInfo
-     */
-    public void getImageAd(AdInfo adInfo, AdRequestListener listener) {
-        //step1:初始化sdk
-        TTAdManager ttAdManager = TTAdManagerHolder.get();
-        //step2:创建TTAdNative对象,用于调用广告请求接口
-        TTAdNative mTTAdNative = ttAdManager.createAdNative(MidasAdSdk.getContext());
-        //step3:(可选，强烈建议在合适的时机调用):申请部分权限，如read_phone_state,防止获取不了imei时候，下载类广告没有填充的问题。
-//        TTAdManagerHolder.get().requestPermissionIfNecessary(mContext);
-
-        LogUtils.d(TAG, "getImageAd->请求穿山甲图文类广告");
-
-        AdSlot adSlot = new AdSlot.Builder()
-                .setCodeId(adInfo.getAdId().trim())
-                .setSupportDeepLink(true)
-                .setImageAcceptedSize(640, 320)
-                .setAdCount(1)
-                .build();
-        mTTAdNative.loadFeedAd(adSlot, new TTAdNative.FeedAdListener() {
-            @Override
-            public void onError(int i, String s) {
-                LogUtils.d(TAG, "onNoAD->请求穿山甲失败,ErrorCode:" + i + ",ErrorMsg:" + s);
-                if (listener != null) {
-                    listener.adError(adInfo, i, s);
-                }
-            }
-
-            @Override
-            public void onFeedAdLoad(List<TTFeedAd> list) {
-                LogUtils.d(TAG, "onADLoaded->请求穿山甲成功");
-                if (list == null || list.size() == 0) {
-                    if (listener != null) {
-                        listener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-                    }
-                    return;
-                }
-                TTFeedAd ttFeedAd = list.get(0);
-                if (ttFeedAd == null) {
-                    if (listener != null) {
-                        listener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
-                    }
-                    return;
-                }
-                caheImage(ttFeedAd);
-                String title = ttFeedAd.getTitle();
-                adInfo.setAdTitle(title);
-                if (TTAdConstant.INTERACTION_TYPE_DOWNLOAD == ttFeedAd.getInteractionType()) {
-                    adInfo.setAdClickType(1);
-                } else {
-                    adInfo.setAdClickType(2);
-                }
-                adInfo.setTtFeedAd(ttFeedAd);
-                if (listener != null) {
-                    listener.adSuccess(adInfo);
                 }
             }
         });

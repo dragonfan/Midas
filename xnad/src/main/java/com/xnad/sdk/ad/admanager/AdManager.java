@@ -2,11 +2,12 @@ package com.xnad.sdk.ad.admanager;
 
 import android.app.Activity;
 
-import com.xnad.sdk.ad.listener.AdSplashListener;
-import com.xnad.sdk.ad.listener.InteractionListener;
-import com.xnad.sdk.ad.listener.NativeTemplateListener;
-import com.xnad.sdk.ad.listener.SelfRenderAdListener;
-import com.xnad.sdk.ad.listener.VideoAdListener;
+import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
+import com.xnad.sdk.ad.outlistener.AdSplashListener;
+import com.xnad.sdk.ad.outlistener.AdInteractionListener;
+import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
+import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
+import com.xnad.sdk.ad.outlistener.AdFullScreenVideoListener;
 
 /**
  * @ProjectName: MidasAdSdk
@@ -41,7 +42,7 @@ public interface AdManager {
      * @param rewardAmount 奖励金额数量
      * @param listener 回调
      */
-    void loadMidasRewardVideoAd(Activity activity, String position, String userId, int orientation, String rewardName, int rewardAmount, VideoAdListener listener);
+    void loadMidasRewardVideoAd(Activity activity, String position, String userId, int orientation, String rewardName, int rewardAmount, AdRewardVideoListener listener);
 
     /**
      * 请求全屏视广告
@@ -49,7 +50,7 @@ public interface AdManager {
      * @param position 位置code
      * @param listener 回调
      */
-    void loadMidasFullScreenVideoAd(Activity activity, String position, VideoAdListener listener);
+    void loadMidasFullScreenVideoAd(Activity activity, String position, AdFullScreenVideoListener listener);
 
     /**
      * 请求自渲染广告
@@ -57,7 +58,7 @@ public interface AdManager {
      * @param position 位置code
      * @param listener 回调
      */
-    void loadMidasSelfRenderAd(Activity activity, String position, SelfRenderAdListener listener);
+    void loadMidasSelfRenderAd(Activity activity, String position, AdSelfRenderListener listener);
 
     /**
      * 请求插屏广告
@@ -65,7 +66,7 @@ public interface AdManager {
      * @param position 位置code
      * @param listener 回到
      */
-    void loadMidasInteractionAd(Activity activity, String position, InteractionListener listener);
+    void loadMidasInteractionAd(Activity activity, String position, AdInteractionListener listener);
 
     /**
      * 请求原生广告
@@ -74,5 +75,5 @@ public interface AdManager {
      * @param width 广告宽度（dp）
      * @param listener 回调
      */
-    void loadMidasNativeTemplateAd(Activity activity, String position, float width, NativeTemplateListener listener);
+    void loadMidasNativeTemplateAd(Activity activity, String position, float width, AdNativeTemplateListener listener);
 }

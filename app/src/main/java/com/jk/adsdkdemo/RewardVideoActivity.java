@@ -14,8 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.admanager.AdManager;
-import com.xnad.sdk.ad.listener.VideoAdListener;
+import com.xnad.sdk.ad.outlistener.AdFullScreenVideoListener;
 import com.jk.adsdkdemo.utils.LogUtils;
+import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
 
 /**
  * 激励视频页面<p>
@@ -48,21 +49,16 @@ public class RewardVideoActivity extends AppCompatActivity implements View.OnCli
 
         preloadingAd = findViewById(R.id.button_preloading_ad);
         preloadingAd.setOnClickListener(this);
-//        loadSplashAd("click_virus_killing_ad");
+//        loadRewardVideoAd("click_virus_killing_ad");
     }
 
     /**
      * 获取视频广告并加载
      */
-    private void loadSplashAd(String position) {
+    private void loadRewardVideoAd(String position) {
         // cp_ad_1
         splashContainer.removeAllViews();
-        MidasAdSdk.getAdsManger().loadMidasRewardVideoAd(this, position, "user123", 1,  "金币哈哈哈", 3, new VideoAdListener<AdInfo>() {
-
-            @Override
-            public void onVideoResume(AdInfo info) {
-
-            }
+        MidasAdSdk.getAdsManger().loadMidasRewardVideoAd(this, position, "user123", 1,  "金币哈哈哈", 3, new AdRewardVideoListener<AdInfo>() {
 
             @Override
             public void onVideoRewardVerify(AdInfo info, boolean rewardVerify, int rewardAmount, String rewardName) {
@@ -71,7 +67,7 @@ public class RewardVideoActivity extends AppCompatActivity implements View.OnCli
 
             @Override
             public void onVideoComplete(AdInfo info) {
-
+                LogUtils.d(TAG, "-----onVideoComplete-----");
             }
 
 
@@ -135,7 +131,7 @@ public class RewardVideoActivity extends AppCompatActivity implements View.OnCli
                 preloadingSplashAd(positionEdit.getText().toString().trim());
                 break;
             case R.id.video_refresh:
-                loadSplashAd(positionEdit.getText().toString().trim());
+                loadRewardVideoAd(positionEdit.getText().toString().trim());
                 break;
             default:
                 break;

@@ -15,12 +15,13 @@ import com.xnad.sdk.ad.factory.RequestManagerFactory;
 import com.xnad.sdk.ad.listener.AdBasicListener;
 import com.xnad.sdk.ad.listener.AdPreloadingListener;
 import com.xnad.sdk.ad.listener.AdRequestListener;
-import com.xnad.sdk.ad.listener.AdSplashListener;
-import com.xnad.sdk.ad.listener.InteractionListener;
+import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
+import com.xnad.sdk.ad.outlistener.AdSplashListener;
+import com.xnad.sdk.ad.outlistener.AdInteractionListener;
 import com.xnad.sdk.ad.listener.LoopAdListener;
-import com.xnad.sdk.ad.listener.NativeTemplateListener;
-import com.xnad.sdk.ad.listener.SelfRenderAdListener;
-import com.xnad.sdk.ad.listener.VideoAdListener;
+import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
+import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
+import com.xnad.sdk.ad.outlistener.AdFullScreenVideoListener;
 import com.xnad.sdk.bean.MidasConfigBean;
 import com.xnad.sdk.config.AdsConfig;
 import com.xnad.sdk.config.listener.ConfigListener;
@@ -131,7 +132,7 @@ public class MidasAdManger implements AdManager {
     }
 
     @Override
-    public void loadMidasRewardVideoAd(Activity activity, String position, String userId, int orientation, String rewardName, int rewardAmount, VideoAdListener listener) {
+    public void loadMidasRewardVideoAd(Activity activity, String position, String userId, int orientation, String rewardName, int rewardAmount, AdRewardVideoListener listener) {
         AdInfo adInfo = new AdInfo();
         adInfo.setAdType(Constants.AdType.REWARD_VIDEO_TYPE);
         MidasRewardVideoAd midasAdEntity = new MidasRewardVideoAd();
@@ -156,7 +157,7 @@ public class MidasAdManger implements AdManager {
     }
 
     @Override
-    public void loadMidasFullScreenVideoAd(Activity activity, String position, VideoAdListener listener) {
+    public void loadMidasFullScreenVideoAd(Activity activity, String position, AdFullScreenVideoListener listener) {
         mAdListener = listener;
         AdInfo adInfo = new AdInfo();
         adInfo.setAdType(Constants.AdType.FULL_SCREEN_VIDEO_TYPE);
@@ -176,7 +177,7 @@ public class MidasAdManger implements AdManager {
     }
 
     @Override
-    public void loadMidasSelfRenderAd(Activity activity, String position, SelfRenderAdListener listener) {
+    public void loadMidasSelfRenderAd(Activity activity, String position, AdSelfRenderListener listener) {
         mAdListener = listener;
         AdInfo adInfo = new AdInfo();
         adInfo.setAdType(Constants.AdType.SELF_RENDER);
@@ -196,7 +197,7 @@ public class MidasAdManger implements AdManager {
     }
 
     @Override
-    public void loadMidasInteractionAd(Activity activity, String position, InteractionListener listener) {
+    public void loadMidasInteractionAd(Activity activity, String position, AdInteractionListener listener) {
         mAdListener = listener;
         AdInfo adInfo = new AdInfo();
         adInfo.setAdType(Constants.AdType.INTERACTION_TYPE);
@@ -216,7 +217,7 @@ public class MidasAdManger implements AdManager {
     }
 
     @Override
-    public void loadMidasNativeTemplateAd(Activity activity, String position, float width, NativeTemplateListener listener) {
+    public void loadMidasNativeTemplateAd(Activity activity, String position, float width, AdNativeTemplateListener listener) {
         mAdListener = listener;
         mActivity = activity;
         AdInfo adInfo = new AdInfo();
