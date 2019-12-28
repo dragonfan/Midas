@@ -16,6 +16,7 @@ android {
         targetSdkVersion project.ext.targetSdkVersion
         versionCode project.ext.versionCode
         versionName project.ext.versionName
+        buildConfigField("String", "API_DOMAIN_HOST", API_DOMAIN_HOST)
     }
 
     buildTypes {

@@ -2,6 +2,8 @@ package com.xnad.sdk.http;
 
 import android.os.Handler;
 
+import com.xnad.sdk.BuildConfig;
+
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -40,28 +42,20 @@ public class OkHttpHelp {
                 .build();
     }
 
-
-    /**
-     * 请求域名
-     */
-    String baseUrl = Api.URL_TEST.APP_WEATHER_DOMAIN;
-
-
     private Handler mHandler = new Handler();
 
     /**
      * 发送 POST JSON 请求
      *
-     * @param requestUrl  请求路径
+     * @param suffix  请求地址后缀
      * @param requestJson 请求json 参数
      * @param callback    回调
      */
 
-    public void postJson(String requestUrl, String requestJson, HttpCallBack callback) {
+    public void postJson(String suffix, String requestJson, HttpCallBack callback) {
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), requestJson);
-
         Request request = new Request.Builder()
-                .url(baseUrl + requestUrl)
+                .url(BuildConfig.API_DOMAIN_HOST + suffix)
                 .post(requestBody)
                 .build();
         //创建/Call

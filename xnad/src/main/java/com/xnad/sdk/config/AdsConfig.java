@@ -3,18 +3,17 @@ package com.xnad.sdk.config;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.xnad.sdk.BuildConfig;
 import com.xnad.sdk.MidasAdSdk;
-import com.xnad.sdk.http.bean.BaseResponse;
 import com.xnad.sdk.bean.MidasConfigBean;
 import com.xnad.sdk.config.listener.ConfigListener;
 import com.xnad.sdk.constant.Constants;
-import com.xnad.sdk.http.Api;
 import com.xnad.sdk.http.OkHttpHelp;
+import com.xnad.sdk.http.bean.BaseResponse;
 import com.xnad.sdk.utils.LogUtils;
 import com.xnad.sdk.utils.StatisticUtils;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -65,7 +64,7 @@ public class AdsConfig {
         String requstData = mGson.toJson(requestParams);
         LogUtils.d(TAG, "requstData->" + requstData);
 
-        OkHttpHelp.getInstance().postJson(Api.STRATEGY_INFO, requstData, new OkHttpHelp.HttpCallBack() {
+        OkHttpHelp.getInstance().postJson("pizarroadsenseapi/ads/strategyInfo", requstData, new OkHttpHelp.HttpCallBack() {
             @Override
             public void onFailure(int errorCode) {
 
