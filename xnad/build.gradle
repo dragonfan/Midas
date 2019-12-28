@@ -17,6 +17,9 @@ android {
         versionCode project.ext.versionCode
         versionName project.ext.versionName
         buildConfigField("String", "API_DOMAIN_HOST", API_DOMAIN_HOST)
+        ndk {
+            abiFilters "armeabi","x86"
+        }
     }
 
     buildTypes {

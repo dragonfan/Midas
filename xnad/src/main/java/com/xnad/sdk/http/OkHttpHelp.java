@@ -24,6 +24,7 @@ import okhttp3.Response;
  * Company: @小牛科技
  * Email:zhoutao@xiaoniu.com
  * te Comments:
+ *
  * @author zhoutao
  */
 public class OkHttpHelp {
@@ -47,7 +48,7 @@ public class OkHttpHelp {
     /**
      * 发送 POST JSON 请求
      *
-     * @param suffix  请求地址后缀
+     * @param suffix      请求地址后缀
      * @param requestJson 请求json 参数
      * @param callback    回调
      */
@@ -65,8 +66,11 @@ public class OkHttpHelp {
             call.enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-                    mHandler.post(() -> {
-                        callback.onFailure(500);
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            callback.onFailure(500);
+                        }
                     });
                 }
 
@@ -76,8 +80,11 @@ public class OkHttpHelp {
                         if (response.code() == 200) {
                             try {
                                 String responseData = response.body().string();
-                                mHandler.post(() -> {
-                                    callback.onResponse(responseData);
+                                mHandler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        callback.onResponse(responseData);
+                                    }
                                 });
 
                                 return;
@@ -85,13 +92,19 @@ public class OkHttpHelp {
                             } catch (Exception e) {
                             }
                         }
-                        mHandler.post(() -> {
-                            callback.onFailure(response.code());
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                callback.onFailure(response.code());
+                            }
                         });
-                    } catch (Exception e) {
 
-                        mHandler.post(() -> {
-                            callback.onFailure(response.code());
+                    } catch (Exception e) {
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                callback.onFailure(response.code());
+                            }
                         });
 
                     }
