@@ -8,7 +8,7 @@ android {
         minSdkVersion 18
         targetSdkVersion 28
         versionCode 2
-        versionName "2.0"
+        versionName "1.0"
     }
 
     //Invoke-customs are only supported starting with Android O (--min-api 26) Message{kind=ERROR,
