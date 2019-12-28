@@ -264,7 +264,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
     }
 
     @Override
-    protected void requestSelfRenderAd(Activity activity, AdInfo info, AdRequestListener listener, AdSelfRenderListener adListener) {
+    protected void requestSelfRenderAd(Activity activity, AdInfo info, AdRequestListener listener, AdSelfRenderListener adSelfRenderListener) {
         MidasSelfRenderAd midasSelfRenderAd = (MidasSelfRenderAd) info.getMidasAd();
         //step1:初始化sdk
         TTAdManager ttAdManager = TTAdManagerHolder.get();
@@ -310,8 +310,8 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                 }
 
                 midasSelfRenderAd.setTtFeedAd(ttFeedAd);
-                if (adListener != null) {
-                    adListener.adSuccess(info);
+                if (adSelfRenderListener != null) {
+                    adSelfRenderListener.adSuccess(info);
                 }
             }
         });

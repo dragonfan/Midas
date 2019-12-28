@@ -17,7 +17,6 @@ import com.xnad.sdk.ad.entity.MidasNativeTemplateAd;
 import com.xnad.sdk.ad.entity.MidasSelfRenderAd;
 import com.xnad.sdk.ad.listener.AdBasicListener;
 import com.xnad.sdk.ad.listener.AdRequestListener;
-import com.xnad.sdk.ad.listener.BindViewListener;
 import com.xnad.sdk.ad.outlistener.AdFullScreenVideoListener;
 import com.xnad.sdk.ad.outlistener.AdInteractionListener;
 import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
@@ -109,31 +108,47 @@ public abstract class SdkRequestManager implements AdRequestManager {
 
     /**
      * 自渲染广告回调中间层
-     * @param info
+     * @param adInfo
      */
-    private void bindSelfRenderAdListener(AdInfo info) {
-        MidasSelfRenderAd midasSelfRenderAd = (MidasSelfRenderAd) info.getMidasAd();
-        midasSelfRenderAd.setBindViewListener(new BindViewListener() {
-
+    private void bindSelfRenderAdListener(AdInfo adInfo) {
+        MidasSelfRenderAd midasSelfRenderAd = (MidasSelfRenderAd) adInfo.getMidasAd();
+        midasSelfRenderAd.setBindViewListener(new AdOutChargeListener<AdInfo>(){
             @Override
-            public void adClose() {
-                StatisticUtils.advertisingClose(info,intervalTime);
+            public void adSuccess(AdInfo info) {
+                if (midasSelfRenderAd.getAdOutChargeListener() != null) {
+                    midasSelfRenderAd.getAdOutChargeListener().adSuccess(adInfo);
+                }
             }
 
             @Override
-            public void adExposed() {
-                if (midasSelfRenderAd.getSelfRenderChargeListener() != null) {
-                    midasSelfRenderAd.getSelfRenderChargeListener().adExposed(info);
+            public void adError(AdInfo info, int errorCode, String errorMsg) {
+                if (midasSelfRenderAd.getAdOutChargeListener() != null) {
+                    midasSelfRenderAd.getAdOutChargeListener().adError(adInfo, errorCode, errorMsg);
                 }
-                advertisingOfferShow(info);
             }
 
             @Override
-            public void adClicked() {
-                if (midasSelfRenderAd.getSelfRenderChargeListener() != null) {
-                    midasSelfRenderAd.getSelfRenderChargeListener().adClicked(info);
+            public void adExposed(AdInfo info) {
+                if (midasSelfRenderAd.getAdOutChargeListener() != null) {
+                    midasSelfRenderAd.getAdOutChargeListener().adExposed(adInfo);
                 }
-                StatisticUtils.advertisingClick(info,intervalTime);
+                advertisingOfferShow(adInfo);
+            }
+
+            @Override
+            public void adClicked(AdInfo info) {
+                if (midasSelfRenderAd.getAdOutChargeListener() != null) {
+                    midasSelfRenderAd.getAdOutChargeListener().adClicked(adInfo);
+                }
+                StatisticUtils.advertisingClick(adInfo,intervalTime);
+            }
+
+            @Override
+            public void adClose(AdInfo info) {
+                if (midasSelfRenderAd.getAdOutChargeListener() != null) {
+                    midasSelfRenderAd.getAdOutChargeListener().adClose(adInfo);
+                }
+                StatisticUtils.advertisingClose(adInfo,intervalTime);
             }
         });
     }

@@ -11,18 +11,17 @@ import com.xnad.sdk.ad.entity.MidasSelfRenderAd;
 import com.xnad.sdk.ad.entity.MidasSplashAd;
 import com.xnad.sdk.ad.factory.RequestManagerFactory;
 import com.xnad.sdk.ad.listener.AdBasicListener;
-import com.xnad.sdk.ad.listener.AdPreloadingListener;
 import com.xnad.sdk.ad.listener.AdRequestListener;
-import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
-import com.xnad.sdk.ad.outlistener.AdSplashListener;
-import com.xnad.sdk.ad.outlistener.AdInteractionListener;
 import com.xnad.sdk.ad.listener.LoopAdListener;
-import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
-import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
 import com.xnad.sdk.ad.outlistener.AdFullScreenVideoListener;
+import com.xnad.sdk.ad.outlistener.AdInteractionListener;
+import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
+import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
+import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
+import com.xnad.sdk.ad.outlistener.AdSplashListener;
 import com.xnad.sdk.bean.MidasConfigBean;
-import com.xnad.sdk.config.ErrorCode;
 import com.xnad.sdk.config.Constants;
+import com.xnad.sdk.config.ErrorCode;
 import com.xnad.sdk.http.ApiProvider;
 import com.xnad.sdk.http.callback.HttpCallback;
 import com.xnad.sdk.utils.CodeFactory;
@@ -57,10 +56,6 @@ public class MidasAdManger implements AdManager {
      */
     private AdBasicListener mAdListener;
 
-    /**
-     * 广告预加载监听器
-     */
-    private AdPreloadingListener mAdPreloadingListener;
 
     /**
      * 请求方式：0 - SDK 1 - API
@@ -78,28 +73,16 @@ public class MidasAdManger implements AdManager {
             LogUtils.w(TAG, "回传--->请求第一个广告失败");
 
             if (adsInfoslist==null||adsInfoslist.size()==0) {
-                if (adInfo.isPreload()) {
-                    if (mAdPreloadingListener != null) {
-                        mAdPreloadingListener.adError(adInfo, errorCode, errorMsg);
-                    }
-                } else {
-                    if (mAdListener != null) {
-                        mAdListener.adError(adInfo, errorCode, errorMsg);
-                    }
+                if (mAdListener != null) {
+                    mAdListener.adError(adInfo, errorCode, errorMsg);
                 }
 
                 return;
             }
             MidasConfigBean.AdStrategyBean mAdsInfosBean = adsInfoslist.remove(0);
             if (mAdsInfosBean == null) {
-                if (adInfo.isPreload()) {
-                    if (mAdPreloadingListener != null) {
-                        mAdPreloadingListener.adError(adInfo, errorCode, errorMsg);
-                    }
-                } else {
-                    if (mAdListener != null) {
-                        mAdListener.adError(adInfo, errorCode, errorMsg);
-                    }
+                if (mAdListener != null) {
+                    mAdListener.adError(adInfo, errorCode, errorMsg);
                 }
                 return;
             }

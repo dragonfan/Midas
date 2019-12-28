@@ -8,14 +8,13 @@ import com.bytedance.sdk.openadsdk.TTAdConstant;
 import com.bytedance.sdk.openadsdk.TTFeedAd;
 import com.bytedance.sdk.openadsdk.TTImage;
 import com.bytedance.sdk.openadsdk.TTNativeAd;
-import com.xnad.sdk.ad.listener.BindViewListener;
-import com.xnad.sdk.ad.listener.SelfRenderChargeListener;
-import com.xnad.sdk.config.Constants;
 import com.qq.e.ads.nativ.NativeADEventListener;
 import com.qq.e.ads.nativ.NativeUnifiedADData;
 import com.qq.e.ads.nativ.widget.NativeAdContainer;
 import com.qq.e.comm.constants.AdPatternType;
 import com.qq.e.comm.util.AdError;
+import com.xnad.sdk.ad.outlistener.AdOutChargeListener;
+import com.xnad.sdk.config.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,9 +35,9 @@ public class MidasSelfRenderAd extends MidasAd{
 
     private ViewGroup container;
     /**
-     * 计费回调（埋点用）
+     * 外部计费回调（埋点用）
      */
-    private SelfRenderChargeListener selfRenderChargeListener;
+    private AdOutChargeListener adOutChargeListener;
 
     /**
      * 穿山甲自渲染信息流广告
@@ -51,7 +50,7 @@ public class MidasSelfRenderAd extends MidasAd{
     /**
      * 绑定view监听器
      */
-    private BindViewListener bindViewListener;
+    private AdOutChargeListener bindViewListener;
 
     public TTFeedAd getTtFeedAd() {
         return ttFeedAd;
@@ -61,12 +60,16 @@ public class MidasSelfRenderAd extends MidasAd{
         this.ttFeedAd = ttFeedAd;
     }
 
-    public SelfRenderChargeListener getSelfRenderChargeListener() {
-        return selfRenderChargeListener;
+    public AdOutChargeListener getAdOutChargeListener() {
+        return adOutChargeListener;
     }
 
-    public void bindViewToAdListener(Context context, ViewGroup viewGroup, List<View> clickViewList, List<View> creativeViewList, SelfRenderChargeListener selfRenderChargeListener) {
-        this.selfRenderChargeListener = selfRenderChargeListener;
+    public void setAdOutChargeListener(AdOutChargeListener adOutChargeListener) {
+        this.adOutChargeListener = adOutChargeListener;
+    }
+
+    public void bindViewToAdListener(Context context, ViewGroup viewGroup, List<View> clickViewList, List<View> creativeViewList, AdOutChargeListener adOutChargeListener) {
+        this.adOutChargeListener = adOutChargeListener;
         bindAd(context, viewGroup, clickViewList, creativeViewList);
     }
 
@@ -86,11 +89,7 @@ public class MidasSelfRenderAd extends MidasAd{
         this.nativeUnifiedADData = nativeUnifiedADData;
     }
 
-    public BindViewListener getBindViewListener() {
-        return bindViewListener;
-    }
-
-    public void setBindViewListener(BindViewListener bindViewListener) {
+    public void setBindViewListener(AdOutChargeListener bindViewListener) {
         this.bindViewListener = bindViewListener;
     }
 
@@ -99,28 +98,26 @@ public class MidasSelfRenderAd extends MidasAd{
             if (ttFeedAd == null) {
                 return;
             }
-            if (selfRenderChargeListener == null) {
-                return;
-            }
             ttFeedAd.registerViewForInteraction(viewGroup, clickViewList, creativeViewList, new TTNativeAd.AdInteractionListener() {
                 @Override
                 public void onAdClicked(View view, TTNativeAd ttNativeAd) {
                     if (bindViewListener != null) {
-                        bindViewListener.adClicked();
+                        bindViewListener.adSuccess(null);
+                        bindViewListener.adClicked(null);
                     }
                 }
 
                 @Override
                 public void onAdCreativeClick(View view, TTNativeAd ttNativeAd) {
                     if (bindViewListener != null) {
-                        bindViewListener.adClicked();
+                        bindViewListener.adClicked(null);
                     }
                 }
 
                 @Override
                 public void onAdShow(TTNativeAd ttNativeAd) {
                     if (bindViewListener != null) {
-                        bindViewListener.adExposed();
+                        bindViewListener.adExposed(null);
                     }
                 }
             });
@@ -136,20 +133,23 @@ public class MidasSelfRenderAd extends MidasAd{
                 @Override
                 public void onADExposed() {
                     if (bindViewListener != null) {
-                        bindViewListener.adExposed();
+                        bindViewListener.adSuccess(null);
+                        bindViewListener.adExposed(null);
                     }
                 }
 
                 @Override
                 public void onADClicked() {
                     if (bindViewListener != null) {
-                        bindViewListener.adClicked();
+                        bindViewListener.adClicked(null);
                     }
                 }
 
                 @Override
                 public void onADError(AdError adError) {
-
+                    if (bindViewListener != null) {
+                        bindViewListener.adError(null, adError.getErrorCode(), adError.getErrorMsg());
+                    }
                 }
 
                 @Override
@@ -313,6 +313,24 @@ public class MidasSelfRenderAd extends MidasAd{
             return 4;
         } else {
             return -1;
+        }
+    }
+
+    /**
+     * 优量汇广告用到
+     */
+    public void resume(){
+        if (nativeUnifiedADData != null) {
+            nativeUnifiedADData.resume();
+        }
+    }
+
+    /**
+     * 优量汇广告用到
+     */
+    public void destroy(){
+        if (nativeUnifiedADData != null) {
+            nativeUnifiedADData.destroy();
         }
     }
 }

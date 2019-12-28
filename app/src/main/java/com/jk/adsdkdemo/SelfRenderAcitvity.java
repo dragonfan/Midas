@@ -16,6 +16,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.bumptech.glide.Glide;
 import com.jk.adsdkdemo.utils.LogUtils;
 import com.qq.e.ads.nativ.MediaView;
@@ -23,14 +25,12 @@ import com.qq.e.ads.nativ.widget.NativeAdContainer;
 import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.entity.MidasSelfRenderAd;
-import com.xnad.sdk.ad.listener.SelfRenderChargeListener;
+import com.xnad.sdk.ad.outlistener.AdOutChargeListener;
 import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
 import com.xnad.sdk.config.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * @ProjectName: ${PROJECT_NAME}
@@ -72,8 +72,26 @@ public class SelfRenderAcitvity extends AppCompatActivity implements View.OnClic
         spinner.setAdapter(adapter);
     }
 
-    View adView;
     String position = null;
+
+    //在生命周期调用相应的方法
+    MidasSelfRenderAd midasSelfRenderAd;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (midasSelfRenderAd != null) {
+            midasSelfRenderAd.resume();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (midasSelfRenderAd != null) {
+            midasSelfRenderAd.destroy();
+        }
+    }
 
     @Override
     public void onClick(View view) {
@@ -124,6 +142,7 @@ public class SelfRenderAcitvity extends AppCompatActivity implements View.OnClic
         Button btnPause;
         Button btnStop;
         CheckBox btnMute;
+        FrameLayout customContainer;
 
         View view = LayoutInflater.from(this).inflate(R.layout.news_item_ylh, null);
         mediaView = view.findViewById(R.id.gdt_media_view);
@@ -140,6 +159,7 @@ public class SelfRenderAcitvity extends AppCompatActivity implements View.OnClic
         btnPause = view.findViewById(R.id.btn_pause);
         btnStop = view.findViewById(R.id.btn_stop);
         btnMute = view.findViewById(R.id.btn_mute);
+        customContainer = view.findViewById(R.id.custom_container);
 
         Glide.with(this).load(midasSelfRenderAd.getIconUrl()).into(logo);
         name.setText(midasSelfRenderAd.getTitle());
@@ -155,22 +175,30 @@ public class SelfRenderAcitvity extends AppCompatActivity implements View.OnClic
             mediaView.setVisibility(View.INVISIBLE);
             btnsContainer.setVisibility(View.GONE);
         }
+        //优量汇点击的时间一定要在NativeAdContainer容器里面
         List<View> clickableViews = new ArrayList<>();
+        clickableViews.add(customContainer);
         clickableViews.add(download);
         //优量汇的viewGroup一定要是NativeAdContainer对象
-        midasSelfRenderAd.bindViewToAdListener(this, container, clickableViews, null, new SelfRenderChargeListener() {
+        midasSelfRenderAd.bindViewToAdListener(this, container, clickableViews, null, new AdOutChargeListener<AdInfo>(){
+
             @Override
-            public void adCreativeClick(Object info) {
-                LogUtils.e("adCreativeClick");
+            public void adSuccess(AdInfo info) {
+                LogUtils.e("adSuccess");
             }
 
             @Override
-            public void adExposed(Object info) {
+            public void adError(AdInfo info, int errorCode, String errorMsg) {
+                LogUtils.e("adError");
+            }
+
+            @Override
+            public void adExposed(AdInfo info) {
                 LogUtils.e("adExposed");
             }
 
             @Override
-            public void adClicked(Object info) {
+            public void adClicked(AdInfo info) {
                 LogUtils.e("adClicked");
             }
         });
@@ -217,11 +245,16 @@ public class SelfRenderAcitvity extends AppCompatActivity implements View.OnClic
 //            creativeViewList.add(convertView);
         //重要! 这个涉及到广告计费，必须正确调用。convertView必须使用ViewGroup。
 
-        midasSelfRenderAd.bindViewToAdListener(this, container, clickViewList, creativeViewList, new SelfRenderChargeListener<AdInfo>() {
+        midasSelfRenderAd.bindViewToAdListener(this, container, clickViewList, creativeViewList, new AdOutChargeListener<AdInfo>(){
 
             @Override
-            public void adCreativeClick(AdInfo info) {
-                LogUtils.e("adCreativeClick");
+            public void adSuccess(AdInfo info) {
+                LogUtils.e("adSuccess");
+            }
+
+            @Override
+            public void adError(AdInfo info, int errorCode, String errorMsg) {
+                LogUtils.e("adError");
             }
 
             @Override
