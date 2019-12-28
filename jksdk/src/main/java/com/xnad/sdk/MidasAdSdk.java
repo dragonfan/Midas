@@ -4,11 +4,9 @@ import android.content.Context;
 
 import com.xnad.sdk.ad.factory.MidasAdManagerFactory;
 import com.xnad.sdk.ad.listener.AdManager;
-import com.xnad.sdk.config.AdsConfig;
 import com.xnad.sdk.config.TTAdManagerHolder;
 import com.xnad.sdk.constant.Constants;
 import com.xnad.sdk.utils.AppUtils;
-import com.xnad.sdk.utils.LogUtils;
 import com.xnad.sdk.utils.SpUtils;
 import com.xnad.sdk.utils.StatisticUtils;
 
@@ -60,7 +58,7 @@ public final class MidasAdSdk {
         //初始化牛数
         StatisticUtils.init(context, channel, productId, serverUrl);
 
-        //首次上报IMEI
+        //首次上报imei
         boolean isReport = SpUtils.getBoolean(Constants.FIRST_REPORT_IMEI, false);
         if (!isReport) {
             StatisticUtils.setImei(AppUtils.getIMEI(mContext));
@@ -81,19 +79,11 @@ public final class MidasAdSdk {
      * @param imei
      */
     public static void setImei(String imei) {
-        boolean isReport = SpUtils.getBoolean(Constants.FIRST_REPORT_IMEI, false);
+        boolean isReport = SpUtils.getBoolean(Constants.AGAIN_REPORT_IMEI, false);
         if (!isReport) {
             StatisticUtils.setImei(imei);
-            SpUtils.putBoolean(Constants.FIRST_REPORT_IMEI, true);
+            SpUtils.putBoolean(Constants.AGAIN_REPORT_IMEI, true);
         }
-    }
-
-
-    /**
-     * 设置第一次激活时间
-     */
-    public static void setActivationTime(long time) {
-        AdsConfig.setUserActive(time);
     }
 
     public static boolean isInit() {

@@ -1,7 +1,5 @@
 package com.xnad.sdk.constant;
 
-import android.content.Context;
-
 public class Constants {
 
     /**
@@ -186,46 +184,12 @@ public class Constants {
 
 
 
-    /**
-     * 渠道
-     */
-    public static String marketName = "";
-    /**
-     * 渠道
-     */
-    public static String adPositionId = "";
-    /**
-     * 用户激活时间
-     */
-    public static long userActive = -1;
-    /**
-     * 纬度
-     */
-    public static String latitude = "";
-    /**
-     * 经度
-     */
-    public static String longitude = "";
-    /**
-     * 省份
-     */
-    public static String province = "";
-    /**
-     * 城市
-     */
-    public static String city = "";
+
+
     /**
      * sdk版本code
      */
     public static int version_code = 1;
-    /**
-     * 全局context
-     */
-    public static Context mContext;
-
-
-    public static final String CHANNEL_TEST = "wt_test";
-    public static final String CHANNEL_RELEASE = "wt_guanwang";
 
 
     /**

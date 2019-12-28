@@ -135,29 +135,4 @@ public class AdsConfig {
     }
 
 
-
-
-    /**
-     * 获取用户激活时间
-     *
-     * @return
-     */
-    public static long getUserActive() {
-        if (Constants.userActive > 0) {
-            return Constants.userActive;
-        }
-        Constants.userActive = SpUtils.getLong(Constants.SPUtils.USER_ACTIVE, -1);
-        return Constants.userActive;
-    }
-
-    /**
-     * 设置用户激活时间
-     *
-     * @param userActive
-     */
-    public static void setUserActive(long userActive) {
-        SpUtils.putLong(Constants.SPUtils.USER_ACTIVE, userActive);
-        Constants.userActive = userActive;
-    }
-
 }
