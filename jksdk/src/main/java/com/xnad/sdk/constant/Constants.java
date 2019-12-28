@@ -62,74 +62,6 @@ public class Constants {
         String YouLiangHui = "youlianghui";
     }
 
-    /**
-     * 广告样式
-     */
-    public interface AdStyle {
-
-        /**
-         * 模板插屏
-         */
-        String CP = "CP";
-        /**
-         * 自渲染全屏插屏
-         */
-        String FULLSCREEN_CP_01 = "FULLSCREEN_CP_01";
-        /**
-         * 自定义插屏_01
-         */
-        String CUSTOM_CP = "CUSTOM_CP_01";
-        /**
-         * 开屏
-         */
-        String OPEN_ADS = "OPEN_ADS";
-        /**
-         * 大图_带icon文字
-         */
-        String DATU_ICON_TEXT = "DATU_ICON_TEXT";
-        /**
-         * 全屏视频
-         */
-        String FULL_SCREEN_VIDEO = "FULL_SCREEN_VIDEO";
-        /**
-         * 激励视频
-         */
-        String REWARD_VIDEO = "REWARD_VIDEO";
-        /**
-         * 大图_带icon文字按钮居中
-         */
-        String DATU_ICON_TEXT_BUTTON_CENTER = "DATU_ICON_TEXT_BUTTON_CENTER";
-        /**
-         * 大图_带icon文字按钮
-         */
-        String DATU_ICON_TEXT_BUTTON = "DATU_ICON_TEXT_BUTTON";
-        /**
-         * 大图_下载播放按钮
-         */
-        String BIG_IMG_BUTTON = "BIG_IMG_PLAY_BUTTON";
-        /**
-         * 大图_下载播放按钮_跑马灯
-         */
-        String BIG_IMG_BUTTON_LAMP = "BIG_IMG_PLAY_BUTTON_LAMP";
-        /**
-         * 假视频大图_01
-         */
-        String FAKE_VIDEO_IARGE_IMAGE = "FAKE_VIDEO_IARGE_IMAGE";
-        /**
-         * 外部弹窗大图广告_01
-         */
-        String EXTERNAL_DIALOG_BIG_IMAGE_01 = "EXTERNAL_DIALOG_BIG_IMAGE_01";
-        /**
-         * 外部弹窗大图广告_02
-         */
-        String EXTERNAL_DIALOG_BIG_IMAGE_02 = "EXTERNAL_DIALOG_BIG_IMAGE_02";
-        /**
-         * 信息流模板广告
-         */
-        String FEED_TEMPLATE = "FEED_TEMPLATE";
-    }
-
-
     public interface SPUtils {
         /**
          * midas广告前缀
@@ -179,7 +111,6 @@ public class Constants {
          */
         String CHJ_APPNAME = "AD_SDK_CHJ_APPNAME";
     }
-
 
 
 

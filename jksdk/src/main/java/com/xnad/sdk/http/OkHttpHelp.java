@@ -1,18 +1,12 @@
 package com.xnad.sdk.http;
 
 import android.os.Handler;
-import android.os.Message;
-import android.text.TextUtils;
-import android.util.Log;
-
-import com.xnad.sdk.http.Api;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -20,25 +14,19 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
- * Desc:
+ * Desc:网络请求工具类
  * <p>
  * Author: ZhouTao
  * Date: 2019/12/26
  * Copyright: Copyright (c) 2016-2020
  * Company: @小牛科技
  * Email:zhoutao@xiaoniu.com
- * Update Comments:
- *
+ * te Comments:
  * @author zhoutao
  */
 public class OkHttpHelp {
     private static final OkHttpHelp ourInstance = new OkHttpHelp();
-
     OkHttpClient mOkHttpClient;
-    /**
-     * 请求域名
-     */
-    String baseUrl = Api.URL_TEST.APP_WEATHER_DOMAIN;
 
     public static OkHttpHelp getInstance() {
         return ourInstance;
@@ -51,6 +39,13 @@ public class OkHttpHelp {
                 .readTimeout(20, TimeUnit.SECONDS)
                 .build();
     }
+
+
+    /**
+     * 请求域名
+     */
+    String baseUrl = Api.URL_TEST.APP_WEATHER_DOMAIN;
+
 
     private Handler mHandler = new Handler();
 

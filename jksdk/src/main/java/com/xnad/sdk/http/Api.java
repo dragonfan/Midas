@@ -10,8 +10,6 @@ package com.xnad.sdk.http;
  */
 public interface Api {
 
-    String WEATHER_DOMAIN_NAME = "weather";
-
 
     String STRATEGY_INFO = "pizarroadsenseapi/ads/strategyInfo";
 

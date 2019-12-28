@@ -1,22 +1,25 @@
-package com.xnad.sdk.bean;
+package com.xnad.sdk.http.bean;
 
 
 
 import java.io.Serializable;
 
 /**
- * 代码描述<p>
+ * Desc:接口请求基础返回实体
+ * <p>
+ * Author: AnYaBo
+ * Date: 2019/12/23
+ * Copyright: Copyright (c) 2016-2022
+ * Company: @小牛科技
+ * Email:anyabo@xiaoniu.com
+ * Update Comments:
  *
- *     网络返回数据基类
- *
- * @author anhuiqing
- * @since 2019/3/30 18:10
+ * @author anyabo
  */
-
 public class BaseResponse<T> implements Serializable {
-    private int code;
-    private String msg;
-    private T data;
+    public int code;
+    public String msg;
+    public T data;
 
     public int getCode() {
         return code;

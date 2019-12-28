@@ -4,7 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.xnad.sdk.MidasAdSdk;
-import com.xnad.sdk.bean.BaseResponse;
+import com.xnad.sdk.http.bean.BaseResponse;
 import com.xnad.sdk.bean.MidasConfigBean;
 import com.xnad.sdk.config.listener.ConfigListener;
 import com.xnad.sdk.constant.Constants;
