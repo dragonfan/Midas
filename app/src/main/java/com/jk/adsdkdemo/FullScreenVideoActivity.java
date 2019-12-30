@@ -55,40 +55,41 @@ public class FullScreenVideoActivity extends AppCompatActivity implements View.O
     private void loadFullScreenVideoAd(String position) {
         // cold_kp 、hot_kp
         splashContainer.removeAllViews();
+        //传参，上下文和position（广告后台生成）
         AdParameter adParameter = new AdParameter.Builder(this, position)
                 .build();
         MidasAdSdk.getAdsManger().loadMidasFullScreenVideoAd(adParameter, new AdFullScreenVideoListener<AdInfo>() {
-
+            //广告播放完成回调
             @Override
             public void adVideoComplete(AdInfo info) {
                 LogUtils.d(TAG, "-----adVideoComplete-----");
             }
-
+            //广告跳过视频播放回调
             @Override
             public void adSkippedVideo(AdInfo info) {
                 LogUtils.d(TAG, "-----adSkippedVideo-----");
             }
-
+            //广告加载成功回调
             @Override
             public void adSuccess(AdInfo info) {
                 LogUtils.d(TAG, "-----adSuccess-----");
             }
-
+            //广告曝光回调
             @Override
             public void adExposed(AdInfo info) {
                 LogUtils.d(TAG, "-----adExposed-----");
             }
-
+            //广告点击回调
             @Override
             public void adClicked(AdInfo info) {
                 LogUtils.d(TAG, "-----adClicked-----");
             }
-
+            //广告关闭回调
             @Override
             public void adClose(AdInfo info) {
                 LogUtils.d(TAG, "-----adClose-----");
             }
-
+            //广告加载失败回调
             @Override
             public void adError(AdInfo info, int errorCode, String errorMsg) {
                 //显示错误信息，调试用

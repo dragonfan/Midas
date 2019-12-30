@@ -66,38 +66,38 @@ public class RewardVideoActivity extends AppCompatActivity implements View.OnCli
                 .setRewardAmount(3)
                 .build();
         MidasAdSdk.getAdsManger().loadMidasRewardVideoAd(adParameter, new AdRewardVideoListener<AdInfo>() {
-
+            //激励奖励回调
             @Override
             public void onVideoRewardVerify(AdInfo info, boolean rewardVerify, int rewardAmount, String rewardName) {
-                Toast.makeText(RewardVideoActivity.this, rewardName + rewardAmount, Toast.LENGTH_SHORT).show();
-            }
 
+            }
+            //视频播放完成回调
             @Override
             public void onVideoComplete(AdInfo info) {
                 LogUtils.d(TAG, "-----onVideoComplete-----");
             }
 
-
+            //加载广告成功回调
             @Override
             public void adSuccess(AdInfo info) {
                 LogUtils.d(TAG, "-----adSuccess-----");
             }
-
+            //曝光回调
             @Override
             public void adExposed(AdInfo info) {
                 LogUtils.d(TAG, "-----adExposed-----");
             }
-
+            //点击回调
             @Override
             public void adClicked(AdInfo info) {
                 LogUtils.d(TAG, "-----adClicked-----");
             }
-
+            //广告关闭回调
             @Override
             public void adClose(AdInfo info) {
                 LogUtils.d(TAG, "-----adClose-----");
             }
-
+            //广告加载失败回调
             @Override
             public void adError(AdInfo info, int errorCode, String errorMsg) {
                 LogUtils.d(TAG, "-----adError-----" + errorMsg);

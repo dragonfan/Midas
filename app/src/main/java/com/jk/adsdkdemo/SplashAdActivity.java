@@ -61,16 +61,18 @@ public class SplashAdActivity extends AppCompatActivity implements View.OnClickL
                 .setTimeOut(3000)
                 .build();
         MidasAdSdk.getAdsManger().loadMidasSplashAd(adParameter, new AdSplashListener<AdInfo>() {
+            //返回容器给到sdk（优量汇填充广告的方式）
             @Override
             public ViewGroup getViewGroup() {
                 return splashContainer;
             }
 
+            //广告加载成功回调
             @Override
             public void adSuccess(AdInfo info) {
                 LogUtils.d(TAG, "-----adSuccess-----");
                 stateTxt.setText("-----adSuccess-----");
-                //穿山甲广告
+                //穿山甲广告（穿山甲填充广告的方式）
                 if (Constants.AdSourceType.ChuanShanJia.equals(info.getMidasAd().getAdSource())) {
                     View view = info.getMidasAd().getAddView();
                     if (view != null) {
@@ -79,24 +81,24 @@ public class SplashAdActivity extends AppCompatActivity implements View.OnClickL
                     }
                 }
             }
-
+            //曝光回调
             @Override
             public void adExposed(AdInfo info) {
                 LogUtils.d(TAG, "-----adExposed-----");
                 stateTxt.setText("-----adExposed-----");
             }
-
+            //点击回调
             @Override
             public void adClicked(AdInfo info) {
                 LogUtils.d(TAG, "-----adClicked-----");
             }
-
+            //广告加载错误回调
             @Override
             public void adError(AdInfo info, int errorCode, String errorMsg) {
                 LogUtils.e(TAG, "-----adError-----" + errorMsg);
                 stateTxt.setText("errorCode:" + errorCode + " errorMsg:" + errorMsg);
             }
-
+            //广告关闭回调
             @Override
             public void adClose(AdInfo info) {
                 if (splashContainer != null) {

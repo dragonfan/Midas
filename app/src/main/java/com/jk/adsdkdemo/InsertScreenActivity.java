@@ -64,27 +64,28 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
         AdParameter adParameter = new AdParameter.Builder(this, position)
                 .build();
         MidasAdSdk.getAdsManger().loadMidasInteractionAd(adParameter, new AdInteractionListener<AdInfo>() {
+            //曝光回调
             @Override
             public void adExposed(AdInfo info) {
                 LogUtils.d(TAG, "-----adExposed-----");
             }
-
+            //点击回调
             @Override
             public void adClicked(AdInfo info) {
                 LogUtils.d(TAG, "-----adClicked-----");
             }
-
+            //广告加载成功回调
             @Override
             public void adSuccess(AdInfo info) {
                 LogUtils.d(TAG, "-----adSuccess-----");
                 statePoint.setText("state:adSuccess");
             }
-
+            //广告关闭回调
             @Override
             public void adClose(AdInfo info) {
                 LogUtils.d(TAG, "-----adClose-----");
             }
-
+            //广告加载失败回调
             @Override
             public void adError(AdInfo info, int errorCode, String errorMsg) {
                 LogUtils.d(TAG, "-----adError-----" + errorMsg);
