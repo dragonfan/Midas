@@ -20,7 +20,7 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 -keep public class com.xnad.sdk.entity.**{*;}
--keep public com.xnad.sdk.ad.outlistener.**{*;}
+-keep public interface com.xnad.sdk.ad.outlistener.**{*;}
 -keep class com.xnad.sdk.ad.MidasAdSdk{ *;}
 -keep class com.xnad.sdk.http.model.BaseResponse{ *;}
 -keep class com.xnad.sdk.config.AdParameter{ *;}
