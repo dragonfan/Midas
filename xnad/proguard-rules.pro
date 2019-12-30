@@ -61,39 +61,31 @@
 # 广告SDK 文件混淆
 -keepattributes *Annotation*
 -keep public class com.xnad.sdk.ad.entity.**{*;}
+#监听混淆
 -keep public interface com.xnad.sdk.ad.outlistener.**{*;}
 -keep public interface com.xnad.sdk.ad.listener.**{*;}
 -keep public interface com.xnad.sdk.ad.admanager.AdManager{*;}
 -keep class com.xnad.sdk.MidasAdSdk{ *;}
 -keep class com.xnad.sdk.ad.entity.AdInfo{ *;}
 -keep class com.xnad.sdk.http.model.BaseResponse{ *;}
--keep class com.xnad.sdk.config.AdParameter{ *;}
 -keep class com.xnad.sdk.config.ADConfigBuild{ *;}
 
+#加载广告可选参数混淆
+-keep class com.xnad.sdk.config.AdParameter{ *;}
 -keepattributes Exceptions,InnerClasses
 -keep class com.xnad.sdk.config.AdParameter$*{
 <fields>;
 <methods>;
 }
+#常量混淆
+-keep class com.xnad.sdk.config.Constants{ *;}
+-keepattributes Exceptions,InnerClasses
+-keep class com.xnad.sdk.config.Constants$*{
+<fields>;
+<methods>;
+}
 
 
-#====okhttp====
-#-dontwarn okhttp3.**
-#-keep class okhttp3.**{*;}
-#-keep interface okhttp3.**{*;}
-#
-#-keepattributes Signature
-#-keepattributes *Annotation*
-#-dontwarn com.squareup.okhttp.**
-#-keep class com.squareup.okhttp.**{*;}
-#-keep interface com.squareup.okhttp.**{*;}
-#
-##====okio====
-#-dontwarn java.nio.file.*
-#-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
-#-dontwarn okio.**
-#-keep class okio.**{*;}
-#-keep interface okio.**{*;}
 
 #====gson====
 -keep class sun.misc.Unsafe{*;}
