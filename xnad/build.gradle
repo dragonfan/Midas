@@ -43,8 +43,8 @@ android {
 }
 
 dependencies {
-    api fileTree(include: ['*.jar'], dir: 'libs')
-    api fileTree(include: ['*.aar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.aar'], dir: 'libs')
     //穿山甲 gif图片加载需要
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.6'
     implementation ('com.xiaoniu.statistic:NiuData:1.2.5-RC1'){changing = true}

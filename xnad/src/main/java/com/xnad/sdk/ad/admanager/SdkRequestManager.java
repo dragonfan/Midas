@@ -1,17 +1,9 @@
 package com.xnad.sdk.ad.admanager;
 
 import android.app.Activity;
-import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
-import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.entity.MidasNativeTemplateAd;
 import com.xnad.sdk.ad.entity.MidasSelfRenderAd;
@@ -25,7 +17,6 @@ import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
 import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
 import com.xnad.sdk.ad.outlistener.AdSplashListener;
 import com.xnad.sdk.config.Constants;
-import com.xnad.sdk.utils.LogUtils;
 import com.xnad.sdk.utils.StatisticUtils;
 
 /**
@@ -94,16 +85,16 @@ public abstract class SdkRequestManager implements AdRequestManager {
         if (url==null||url.length==0) {
             return;
         }
-        for (String s : url) {
-            Glide.with(MidasAdSdk.getContext())
-                    .load(s)
-                    .into(new SimpleTarget<Drawable>() {
-                        @Override
-                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                            LogUtils.e("cache success");
-                        }
-                    });
-        }
+//        for (String s : url) {
+//            Glide.with(MidasAdSdk.getContext())
+//                    .load(s)
+//                    .into(new SimpleTarget<Drawable>() {
+//                        @Override
+//                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+//                            LogUtils.e("cache success");
+//                        }
+//                    });
+//        }
     }
 
     /**

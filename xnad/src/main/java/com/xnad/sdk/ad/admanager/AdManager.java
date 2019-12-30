@@ -1,13 +1,11 @@
 package com.xnad.sdk.ad.admanager;
 
-import android.app.Activity;
-
-import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
-import com.xnad.sdk.ad.outlistener.AdSplashListener;
+import com.xnad.sdk.ad.outlistener.AdFullScreenVideoListener;
 import com.xnad.sdk.ad.outlistener.AdInteractionListener;
 import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
+import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
 import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
-import com.xnad.sdk.ad.outlistener.AdFullScreenVideoListener;
+import com.xnad.sdk.ad.outlistener.AdSplashListener;
 import com.xnad.sdk.config.AdParameter;
 
 /**

@@ -17,7 +17,6 @@ import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
 import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.entity.MidasNativeTemplateAd;
-import com.xnad.sdk.ad.listener.AdChargeListener;
 import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
 import com.jk.adsdkdemo.utils.LogUtils;
 import com.xnad.sdk.ad.outlistener.AdOutChargeListener;
