@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.text.TextUtils;
 
 import com.xnad.sdk.ad.entity.AdInfo;
+import com.xnad.sdk.ad.entity.AdStrategyBean;
 import com.xnad.sdk.ad.entity.MidasFullScreenVideoAd;
 import com.xnad.sdk.ad.entity.MidasInteractionAd;
 import com.xnad.sdk.ad.entity.MidasNativeTemplateAd;
@@ -44,7 +45,7 @@ import java.util.List;
 public class MidasAdManger implements AdManager {
     protected final String TAG = "MidasAdSdk-->";
 
-    private List<MidasConfigBean.AdStrategyBean> adsInfoslist = new ArrayList();
+    private List<AdStrategyBean> adsInfoslist = new ArrayList();
 
     public MidasAdManger() {
     }
@@ -81,7 +82,7 @@ public class MidasAdManger implements AdManager {
 
                 return;
             }
-            MidasConfigBean.AdStrategyBean mAdsInfosBean = adsInfoslist.remove(0);
+            AdStrategyBean mAdsInfosBean = adsInfoslist.remove(0);
             if (mAdsInfosBean == null) {
                 if (mAdListener != null) {
                     mAdListener.adError(adInfo, errorCode, errorMsg);
@@ -259,14 +260,14 @@ public class MidasAdManger implements AdManager {
 
             @Override
             public void onSuccess(int httpResponseCode, MidasConfigBean midasConfigBean) {
-                List<MidasConfigBean.AdStrategyBean> adStrategyBeans = midasConfigBean.getAdStrategy();
+                List<AdStrategyBean> adStrategyBeans = midasConfigBean.getAdStrategy();
                 if (adStrategyBeans==null || adStrategyBeans.size()==0) {
                     onFailure(httpResponseCode, ErrorCode.STRATEGY_DATA_EMPTY.errorCode
                             ,ErrorCode.STRATEGY_DATA_EMPTY.errorMsg);
                     return;
                 }
                 adsInfoslist.addAll(adStrategyBeans);
-                MidasConfigBean.AdStrategyBean mAdsInfoBean = adsInfoslist.remove(0);
+                AdStrategyBean mAdsInfoBean = adsInfoslist.remove(0);
                 if (mAdsInfoBean == null) {
                     onFailure(httpResponseCode, ErrorCode.STRATEGY_DATA_EMPTY.errorCode
                             ,ErrorCode.STRATEGY_DATA_EMPTY.errorMsg);
@@ -291,7 +292,7 @@ public class MidasAdManger implements AdManager {
      * @param adInfo
      * @param adsInfosBean
      */
-    public void againRequest(AdInfo adInfo, MidasConfigBean.AdStrategyBean adsInfosBean) {
+    public void againRequest(AdInfo adInfo, AdStrategyBean adsInfosBean) {
         if (adInfo == null) {
             adInfo = new AdInfo();
         }
