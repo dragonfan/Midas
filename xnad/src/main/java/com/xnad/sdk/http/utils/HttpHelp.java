@@ -5,6 +5,7 @@ import android.os.Handler;
 import com.google.gson.Gson;
 import com.google.gson.internal.$Gson$Types;
 import com.xnad.sdk.BuildConfig;
+import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.config.ErrorCode;
 import com.xnad.sdk.http.callback.HttpCallback;
 import com.xnad.sdk.http.model.BaseResponse;
@@ -64,7 +65,7 @@ public class HttpHelp {
         RequestBody requestBody = RequestBody.create(MediaType.parse
                 ("application/json; charset=utf-8"), requestJson);
         Request request = new Request.Builder()
-                .url(BuildConfig.API_DOMAIN_HOST + suffix)
+                .url(getBaseUrl() + suffix)
                 .post(requestBody)
                 .build();
         if (callback != null){
@@ -132,4 +133,10 @@ public class HttpHelp {
         return $Gson$Types.canonicalize(parameterized.getActualTypeArguments()[0]);
     }
 
+    public static String getBaseUrl(){
+        if (MidasAdSdk.isFormal()) {
+            return BuildConfig.API_DOMAIN_HOST_PRODUCT;
+        }
+        return BuildConfig.API_DOMAIN_HOST_TEST;
+    }
 }
