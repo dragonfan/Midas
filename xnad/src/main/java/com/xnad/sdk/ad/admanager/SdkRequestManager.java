@@ -174,6 +174,7 @@ public abstract class SdkRequestManager implements AdRequestManager {
                 if (((MidasNativeTemplateAd)info.getMidasAd()).getAdOutChargeListener() != null) {
                     ((MidasNativeTemplateAd)info.getMidasAd()).getAdOutChargeListener().adSuccess(info);
                 }
+
             }
 
             @Override

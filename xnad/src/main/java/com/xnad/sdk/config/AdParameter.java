@@ -40,6 +40,7 @@ public final class AdParameter {
         this.orientation = builder.orientation;
         this.rewardAmount = builder.rewardAmount;
         this.rewardName = builder.rewardName;
+        this.width = builder.width;
     }
 
     public Activity getActivity() {

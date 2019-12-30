@@ -94,7 +94,15 @@ public class MidasNativeTemplateAd extends MidasAd {
 
     @Override
     public void clear() {
-
+        if (ttNativeExpressAd != null) {
+            ttNativeExpressAd = null;
+        }
+        if (nativeExpressAD != null) {
+            nativeExpressAD = null;
+        }
+        if (addView != null) {
+            addView = null;
+        }
     }
 
     /**
@@ -111,4 +119,5 @@ public class MidasNativeTemplateAd extends MidasAd {
             e.printStackTrace();
         }
     }
+
 }
