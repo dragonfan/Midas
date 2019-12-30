@@ -8,6 +8,7 @@ import com.xnad.sdk.ad.outlistener.AdInteractionListener;
 import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
 import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
 import com.xnad.sdk.ad.outlistener.AdFullScreenVideoListener;
+import com.xnad.sdk.config.AdParameter;
 
 /**
  * @ProjectName: MidasAdSdk
@@ -25,55 +26,43 @@ public interface AdManager {
 
     /**
      * 请求开屏广告
-     * @param activity 上下文
-     * @param position 位置code
-     * @param listener 回调
-     * @param timeOut 超时时间(单位ms)
+     * @param adParameter
+     * @param listener
      */
-    void loadMidasSplashAd(Activity activity, String position, AdSplashListener listener, int timeOut);
+    void loadMidasSplashAd(AdParameter adParameter, AdSplashListener listener);
 
     /**
      * 请求激励广告
-     * @param activity 上下文
-     * @param position 位置code
-     * @param userId 激励视频用的用户id
-     * @param orientation 横竖版视频 1=竖版；2=横版
-     * @param rewardName 奖励金额名称
-     * @param rewardAmount 奖励金额数量
-     * @param listener 回调
+     * @param adParameter
+     * @param listener
      */
-    void loadMidasRewardVideoAd(Activity activity, String position, String userId, int orientation, String rewardName, int rewardAmount, AdRewardVideoListener listener);
+    void loadMidasRewardVideoAd(AdParameter adParameter, AdRewardVideoListener listener);
 
     /**
      * 请求全屏视广告
-     * @param activity 上下文
-     * @param position 位置code
-     * @param listener 回调
+     * @param adParameter
+     * @param listener
      */
-    void loadMidasFullScreenVideoAd(Activity activity, String position, AdFullScreenVideoListener listener);
+    void loadMidasFullScreenVideoAd(AdParameter adParameter, AdFullScreenVideoListener listener);
 
     /**
      * 请求自渲染广告
-     * @param activity 上下文
-     * @param position 位置code
-     * @param listener 回调
+     * @param adParameter
+     * @param listener
      */
-    void loadMidasSelfRenderAd(Activity activity, String position, AdSelfRenderListener listener);
+    void loadMidasSelfRenderAd(AdParameter adParameter, AdSelfRenderListener listener);
 
     /**
      * 请求插屏广告
-     * @param activity 上下文
-     * @param position 位置code
-     * @param listener 回到
+     * @param adParameter
+     * @param listener
      */
-    void loadMidasInteractionAd(Activity activity, String position, AdInteractionListener listener);
+    void loadMidasInteractionAd(AdParameter adParameter, AdInteractionListener listener);
 
     /**
      * 请求原生广告
-     * @param activity 上下文
-     * @param position 位置code
-     * @param width 广告宽度（dp）
-     * @param listener 回调
+     * @param adParameter
+     * @param listener
      */
-    void loadMidasNativeTemplateAd(Activity activity, String position, float width, AdNativeTemplateListener listener);
+    void loadMidasNativeTemplateAd(AdParameter adParameter, AdNativeTemplateListener listener);
 }

@@ -15,6 +15,7 @@ import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.jk.adsdkdemo.utils.LogUtils;
 import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
+import com.xnad.sdk.config.AdParameter;
 
 /**
  * 激励视频页面<p>
@@ -54,7 +55,17 @@ public class RewardVideoActivity extends AppCompatActivity implements View.OnCli
     private void loadRewardVideoAd(String position) {
         // cp_ad_1
         splashContainer.removeAllViews();
-        MidasAdSdk.getAdsManger().loadMidasRewardVideoAd(this, position, "user123", 1,  "金币哈哈哈", 3, new AdRewardVideoListener<AdInfo>() {
+        AdParameter adParameter = new AdParameter.Builder(this, position)
+                //激励广告用到的用户id
+                .setUserId("user123")
+                //激励视频横竖屏 1=竖屏；2=横屏
+                .setOrientation(1)
+                //金币名称
+                .setRewardName("金币")
+                //金币数量
+                .setRewardAmount(3)
+                .build();
+        MidasAdSdk.getAdsManger().loadMidasRewardVideoAd(adParameter, new AdRewardVideoListener<AdInfo>() {
 
             @Override
             public void onVideoRewardVerify(AdInfo info, boolean rewardVerify, int rewardAmount, String rewardName) {

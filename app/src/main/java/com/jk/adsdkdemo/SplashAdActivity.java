@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.outlistener.AdSplashListener;
+import com.xnad.sdk.config.AdParameter;
 import com.xnad.sdk.config.Constants;
 import com.jk.adsdkdemo.utils.LogUtils;
 
@@ -55,7 +56,11 @@ public class SplashAdActivity extends AppCompatActivity implements View.OnClickL
         // cold_kp 、hot_kp
         splashContainer.removeAllViews();
         stateTxt.setText("");
-        MidasAdSdk.getAdsManger().loadMidasSplashAd(this, position, new AdSplashListener<AdInfo>() {
+        AdParameter adParameter = new AdParameter.Builder(this, position)
+                //设置超时时间
+                .setTimeOut(3000)
+                .build();
+        MidasAdSdk.getAdsManger().loadMidasSplashAd(adParameter, new AdSplashListener<AdInfo>() {
             @Override
             public ViewGroup getViewGroup() {
                 return splashContainer;
@@ -104,7 +109,7 @@ public class SplashAdActivity extends AppCompatActivity implements View.OnClickL
             public void adTick(AdInfo info, long l) {
 
             }
-        }, 3000);
+        });
     }
 
     @Override

@@ -10,10 +10,11 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.jk.adsdkdemo.utils.LogUtils;
 import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.outlistener.AdFullScreenVideoListener;
-import com.jk.adsdkdemo.utils.LogUtils;
+import com.xnad.sdk.config.AdParameter;
 
 /**
  * 全屏视频页面<p>
@@ -54,7 +55,9 @@ public class FullScreenVideoActivity extends AppCompatActivity implements View.O
     private void loadFullScreenVideoAd(String position) {
         // cold_kp 、hot_kp
         splashContainer.removeAllViews();
-        MidasAdSdk.getAdsManger().loadMidasFullScreenVideoAd(this, position, new AdFullScreenVideoListener<AdInfo>() {
+        AdParameter adParameter = new AdParameter.Builder(this, position)
+                .build();
+        MidasAdSdk.getAdsManger().loadMidasFullScreenVideoAd(adParameter, new AdFullScreenVideoListener<AdInfo>() {
 
             @Override
             public void adVideoComplete(AdInfo info) {
@@ -69,10 +72,6 @@ public class FullScreenVideoActivity extends AppCompatActivity implements View.O
             @Override
             public void adSuccess(AdInfo info) {
                 LogUtils.d(TAG, "-----adSuccess-----");
-                View addView = info.getAdView();
-                if (addView != null) {
-                    splashContainer.addView(addView);
-                }
             }
 
             @Override

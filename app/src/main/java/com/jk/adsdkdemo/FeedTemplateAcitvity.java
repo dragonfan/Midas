@@ -21,6 +21,7 @@ import com.xnad.sdk.ad.listener.AdChargeListener;
 import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
 import com.jk.adsdkdemo.utils.LogUtils;
 import com.xnad.sdk.ad.outlistener.AdOutChargeListener;
+import com.xnad.sdk.config.AdParameter;
 
 /**
   *
@@ -83,8 +84,12 @@ public class FeedTemplateAcitvity extends AppCompatActivity implements View.OnCl
                 if (TextUtils.isEmpty(width)) {
                     width = "350";
                 }
-
-                MidasAdSdk.getAdsManger().loadMidasNativeTemplateAd(this, position, Float.valueOf(width), new AdNativeTemplateListener<AdInfo>(){
+                float fWidth = Float.valueOf(width);
+                AdParameter adParameter = new AdParameter.Builder(this, position)
+                        //模板广告宽度
+                        .setWidth(fWidth)
+                        .build();
+                MidasAdSdk.getAdsManger().loadMidasNativeTemplateAd(adParameter, new AdNativeTemplateListener<AdInfo>(){
 
                     @Override
                     public void adSuccess(AdInfo info) {

@@ -8,9 +8,6 @@ import android.net.NetworkInfo;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
-import com.bytedance.sdk.openadsdk.AdSlot;
-import com.bytedance.sdk.openadsdk.TTAdNative;
-import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
 import com.qq.e.ads.cfg.VideoOption;
 import com.qq.e.ads.interstitial2.UnifiedInterstitialAD;
 import com.qq.e.ads.interstitial2.UnifiedInterstitialADListener;
@@ -41,7 +38,6 @@ import com.xnad.sdk.ad.outlistener.AdOutChargeListener;
 import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
 import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
 import com.xnad.sdk.ad.outlistener.AdSplashListener;
-import com.xnad.sdk.config.TTAdManagerHolder;
 import com.xnad.sdk.utils.LogUtils;
 
 import java.util.List;
@@ -58,7 +54,7 @@ import java.util.List;
  * @UpdateRemark: 更新说明：
  * @Version: 1.0
  */
-public class YlhSdkRequestManager extends SdkRequestManager implements NativeADUnifiedListener {
+public class YlhSdkRequestManager extends SdkRequestManager {
 
     // 广告请求数量
     protected final static int REQUEST_AD_COUNTS = 1;
@@ -523,62 +519,6 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
         rewardVideoAD.loadAD();
     }
 
-    /**
-     * 获取信息流模板广告
-     *
-     * @param activity
-     * @param info
-     * @param listener
-     */
-    private void getFeedTemplate(Activity activity, AdInfo info, AdRequestListener listener) {
-        if (listener != null) {
-            listener.adSuccess(info);
-        }
-    }
-
-    /**
-     * 请求图片广告
-     */
-    protected void getAdByBigImg(Activity activity, AdInfo adInfo, AdRequestListener listener) {
-        LogUtils.d(TAG, "onADLoaded->请求优量汇广告");
-        NativeUnifiedAD mAdManager = new NativeUnifiedAD(activity, adInfo.getAdAppid(), adInfo.getAdId(), new NativeADUnifiedListener() {
-            @Override
-            public void onNoAD(AdError adError) {
-                LogUtils.d(TAG, "onNoAD->请求优量汇失败,ErrorCode:" + adError.getErrorCode() + ",ErrorMsg:" + adError.getErrorMsg());
-                if (listener != null) {
-                    listener.adError(adInfo, adError.getErrorCode(), adError.getErrorMsg());
-                }
-            }
-
-            @Override
-            public void onADLoaded(List<NativeUnifiedADData> list) {
-                if (list==null||list.size()==0) {
-                    if (listener != null) {
-                        listener.adError(adInfo, 1, "广告数据为空");
-                    }
-                    return;
-                }
-                NativeUnifiedADData nativeUnifiedADData = list.get(0);
-                if (nativeUnifiedADData == null) {
-                    return;
-                }
-                caheImage(nativeUnifiedADData);
-                String title = nativeUnifiedADData.getTitle();
-                adInfo.setAdTitle(title);
-                if (nativeUnifiedADData.isAppAd()) {
-                    adInfo.setAdClickType(1);
-                } else {
-                    adInfo.setAdClickType(2);
-                }
-                adInfo.setNativeUnifiedADData(nativeUnifiedADData);
-                if (listener != null) {
-                    listener.adSuccess(adInfo);
-                }
-            }
-        });
-        mAdManager.loadData(REQUEST_AD_COUNTS);
-    }
-
     private void caheImage(NativeUnifiedADData ad) {
         String imgUrl = ad.getImgUrl();
         String icon = ad.getIconUrl();
@@ -591,233 +531,6 @@ public class YlhSdkRequestManager extends SdkRequestManager implements NativeADU
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    /**
-     * 获取自定义插屏广告
-     *
-     * @param info
-     * @param listener
-     */
-    private void getCustomInsertScreenAd(Activity activity, AdInfo info, AdRequestListener listener) {
-        if (listener != null) {
-            listener.adSuccess(info);
-        }
-    }
-
-    /**
-     * 获取模板插屏广告
-     *
-     * @param info
-     * @param listener
-     */
-    private void getTemplateInsertScreenAd(Activity activity, AdInfo info, AdRequestListener listener) {
-        float expressViewWidth = 300;
-        float expressViewHeight = 300;
-        AdSlot adSlot = new AdSlot.Builder()
-                .setCodeId(info.getAdId()) //广告位id
-                .setSupportDeepLink(true)
-                .setAdCount(1) //请求广告数量为1到3条
-                .setExpressViewAcceptedSize(expressViewWidth, expressViewHeight) //期望模板广告view的size,单位dp
-                .setImageAcceptedSize(640, 320)//这个参数设置即可，不影响模板广告的size
-                .build();
-        //step5:请求广告，对请求回调的广告作渲染处理
-        TTAdManagerHolder.get().createAdNative(activity).loadInteractionExpressAd(adSlot, new TTAdNative.NativeExpressAdListener() {
-            @Override
-            public void onError(int code, String message) {
-                if (listener != null) {
-                    listener.adError(info, code, message);
-                }
-            }
-
-            @Override
-            public void onNativeExpressAdLoad(List<TTNativeExpressAd> ads) {
-                if (ads==null||ads.size()==0) {
-                    if (listener != null) {
-                        listener.adError(info, 1, "广告获取为空");
-                    }
-                    return;
-                }
-                TTNativeExpressAd ttNativeExpressAd = ads.get(0);
-                if (ttNativeExpressAd == null) {
-                    if (listener != null) {
-                        listener.adError(info, 1, "广告获取为空");
-                    }
-                    return;
-                }
-                info.setTtNativeExpressAd(ttNativeExpressAd);
-                if (listener != null) {
-                    listener.adSuccess(info);
-                }
-            }
-        });
-    }
-
-    /**
-     * 获取激励视频广告
-     *
-     * @param info
-     * @param listener
-     */
-    private void getRewardVideoAd(Activity activity, AdInfo info, AdRequestListener listener) {
-        if (activity == null) {
-            throw new NullPointerException("loadFullScreenVideoAd activity is null");
-        }
-        String REWARD_VIDEO_AD_POS_ID_UNSUPPORT_H = "5040942242835423";//不支持竖版出横版视频
-        MidasRewardVideoAd midasRewardVideoAd = (MidasRewardVideoAd) info.getMidasAd();
-        int orientation = midasRewardVideoAd.getOrientation();
-        if (orientation == 2) {
-            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        } else {
-            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
-        // 1. 初始化激励视频广告
-        RewardVideoAD rewardVideoAD = null;
-        RewardVideoAD finalRewardVideoAD = rewardVideoAD;
-        rewardVideoAD = new RewardVideoAD(activity, midasRewardVideoAd.getAppId(), midasRewardVideoAd.getAdId(), new RewardVideoADListener() {
-            @Override
-            public void onADLoad() {
-                //广告加载成功标志
-                finalRewardVideoAD.showAD();
-//                adSuccess(mAdInfo);
-            }
-
-            @Override
-            public void onVideoCached() {
-                //视频素材缓存成功，可在此回调后进行广告展示
-
-            }
-
-            @Override
-            public void onADShow() {
-
-            }
-
-            @Override
-            public void onADExpose() {
-
-            }
-
-            @Override
-            public void onReward() {
-
-            }
-
-            @Override
-            public void onADClick() {
-
-            }
-
-            @Override
-            public void onVideoComplete() {
-            }
-
-            @Override
-            public void onADClose() {
-            }
-
-            @Override
-            public void onError(AdError adError) {
-            }
-        });
-        // 2. 加载激励视频广告
-        rewardVideoAD.loadAD();
-    }
-
-    /**
-     * 获取全屏视频广告
-     *
-     * @param adInfo
-     * @param listener
-     */
-    private void getFullScreenVideoAd(Activity activity, AdInfo adInfo, AdRequestListener listener) {
-        NativeUnifiedAD nativeUnifiedAD = new NativeUnifiedAD(activity, adInfo.getAdAppid(), adInfo.getAdId(), this);
-        nativeUnifiedAD.setMaxVideoDuration(MAX_DURATION);
-
-        /**
-         * 如果广告位支持视频广告，强烈建议在调用loadData请求广告前，调用下面两个方法，有助于提高视频广告的eCPM值 <br/>
-         * 如果广告位仅支持图文广告，则无需调用
-         */
-
-        /**
-         * 设置本次拉取的视频广告，从用户角度看到的视频播放策略<p/>
-         *
-         * "用户角度"特指用户看到的情况，并非SDK是否自动播放，与自动播放策略AutoPlayPolicy的取值并非一一对应 <br/>
-         *
-         * 例如开发者设置了VideoOption.AutoPlayPolicy.NEVER，表示从不自动播放 <br/>
-         * 但满足某种条件(如晚上10点)时，开发者调用了startVideo播放视频，这在用户看来仍然是自动播放的
-         */
-        // 本次拉回的视频广告，在用户看来是否为自动播放的
-        nativeUnifiedAD.setVideoPlayPolicy(VideoOption.VideoPlayPolicy.AUTO);
-
-        /**
-         * 设置在视频广告播放前，用户看到显示广告容器的渲染者是SDK还是开发者 <p/>
-         *
-         * 一般来说，用户看到的广告容器都是SDK渲染的，但存在下面这种特殊情况： <br/>
-         *
-         * 1. 开发者将广告拉回后，未调用bindMediaView，而是用自己的ImageView显示视频的封面图 <br/>
-         * 2. 用户点击封面图后，打开一个新的页面，调用bindMediaView，此时才会用到SDK的容器 <br/>
-         * 3. 这种情形下，用户先看到的广告容器就是开发者自己渲染的，其值为VideoADContainerRender.DEV
-         * 4. 如果觉得抽象，可以参考NativeADUnifiedDevRenderContainerActivity的实现
-         */
-        // 视频播放前，用户看到的广告容器是由SDK渲染的
-        nativeUnifiedAD.setVideoADContainerRender(VideoOption.VideoADContainerRender.SDK);
-        setAdInfo(adInfo);
-        setAdRequestListener(listener);
-        nativeUnifiedAD.loadData(1);
-    }
-
-    /**
-     * 请求开屏广告
-     */
-    private void getAdBySplashAd(Activity activity, AdInfo adInfo, AdRequestListener listener) {
-        //优量汇的开屏广告因为请求和回调展示同时进行，也不能预加载。所以直接createview
-        if (listener != null) {
-            listener.adSuccess(adInfo);
-        }
-    }
-
-
-    private AdRequestListener adRequestListener;
-
-    private AdInfo adInfo;
-
-    public void setAdInfo(AdInfo adInfo) {
-        this.adInfo = adInfo;
-    }
-
-    public void setAdRequestListener(AdRequestListener adRequestListener) {
-        this.adRequestListener = adRequestListener;
-    }
-
-    @Override
-    public void onADLoaded(List<NativeUnifiedADData> list) {
-        if (list==null||list.size()==0) {
-            if (adRequestListener != null) {
-                adRequestListener.adError(adInfo, 1, "没请求到广告数据");
-            }
-            return;
-        }
-        NativeUnifiedADData nativeUnifiedADData = list.get(0);
-        if (nativeUnifiedADData == null) {
-            if (adRequestListener != null) {
-                adRequestListener.adError(adInfo, 1, "没请求到广告数据");
-            }
-            return;
-        }
-        if (adInfo != null) {
-            adInfo.setNativeUnifiedADData(nativeUnifiedADData);
-        }
-        if (adRequestListener != null) {
-            adRequestListener.adSuccess(adInfo);
-        }
-    }
-
-    @Override
-    public void onNoAD(AdError adError) {
-        if (adRequestListener != null) {
-            adRequestListener.adError(adInfo, adError.getErrorCode(), adError.getErrorMsg());
         }
     }
 }

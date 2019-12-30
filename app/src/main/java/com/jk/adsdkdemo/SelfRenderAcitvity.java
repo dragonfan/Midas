@@ -27,6 +27,7 @@ import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.entity.MidasSelfRenderAd;
 import com.xnad.sdk.ad.outlistener.AdOutChargeListener;
 import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
+import com.xnad.sdk.config.AdParameter;
 import com.xnad.sdk.config.Constants;
 
 import java.util.ArrayList;
@@ -104,7 +105,9 @@ public class SelfRenderAcitvity extends AppCompatActivity implements View.OnClic
                     Toast.makeText(getApplicationContext(), "accept->输入的位置不能为空", Toast.LENGTH_LONG).show();
                     return;
                 }
-                MidasAdSdk.getAdsManger().loadMidasSelfRenderAd(this, position, new AdSelfRenderListener<AdInfo>() {
+                AdParameter adParameter = new AdParameter.Builder(this, position)
+                        .build();
+                MidasAdSdk.getAdsManger().loadMidasSelfRenderAd(adParameter, new AdSelfRenderListener<AdInfo>() {
 
                     @Override
                     public void adSuccess(AdInfo info) {
