@@ -39,7 +39,6 @@
 
 
 #====okhttp====
--libraryjars libs/okhttp-2.7.0.jar
 -dontwarn okhttp3.**
 -keep class okhttp3.**{*;}
 -keep interface okhttp3.**{*;}
@@ -51,7 +50,6 @@
 -keep interface com.squareup.okhttp.**{*;}
 
 #====okio====
--libraryjars libs/okio-1.6.0.jar
 -dontwarn java.nio.file.*
 -dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
 -dontwarn okio.**
@@ -59,7 +57,6 @@
 -keep interface okio.**{*;}
 
 #====gson====
--libraryjars libs/gson-2.2.1.jar
 -keep class sun.misc.Unsafe{*;}
 -dontwarn com.google.gson.**
 -keep class com.google.gson.**{*;}
