@@ -19,7 +19,13 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
--keep public class com.comm.jksdk.bean.**{*;}
+-keep public class com.xnad.sdk.entity.**{*;}
+-keep public com.xnad.sdk.ad.outlistener.**{*;}
+-keep class com.xnad.sdk.ad.MidasAdSdk{ *;}
+-keep class com.xnad.sdk.http.model.BaseResponse{ *;}
+-keep class com.xnad.sdk.config.AdParameter{ *;}
+-keep class com.xnad.sdk.config.ADConfigBuild{ *;}
+
 -keep class com.bytedance.sdk.openadsdk.** { *; }
 -keep public interface com.bytedance.sdk.openadsdk.downloadnew.** {*;}
 -keep class com.pgl.sys.ces.* {*;}
