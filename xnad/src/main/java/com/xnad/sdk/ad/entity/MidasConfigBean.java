@@ -1,4 +1,4 @@
-package com.xnad.sdk.bean;
+package com.xnad.sdk.ad.entity;
 
 import java.util.List;
 

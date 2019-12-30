@@ -20,7 +20,7 @@ import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
 import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
 import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
 import com.xnad.sdk.ad.outlistener.AdSplashListener;
-import com.xnad.sdk.bean.MidasConfigBean;
+import com.xnad.sdk.ad.entity.MidasConfigBean;
 import com.xnad.sdk.config.AdParameter;
 import com.xnad.sdk.config.Constants;
 import com.xnad.sdk.config.ErrorCode;

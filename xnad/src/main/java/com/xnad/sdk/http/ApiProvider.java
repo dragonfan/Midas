@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.xnad.sdk.BuildConfig;
 import com.xnad.sdk.MidasAdSdk;
-import com.xnad.sdk.bean.MidasConfigBean;
+import com.xnad.sdk.ad.entity.MidasConfigBean;
 import com.xnad.sdk.config.ErrorCode;
 import com.xnad.sdk.config.Constants;
 import com.xnad.sdk.http.callback.HttpCallback;

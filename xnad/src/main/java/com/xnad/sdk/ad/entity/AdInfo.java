@@ -1,7 +1,5 @@
 package com.xnad.sdk.ad.entity;
 
-import com.xnad.sdk.bean.StatisticBaseProperties;
-
 /**
  * @ProjectName: MidasAdSdk
  * @Package: com.comm.jksdk.ad.entity

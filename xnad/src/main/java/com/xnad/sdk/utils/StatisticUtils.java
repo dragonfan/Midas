@@ -10,8 +10,8 @@ import com.xiaoniu.statistic.NiuDataAPI;
 import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.entity.MidasAd;
-import com.xnad.sdk.bean.StatisticBaseProperties;
-import com.xnad.sdk.bean.StatisticEvent;
+import com.xnad.sdk.ad.entity.StatisticBaseProperties;
+import com.xnad.sdk.ad.entity.StatisticEvent;
 
 import org.json.JSONObject;
 
