@@ -1,6 +1,7 @@
 package com.xnad.sdk.ad.admanager;
 
 import android.app.Activity;
+import android.text.TextUtils;
 
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.entity.MidasFullScreenVideoAd;
@@ -276,6 +277,11 @@ public class MidasAdManger implements AdManager {
         if (adInfo == null) {
             adInfo = new AdInfo();
         }
+        if (adInfo.getStatisticBaseProperties() != null
+                && !TextUtils.isEmpty(adsInfosBean.getRequestOrder())){
+            adInfo.getStatisticBaseProperties().setPriorityS(adsInfosBean.getRequestOrder());
+        }
+
         //某些特有的数据清空，避免污染下一次请求数据
         adInfo.clear();
         adInfo.getMidasAd().clear();
