@@ -108,17 +108,21 @@ public class SelfRenderAcitvity extends AppCompatActivity implements View.OnClic
                 AdParameter adParameter = new AdParameter.Builder(this, position)
                         .build();
                 MidasAdSdk.getAdsManger().loadMidasSelfRenderAd(adParameter, new AdSelfRenderListener<AdInfo>() {
-
+                    //请求广告成功回调
                     @Override
                     public void adSuccess(AdInfo info) {
+                        //获取自渲染广告对象
                         MidasSelfRenderAd midasSelfRenderAd = (MidasSelfRenderAd) info.getMidasAd();
+                        //区分广告源
                         if (Constants.AdSourceType.ChuanShanJia.equals(midasSelfRenderAd.getAdSource())) {
+                            //调用穿山甲渲染方式
                             cshBindView(midasSelfRenderAd);
                         } else {
+                            //调用优量汇渲染方式
                             ylhBindView(midasSelfRenderAd);
                         }
                     }
-
+                    //请求广告失败回到
                     @Override
                     public void adError(AdInfo info, int errorCode, String errorMsg) {
                         LogUtils.e(TAG, "DEMO>>>adError： " + errorMsg);

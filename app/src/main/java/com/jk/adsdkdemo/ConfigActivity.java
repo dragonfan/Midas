@@ -103,6 +103,7 @@ public class ConfigActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onResume() {
         super.onResume();
+
     }
 
 }

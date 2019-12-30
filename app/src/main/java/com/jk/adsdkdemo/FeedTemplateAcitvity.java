@@ -90,13 +90,15 @@ public class FeedTemplateAcitvity extends AppCompatActivity implements View.OnCl
                         .setWidth(fWidth)
                         .build();
                 MidasAdSdk.getAdsManger().loadMidasNativeTemplateAd(adParameter, new AdNativeTemplateListener<AdInfo>(){
-
+                    //请求广告成功回调
                     @Override
                     public void adSuccess(AdInfo info) {
+                        //获取原始广告对象
                         midasNativeTemplateAd = (MidasNativeTemplateAd) info.getMidasAd();
+                        //渲染广告
                         renderAd(midasNativeTemplateAd);
                     }
-
+                    //请求广告失败回调
                     @Override
                     public void adError(AdInfo info, int errorCode, String errorMsg) {
                         LogUtils.e("adError：" + errorMsg);
@@ -109,27 +111,29 @@ public class FeedTemplateAcitvity extends AppCompatActivity implements View.OnCl
      * 请求到广告后渲染广告
      */
     private void renderAd(MidasNativeTemplateAd midasNativeTemplateAd){
+        //设置广告监听
         midasNativeTemplateAd.setAdOutChargeListener(new AdOutChargeListener<AdInfo>() {
+            //加载广告成功
             @Override
             public void adSuccess(AdInfo info) {
                 LogUtils.e("adSuccess");
-                View addView = info.getMidasAd().getAddView();
+                View addView = midasNativeTemplateAd.getAddView();
                 if (addView != null) {
                     mExpressContainer.removeAllViews();
                     mExpressContainer.addView(addView);
                 }
             }
-
+            //广告加载失败
             @Override
             public void adError(AdInfo info, int errorCode, String errorMsg) {
                 LogUtils.e("adError, errorCode= %i, errorMsg = %s"+errorMsg + errorMsg);
             }
-
+            //广告曝光回调
             @Override
             public void adExposed(AdInfo info) {
                 LogUtils.e("adExposed");
             }
-
+            //广告点击回调
             @Override
             public void adClicked(AdInfo info) {
                 LogUtils.e("adClicked");
@@ -143,6 +147,7 @@ public class FeedTemplateAcitvity extends AppCompatActivity implements View.OnCl
                 }
             }
         });
+        //开始渲染广告
         midasNativeTemplateAd.render();
     }
 
