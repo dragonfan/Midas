@@ -75,6 +75,7 @@ public class FeedTemplateAcitvity extends AppCompatActivity implements View.OnCl
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_express_load:
+                midasNativeTemplateAd = null;
                 String position = mEtPosition.getText().toString().trim();
                 if (TextUtils.isEmpty(position)) {
                     Toast.makeText(getApplicationContext(), "accept->输入的位置不能为空", Toast.LENGTH_LONG).show();
