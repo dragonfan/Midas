@@ -22,10 +22,20 @@
 # 广告SDK 文件混淆
 -keep public class com.xnad.sdk.entity.**{*;}
 -keep public interface com.xnad.sdk.ad.outlistener.**{*;}
--keep class com.xnad.sdk.ad.MidasAdSdk{ *;}
+-keep public interface com.xnad.sdk.ad.listener.**{*;}
+-keep public interface com.xnad.sdk.ad.admanager.AdManager{*;}
+-keep class com.xnad.sdk.MidasAdSdk{ *;}
+-keep class com.xnad.sdk.ad.entity.AdInfo{ *;}
 -keep class com.xnad.sdk.http.model.BaseResponse{ *;}
 -keep class com.xnad.sdk.config.AdParameter{ *;}
 -keep class com.xnad.sdk.config.ADConfigBuild{ *;}
+
+-keepattributes Exceptions,InnerClasses
+-keep class com.xnad.sdk.config.AdParameter$*{
+<fields>;
+<methods>;
+}
+
 
 #穿山甲广告SDK混淆
 -keep class com.bytedance.sdk.openadsdk.** { *; }
