@@ -68,8 +68,12 @@
 -keep class com.xnad.sdk.MidasAdSdk{ *;}
 -keep class com.xnad.sdk.ad.entity.AdInfo{ *;}
 -keep class com.xnad.sdk.http.model.BaseResponse{ *;}
--keep class com.xnad.sdk.config.ADConfigBuild{ *;}
-
+-keep class com.xnad.sdk.config.AdConfig{ *;}
+-keepattributes Exceptions,InnerClasses
+-keep class com.xnad.sdk.config.AdConfig$*{
+<fields>;
+<methods>;
+}
 #加载广告可选参数混淆
 -keep class com.xnad.sdk.config.AdParameter{ *;}
 -keepattributes Exceptions,InnerClasses

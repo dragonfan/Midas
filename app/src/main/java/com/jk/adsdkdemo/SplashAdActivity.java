@@ -45,7 +45,7 @@ public class SplashAdActivity extends AppCompatActivity implements View.OnClickL
         stateTxt = findViewById(R.id.state_txt);
         refreshBtn.setOnClickListener(this);
 //        positionEdit.setText("68870548_0_1");
-        positionEdit.setText("8938370901");
+        positionEdit.setText("2861108501");
 //        loadSplashAd("cold_kp");
     }
 

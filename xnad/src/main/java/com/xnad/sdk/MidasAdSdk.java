@@ -5,7 +5,7 @@ import android.text.TextUtils;
 
 import com.xnad.sdk.ad.factory.MidasAdManagerFactory;
 import com.xnad.sdk.ad.admanager.AdManager;
-import com.xnad.sdk.config.ADConfigBuild;
+import com.xnad.sdk.config.AdConfig;
 import com.xnad.sdk.config.TTAdManagerHolder;
 import com.xnad.sdk.config.Constants;
 import com.xnad.sdk.utils.AppUtils;
@@ -49,22 +49,22 @@ public final class MidasAdSdk {
      * 聚合广告sdk初始化
      *
      * @param context       上下文
-     * @param adConfigBuild 初始化配置信息
+     * @param adConfig 初始化配置信息
      */
-    public static void init(Context context, ADConfigBuild adConfigBuild) {
+    public static void init(Context context, AdConfig adConfig) {
 
         long beginTime = System.currentTimeMillis();
         mContext = context.getApplicationContext();
-        mIsFormal = adConfigBuild.isIsFormal();
-        mAppId = adConfigBuild.getAppId();
+        mIsFormal = adConfig.isIsFormal();
+        mAppId = adConfig.getAppId();
         //初始化基本配置信息
         //强烈建议在应用对应的Application#onCreate()方法中调用，避免出现content为null的异常
         AppUtils.init(mContext);
-        TTAdManagerHolder.init(context, adConfigBuild.getCsjAppId());
+        TTAdManagerHolder.init(context, adConfig.getCsjAppId());
         mIsInit = true;
         LogUtils.d("Midas sdk init time=" + (System.currentTimeMillis() - beginTime));
         //初始化牛数
-        StatisticUtils.init(context, adConfigBuild.getChannel(), adConfigBuild.getProductId(), adConfigBuild.getServerUrl());
+        StatisticUtils.init(context, adConfig.getChannel(), adConfig.getProductId(), adConfig.getServerUrl());
         //首次上报imei
         boolean isReport = SpUtils.getBoolean(Constants.SpUtils.FIRST_REPORT_IMEI, false);
         if (!isReport) {

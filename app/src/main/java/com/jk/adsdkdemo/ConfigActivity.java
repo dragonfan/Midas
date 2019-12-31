@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import com.jk.adsdkdemo.utils.LogUtils;
 import com.xnad.sdk.MidasAdSdk;
-import com.xnad.sdk.config.ADConfigBuild;
+import com.xnad.sdk.config.AdConfig;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -81,14 +81,15 @@ public class ConfigActivity extends AppCompatActivity implements View.OnClickLis
                 String serverUrl = "http://aidataprobe2.openxiaoniu.com/aidataprobe2/dhs";
 
                 //appid, product, chan,"5036430", serverUrl, false
-                ADConfigBuild configBuild = new ADConfigBuild()
+                AdConfig configBuild = new AdConfig.Build()
                         .setAppId(appId)
                         .setProductId(product)
 //                        .setCsjAppId("5036430")
                         .setCsjAppId("5037925")
                         .setChannel(channel)
                         .setServerUrl(serverUrl)
-                        .setIsFormal(true);
+                        .setIsFormal(true)
+                        .build();
                 MidasAdSdk.init(this, configBuild);
                 break;
             case R.id.next:
