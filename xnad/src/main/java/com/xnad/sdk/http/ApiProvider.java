@@ -71,8 +71,7 @@ public class ApiProvider {
                                         errorCode, ErrorCode.API_DATA_PARSE_EXCEPTION.errorMsg);
                             }
                         }else {
-                            httpCallback.onFailure(httpResponseCode, ErrorCode.STRATEGY_DATA_EMPTY.
-                                    errorCode, ErrorCode.STRATEGY_DATA_EMPTY.errorMsg);
+                            httpCallback.onFailure(httpResponseCode, errorCode, message);
                         }
                     }
 
