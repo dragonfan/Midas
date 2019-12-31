@@ -8,7 +8,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bytedance.sdk.openadsdk.TTAdSdk;
 import com.jk.adsdkdemo.utils.LogUtils;
 import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.config.ADConfigBuild;
@@ -67,8 +66,8 @@ public class ConfigActivity extends AppCompatActivity implements View.OnClickLis
                     return;
                 }
                 stateText.setText("");
-                String visionName = TTAdSdk.getAdManager().getSDKVersion();
-                LogUtils.e("visionName>>>" + visionName);
+//                String visionName = TTAdSdk.getAdManager().getSDKVersion();
+//                LogUtils.e("visionName>>>" + visionName);
                 break;
             case R.id.button_init:
                 String product = editProduct.getText().toString().trim();
@@ -77,13 +76,16 @@ public class ConfigActivity extends AppCompatActivity implements View.OnClickLis
                 LogUtils.e(">>>product=" + product);
                 LogUtils.e(">>>渠道号=" + channel);
                 //牛数上报地址
-                String serverUrl = "http://testaidataprobe2.51huihuahua.com/v/v/dataprobe2/ggbx";
+//                String serverUrl = "http://testaidataprobe2.51huihuahua.com/v/v/dataprobe2/ggbx";
+                //喝水生產
+                String serverUrl = "http://aidataprobe2.openxiaoniu.com/aidataprobe2/dhs";
 
                 //appid, product, chan,"5036430", serverUrl, false
                 ADConfigBuild configBuild = new ADConfigBuild()
                         .setAppId(appId)
                         .setProductId(product)
-                        .setCsjAppId("5036430")
+//                        .setCsjAppId("5036430")
+                        .setCsjAppId("5037925")
                         .setChannel(channel)
                         .setServerUrl(serverUrl)
                         .setIsFormal(true);

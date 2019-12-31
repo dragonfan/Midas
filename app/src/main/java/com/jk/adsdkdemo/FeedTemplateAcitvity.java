@@ -12,8 +12,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.bytedance.sdk.openadsdk.TTAdDislike;
-import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
 import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.entity.MidasNativeTemplateAd;
@@ -39,12 +37,10 @@ public class FeedTemplateAcitvity extends AppCompatActivity implements View.OnCl
 
     private FrameLayout mExpressContainer;
     private Context mContext;
-    private TTAdDislike mTTAdDislike;
     private Button mButtonLoadAd;
     private Button mButtonLoadAdVideo;
     private EditText mEtWidth;
     private EditText mEtHeight, mEtPosition;
-    private TTNativeExpressAd mTTAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

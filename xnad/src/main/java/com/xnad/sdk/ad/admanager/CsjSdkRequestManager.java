@@ -422,7 +422,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
             public void onError(int errorCode, String errorMsg) {
                 LogUtils.e(TAG, "csj errorCode:" + errorCode + " errorMsg:" + errorMsg);
                 if (adRequestListener != null) {
-                    adRequestListener.adError(adInfo, 1, "广告对象为空");
+                    adRequestListener.adError(adInfo, errorCode, errorMsg);
                 }
             }
 

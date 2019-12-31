@@ -4,7 +4,8 @@ android {
     compileSdkVersion 28
     buildToolsVersion "28.0.3"
     defaultConfig {
-        applicationId "com.hellogeek.cleanking"
+//        applicationId "com.hellogeek.cleanking"
+        applicationId "com.hellogeek.iheshui"
         minSdkVersion 18
         targetSdkVersion 28
         versionCode 2
@@ -42,8 +43,8 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation fileTree(dir: 'libs', include: ['*.aar'])
+//    implementation fileTree(dir: 'libs', include: ['*.jar'])
+//    implementation fileTree(dir: 'libs', include: ['*.aar'])
 
 //    implementation ('com.xiaoniu.statistic:NiuData:1.2.5-RC1'){changing = true}
     //穿山甲 为了适配下载和安装相关功能，在工程中引用的包 com.android.support:support-v4:24.2.0
@@ -53,7 +54,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-//    implementation project(path: ':xnad')
+    implementation project(path: ':xnad')
 
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
