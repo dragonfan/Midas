@@ -28,11 +28,21 @@ import com.xnad.sdk.utils.StatisticUtils;
  */
 public final class MidasAdSdk {
 
+    /**
+     * SDK是否初始化
+     */
     private static boolean mIsInit = false;
-
+    /**
+     * 应用全局上下文
+     */
     private static Context mContext;
+    /**
+     * 业务 appId
+     */
     private static String mAppId;
-
+    /**
+     * 是否是正式环境 true对应生产环境
+     */
     private static boolean mIsFormal;
 
     /**
@@ -56,10 +66,10 @@ public final class MidasAdSdk {
         //初始化牛数
         StatisticUtils.init(context, adConfigBuild.getChannel(), adConfigBuild.getProductId(), adConfigBuild.getServerUrl());
         //首次上报imei
-        boolean isReport = com.xnad.sdk.utils.SpUtils.getBoolean(Constants.SpUtils.FIRST_REPORT_IMEI, false);
+        boolean isReport = SpUtils.getBoolean(Constants.SpUtils.FIRST_REPORT_IMEI, false);
         if (!isReport) {
             StatisticUtils.setImei(AppUtils.getIMEI());
-            com.xnad.sdk.utils.SpUtils.putBoolean(Constants.SpUtils.FIRST_REPORT_IMEI, true);
+            SpUtils.putBoolean(Constants.SpUtils.FIRST_REPORT_IMEI, true);
         }
         LogUtils.d("Midas and niuDate sdk init time=" + (System.currentTimeMillis() - beginTime));
     }

@@ -3,7 +3,7 @@ package com.xnad.sdk.ad.entity;
 import java.util.List;
 
 /**
- * @ProjectName: Midas
+ * @ProjectName: Midas 策略基类
  * @Package: com.comm.jksdk.bean
  * @ClassName: MidasConfigBean
  * @Description: java类作用描述

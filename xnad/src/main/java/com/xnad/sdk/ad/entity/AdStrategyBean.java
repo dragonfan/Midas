@@ -1,5 +1,16 @@
 package com.xnad.sdk.ad.entity;
-
+/**
+ * Desc:广告策略对象
+ * <p>
+ * Author: ZhouTao
+ * Date: 2019/12/27
+ * Copyright: Copyright (c) 2016-2020
+ * Company: @小牛科技
+ * Email:zhoutao@xiaoniu.com
+ * Update Comments:
+ *
+ * @author zhoutao
+ */
 public class AdStrategyBean {
         /**
          * adId : 65487887820
