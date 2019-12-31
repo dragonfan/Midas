@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.entity.AdStrategyBean;
+import com.xnad.sdk.ad.entity.MidasConfigBean;
 import com.xnad.sdk.ad.entity.MidasFullScreenVideoAd;
 import com.xnad.sdk.ad.entity.MidasInteractionAd;
 import com.xnad.sdk.ad.entity.MidasNativeTemplateAd;
@@ -21,13 +22,11 @@ import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
 import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
 import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
 import com.xnad.sdk.ad.outlistener.AdSplashListener;
-import com.xnad.sdk.ad.entity.MidasConfigBean;
 import com.xnad.sdk.config.AdParameter;
 import com.xnad.sdk.config.Constants;
 import com.xnad.sdk.config.ErrorCode;
 import com.xnad.sdk.http.ApiProvider;
 import com.xnad.sdk.http.callback.HttpCallback;
-import com.xnad.sdk.utils.CodeFactory;
 import com.xnad.sdk.utils.LogUtils;
 import com.xnad.sdk.utils.StatisticUtils;
 
@@ -111,9 +110,9 @@ public class MidasAdManger implements AdManager {
             adInfo.setPosition(adParameter.getPosition());
             getMidasConfigBean(adInfo, adParameter.getPosition());
         } catch (Exception e) {
-            e.printStackTrace();
             if (mAdListener != null) {
-                mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                mAdListener.adError(adInfo, ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorCode,
+                        ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorMsg);
             }
         }
     }
@@ -138,9 +137,9 @@ public class MidasAdManger implements AdManager {
             adInfo.setPosition(adParameter.getPosition());
             getMidasConfigBean(adInfo, adParameter.getPosition());
         } catch (Exception e) {
-            e.printStackTrace();
             if (mAdListener != null) {
-                mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                mAdListener.adError(adInfo, ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorCode,
+                        ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorMsg);
             }
         }
 
@@ -162,9 +161,9 @@ public class MidasAdManger implements AdManager {
             adInfo.setPosition(adParameter.getPosition());
             getMidasConfigBean(adInfo, adParameter.getPosition());
         } catch (Exception e) {
-            e.printStackTrace();
             if (mAdListener != null) {
-                mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                mAdListener.adError(adInfo, ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorCode,
+                        ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorMsg);
             }
         }
     }
@@ -185,9 +184,9 @@ public class MidasAdManger implements AdManager {
             adInfo.setPosition(adParameter.getPosition());
             getMidasConfigBean(adInfo, adParameter.getPosition());
         } catch (Exception e) {
-            e.printStackTrace();
             if (mAdListener != null) {
-                mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                mAdListener.adError(adInfo, ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorCode,
+                        ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorMsg);
             }
         }
     }
@@ -208,9 +207,9 @@ public class MidasAdManger implements AdManager {
             adInfo.setPosition(adParameter.getPosition());
             getMidasConfigBean(adInfo, adParameter.getPosition());
         } catch (Exception e) {
-            e.printStackTrace();
             if (mAdListener != null) {
-                mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                mAdListener.adError(adInfo, ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorCode,
+                        ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorMsg);
             }
         }
     }
@@ -232,9 +231,9 @@ public class MidasAdManger implements AdManager {
             adInfo.setPosition(adParameter.getPosition());
             getMidasConfigBean(adInfo, adParameter.getPosition());
         } catch (Exception e) {
-            e.printStackTrace();
             if (mAdListener != null) {
-                mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                mAdListener.adError(adInfo, ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorCode,
+                        ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorMsg);
             }
         }
     }
@@ -251,7 +250,7 @@ public class MidasAdManger implements AdManager {
             @Override
             public void onFailure(int httpResponseCode, int errorCode, String message) {
                 if (mAdListener != null) {
-                    mAdListener.adError(adInfo, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                    mAdListener.adError(adInfo, errorCode, message);
                 }
                 //广告策略请求事件埋点
                 StatisticUtils.strategyConfigurationRequest(adInfo, adPosId,"",

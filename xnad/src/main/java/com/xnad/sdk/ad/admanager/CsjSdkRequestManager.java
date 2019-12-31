@@ -12,7 +12,6 @@ import com.bytedance.sdk.openadsdk.TTAppDownloadListener;
 import com.bytedance.sdk.openadsdk.TTFeedAd;
 import com.bytedance.sdk.openadsdk.TTFullScreenVideoAd;
 import com.bytedance.sdk.openadsdk.TTImage;
-import com.bytedance.sdk.openadsdk.TTNativeAd;
 import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
 import com.bytedance.sdk.openadsdk.TTRewardVideoAd;
 import com.bytedance.sdk.openadsdk.TTSplashAd;
@@ -24,17 +23,16 @@ import com.xnad.sdk.ad.entity.MidasNativeTemplateAd;
 import com.xnad.sdk.ad.entity.MidasRewardVideoAd;
 import com.xnad.sdk.ad.entity.MidasSelfRenderAd;
 import com.xnad.sdk.ad.entity.MidasSplashAd;
-import com.xnad.sdk.ad.listener.AdChargeListener;
 import com.xnad.sdk.ad.listener.AdRequestListener;
+import com.xnad.sdk.ad.outlistener.AdFullScreenVideoListener;
+import com.xnad.sdk.ad.outlistener.AdInteractionListener;
 import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
 import com.xnad.sdk.ad.outlistener.AdOutChargeListener;
 import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
-import com.xnad.sdk.ad.outlistener.AdSplashListener;
-import com.xnad.sdk.ad.outlistener.AdInteractionListener;
 import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
-import com.xnad.sdk.ad.outlistener.AdFullScreenVideoListener;
+import com.xnad.sdk.ad.outlistener.AdSplashListener;
+import com.xnad.sdk.config.ErrorCode;
 import com.xnad.sdk.config.TTAdManagerHolder;
-import com.xnad.sdk.utils.CodeFactory;
 import com.xnad.sdk.utils.LogUtils;
 
 import java.util.List;
@@ -293,14 +291,16 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                 LogUtils.d(TAG, "onADLoaded->请求穿山甲成功");
                 if (list == null || list.size() == 0) {
                     if (listener != null) {
-                        listener.adError(info, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                        listener.adError(info, ErrorCode.CSJ_AD_DATA_EMPTY.errorCode,
+                                ErrorCode.CSJ_AD_DATA_EMPTY.errorMsg);
                     }
                     return;
                 }
                 TTFeedAd ttFeedAd = list.get(0);
                 if (ttFeedAd == null) {
                     if (listener != null) {
-                        listener.adError(info, CodeFactory.UNKNOWN, CodeFactory.getError(CodeFactory.UNKNOWN));
+                        listener.adError(info, ErrorCode.CSJ_AD_DATA_EMPTY.errorCode,
+                                ErrorCode.CSJ_AD_DATA_EMPTY.errorMsg);
                     }
                     return;
                 }

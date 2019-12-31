@@ -18,6 +18,8 @@ public enum  ErrorCode {
     API_RESPONSE_NOT_ARRIVED_EXCEPTION(10001,"api响应未到达异常"),
     API_DATA_PARSE_EXCEPTION(10002,"api数据解析异常"),
     STRATEGY_DATA_EMPTY(10003,"策略数据返回为空"),
+    STRATEGY_CONFIG_EXCEPTION(10004,"策略配置获取异常"),
+    CSJ_AD_DATA_EMPTY(10005,"穿山甲平台广告返回为空"),
 
     ;
 
