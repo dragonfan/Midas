@@ -8,14 +8,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.xnad.sdk.MidasAdSdk;
-import com.xnad.sdk.utils.AppUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1024 && hasAllPermissionsGranted(grantResults)) {
 
-            MidasAdSdk.setImei(AppUtils.getIMEI(this));
+//            MidasAdSdk.setImei(AppUtils.getIMEI(this));
 
         } else {
             Toast.makeText(this, "应用缺少必要的权限！请点击\"权限\"，打开所需要的权限。", Toast.LENGTH_LONG).show();

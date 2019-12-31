@@ -24,6 +24,6 @@ public interface BaseDomainUrl {
     /**
      * 生产域名
      */
-    String PRODUCT_DOMAIN_URL = "http://adsenseapi.hellogeek.com/adsenseapi/";
+    String PRODUCT_DOMAIN_URL = "http://pizarroadsenseapi.xiaoniuhy.com/";
 
 }

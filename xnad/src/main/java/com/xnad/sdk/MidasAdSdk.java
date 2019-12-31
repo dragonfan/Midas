@@ -32,6 +32,7 @@ public final class MidasAdSdk {
     private static Context mContext;
     private static String mAppId;
 
+    private static boolean mIsFormal;
 
     /**
      * 聚合广告sdk初始化
@@ -42,6 +43,7 @@ public final class MidasAdSdk {
 
         long beginTime = System.currentTimeMillis();
         mContext = context.getApplicationContext();
+        mIsFormal = adConfigBuild.isIsFormal();
         mAppId = adConfigBuild.getAppId();
         //初始化基本配置信息
         //强烈建议在应用对应的Application#onCreate()方法中调用，避免出现content为null的异常
@@ -106,5 +108,7 @@ public final class MidasAdSdk {
     }
 
 
-
+    public static boolean isFormal() {
+        return mIsFormal;
+    }
 }

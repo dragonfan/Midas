@@ -86,7 +86,7 @@ public class ConfigActivity extends AppCompatActivity implements View.OnClickLis
                         .setCsjAppId("5036430")
                         .setChannel(channel)
                         .setServerUrl(serverUrl)
-                        .setIsFormal(false);
+                        .setIsFormal(true);
                 MidasAdSdk.init(this, configBuild);
                 break;
             case R.id.next:
