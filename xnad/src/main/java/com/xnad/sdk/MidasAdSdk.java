@@ -1,6 +1,7 @@
 package com.xnad.sdk;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.xnad.sdk.ad.factory.MidasAdManagerFactory;
 import com.xnad.sdk.ad.admanager.AdManager;
@@ -36,10 +37,11 @@ public final class MidasAdSdk {
 
     /**
      * 聚合广告sdk初始化
-     * @param context 上下文
+     *
+     * @param context       上下文
      * @param adConfigBuild 初始化配置信息
      */
-    public static void init(Context context, ADConfigBuild adConfigBuild){
+    public static void init(Context context, ADConfigBuild adConfigBuild) {
 
         long beginTime = System.currentTimeMillis();
         mContext = context.getApplicationContext();
@@ -50,16 +52,16 @@ public final class MidasAdSdk {
         AppUtils.init(mContext);
         TTAdManagerHolder.init(context, adConfigBuild.getCsjAppId());
         mIsInit = true;
-        LogUtils.d("Midas sdk init time="+(System.currentTimeMillis()-beginTime));
+        LogUtils.d("Midas sdk init time=" + (System.currentTimeMillis() - beginTime));
         //初始化牛数
         StatisticUtils.init(context, adConfigBuild.getChannel(), adConfigBuild.getProductId(), adConfigBuild.getServerUrl());
         //首次上报imei
         boolean isReport = com.xnad.sdk.utils.SpUtils.getBoolean(Constants.SpUtils.FIRST_REPORT_IMEI, false);
         if (!isReport) {
-            StatisticUtils.setImei(AppUtils.getIMEI(mContext));
+            StatisticUtils.setImei(AppUtils.getIMEI());
             com.xnad.sdk.utils.SpUtils.putBoolean(Constants.SpUtils.FIRST_REPORT_IMEI, true);
         }
-        LogUtils.d("Midas and niuDate sdk init time="+(System.currentTimeMillis()-beginTime));
+        LogUtils.d("Midas and niuDate sdk init time=" + (System.currentTimeMillis() - beginTime));
     }
 
     /**
@@ -73,12 +75,11 @@ public final class MidasAdSdk {
 
     /**
      * 设置imei
-     *
-     * @param imei
      */
-    public static void setImei(String imei) {
+    public static void setImei() {
+        String imei = AppUtils.getIMEI();
         boolean isReport = SpUtils.getBoolean(Constants.SpUtils.AGAIN_REPORT_IMEI, false);
-        if (!isReport) {
+        if (!isReport && !TextUtils.isEmpty(imei)) {
             StatisticUtils.setImei(imei);
             SpUtils.putBoolean(Constants.SpUtils.AGAIN_REPORT_IMEI, true);
         }

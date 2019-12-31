@@ -69,16 +69,15 @@ public class AppUtils {
     }
     /**
      * 获取IMEI
-     * @param mContext  上下文
      * @return  String  imei
      */
-    public static String getIMEI(Context mContext) {
+    public static String getIMEI() {
         String imei = "";
         try {
-            if (!checkHasPermission(mContext, "android.permission.READ_PHONE_STATE")) {
+            if (!checkHasPermission(sContext, "android.permission.READ_PHONE_STATE")) {
                 return imei;
             }
-            TelephonyManager tm = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
+            TelephonyManager tm = (TelephonyManager) sContext.getSystemService(Context.TELEPHONY_SERVICE);
             if (tm != null) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     imei = tm.getImei();
