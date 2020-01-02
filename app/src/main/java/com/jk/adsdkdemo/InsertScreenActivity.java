@@ -7,14 +7,15 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.jk.adsdkdemo.bean.AdConfig;
+import com.jk.adsdkdemo.utils.LogUtils;
 import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.outlistener.AdInteractionListener;
-import com.jk.adsdkdemo.utils.LogUtils;
 import com.xnad.sdk.config.AdParameter;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * 自渲染插屏广告<p>
@@ -48,7 +49,7 @@ public class InsertScreenActivity extends AppCompatActivity implements View.OnCl
 
 //        btnNormalDownload = findViewById(R.id.btn_normal_download);
 //        btnNormalDownload.setOnClickListener(this);
-        positionEdit.setText("2562642921");
+        positionEdit.setText(AdConfig.INSERT_SCREEN_AD_POSITION);
 //        positionEdit2.setText("cp_ad_2");
 //        btnFullScreen = findViewById(R.id.btn_fullscreen_download);
 //        btnFullScreen.setOnClickListener(this);

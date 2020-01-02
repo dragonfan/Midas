@@ -10,15 +10,16 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.jk.adsdkdemo.bean.AdConfig;
+import com.jk.adsdkdemo.utils.LogUtils;
 import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.entity.MidasNativeTemplateAd;
 import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
-import com.jk.adsdkdemo.utils.LogUtils;
 import com.xnad.sdk.ad.outlistener.AdOutChargeListener;
 import com.xnad.sdk.config.AdParameter;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
   *
@@ -56,7 +57,7 @@ public class FeedTemplateAcitvity extends AppCompatActivity implements View.OnCl
         mEtHeight = (EditText) findViewById(R.id.express_height);
         mEtWidth = (EditText) findViewById(R.id.express_width);
         mEtPosition = findViewById(R.id.et_position_id);
-        mEtPosition.setText("8200604151");
+        mEtPosition.setText(AdConfig.FEED_TEMPLATE_AD_POSITION);
         mButtonLoadAd.setOnClickListener(this);
         mButtonLoadAdVideo.setOnClickListener(this);
 //        //step2:创建TTAdNative对象，createAdNative(Context context) banner广告context需要传入Activity对象

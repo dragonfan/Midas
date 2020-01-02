@@ -1,8 +1,6 @@
 package com.jk.adsdkdemo;
 
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -10,12 +8,16 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.jk.adsdkdemo.bean.AdConfig;
+import com.jk.adsdkdemo.utils.LogUtils;
 import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.outlistener.AdSplashListener;
 import com.xnad.sdk.config.AdParameter;
 import com.xnad.sdk.config.Constants;
-import com.jk.adsdkdemo.utils.LogUtils;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * 开屏广告页面<p>
@@ -45,7 +47,7 @@ public class SplashAdActivity extends AppCompatActivity implements View.OnClickL
         stateTxt = findViewById(R.id.state_txt);
         refreshBtn.setOnClickListener(this);
 //        positionEdit.setText("68870548_0_1");
-        positionEdit.setText("2861108501");
+        positionEdit.setText(AdConfig.SPLASH_AD_POSITION);
 //        loadSplashAd("cold_kp");
     }
 

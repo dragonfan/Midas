@@ -21,8 +21,8 @@ public class MainApp extends Application {
 
     }
 
-
     public static Context getContext(){
         return mContext;
     }
+
 }

@@ -16,9 +16,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.bumptech.glide.Glide;
+import com.jk.adsdkdemo.bean.AdConfig;
 import com.jk.adsdkdemo.utils.LogUtils;
 import com.qq.e.ads.nativ.MediaView;
 import com.qq.e.ads.nativ.widget.NativeAdContainer;
@@ -32,6 +31,8 @@ import com.xnad.sdk.config.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * @ProjectName: ${PROJECT_NAME}
@@ -62,7 +63,7 @@ public class SelfRenderAcitvity extends AppCompatActivity implements View.OnClic
         requestBt = findViewById(R.id.button_request_ad);
         requestBt.setOnClickListener(this);
         positionEt = findViewById(R.id.et_position_id);
-        positionEt.setText("6711347261");
+        positionEt.setText(AdConfig.SELF_RENDER_AD_POSITION);
         spinner = findViewById(R.id.spinner);
         preloadBt = findViewById(R.id.button_preloading_ad);
         preloadBt.setOnClickListener(this);

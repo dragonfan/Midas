@@ -7,14 +7,15 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.jk.adsdkdemo.bean.AdConfig;
 import com.jk.adsdkdemo.utils.LogUtils;
 import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.outlistener.AdFullScreenVideoListener;
 import com.xnad.sdk.config.AdParameter;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * 全屏视频页面<p>
@@ -45,7 +46,7 @@ public class FullScreenVideoActivity extends AppCompatActivity implements View.O
         preloadingAd = findViewById(R.id.button_preloading_ad);
         preloadingAd.setOnClickListener(this);
 
-        positionEdit.setText("8861663631");
+        positionEdit.setText(AdConfig.FULL_SCREEN_AD_POSITION);
 //        loadFullScreenVideoAd("cp_ad_1");
     }
 

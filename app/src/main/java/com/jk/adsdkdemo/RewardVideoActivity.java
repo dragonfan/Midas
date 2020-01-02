@@ -6,16 +6,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.jk.adsdkdemo.bean.AdConfig;
+import com.jk.adsdkdemo.utils.LogUtils;
+import com.xnad.sdk.MidasAdSdk;
+import com.xnad.sdk.ad.entity.AdInfo;
+import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
+import com.xnad.sdk.config.AdParameter;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.xnad.sdk.MidasAdSdk;
-import com.xnad.sdk.ad.entity.AdInfo;
-import com.jk.adsdkdemo.utils.LogUtils;
-import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
-import com.xnad.sdk.config.AdParameter;
 
 /**
  * 激励视频页面<p>
@@ -42,7 +42,7 @@ public class RewardVideoActivity extends AppCompatActivity implements View.OnCli
         refreshBtn = findViewById(R.id.video_refresh);
         positionEdit = findViewById(R.id.splash_position_edit);
         refreshBtn.setOnClickListener(this);
-        positionEdit.setText("2569743941");
+        positionEdit.setText(AdConfig.REWARD_AD_POSITION);
 
         preloadingAd = findViewById(R.id.button_preloading_ad);
         preloadingAd.setOnClickListener(this);
