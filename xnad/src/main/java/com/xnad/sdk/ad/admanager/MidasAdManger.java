@@ -75,14 +75,14 @@ public class MidasAdManger implements AdManager {
 
                 return;
             }
-            AdStrategyBean mAdsInfosBean = mStrategyBeanList.remove(0);
-            if (mAdsInfosBean == null) {
+            AdStrategyBean strategyBean = mStrategyBeanList.remove(0);
+            if (strategyBean == null) {
                 if (mAdListener != null) {
                     mAdListener.adError(adInfo, errorCode, errorMsg);
                 }
                 return;
             }
-            againRequest(adInfo, mAdsInfosBean);
+            againRequest(adInfo, strategyBean);
         }
     };
 
