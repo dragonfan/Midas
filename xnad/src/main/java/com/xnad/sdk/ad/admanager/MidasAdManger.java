@@ -61,11 +61,6 @@ public class MidasAdManger implements AdManager {
     private AdBasicListener mAdListener;
 
     /**
-     * 请求方式：0 - SDK 1 - API
-     */
-    private int requestType = 0;
-
-    /**
      * 第一次请求广告时间
      */
     private long firstRequestAdTime;
@@ -73,8 +68,7 @@ public class MidasAdManger implements AdManager {
     private LoopAdListener mLoopAdListener = new LoopAdListener() {
         @Override
         public void loopAdError(AdInfo adInfo, int errorCode, String errorMsg) {
-
-            if (mStrategyBeanList ==null|| mStrategyBeanList.size()==0) {
+            if (mStrategyBeanList == null || mStrategyBeanList.size() == 0) {
                 if (mAdListener != null) {
                     mAdListener.adError(adInfo, errorCode, errorMsg);
                 }
@@ -92,7 +86,11 @@ public class MidasAdManger implements AdManager {
         }
     };
 
-
+    /**
+     * 获取策略配置信息
+     * @param adInfo    广告信息
+     * @param adPosId   广告位id
+     */
     private void getMidasConfigBean(AdInfo adInfo, String adPosId){
         //埋点流程开始
         long beginTime = System.currentTimeMillis();
@@ -152,35 +150,17 @@ public class MidasAdManger implements AdManager {
                 && !TextUtils.isEmpty(strategyBean.getRequestOrder())){
             adInfo.getStatisticBaseProperties().setPriorityS(strategyBean.getRequestOrder());
         }
-
         //某些特有的数据清空，避免污染下一次请求数据
         adInfo.clear();
         adInfo.getMidasAd().clear();
-
         //广告源
         adInfo.getMidasAd().setAdSource(strategyBean.getAdUnion());
         //广告id
         adInfo.getMidasAd().setAdId(strategyBean.getAdId());
         //广告对应的appid
         adInfo.getMidasAd().setAppId(strategyBean.getAdsAppid());
-        //请求类型 0 - SDK 1 - API
+        //后续如果做api请求，在此处判断拦截处理[请求类型 0 - SDK 1 - API]
         sdkRequest(adInfo);
-//        requestType = adsInfosBean.getRequestType();
-//        if (requestType == 0) {
-//            sdkRequest(adInfo);
-//        } else {
-//            apiRequest(adInfo);
-//        }
-    }
-
-    /**
-     * api 请求
-     */
-    private void apiRequest(AdInfo adInfo) {
-        // TODO: 2019/12/3
-        if (mAdListener != null) {
-            mAdListener.adError(adInfo, 2, "暂时不支持api广告");
-        }
     }
 
     /**
