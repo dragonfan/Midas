@@ -19,11 +19,18 @@ android {
     }
 
     signingConfigs {
+//        release {
+//            storeFile file("../noblemetal.jks")
+//            storePassword "honglu"
+//            keyAlias "xiaoniu"
+//            keyPassword "honglu"
+//            v2SigningEnabled false
+//        }
         release {
-            storeFile file("../noblemetal.jks")
-            storePassword "honglu"
-            keyAlias "xiaoniu"
-            keyPassword "honglu"
+            storeFile file('../love_drink_water.jks')
+            storePassword 'geek123'
+            keyAlias = 'geek'
+            keyPassword 'geek123'
             v2SigningEnabled false
         }
     }
@@ -38,6 +45,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 }
