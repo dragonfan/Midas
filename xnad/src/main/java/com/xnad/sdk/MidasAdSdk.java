@@ -52,7 +52,6 @@ public final class MidasAdSdk {
      * @param adConfig 初始化配置信息
      */
     public static void init(Context context, AdConfig adConfig) {
-
         long beginTime = System.currentTimeMillis();
         mContext = context.getApplicationContext();
         mIsFormal = adConfig.isIsFormal();
@@ -108,18 +107,8 @@ public final class MidasAdSdk {
         return mAppId;
     }
 
-
-    /**
-     * 检测是否初始化
-     */
-    private static void checkInit() {
-        if (!mIsInit) {
-            throw new RuntimeException("MidasAdSdk should  be init");
-        }
-    }
-
-
     public static boolean isFormal() {
         return mIsFormal;
     }
+
 }
