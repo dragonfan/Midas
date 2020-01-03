@@ -79,6 +79,7 @@ public class YlhSdkRequestManager extends SdkRequestManager {
                 NativeExpressADView nativeExpressADView = list.get(0);
                 if (nativeExpressADView.getBoundData().getAdPatternType() == AdPatternType.NATIVE_VIDEO) {
                     nativeExpressADView.setMediaListener(new NativeExpressMediaListener() {
+
                         @Override
                         public void onVideoInit(NativeExpressADView nativeExpressADView) {
 
@@ -89,6 +90,10 @@ public class YlhSdkRequestManager extends SdkRequestManager {
 
                         }
 
+                        @Override
+                        public void onVideoCached(NativeExpressADView nativeExpressADView) {
+
+                        }
                         @Override
                         public void onVideoReady(NativeExpressADView nativeExpressADView, long l) {
 
@@ -264,6 +269,10 @@ public class YlhSdkRequestManager extends SdkRequestManager {
                 }
             }
 
+            @Override
+            public void onVideoCached() {
+
+            }
             @Override
             public void onNoAD(AdError adError) {
                 if (listener != null) {

@@ -32,7 +32,8 @@ public class TTAdManagerHolder {
     //step1:接入网盟广告sdk的初始化操作，详情见接入文档和穿山甲平台说明
     private static void doInit(Context context) {
         if (!sInit) {
-
+//            String versionName = TTAdSdk.getAdManager().getSDKVersion();
+//            Log.e("777","versionName : " + versionName);
             TTAdSdk.init(context, buildConfig(context));
             sInit = true;
         }
@@ -40,7 +41,7 @@ public class TTAdManagerHolder {
 
     private static TTAdConfig buildConfig(Context context) {
         String chjAppName = AppUtils.getAppName(context);
-        boolean adsDebug = false;
+        boolean adsDebug;
         if (BuildConfig.DEBUG) {
             adsDebug = true;
         } else {
