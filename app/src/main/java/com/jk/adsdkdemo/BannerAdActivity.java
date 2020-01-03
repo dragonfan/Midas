@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.jk.adsdkdemo.bean.AdConfig;
+import com.jk.adsdkdemo.config.AdConfig;
 import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.outlistener.AdBannerListener;
@@ -39,7 +39,7 @@ public class BannerAdActivity extends AppCompatActivity {
     private void initViews() {
         mPositionIdEt = findViewById(R.id.position_id_edit);
         mBannerContainer = findViewById(R.id.bannerContainer);
-        mPositionIdEt.setText(AdConfig.SPLASH_AD_POSITION);
+        mPositionIdEt.setText(AdConfig.BANNER_AD_POSITION);
         findViewById(R.id.load_ad_btn).setOnClickListener(v -> requestAd());
     }
 

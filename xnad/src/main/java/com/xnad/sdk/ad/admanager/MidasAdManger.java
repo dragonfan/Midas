@@ -369,6 +369,7 @@ public class MidasAdManger implements AdManager {
         mAdListener = listener;
         mActivity = adParameter.getActivity();
         AdInfo adInfo = new AdInfo();
+        adInfo.setAdParameter(adParameter);
         adInfo.setAdType(Constants.AdType.BANNER_TYPE);
         MidasBannerAd midasBannerAd = new MidasBannerAd();
         adInfo.setMidasAd(midasBannerAd);

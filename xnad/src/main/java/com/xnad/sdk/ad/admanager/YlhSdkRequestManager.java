@@ -227,7 +227,72 @@ public class YlhSdkRequestManager extends SdkRequestManager {
     }
 
     @Override
-    public void requestBannerAd(AdInfo adInfo, AdRequestListener adRequestListener, AdBannerListener adBannerListener) {
+    public void requestBannerAd(AdInfo adInfo, AdRequestListener adRequestListener,
+                                AdBannerListener adBannerListener) {
+        AdParameter adParameter = adInfo.getAdParameter();
+        MidasBannerAd midasBannerAd = (MidasBannerAd) adInfo.getMidasAd();
+
+        if (adParameter != null && adParameter.getActivity() != null
+                && adParameter.getViewContainer() != null) {
+            UnifiedBannerView bannerView = new UnifiedBannerView(adParameter.getActivity(),
+                    midasBannerAd.getAppId(), adParameter.getPosition(),
+                    new UnifiedBannerADListener() {
+                @Override
+                public void onNoAD(AdError adError) {
+                    if (adRequestListener != null) {
+                        adRequestListener.adError(adInfo, adError.getErrorCode(), adError.getErrorMsg());
+                    }
+                }
+                @Override
+                public void onADReceive() {
+                    if (adRequestListener != null) {
+                        adRequestListener.adSuccess(adInfo);
+                    }
+
+                    if (adBannerListener != null) {
+                        adBannerListener.adSuccess(adInfo);
+                    }
+                }
+                @Override
+                public void onADExposure() {
+                    if (adBannerListener != null) {
+                        adBannerListener.onAdShow(adInfo);
+                    }
+                }
+                @Override
+                public void onADClosed() {
+                    if (adBannerListener != null) {
+                        adBannerListener.adClose(adInfo);
+                    }
+                    adParameter.getViewContainer().removeAllViews();
+                }
+                @Override
+                public void onADClicked() {
+                    if (adBannerListener != null) {
+                        adBannerListener.onAdClicked(adInfo);
+                    }
+                }
+                @Override
+                public void onADLeftApplication() {
+                }
+                @Override
+                public void onADOpenOverlay() {
+                }
+                @Override
+                public void onADCloseOverlay() {
+                }
+            });
+            adParameter.getViewContainer().removeAllViews();
+            Point screenSize = new Point();
+            adParameter.getActivity().getWindowManager().
+                    getDefaultDisplay().getSize(screenSize);
+            adParameter.getViewContainer().addView(bannerView,new ViewGroup.
+                    LayoutParams(screenSize.x,  Math.round(screenSize.x / 6.4F)));
+            midasBannerAd.setUnifiedBannerView(bannerView);
+            bannerView.setRefresh(30);
+            bannerView.loadAD();
+        }
+    }
 
     }
 

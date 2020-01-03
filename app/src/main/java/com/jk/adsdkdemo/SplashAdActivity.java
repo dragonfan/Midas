@@ -8,7 +8,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.jk.adsdkdemo.bean.AdConfig;
+import com.jk.adsdkdemo.config.AdConfig;
 import com.jk.adsdkdemo.utils.LogUtils;
 import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.entity.AdInfo;

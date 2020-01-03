@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.jk.adsdkdemo.bean.AdConfig;
+import com.jk.adsdkdemo.config.AdConfig;
 import com.jk.adsdkdemo.utils.LogUtils;
 import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.entity.AdInfo;
@@ -34,7 +34,7 @@ import androidx.appcompat.app.AppCompatActivity;
   * @UpdateRemark:   更新说明：
   * @Version:        1.0
  */
-public class FeedTemplateAcitvity extends AppCompatActivity implements View.OnClickListener {
+public class FeedTemplateActivity extends AppCompatActivity implements View.OnClickListener {
 
     private FrameLayout mExpressContainer;
     private Context mContext;

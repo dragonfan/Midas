@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.jk.adsdkdemo.bean.AdConfig;
+import com.jk.adsdkdemo.config.AdConfig;
 import com.jk.adsdkdemo.utils.LogUtils;
 import com.qq.e.ads.nativ.MediaView;
 import com.qq.e.ads.nativ.widget.NativeAdContainer;
@@ -46,9 +46,9 @@ import androidx.appcompat.app.AppCompatActivity;
  * @UpdateRemark: 更新说明：
  * @Version: 1.0
  */
-public class SelfRenderAcitvity extends AppCompatActivity implements View.OnClickListener {
+public class SelfRenderActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private final String TAG = SelfRenderAcitvity.class.getSimpleName();
+    private final String TAG = SelfRenderActivity.class.getSimpleName();
 
     private Button requestBt, preloadBt;
     private FrameLayout mContainer;

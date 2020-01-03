@@ -1,6 +1,7 @@
 package com.xnad.sdk.ad.admanager;
 
 import android.app.Activity;
+import android.graphics.Point;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -656,8 +657,96 @@ public class CsjSdkRequestManager extends SdkRequestManager {
     }
 
     @Override
-    public void requestBannerAd(AdInfo adInfo, AdRequestListener adRequestListener, AdBannerListener adBannerListener) {
+    public void requestBannerAd(AdInfo adInfo, AdRequestListener adRequestListener,
+                                AdBannerListener adBannerListener) {
+        AdParameter adParameter = adInfo.getAdParameter();
+        if (adParameter != null && adParameter.getActivity() != null
+                && adParameter.getViewContainer() != null) {
+            Activity activity = adParameter.getActivity();
+            ViewGroup viewContainer = adParameter.getViewContainer();
+            TTAdNative ttAdNative =
+                    TTAdManagerHolder.get().createAdNative(activity);
+            Point screenSize = new Point();
+            adParameter.getActivity().getWindowManager().
+                    getDefaultDisplay().getSize(screenSize);
+            AdSlot adSlot = new AdSlot.Builder()
+                    //广告位id
+                    .setCodeId(adParameter.getPosition())
+                    .setSupportDeepLink(true)
+                    //保持与优量汇的宽高比一致
+                    .setImageAcceptedSize(640, 100)
+                    .setExpressViewAcceptedSize(screenSize.x,0)
+                    .build();
+            ttAdNative.loadBannerAd(adSlot, new TTAdNative.BannerAdListener() {
 
+                @Override
+                public void onError(int code, String message) {
+                    adRequestListener.adError(adInfo, code, message);
+                    viewContainer.removeAllViews();
+                }
+                @Override
+                public void onBannerAdLoad(final TTBannerAd ad) {
+                    if (ad == null) {
+                        adRequestListener.adError(adInfo, ErrorCode.CSJ_AD_LOAD_EMPTY.errorCode, ErrorCode.CSJ_AD_LOAD_EMPTY.errorMsg);
+                        return;
+                    }
+                    View bannerView = ad.getBannerView();
+                    if (bannerView == null) {
+                        adRequestListener.adError(adInfo, ErrorCode.CSJ_AD_LOAD_EMPTY.errorCode, ErrorCode.CSJ_AD_LOAD_EMPTY.errorMsg);
+                        return;
+                    }
+                    if (adRequestListener != null) {
+                        adRequestListener.adSuccess(adInfo);
+                    }
+                    if (adBannerListener != null){
+                        adBannerListener.adSuccess(adInfo);
+                    }
+                    MidasBannerAd midasBannerAd = (MidasBannerAd) adInfo.getMidasAd();
+                    midasBannerAd.setTTBannerAd(ad);
+                    midasBannerAd.setAddView(ad.getBannerView());
+
+                    //设置轮播的时间间隔  间隔在30s到120秒之间的值，不设置默认不轮播
+                    ad.setSlideIntervalTime(30 * 1000);
+                    viewContainer.removeAllViews();
+                    viewContainer.addView(bannerView,new ViewGroup.
+                            LayoutParams(screenSize.x,  Math.round(screenSize.x / 6.4F)));
+                    //设置广告互动监听回调
+                    ad.setBannerInteractionListener(new TTBannerAd.AdInteractionListener() {
+                        @Override
+                        public void onAdClicked(View view, int type) {
+                            if (adBannerListener != null){
+                                adBannerListener.onAdClicked(adInfo);
+                            }
+                        }
+                        @Override
+                        public void onAdShow(View view, int type) {
+                            if (adBannerListener != null){
+                                adBannerListener.onAdShow(adInfo);
+                            }
+                        }
+                    });
+                    //（可选）设置下载类广告的下载监听
+                    AdUtils.bindBannerDownloadLinstener(ad);
+                    //在banner中显示网盟提供的dislike icon，有助于广告投放精准度提升
+                    ad.setShowDislikeIcon(new TTAdDislike.DislikeInteractionCallback() {
+                        @Override
+                        public void onSelected(int position, String value) {
+                            //用户选择不喜欢原因后，移除广告展示
+                            viewContainer.removeAllViews();
+                            if (adBannerListener != null){
+                                adBannerListener.adClose(adInfo);
+                            }
+                        }
+                        @Override
+                        public void onCancel() {
+                        }
+                    });
+                }
+            });
+        }else {
+            adRequestListener.adError(adInfo, ErrorCode.AD_PARAMS_ERROR.errorCode,
+                    ErrorCode.AD_PARAMS_ERROR.errorMsg);
+        }
     }
 
     private void caheImage(TTFeedAd ttFeedAd) {
