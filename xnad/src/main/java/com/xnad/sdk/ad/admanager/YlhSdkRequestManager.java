@@ -6,27 +6,16 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.text.TextUtils;
 import android.view.ViewGroup;
 
-import com.qq.e.ads.banner2.UnifiedBannerADListener;
 import com.qq.e.ads.banner2.UnifiedBannerView;
 import com.qq.e.ads.cfg.VideoOption;
 import com.qq.e.ads.interstitial2.UnifiedInterstitialAD;
 import com.qq.e.ads.nativ.ADSize;
-import com.qq.e.ads.nativ.NativeADUnifiedListener;
 import com.qq.e.ads.nativ.NativeExpressAD;
-import com.qq.e.ads.nativ.NativeExpressADView;
-import com.qq.e.ads.nativ.NativeExpressMediaListener;
 import com.qq.e.ads.nativ.NativeUnifiedAD;
-import com.qq.e.ads.nativ.NativeUnifiedADData;
 import com.qq.e.ads.rewardvideo.RewardVideoAD;
-import com.qq.e.ads.rewardvideo.RewardVideoADListener;
 import com.qq.e.ads.splash.SplashAD;
-import com.qq.e.ads.splash.SplashADListener;
-import com.qq.e.comm.constants.AdPatternType;
-import com.qq.e.comm.util.AdError;
-import com.xnad.sdk.ad.cache.ADTool;
 import com.xnad.sdk.ad.cache.wrapper.WrapperBannerADListener;
 import com.xnad.sdk.ad.cache.wrapper.WrapperInterstitialADListener;
 import com.xnad.sdk.ad.cache.wrapper.WrapperNativeTemplateAdListener;
@@ -50,9 +39,6 @@ import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
 import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
 import com.xnad.sdk.ad.outlistener.AdSplashListener;
 import com.xnad.sdk.config.AdParameter;
-import com.xnad.sdk.utils.LogUtils;
-
-import java.util.List;
 
 /**
  * @ProjectName: MidasAdSdk
@@ -209,9 +195,9 @@ public class YlhSdkRequestManager extends SdkRequestManager {
         MidasRewardVideoAd midasRewardVideoAd = (MidasRewardVideoAd) adInfo.getMidasAd();
         int orientation = midasRewardVideoAd.getOrientation();
         if (orientation == 2) {
-            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        } else {
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else {
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
         //设置自定义监听
@@ -240,7 +226,7 @@ public class YlhSdkRequestManager extends SdkRequestManager {
             mWrapperBannerADListener.setOutListener(adBannerListener);
 
             UnifiedBannerView bannerView = new UnifiedBannerView(adParameter.getActivity(),
-                    midasBannerAd.getAppId(), adParameter.getPosition(),mWrapperBannerADListener);
+                    midasBannerAd.getAppId(), midasBannerAd.getAdId(),mWrapperBannerADListener);
 
             adParameter.getViewContainer().removeAllViews();
             Point screenSize = new Point();

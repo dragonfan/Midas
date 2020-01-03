@@ -19,7 +19,6 @@ import com.bytedance.sdk.openadsdk.TTImage;
 import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
 import com.bytedance.sdk.openadsdk.TTRewardVideoAd;
 import com.bytedance.sdk.openadsdk.TTSplashAd;
-import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.cache.ADTool;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.entity.MidasBannerAd;
@@ -669,9 +668,10 @@ public class CsjSdkRequestManager extends SdkRequestManager {
             Point screenSize = new Point();
             adParameter.getActivity().getWindowManager().
                     getDefaultDisplay().getSize(screenSize);
+            MidasBannerAd midasBannerAd = (MidasBannerAd) adInfo.getMidasAd();
             AdSlot adSlot = new AdSlot.Builder()
                     //广告位id
-                    .setCodeId(adParameter.getPosition())
+                    .setCodeId(midasBannerAd.getAdId())
                     .setSupportDeepLink(true)
                     //保持与优量汇的宽高比一致
                     .setImageAcceptedSize(640, 100)
@@ -705,7 +705,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
 
                     //添加到缓存
                     ADTool.getInstance().cacheAd(this, adInfo);
-                    MidasBannerAd midasBannerAd = (MidasBannerAd) adInfo.getMidasAd();
+
                     midasBannerAd.setTTBannerAd(ad);
                     midasBannerAd.setAddView(ad.getBannerView());
 
