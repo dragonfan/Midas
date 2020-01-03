@@ -3,8 +3,6 @@ package com.xnad.sdk.ad.admanager;
 import android.app.Activity;
 import android.text.TextUtils;
 
-import com.xnad.sdk.ad.cache.ADTool;
-import com.xnad.sdk.ad.cache.AdContainerWrapper;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.entity.AdStrategyBean;
 import com.xnad.sdk.ad.entity.MidasBannerAd;
@@ -167,14 +165,14 @@ public class MidasAdManger implements AdManager {
 
 
 
-        //查询本地缓存
-        AdContainerWrapper adContainer = ADTool.getInstance().getAd(adInfo.getPosition(), strategyBean.getAdId());
-        //判断是否有缓存并且有效
-        if (adContainer != null&&adContainer.isValid()) {
-
-            ADTool.getInstance().bindListener(mActivity,adContainer,  mAdListener);
-            return;
-        }
+//        //查询本地缓存
+//        AdContainerWrapper adContainer = ADTool.getInstance().getAd(adInfo.getPosition(), strategyBean.getAdId());
+//        //判断是否有缓存并且有效
+//        if (adContainer != null&&adContainer.isValid()) {
+//
+//            ADTool.getInstance().bindListener(mActivity,adContainer,  mAdListener);
+//            return;
+//        }
 
 
         //后续如果做api请求，在此处判断拦截处理[请求类型 0 - SDK 1 - API]

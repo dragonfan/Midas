@@ -16,7 +16,7 @@ public interface AdConfig {
     /**
      * 开屏广告位id
      */
-     String SPLASH_AD_POSITION = "2861108501";
+     String SPLASH_AD_POSITION = "5490669901";
     /**
      * 激励视频广告位id
      */
@@ -40,5 +40,5 @@ public interface AdConfig {
     /**
      * banner广告位id
      */
-     String BANNER_AD_POSITION = "901121895";
+     String BANNER_AD_POSITION = "5750024211";
 }
