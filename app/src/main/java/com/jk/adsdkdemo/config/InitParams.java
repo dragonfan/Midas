@@ -36,5 +36,5 @@ public interface InitParams {
     /**
      * 是否是正式环境 true对应生产环境
      */
-    boolean IS_FORMAL = true;
+    boolean IS_FORMAL = false;
 }
