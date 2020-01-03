@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.text.TextUtils;
 
 import com.xnad.sdk.ad.entity.AdInfo;
+import com.xnad.sdk.ad.listener.AdBasicListener;
 import com.xnad.sdk.ad.outlistener.AdInteractionListener;
 import com.xnad.sdk.config.Constants;
 import com.xnad.sdk.utils.ListenerUtils;
@@ -84,55 +85,14 @@ public class ADTool {
         mCache.put(positionId, ads);
     }
 
-    public void bindListener( Activity activity,AdContainerWrapper adContainerWrapper, AdInteractionListener adListener) {
+    /**
+     * 绑定监听
+     * @param activity 上下文
+     * @param adContainerWrapper 广告缓存对象
+     * @param adListener  对外的监听
+     */
+    public void bindListener( Activity activity,AdContainerWrapper adContainerWrapper, AdBasicListener adListener) {
         ListenerUtils.setListenerAndShow(activity,adContainerWrapper,adListener);
-    }
-
-    public void showAD(AdContainerWrapper adContainerWrapper) {
-        if (TextUtils.equals(adContainerWrapper.getAdChannel(), Constants.AdSourceType.ChuanShanJia)) {
-            showCsjAd(adContainerWrapper);
-        } else if (TextUtils.equals(adContainerWrapper.getAdChannel(), Constants.AdSourceType.YouLiangHui)) {
-            showYlhAd(adContainerWrapper);
-        }
-
-    }
-
-    private void showCsjAd(AdContainerWrapper adInfo) {
-        switch (adInfo.getAdType()) {
-            case Constants.AdType.SPLASH_TYPE:
-                break;
-            case Constants.AdType.INTERACTION_TYPE:
-                break;
-            case Constants.AdType.FULL_SCREEN_VIDEO_TYPE:
-                break;
-            case Constants.AdType.REWARD_VIDEO_TYPE:
-                break;
-            case Constants.AdType.NATIVE_TEMPLATE:
-                break;
-            case Constants.AdType.SELF_RENDER:
-                break;
-            default:
-                ;
-        }
-    }
-
-    private void showYlhAd(AdContainerWrapper adInfo) {
-        switch (adInfo.getAdType()) {
-            case Constants.AdType.SPLASH_TYPE:
-                break;
-            case Constants.AdType.INTERACTION_TYPE:
-                break;
-            case Constants.AdType.FULL_SCREEN_VIDEO_TYPE:
-                break;
-            case Constants.AdType.REWARD_VIDEO_TYPE:
-                break;
-            case Constants.AdType.NATIVE_TEMPLATE:
-                break;
-            case Constants.AdType.SELF_RENDER:
-                break;
-            default:
-                ;
-        }
     }
 
 

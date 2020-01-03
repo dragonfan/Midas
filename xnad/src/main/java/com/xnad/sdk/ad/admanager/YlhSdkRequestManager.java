@@ -28,6 +28,10 @@ import com.qq.e.comm.constants.AdPatternType;
 import com.qq.e.comm.util.AdError;
 import com.xnad.sdk.ad.cache.ADTool;
 import com.xnad.sdk.ad.cache.wrapper.WrapperInterstitialADListener;
+import com.xnad.sdk.ad.cache.wrapper.WrapperNativeTemplateAdListener;
+import com.xnad.sdk.ad.cache.wrapper.WrapperRewardVideoAdListener;
+import com.xnad.sdk.ad.cache.wrapper.WrapperSelfRenderAdListener;
+import com.xnad.sdk.ad.cache.wrapper.WrapperSplashADListener;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.entity.MidasBannerAd;
 import com.xnad.sdk.ad.entity.MidasInteractionAd;
@@ -74,158 +78,35 @@ public class YlhSdkRequestManager extends SdkRequestManager {
     protected void requestNativeTemplateAd(Activity activity, AdInfo info, AdRequestListener listener,
                                            AdNativeTemplateListener adListener, AdOutChargeListener adOutChargeListener) {
         MidasNativeTemplateAd midasNativeTemplateAd = (MidasNativeTemplateAd) info.getMidasAd();
-        NativeExpressAD nativeExpressAD = new NativeExpressAD(activity, new ADSize((int) midasNativeTemplateAd.getWidth(), ADSize.AUTO_HEIGHT), midasNativeTemplateAd.getAppId(), midasNativeTemplateAd.getAdId(), new NativeExpressAD.NativeExpressADListener() {
-            @Override
-            public void onADLoaded(List<NativeExpressADView> list) {
-                NativeExpressADView nativeExpressADView = list.get(0);
 
-                //添加到缓存
-                ADTool.getInstance().cacheAd(nativeExpressADView, info);
 
-                if (nativeExpressADView.getBoundData().getAdPatternType() == AdPatternType.NATIVE_VIDEO) {
-                    nativeExpressADView.setMediaListener(new NativeExpressMediaListener() {
-                        @Override
-                        public void onVideoInit(NativeExpressADView nativeExpressADView) {
+        //设置自定义监听
+        WrapperNativeTemplateAdListener wrapperInterstitialADListener = new WrapperNativeTemplateAdListener();
+        wrapperInterstitialADListener.setAdInfo(info);
+        wrapperInterstitialADListener.setLoadListener(listener);
+        wrapperInterstitialADListener.setOutListener(adListener);
 
-                        }
 
-                        @Override
-                        public void onVideoLoading(NativeExpressADView nativeExpressADView) {
-
-                        }
-
-                        @Override
-                        public void onVideoReady(NativeExpressADView nativeExpressADView, long l) {
-
-                        }
-
-                        @Override
-                        public void onVideoStart(NativeExpressADView nativeExpressADView) {
-
-                        }
-
-                        @Override
-                        public void onVideoPause(NativeExpressADView nativeExpressADView) {
-
-                        }
-
-                        @Override
-                        public void onVideoComplete(NativeExpressADView nativeExpressADView) {
-
-                        }
-
-                        @Override
-                        public void onVideoError(NativeExpressADView nativeExpressADView, AdError adError) {
-
-                        }
-
-                        @Override
-                        public void onVideoPageOpen(NativeExpressADView nativeExpressADView) {
-
-                        }
-
-                        @Override
-                        public void onVideoPageClose(NativeExpressADView nativeExpressADView) {
-
-                        }
-                    });
-                }
-                // 广告可见才会产生曝光，否则将无法产生收益。
-                midasNativeTemplateAd.setAddView(nativeExpressADView);
-//                nativeExpressADView.render();
-                //请求成功回调
-                if (listener != null) {
-                    listener.adSuccess(info);
-                }
-
-                if (adListener != null) {
-                    adListener.adSuccess(info);
-                }
-            }
-
-            //NativeExpressADView 渲染广告失败
-            @Override
-            public void onRenderFail(NativeExpressADView nativeExpressADView) {
-                LogUtils.d(TAG, "YLH onRenderFail:");
-                if (adOutChargeListener != null) {
-                    adOutChargeListener.adError(info, 2, "on render fail");
-                }
-            }
-
-            //NativeExpressADView 渲染广告成功
-            @Override
-            public void onRenderSuccess(NativeExpressADView nativeExpressADView) {
-                LogUtils.d(TAG, "YLH onRenderSuccess:");
-                if (adOutChargeListener != null) {
-                    adOutChargeListener.adSuccess(info);
-                }
-            }
-
-            @Override
-            public void onADExposure(NativeExpressADView nativeExpressADView) {
-                if (adOutChargeListener != null) {
-                    adOutChargeListener.adExposed(info);
-                }
-            }
-
-            @Override
-            public void onADClicked(NativeExpressADView nativeExpressADView) {
-                if (adOutChargeListener != null) {
-                    adOutChargeListener.adClicked(info);
-                }
-            }
-
-            @Override
-            public void onADClosed(NativeExpressADView nativeExpressADView) {
-                if (adOutChargeListener != null) {
-                    adOutChargeListener.adClose(info);
-                }
-            }
-
-            //	因为广告点击等原因离开当前 app 时调用
-            @Override
-            public void onADLeftApplication(NativeExpressADView nativeExpressADView) {
-
-            }
-
-            //广告展开遮盖时调用
-            @Override
-            public void onADOpenOverlay(NativeExpressADView nativeExpressADView) {
-
-            }
-
-            //广告关闭遮盖时调用
-            @Override
-            public void onADCloseOverlay(NativeExpressADView nativeExpressADView) {
-
-            }
-
-            @Override
-            public void onNoAD(AdError adError) {
-                if (listener != null) {
-                    listener.adError(info, adError.getErrorCode(), adError.getErrorMsg());
-                }
-            }
-        }); // 这里的Context必须为Activity
+        // 这里的Context必须为Activity
+        NativeExpressAD nativeExpressAD = new NativeExpressAD(activity, new ADSize((int) midasNativeTemplateAd.getWidth(), ADSize.AUTO_HEIGHT), midasNativeTemplateAd.getAppId(),
+                midasNativeTemplateAd.getAdId(), wrapperInterstitialADListener);
         nativeExpressAD.setVideoOption(new VideoOption.Builder()
-                .setAutoPlayPolicy(VideoOption.AutoPlayPolicy.ALWAYS) // 设置什么网络环境下可以自动播放视频
-                .setAutoPlayMuted(true) // 设置自动播放视频时，是否静音
-                .build()); // setVideoOption是可选的，开发者可根据需要选择是否配置
+                // 设置什么网络环境下可以自动播放视频
+                .setAutoPlayPolicy(VideoOption.AutoPlayPolicy.ALWAYS)
+                // 设置自动播放视频时，是否静音
+                .setAutoPlayMuted(true)
+                .build());
 //        nativeExpressAD.setMaxVideoDuration(getMaxVideoDuration());
         nativeExpressAD.setMaxVideoDuration(8);
         /**
          * 如果广告位支持视频广告，强烈建议在调用loadData请求广告前调用setVideoPlayPolicy，有助于提高视频广告的eCPM值 <br/>
          * 如果广告位仅支持图文广告，则无需调用
-         */
-
-        /**
          * 设置本次拉取的视频广告，从用户角度看到的视频播放策略<p/>
-         *
          * "用户角度"特指用户看到的情况，并非SDK是否自动播放，与自动播放策略AutoPlayPolicy的取值并非一一对应 <br/>
-         *
          * 如自动播放策略为AutoPlayPolicy.WIFI，但此时用户网络为4G环境，在用户看来就是手工播放的
          */
-        nativeExpressAD.setVideoPlayPolicy(getVideoPlayPolicy(VideoOption.AutoPlayPolicy.ALWAYS, activity));  // 本次拉回的视频广告，在用户看来是否为自动播放的
+        // 本次拉回的视频广告，在用户看来是否为自动播放的
+        nativeExpressAD.setVideoPlayPolicy(getVideoPlayPolicy(VideoOption.AutoPlayPolicy.ALWAYS, activity));
         nativeExpressAD.loadAD(1);
 
         midasNativeTemplateAd.setNativeExpressAD(nativeExpressAD);
@@ -256,14 +137,14 @@ public class YlhSdkRequestManager extends SdkRequestManager {
             iad = null;
         }
 
-        //绑定监听
+        //设置自定义监听
         WrapperInterstitialADListener wrapperInterstitialADListener = new WrapperInterstitialADListener();
         wrapperInterstitialADListener.setAdInfo(info);
         wrapperInterstitialADListener.setLoadListener(listener);
         wrapperInterstitialADListener.setOutListener(adListener);
 
 
-        iad = new UnifiedInterstitialAD(activity, midasInteractionAd.getAppId(), midasInteractionAd.getAdId(), new WrapperInterstitialADListener());
+        iad = new UnifiedInterstitialAD(activity, midasInteractionAd.getAppId(), midasInteractionAd.getAdId(), wrapperInterstitialADListener);
         ((MidasInteractionAd) info.getMidasAd()).setUnifiedInterstitialAD(iad);
         iad.loadAD();
     }
@@ -271,42 +152,13 @@ public class YlhSdkRequestManager extends SdkRequestManager {
     @Override
     protected void requestSelfRenderAd(Activity activity, AdInfo info, AdRequestListener listener, AdSelfRenderListener adListener) {
         MidasSelfRenderAd midasSelfRenderAd = (MidasSelfRenderAd) info.getMidasAd();
-        NativeUnifiedAD mAdManager = new NativeUnifiedAD(activity, midasSelfRenderAd.getAppId(), midasSelfRenderAd.getAdId(), new NativeADUnifiedListener() {
-            @Override
-            public void onADLoaded(List<NativeUnifiedADData> list) {
-                if (list == null || list.size() == 0) {
-                    if (listener != null) {
-                        listener.adError(info, 3, "没广告");
-                    }
-                    return;
-                }
-                NativeUnifiedADData nativeUnifiedADData = list.get(0);
-                if (nativeUnifiedADData == null) {
-                    if (listener != null) {
-                        listener.adError(info, 3, "没广告");
-                    }
-                    return;
-                }
-                midasSelfRenderAd.setNativeUnifiedADData(nativeUnifiedADData);
-                //请求成功回调
-                if (listener != null) {
-                    listener.adSuccess(info);
-                }
-                if (adListener != null) {
-                    adListener.adSuccess(info);
-                }
 
-                //添加到缓存
-                ADTool.getInstance().cacheAd(nativeUnifiedADData, info);
-            }
+        WrapperSelfRenderAdListener wrapperSelfRenderAdListener = new WrapperSelfRenderAdListener();
+        wrapperSelfRenderAdListener.setAdInfo(info);
+        wrapperSelfRenderAdListener.setLoadListener(listener);
+        wrapperSelfRenderAdListener.setOutListener(adListener);
 
-            @Override
-            public void onNoAD(AdError adError) {
-                if (listener != null) {
-                    listener.adError(info, adError.getErrorCode(), adError.getErrorMsg());
-                }
-            }
-        });
+        NativeUnifiedAD mAdManager = new NativeUnifiedAD(activity, midasSelfRenderAd.getAppId(), midasSelfRenderAd.getAdId(), wrapperSelfRenderAdListener);
         //设置视频时长
         mAdManager.setMaxVideoDuration(12);
 
@@ -332,65 +184,14 @@ public class YlhSdkRequestManager extends SdkRequestManager {
         if (timeOut == 0) {
             timeOut = 3000;
         }
-        SplashAD splashAD = new SplashAD(activity, midasSplashAd.getAppId(), midasSplashAd.getAdId(), new SplashADListener() {
-            @Override
-            public void onADDismissed() {
-                //添加到缓存
-                ADTool.getInstance().cacheAd(((MidasSplashAd) adInfo.getMidasAd()).getSplashAD(), adInfo);
-                LogUtils.d(TAG, "YLH onADDismissed:");
-                if (adSplashListener != null) {
-                    adSplashListener.adClose(adInfo);
-                }
-            }
 
-            @Override
-            public void onNoAD(AdError adError) {
-                LogUtils.d(TAG, "YLH onNoAD:");
-                //优量汇广告加载失败
-                if (adRequestListener != null) {
-                    adRequestListener.adError(adInfo, adError.getErrorCode(), adError.getErrorMsg());
-                }
-            }
+        //设置自定义监听
+        WrapperSplashADListener wrapperSplashADListener = new WrapperSplashADListener();
+        wrapperSplashADListener.setAdInfo(adInfo);
+        wrapperSplashADListener.setLoadListener(adRequestListener);
+        wrapperSplashADListener.setOutListener(adSplashListener);
 
-            //广告成功展示时调用，成功展示不等于有效展示（比如广告容器高度不够）
-            @Override
-            public void onADPresent() {
-                //优量汇成功展示的时候代表请求成功
-                //请求成功回调
-                if (adRequestListener != null) {
-                    adRequestListener.adSuccess(adInfo);
-                }
-
-                if (adSplashListener != null) {
-                    adSplashListener.adSuccess(adInfo);
-                }
-            }
-
-            @Override
-            public void onADClicked() {
-                LogUtils.d(TAG, "YLH onADClicked:");
-                if (adSplashListener != null) {
-                    adSplashListener.adClicked(adInfo);
-                }
-            }
-
-            //倒计时回调，返回广告还将被展示的剩余时间，单位是 ms
-            @Override
-            public void onADTick(long l) {
-                if (adSplashListener != null) {
-                    adSplashListener.adTick(adInfo, l);
-                }
-            }
-
-            //广告曝光时调用，此处的曝光不等于有效曝光（如展示时长未满足）
-            @Override
-            public void onADExposure() {
-                LogUtils.d(TAG, "YLH onADClicked:");
-                if (adSplashListener != null) {
-                    adSplashListener.adExposed(adInfo);
-                }
-            }
-        }, timeOut);
+        SplashAD splashAD = new SplashAD(activity, midasSplashAd.getAppId(), midasSplashAd.getAdId(), wrapperSplashADListener, timeOut);
         ((MidasSplashAd) adInfo.getMidasAd()).setSplashAD(splashAD);
         if (adSplashListener != null) {
             ViewGroup viewGroup = adSplashListener.getViewGroup();
@@ -412,104 +213,22 @@ public class YlhSdkRequestManager extends SdkRequestManager {
         } else {
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
-        //奖励数量
-        int rewardAmount = midasRewardVideoAd.getRewardAmount();
-        //奖励名称
-        String rewardName = midasRewardVideoAd.getRewardName();
-        // 1. 初始化激励视频广告
-        RewardVideoAD rewardVideoAD = null;
-        RewardVideoAD finalRewardVideoAD = rewardVideoAD;
-        rewardVideoAD = new RewardVideoAD(activity, midasRewardVideoAd.getAppId(), midasRewardVideoAd.getAdId(), new RewardVideoADListener() {
-            //广告加载成功，可在此回调后进行广告展示，此时广告过期时间确定，可通过RewardVideoAD.getExpireTimestamp()获取
-            @Override
-            public void onADLoad() {
-                //请求成功回调
-                if (adRequestListener != null) {
-                    adRequestListener.adSuccess(adInfo);
-                }
-                //添加到缓存
-                ADTool.getInstance().cacheAd(finalRewardVideoAD, adInfo);
-                //广告加载成功标志
-                finalRewardVideoAD.showAD();
-                if (adRewardVideoListener != null) {
-                    adRewardVideoListener.adSuccess(adInfo);
-                }
-            }
 
-            @Override
-            public void onVideoCached() {
-                //视频素材缓存成功，可在此回调后进行广告展示
+        //设置自定义监听
+        WrapperRewardVideoAdListener wrapperRewardVideoAdListener = new WrapperRewardVideoAdListener();
+        wrapperRewardVideoAdListener.setAdInfo(adInfo);
+        wrapperRewardVideoAdListener.setLoadListener(adRequestListener);
+        wrapperRewardVideoAdListener.setOutListener(adRewardVideoListener);
 
-            }
-
-            //激励视频广告页面展示，此后RewardVideoAD.hasShown()返回true
-            @Override
-            public void onADShow() {
-
-            }
-
-            //激励视频广告曝光
-            @Override
-            public void onADExpose() {
-                if (adRewardVideoListener != null) {
-                    adRewardVideoListener.adExposed(adInfo);
-                }
-            }
-
-            //激励视频广告激励发放
-            @Override
-            public void onReward() {
-                if (adRewardVideoListener != null) {
-                    adRewardVideoListener.onVideoRewardVerify(adInfo, true, rewardAmount, rewardName);
-                }
-            }
-
-            @Override
-            public void onADClick() {
-                if (adRewardVideoListener != null) {
-                    adRewardVideoListener.adClicked(adInfo);
-                }
-            }
-
-            //广告视频素材播放完毕
-            @Override
-            public void onVideoComplete() {
-                if (adRewardVideoListener != null) {
-                    adRewardVideoListener.onVideoComplete(adInfo);
-                }
-            }
-
-            @Override
-            public void onADClose() {
-                if (adRewardVideoListener != null) {
-                    adRewardVideoListener.adClose(adInfo);
-                }
-            }
-
-            @Override
-            public void onError(AdError adError) {
-                if (adRewardVideoListener != null) {
-                    adRewardVideoListener.adError(adInfo, adError.getErrorCode(), adError.getErrorMsg());
-                }
-            }
-        });
+        RewardVideoAD  rewardVideoAD = new RewardVideoAD(activity, midasRewardVideoAd.getAppId(), midasRewardVideoAd.getAdId(), wrapperRewardVideoAdListener);
         midasRewardVideoAd.setRewardVideoAD(rewardVideoAD);
         // 2. 加载激励视频广告
         rewardVideoAD.loadAD();
     }
 
-    private void caheImage(NativeUnifiedADData ad) {
-        String imgUrl = ad.getImgUrl();
-        String icon = ad.getIconUrl();
-        try {
-            if (!TextUtils.isEmpty(imgUrl)) {
-                cacheImg(imgUrl);
-            }
-            if (!TextUtils.isEmpty(icon)) {
-                cacheImg(icon);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    @Override
+    public void requestBannerAd(AdInfo adInfo, AdRequestListener adRequestListener, AdBannerListener adBannerListener) {
+
     }
+
 }

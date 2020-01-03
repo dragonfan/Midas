@@ -281,7 +281,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
         //step1:初始化sdk
         TTAdManager ttAdManager = TTAdManagerHolder.get();
         //step2:创建TTAdNative对象,用于调用广告请求接口
-        TTAdNative mTTAdNative = ttAdManager.createAdNative(MidasAdSdk.getContext());
+        TTAdNative mTTAdNative = ttAdManager.createAdNative(activity);
         //step3:(可选，强烈建议在合适的时机调用):申请部分权限，如read_phone_state,防止获取不了imei时候，下载类广告没有填充的问题。
 //        TTAdManagerHolder.get().requestPermissionIfNecessary(mContext);
 
@@ -528,7 +528,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                 .setOrientation(midasRewardVideoAd.getOrientation() == 2 ? TTAdConstant.HORIZONTAL : TTAdConstant.VERTICAL)
                 .build();
         //step5:请求广告
-        TTAdManagerHolder.get().createAdNative(MidasAdSdk.getContext()).loadRewardVideoAd(adSlot, new TTAdNative.RewardVideoAdListener() {
+        TTAdManagerHolder.get().createAdNative(activity).loadRewardVideoAd(adSlot, new TTAdNative.RewardVideoAdListener() {
             @Override
             public void onError(int code, String message) {
                 LogUtils.e(TAG, "rewardVideoAd error:" + code + " message:" + message);
@@ -653,6 +653,11 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                 }
             }
         });
+    }
+
+    @Override
+    public void requestBannerAd(AdInfo adInfo, AdRequestListener adRequestListener, AdBannerListener adBannerListener) {
+
     }
 
     private void caheImage(TTFeedAd ttFeedAd) {

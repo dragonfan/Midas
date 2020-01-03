@@ -70,7 +70,9 @@ public class WrapperInterstitialADListener implements UnifiedInterstitialADListe
         }
     }
 
-    //插屏2.0广告展开时回调
+    /**
+     * 插屏2.0广告展开时回调
+     */
     @Override
     public void onADOpened() {
 
