@@ -39,7 +39,7 @@ public class BannerAdActivity extends AppCompatActivity {
     private void initViews() {
         mPositionIdEt = findViewById(R.id.position_id_edit);
         mBannerContainer = findViewById(R.id.bannerContainer);
-        mPositionIdEt.setText(AdConfig.SPLASH_AD_POSITION);
+        mPositionIdEt.setText(AdConfig.BANNER_AD_POSITION);
         findViewById(R.id.load_ad_btn).setOnClickListener(v -> requestAd());
     }
 

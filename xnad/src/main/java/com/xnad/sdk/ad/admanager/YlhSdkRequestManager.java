@@ -561,6 +561,7 @@ public class YlhSdkRequestManager extends SdkRequestManager {
                     if (adBannerListener != null) {
                         adBannerListener.adClose(adInfo);
                     }
+                    adParameter.getViewContainer().removeAllViews();
                 }
                 @Override
                 public void onADClicked() {
@@ -578,12 +579,15 @@ public class YlhSdkRequestManager extends SdkRequestManager {
                 public void onADCloseOverlay() {
                 }
             });
+            adParameter.getViewContainer().removeAllViews();
             Point screenSize = new Point();
             adParameter.getActivity().getWindowManager().
                     getDefaultDisplay().getSize(screenSize);
             adParameter.getViewContainer().addView(bannerView,new ViewGroup.
                     LayoutParams(screenSize.x,  Math.round(screenSize.x / 6.4F)));
             midasBannerAd.setUnifiedBannerView(bannerView);
+            bannerView.setRefresh(30);
+            bannerView.loadAD();
         }
     }
 

@@ -40,5 +40,5 @@ public class AdConfig {
     /**
      * banner广告位id
      */
-    public static final String BANNER_AD_POSITION = "";
+    public static final String BANNER_AD_POSITION = "901121895";
 }
