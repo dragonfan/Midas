@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.entity.AdStrategyBean;
+import com.xnad.sdk.ad.entity.MidasBannerAd;
 import com.xnad.sdk.ad.entity.MidasConfigBean;
 import com.xnad.sdk.ad.entity.MidasFullScreenVideoAd;
 import com.xnad.sdk.ad.entity.MidasInteractionAd;
@@ -16,6 +17,7 @@ import com.xnad.sdk.ad.factory.RequestManagerFactory;
 import com.xnad.sdk.ad.listener.AdBasicListener;
 import com.xnad.sdk.ad.listener.AdRequestListener;
 import com.xnad.sdk.ad.listener.LoopAdListener;
+import com.xnad.sdk.ad.outlistener.AdBannerListener;
 import com.xnad.sdk.ad.outlistener.AdFullScreenVideoListener;
 import com.xnad.sdk.ad.outlistener.AdInteractionListener;
 import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
@@ -329,6 +331,29 @@ public class MidasAdManger implements AdManager {
         MidasNativeTemplateAd midasNativeTemplateAd = new MidasNativeTemplateAd();
         midasNativeTemplateAd.setWidth(adParameter.getWidth());
         adInfo.setMidasAd(midasNativeTemplateAd);
+        try {
+            //设置广告位置信息
+            adInfo.setPosition(adParameter.getPosition());
+            getMidasConfigBean(adInfo, adParameter.getPosition());
+        } catch (Exception e) {
+            if (mAdListener != null) {
+                mAdListener.adError(adInfo, ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorCode,
+                        ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorMsg);
+            }
+        }
+    }
+
+    @Override
+    public void loadMidasBannerAd(AdParameter adParameter, AdBannerListener listener) {
+        if (adParameter == null) {
+            throw new NullPointerException("AdParameter is null");
+        }
+        mAdListener = listener;
+        mActivity = adParameter.getActivity();
+        AdInfo adInfo = new AdInfo();
+        adInfo.setAdType(Constants.AdType.BANNER_TYPE);
+        MidasBannerAd midasBannerAd = new MidasBannerAd();
+        adInfo.setMidasAd(midasBannerAd);
         try {
             //设置广告位置信息
             adInfo.setPosition(adParameter.getPosition());

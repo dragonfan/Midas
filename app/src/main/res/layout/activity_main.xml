@@ -8,46 +8,12 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-<!--    <Button-->
-<!--        android:id="@+id/button_configinfo"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="获取配置信息" />-->
-
     <Button
         android:id="@+id/big_img_bt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen_20dp"
         android:text="自渲染广告" />
-
-<!--    <Button-->
-<!--        android:id="@+id/button_preloading"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="@dimen/dimen_20dp"-->
-<!--        android:text="预加载大图广告" />-->
-
-<!--    <Button-->
-<!--        android:id="@+id/button_old_style"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="@dimen/dimen_10dp"-->
-<!--        android:text="老的大图三样式" />-->
-
-<!--    <Button-->
-<!--        android:id="@+id/new_big_img"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="@dimen/dimen_10dp"-->
-<!--        android:text="新的大图广告四样式" />-->
-
-<!--    <Button-->
-<!--        android:id="@+id/fake_video_img"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="@dimen/dimen_10dp"-->
-<!--        android:text="假视频大图_01" />-->
 
     <Button
         android:id="@+id/button_splash_ad"
@@ -84,11 +50,11 @@
         android:layout_marginTop="@dimen/dimen_10dp"
         android:text="原生模板广告" />
 
-<!--    <Button-->
-<!--        android:id="@+id/button_template_insert_screen_ad"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="@dimen/dimen_10dp"-->
-<!--        android:text="模板插屏广告" />-->
+    <Button
+        android:id="@+id/banner_template_ad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:text="banner模板广告" />
 
 </LinearLayout>

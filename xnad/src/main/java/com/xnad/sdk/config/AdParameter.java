@@ -1,6 +1,7 @@
 package com.xnad.sdk.config;
 
 import android.app.Activity;
+import android.view.ViewGroup;
 
 /**
  * @ProjectName: Midas
@@ -31,6 +32,8 @@ public final class AdParameter {
     int rewardAmount;
     //模板广告宽度
     float width;
+    //模板要添加进去的容器
+    ViewGroup mViewContainer;
 
     AdParameter(Builder builder) {
         this.activity = builder.activity;
@@ -41,6 +44,7 @@ public final class AdParameter {
         this.rewardAmount = builder.rewardAmount;
         this.rewardName = builder.rewardName;
         this.width = builder.width;
+        this.mViewContainer = builder.mViewContainer;
     }
 
     public Activity getActivity() {
@@ -75,6 +79,10 @@ public final class AdParameter {
         return width;
     }
 
+    public ViewGroup getViewContainer() {
+        return mViewContainer;
+    }
+
     public static class Builder {
         //上下文
         Activity activity;
@@ -92,6 +100,8 @@ public final class AdParameter {
         int rewardAmount;
         //模板广告宽度
         float width;
+        //模板要添加进去的容器
+        ViewGroup mViewContainer;
 
         public Builder(Activity activity, String position) {
             this.activity = activity;
@@ -125,6 +135,11 @@ public final class AdParameter {
 
         public Builder setWidth(float width) {
             this.width = width;
+            return this;
+        }
+
+        public Builder setViewContainer(ViewGroup viewContainer) {
+            this.mViewContainer = viewContainer;
             return this;
         }
 

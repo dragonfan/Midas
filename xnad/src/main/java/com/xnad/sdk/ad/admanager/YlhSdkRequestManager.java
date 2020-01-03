@@ -3,11 +3,14 @@ package com.xnad.sdk.ad.admanager;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
+import com.qq.e.ads.banner2.UnifiedBannerADListener;
+import com.qq.e.ads.banner2.UnifiedBannerView;
 import com.qq.e.ads.cfg.VideoOption;
 import com.qq.e.ads.interstitial2.UnifiedInterstitialAD;
 import com.qq.e.ads.interstitial2.UnifiedInterstitialADListener;
@@ -25,12 +28,14 @@ import com.qq.e.ads.splash.SplashADListener;
 import com.qq.e.comm.constants.AdPatternType;
 import com.qq.e.comm.util.AdError;
 import com.xnad.sdk.ad.entity.AdInfo;
+import com.xnad.sdk.ad.entity.MidasBannerAd;
 import com.xnad.sdk.ad.entity.MidasInteractionAd;
 import com.xnad.sdk.ad.entity.MidasNativeTemplateAd;
 import com.xnad.sdk.ad.entity.MidasRewardVideoAd;
 import com.xnad.sdk.ad.entity.MidasSelfRenderAd;
 import com.xnad.sdk.ad.entity.MidasSplashAd;
 import com.xnad.sdk.ad.listener.AdRequestListener;
+import com.xnad.sdk.ad.outlistener.AdBannerListener;
 import com.xnad.sdk.ad.outlistener.AdFullScreenVideoListener;
 import com.xnad.sdk.ad.outlistener.AdInteractionListener;
 import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
@@ -38,6 +43,7 @@ import com.xnad.sdk.ad.outlistener.AdOutChargeListener;
 import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
 import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
 import com.xnad.sdk.ad.outlistener.AdSplashListener;
+import com.xnad.sdk.config.AdParameter;
 import com.xnad.sdk.utils.LogUtils;
 
 import java.util.List;
@@ -60,8 +66,6 @@ public class YlhSdkRequestManager extends SdkRequestManager {
     protected final static int REQUEST_AD_COUNTS = 1;
 
     private final int MAX_DURATION = 30;
-
-
 
 
 
@@ -517,6 +521,70 @@ public class YlhSdkRequestManager extends SdkRequestManager {
         midasRewardVideoAd.setRewardVideoAD(rewardVideoAD);
         // 2. 加载激励视频广告
         rewardVideoAD.loadAD();
+    }
+
+    @Override
+    public void requestBannerAd(AdInfo adInfo, AdRequestListener adRequestListener,
+                                AdBannerListener adBannerListener) {
+        AdParameter adParameter = adInfo.getAdParameter();
+        MidasBannerAd midasBannerAd = (MidasBannerAd) adInfo.getMidasAd();
+
+        if (adParameter != null && adParameter.getActivity() != null
+                && adParameter.getViewContainer() != null) {
+            UnifiedBannerView bannerView = new UnifiedBannerView(adParameter.getActivity(),
+                    midasBannerAd.getAppId(), adParameter.getPosition(),
+                    new UnifiedBannerADListener() {
+                @Override
+                public void onNoAD(AdError adError) {
+                    if (adRequestListener != null) {
+                        adRequestListener.adError(adInfo, adError.getErrorCode(), adError.getErrorMsg());
+                    }
+                }
+                @Override
+                public void onADReceive() {
+                    if (adRequestListener != null) {
+                        adRequestListener.adSuccess(adInfo);
+                    }
+
+                    if (adBannerListener != null) {
+                        adBannerListener.adSuccess(adInfo);
+                    }
+                }
+                @Override
+                public void onADExposure() {
+                    if (adBannerListener != null) {
+                        adBannerListener.onAdShow(adInfo);
+                    }
+                }
+                @Override
+                public void onADClosed() {
+                    if (adBannerListener != null) {
+                        adBannerListener.adClose(adInfo);
+                    }
+                }
+                @Override
+                public void onADClicked() {
+                    if (adBannerListener != null) {
+                        adBannerListener.onAdClicked(adInfo);
+                    }
+                }
+                @Override
+                public void onADLeftApplication() {
+                }
+                @Override
+                public void onADOpenOverlay() {
+                }
+                @Override
+                public void onADCloseOverlay() {
+                }
+            });
+            Point screenSize = new Point();
+            adParameter.getActivity().getWindowManager().
+                    getDefaultDisplay().getSize(screenSize);
+            adParameter.getViewContainer().addView(bannerView,new ViewGroup.
+                    LayoutParams(screenSize.x,  Math.round(screenSize.x / 6.4F)));
+            midasBannerAd.setUnifiedBannerView(bannerView);
+        }
     }
 
     private void caheImage(NativeUnifiedADData ad) {

@@ -3,20 +3,23 @@ package com.xnad.sdk.ad.admanager;
 import android.app.Activity;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.bytedance.sdk.openadsdk.AdSlot;
 import com.bytedance.sdk.openadsdk.TTAdConstant;
+import com.bytedance.sdk.openadsdk.TTAdDislike;
 import com.bytedance.sdk.openadsdk.TTAdManager;
 import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTAppDownloadListener;
+import com.bytedance.sdk.openadsdk.TTBannerAd;
 import com.bytedance.sdk.openadsdk.TTFeedAd;
 import com.bytedance.sdk.openadsdk.TTFullScreenVideoAd;
 import com.bytedance.sdk.openadsdk.TTImage;
 import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
 import com.bytedance.sdk.openadsdk.TTRewardVideoAd;
 import com.bytedance.sdk.openadsdk.TTSplashAd;
-import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.entity.AdInfo;
+import com.xnad.sdk.ad.entity.MidasBannerAd;
 import com.xnad.sdk.ad.entity.MidasFullScreenVideoAd;
 import com.xnad.sdk.ad.entity.MidasInteractionAd;
 import com.xnad.sdk.ad.entity.MidasNativeTemplateAd;
@@ -24,6 +27,7 @@ import com.xnad.sdk.ad.entity.MidasRewardVideoAd;
 import com.xnad.sdk.ad.entity.MidasSelfRenderAd;
 import com.xnad.sdk.ad.entity.MidasSplashAd;
 import com.xnad.sdk.ad.listener.AdRequestListener;
+import com.xnad.sdk.ad.outlistener.AdBannerListener;
 import com.xnad.sdk.ad.outlistener.AdFullScreenVideoListener;
 import com.xnad.sdk.ad.outlistener.AdInteractionListener;
 import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
@@ -31,8 +35,11 @@ import com.xnad.sdk.ad.outlistener.AdOutChargeListener;
 import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
 import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
 import com.xnad.sdk.ad.outlistener.AdSplashListener;
+import com.xnad.sdk.config.AdParameter;
 import com.xnad.sdk.config.ErrorCode;
 import com.xnad.sdk.config.TTAdManagerHolder;
+import com.xnad.sdk.utils.AdUtils;
+import com.xnad.sdk.utils.AppUtils;
 import com.xnad.sdk.utils.LogUtils;
 
 import java.util.List;
@@ -66,7 +73,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                 .setImageAcceptedSize(640, 320)
                 .build();
         //step5:请求广告，对请求回调的广告作渲染处理
-        TTAdManagerHolder.get().createAdNative(MidasAdSdk.getContext()).loadNativeExpressAd(adSlot, new TTAdNative.NativeExpressAdListener() {
+        TTAdManagerHolder.get().createAdNative(AppUtils.getContext()).loadNativeExpressAd(adSlot, new TTAdNative.NativeExpressAdListener() {
             @Override
             public void onError(int code, String message) {
                 if (listener != null) {
@@ -267,7 +274,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
         //step1:初始化sdk
         TTAdManager ttAdManager = TTAdManagerHolder.get();
         //step2:创建TTAdNative对象,用于调用广告请求接口
-        TTAdNative mTTAdNative = ttAdManager.createAdNative(MidasAdSdk.getContext());
+        TTAdNative mTTAdNative = ttAdManager.createAdNative(AppUtils.getContext());
         //step3:(可选，强烈建议在合适的时机调用):申请部分权限，如read_phone_state,防止获取不了imei时候，下载类广告没有填充的问题。
 //        TTAdManagerHolder.get().requestPermissionIfNecessary(mContext);
 
@@ -327,7 +334,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                 .setOrientation(TTAdConstant.VERTICAL)//必填参数，期望视频的播放方向：TTAdConstant.HORIZONTAL 或 TTAdConstant.VERTICAL
                 .build();
         //step5:请求广告
-        TTAdManagerHolder.get().createAdNative(MidasAdSdk.getContext()).loadFullScreenVideoAd(adSlot, new TTAdNative.FullScreenVideoAdListener() {
+        TTAdManagerHolder.get().createAdNative(AppUtils.getContext()).loadFullScreenVideoAd(adSlot, new TTAdNative.FullScreenVideoAdListener() {
             @Override
             public void onError(int code, String message) {
                 LogUtils.e(TAG, "loadFullScreenVideoAd error:" + code + " message:" + message);
@@ -417,7 +424,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                 .setSupportDeepLink(true)
                 .setImageAcceptedSize(720, 1280)
                 .build();
-        TTAdManagerHolder.get().createAdNative(MidasAdSdk.getContext()).loadSplashAd(adSlot, new TTAdNative.SplashAdListener() {
+        TTAdManagerHolder.get().createAdNative(AppUtils.getContext()).loadSplashAd(adSlot, new TTAdNative.SplashAdListener() {
             @Override
             public void onError(int errorCode, String errorMsg) {
                 LogUtils.e(TAG, "csj errorCode:" + errorCode + " errorMsg:" + errorMsg);
@@ -508,7 +515,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                 .setOrientation(midasRewardVideoAd.getOrientation() == 2 ? TTAdConstant.HORIZONTAL : TTAdConstant.VERTICAL)
                 .build();
         //step5:请求广告
-        TTAdManagerHolder.get().createAdNative(MidasAdSdk.getContext()).loadRewardVideoAd(adSlot, new TTAdNative.RewardVideoAdListener() {
+        TTAdManagerHolder.get().createAdNative(AppUtils.getContext()).loadRewardVideoAd(adSlot, new TTAdNative.RewardVideoAdListener() {
             @Override
             public void onError(int code, String message) {
                 LogUtils.e(TAG, "rewardVideoAd error:" + code + " message:" + message);
@@ -632,6 +639,94 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                 }
             }
         });
+    }
+
+    @Override
+    public void requestBannerAd(AdInfo adInfo, AdRequestListener adRequestListener,
+                                AdBannerListener adBannerListener) {
+        AdParameter adParameter = adInfo.getAdParameter();
+        if (adParameter != null && adParameter.getActivity() != null
+                && adParameter.getViewContainer() != null) {
+            Activity activity = adParameter.getActivity();
+            ViewGroup viewContainer = adParameter.getViewContainer();
+            TTAdNative ttAdNative =
+                    TTAdManagerHolder.get().createAdNative(activity);
+            AdSlot adSlot = new AdSlot.Builder()
+                    //广告位id
+                    .setCodeId(adParameter.getPosition())
+                    .setSupportDeepLink(true)
+                    //保持与优量汇的宽高比一致
+                    .setImageAcceptedSize(640, 100)
+                    .build();
+            ttAdNative.loadBannerAd(adSlot, new TTAdNative.BannerAdListener() {
+
+                @Override
+                public void onError(int code, String message) {
+                    adRequestListener.adError(adInfo, code, message);
+                    viewContainer.removeAllViews();
+                }
+                @Override
+                public void onBannerAdLoad(final TTBannerAd ad) {
+                    if (ad == null) {
+                        adRequestListener.adError(adInfo, ErrorCode.CSJ_AD_LOAD_EMPTY.errorCode, ErrorCode.CSJ_AD_LOAD_EMPTY.errorMsg);
+                        return;
+                    }
+                    View bannerView = ad.getBannerView();
+                    if (bannerView == null) {
+                        adRequestListener.adError(adInfo, ErrorCode.CSJ_AD_LOAD_EMPTY.errorCode, ErrorCode.CSJ_AD_LOAD_EMPTY.errorMsg);
+                        return;
+                    }
+                    if (adRequestListener != null) {
+                        adRequestListener.adSuccess(adInfo);
+                    }
+                    if (adBannerListener != null){
+                        adBannerListener.adSuccess(adInfo);
+                    }
+                    MidasBannerAd midasBannerAd = (MidasBannerAd) adInfo.getMidasAd();
+                    midasBannerAd.setTTBannerAd(ad);
+                    midasBannerAd.setAddView(ad.getBannerView());
+
+                    //设置轮播的时间间隔  间隔在30s到120秒之间的值，不设置默认不轮播
+                    ad.setSlideIntervalTime(30 * 1000);
+                    viewContainer.removeAllViews();
+                    viewContainer.addView(bannerView);
+                    //设置广告互动监听回调
+                    ad.setBannerInteractionListener(new TTBannerAd.AdInteractionListener() {
+                        @Override
+                        public void onAdClicked(View view, int type) {
+                            if (adBannerListener != null){
+                                adBannerListener.onAdClicked(adInfo);
+                            }
+                        }
+                        @Override
+                        public void onAdShow(View view, int type) {
+                            if (adBannerListener != null){
+                                adBannerListener.onAdShow(adInfo);
+                            }
+                        }
+                    });
+                    //（可选）设置下载类广告的下载监听
+                    AdUtils.bindBannerDownloadLinstener(ad);
+                    //在banner中显示网盟提供的dislike icon，有助于广告投放精准度提升
+                    ad.setShowDislikeIcon(new TTAdDislike.DislikeInteractionCallback() {
+                        @Override
+                        public void onSelected(int position, String value) {
+                            //用户选择不喜欢原因后，移除广告展示
+                            viewContainer.removeAllViews();
+                            if (adBannerListener != null){
+                                adBannerListener.adClose(adInfo);
+                            }
+                        }
+                        @Override
+                        public void onCancel() {
+                        }
+                    });
+                }
+            });
+        }else {
+            adRequestListener.adError(adInfo, ErrorCode.AD_PARAMS_ERROR.errorCode,
+                    ErrorCode.AD_PARAMS_ERROR.errorMsg);
+        }
     }
 
     private void caheImage(TTFeedAd ttFeedAd) {

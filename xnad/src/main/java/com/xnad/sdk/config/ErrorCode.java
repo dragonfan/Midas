@@ -20,6 +20,10 @@ public enum  ErrorCode {
     STRATEGY_DATA_EMPTY(10003,"策略数据返回为空"),
     STRATEGY_CONFIG_EXCEPTION(10004,"策略配置获取异常"),
     CSJ_AD_DATA_EMPTY(10005,"穿山甲平台广告返回为空"),
+    YLH_AD_DATA_EMPTY(10006,"优量汇平台广告返回为空"),
+    CSJ_AD_LOAD_EMPTY(10007,"穿山甲成功返回但无数据或视图"),
+    YLH_AD_LOAD_EMPTY(10008,"优量汇成功返回但无数据或视图"),
+    AD_PARAMS_ERROR(10009,"业务传入参数有误"),
 
     ;
 
