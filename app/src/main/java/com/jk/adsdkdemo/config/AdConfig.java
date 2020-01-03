@@ -20,7 +20,7 @@ public interface AdConfig {
     /**
      * 激励视频广告位id
      */
-     String REWARD_AD_POSITION = "9564908241";
+     String REWARD_AD_POSITION = "8677145741";
     /**
      * 全屏视频广告位id
      */
@@ -36,7 +36,7 @@ public interface AdConfig {
     /**
      * 自渲染广告位id
      */
-     String SELF_RENDER_AD_POSITION = "7500893061";
+     String SELF_RENDER_AD_POSITION = "7586117962";
     /**
      * banner广告位id
      */
