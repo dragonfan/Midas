@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.big_img_bt:
-                startActivity(new Intent(this, SelfRenderAcitvity.class));
+                startActivity(new Intent(this, SelfRenderActivity.class));
                 break;
             case R.id.button_splash_ad:
                 startActivity(new Intent(this, SplashAdActivity.class));
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(this, InsertScreenActivity.class));
                 break;
             case R.id.button_csj_feed_template_ad:
-                startActivity(new Intent(this, FeedTemplateAcitvity.class));
+                startActivity(new Intent(this, FeedTemplateActivity.class));
                 break;
             case R.id.banner_template_ad:
                 startActivity(new Intent(this, BannerAdActivity.class));
