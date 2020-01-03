@@ -37,4 +37,8 @@ public class AdConfig {
      * 自渲染广告位id
      */
     public static final String SELF_RENDER_AD_POSITION = "7500893061";
+    /**
+     * banner广告位id
+     */
+    public static final String BANNER_AD_POSITION = "";
 }

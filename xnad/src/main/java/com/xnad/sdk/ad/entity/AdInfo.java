@@ -1,5 +1,7 @@
 package com.xnad.sdk.ad.entity;
 
+import com.xnad.sdk.config.AdParameter;
+
 /**
  * @ProjectName: MidasAdSdk
  * @Package: com.comm.jksdk.ad.entity
@@ -17,6 +19,11 @@ public class AdInfo implements Ad {
      * 埋点公共属性
      */
     private StatisticBaseProperties statisticBaseProperties;
+
+    /**
+     * 广告请求参数
+     */
+    private AdParameter mAdParameter;
 
     /**
      * 广告分类（目前有6大类）
@@ -52,6 +59,13 @@ public class AdInfo implements Ad {
         this.adType = adType;
     }
 
+    public AdParameter getAdParameter() {
+        return mAdParameter;
+    }
+
+    public void setAdParameter(AdParameter adParameter) {
+        mAdParameter = adParameter;
+    }
 
     /***************************************************************优雅分割线**********************************************************************/
 

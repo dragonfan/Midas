@@ -3,9 +3,6 @@ package com.xnad.sdk.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-
-import com.xnad.sdk.MidasAdSdk;
-
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -19,7 +16,7 @@ import java.util.concurrent.Executors;
 public class SpUtils {
     public static final String FILE_NAME = "midas_share_data";
     private static SharedPreferences getSharedPreferences() {
-        return MidasAdSdk.getContext().getSharedPreferences(FILE_NAME,
+        return AppUtils.getContext().getSharedPreferences(FILE_NAME,
                 Context.MODE_PRIVATE);
     }
     private static SharedPreferences.Editor getEditor() {

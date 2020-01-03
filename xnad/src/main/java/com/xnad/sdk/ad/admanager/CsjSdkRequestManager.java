@@ -3,12 +3,15 @@ package com.xnad.sdk.ad.admanager;
 import android.app.Activity;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.bytedance.sdk.openadsdk.AdSlot;
 import com.bytedance.sdk.openadsdk.TTAdConstant;
+import com.bytedance.sdk.openadsdk.TTAdDislike;
 import com.bytedance.sdk.openadsdk.TTAdManager;
 import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTAppDownloadListener;
+import com.bytedance.sdk.openadsdk.TTBannerAd;
 import com.bytedance.sdk.openadsdk.TTFeedAd;
 import com.bytedance.sdk.openadsdk.TTFullScreenVideoAd;
 import com.bytedance.sdk.openadsdk.TTImage;
@@ -18,6 +21,7 @@ import com.bytedance.sdk.openadsdk.TTSplashAd;
 import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.cache.ADTool;
 import com.xnad.sdk.ad.entity.AdInfo;
+import com.xnad.sdk.ad.entity.MidasBannerAd;
 import com.xnad.sdk.ad.entity.MidasFullScreenVideoAd;
 import com.xnad.sdk.ad.entity.MidasInteractionAd;
 import com.xnad.sdk.ad.entity.MidasNativeTemplateAd;
@@ -25,6 +29,7 @@ import com.xnad.sdk.ad.entity.MidasRewardVideoAd;
 import com.xnad.sdk.ad.entity.MidasSelfRenderAd;
 import com.xnad.sdk.ad.entity.MidasSplashAd;
 import com.xnad.sdk.ad.listener.AdRequestListener;
+import com.xnad.sdk.ad.outlistener.AdBannerListener;
 import com.xnad.sdk.ad.outlistener.AdFullScreenVideoListener;
 import com.xnad.sdk.ad.outlistener.AdInteractionListener;
 import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
@@ -32,8 +37,11 @@ import com.xnad.sdk.ad.outlistener.AdOutChargeListener;
 import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
 import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
 import com.xnad.sdk.ad.outlistener.AdSplashListener;
+import com.xnad.sdk.config.AdParameter;
 import com.xnad.sdk.config.ErrorCode;
 import com.xnad.sdk.config.TTAdManagerHolder;
+import com.xnad.sdk.utils.AdUtils;
+import com.xnad.sdk.utils.AppUtils;
 import com.xnad.sdk.utils.LogUtils;
 
 import java.util.List;
@@ -67,7 +75,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                 .setImageAcceptedSize(640, 320)
                 .build();
         //step5:请求广告，对请求回调的广告作渲染处理
-        TTAdManagerHolder.get().createAdNative(MidasAdSdk.getContext()).loadNativeExpressAd(adSlot, new TTAdNative.NativeExpressAdListener() {
+        TTAdManagerHolder.get().createAdNative(AppUtils.getContext()).loadNativeExpressAd(adSlot, new TTAdNative.NativeExpressAdListener() {
             @Override
             public void onError(int code, String message) {
                 if (listener != null) {
@@ -334,7 +342,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                 .setOrientation(TTAdConstant.VERTICAL)//必填参数，期望视频的播放方向：TTAdConstant.HORIZONTAL 或 TTAdConstant.VERTICAL
                 .build();
         //step5:请求广告
-        TTAdManagerHolder.get().createAdNative(MidasAdSdk.getContext()).loadFullScreenVideoAd(adSlot, new TTAdNative.FullScreenVideoAdListener() {
+        TTAdManagerHolder.get().createAdNative(AppUtils.getContext()).loadFullScreenVideoAd(adSlot, new TTAdNative.FullScreenVideoAdListener() {
             @Override
             public void onError(int code, String message) {
                 LogUtils.e(TAG, "loadFullScreenVideoAd error:" + code + " message:" + message);
@@ -425,7 +433,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                 .setSupportDeepLink(true)
                 .setImageAcceptedSize(720, 1280)
                 .build();
-        TTAdManagerHolder.get().createAdNative(MidasAdSdk.getContext()).loadSplashAd(adSlot, new TTAdNative.SplashAdListener() {
+        TTAdManagerHolder.get().createAdNative(AppUtils.getContext()).loadSplashAd(adSlot, new TTAdNative.SplashAdListener() {
             @Override
             public void onError(int errorCode, String errorMsg) {
                 LogUtils.e(TAG, "csj errorCode:" + errorCode + " errorMsg:" + errorMsg);

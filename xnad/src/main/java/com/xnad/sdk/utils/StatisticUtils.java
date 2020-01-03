@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import com.xiaoniu.statistic.Configuration;
 import com.xiaoniu.statistic.EventType;
 import com.xiaoniu.statistic.NiuDataAPI;
-import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.entity.MidasAd;
 import com.xnad.sdk.ad.entity.StatisticBaseProperties;
@@ -41,7 +40,7 @@ public class StatisticUtils {
         if (!TextUtils.isEmpty(mUuid)) {
             return mUuid;
         }
-        SharedPreferences niu_data_provider = MidasAdSdk.getContext().getSharedPreferences("NIU_DATA_PROVIDER", Context.MODE_PRIVATE);
+        SharedPreferences niu_data_provider = AppUtils.getContext().getSharedPreferences("NIU_DATA_PROVIDER", Context.MODE_PRIVATE);
         mUuid = niu_data_provider.getString("UUID", "");
         return mUuid;
     }

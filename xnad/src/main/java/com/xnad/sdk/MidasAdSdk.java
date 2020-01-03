@@ -32,10 +32,7 @@ public final class MidasAdSdk {
      * SDK是否初始化
      */
     private static boolean mIsInit = false;
-    /**
-     * 应用全局上下文
-     */
-    private static Context mContext;
+
     /**
      * 业务 appId
      */
@@ -52,13 +49,12 @@ public final class MidasAdSdk {
      * @param adConfig 初始化配置信息
      */
     public static void init(Context context, AdConfig adConfig) {
+        AppUtils.init(context);
         long beginTime = System.currentTimeMillis();
-        mContext = context.getApplicationContext();
         mIsFormal = adConfig.isIsFormal();
         mAppId = adConfig.getAppId();
         //初始化基本配置信息
         //强烈建议在应用对应的Application#onCreate()方法中调用，避免出现content为null的异常
-        AppUtils.init(mContext);
         TTAdManagerHolder.init(context, adConfig.getCsjAppId());
         mIsInit = true;
         LogUtils.d("Midas sdk init time=" + (System.currentTimeMillis() - beginTime));
@@ -97,11 +93,6 @@ public final class MidasAdSdk {
     public static boolean isInit() {
         return mIsInit;
     }
-
-    public static Context getContext() {
-        return mContext;
-    }
-
 
     public static String getAppId() {
         return mAppId;

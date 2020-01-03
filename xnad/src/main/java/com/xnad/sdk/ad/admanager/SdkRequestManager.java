@@ -9,6 +9,7 @@ import com.xnad.sdk.ad.entity.MidasNativeTemplateAd;
 import com.xnad.sdk.ad.entity.MidasSelfRenderAd;
 import com.xnad.sdk.ad.listener.AdBasicListener;
 import com.xnad.sdk.ad.listener.AdRequestListener;
+import com.xnad.sdk.ad.outlistener.AdBannerListener;
 import com.xnad.sdk.ad.outlistener.AdFullScreenVideoListener;
 import com.xnad.sdk.ad.outlistener.AdInteractionListener;
 import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
@@ -55,7 +56,9 @@ public abstract class SdkRequestManager implements AdRequestManager {
             requestInteractionAd(activity, adInfo, listener, getInteractionListener((AdInteractionListener) adListener));
         } else if (Constants.AdType.NATIVE_TEMPLATE.equals(adInfo.getAdType())) {
             requestNativeTemplateAd(activity, adInfo, listener, (AdNativeTemplateListener) adListener, getNativeTemplateAdChargeListener());
-        } else {
+        } else if(Constants.AdType.BANNER_TYPE.equals(adInfo.getAdType())){
+            requestBannerAd(adInfo,listener, getAdBannerListener((AdBannerListener) adListener));
+        } else{
             if (listener != null) {
                 listener.adError(adInfo, 3, "没有该广告类型 ");
             }
@@ -75,6 +78,13 @@ public abstract class SdkRequestManager implements AdRequestManager {
 
     public abstract void requestRewardVideoAd(Activity activity, AdInfo adInfo, AdRequestListener adRequestListener, AdRewardVideoListener adRewardVideoListener);
 
+    /**
+     * banner广告请求
+     * @param adInfo    广告信息
+     * @param adRequestListener 请求回调
+     * @param adBannerListener  banner事件监听
+     */
+    public abstract void requestBannerAd(AdInfo adInfo, AdRequestListener adRequestListener, AdBannerListener adBannerListener);
 
     /**
      * 缓存网络图片+
@@ -438,6 +448,53 @@ public abstract class SdkRequestManager implements AdRequestManager {
                     return listener.getViewGroup();
                 }
                 return null;
+            }
+        };
+    }
+
+    /**
+     * banner广告回调中间层（埋点可以埋到这里）
+     * @param listener
+     * @return
+     */
+    private AdBannerListener getAdBannerListener(AdBannerListener listener){
+        return new AdBannerListener() {
+            @Override
+            public void adSuccess(Object info) {
+                if (listener != null) {
+                    listener.adSuccess(info);
+                }
+            }
+
+            @Override
+            public void adError(Object info, int errorCode, String errorMsg) {
+                if (listener != null) {
+                    listener.adError(info, errorCode, errorMsg);
+                }
+            }
+
+            @Override
+            public void onAdShow(AdInfo info) {
+                if (listener != null) {
+                    listener.onAdShow(info);
+                }
+                advertisingOfferShow(info);
+            }
+
+            @Override
+            public void onAdClicked(AdInfo info) {
+                if (listener != null) {
+                    listener.onAdClicked(info);
+                }
+                StatisticUtils.advertisingClick(info,intervalTime);
+            }
+
+            @Override
+            public void adClose(AdInfo info) {
+                if (listener != null) {
+                    listener.adClose(info);
+                }
+                StatisticUtils.advertisingClose(info,intervalTime);
             }
         };
     }

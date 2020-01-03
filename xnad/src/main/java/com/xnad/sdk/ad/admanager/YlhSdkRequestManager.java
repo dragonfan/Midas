@@ -3,11 +3,14 @@ package com.xnad.sdk.ad.admanager;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 
+import com.qq.e.ads.banner2.UnifiedBannerADListener;
+import com.qq.e.ads.banner2.UnifiedBannerView;
 import com.qq.e.ads.cfg.VideoOption;
 import com.qq.e.ads.interstitial2.UnifiedInterstitialAD;
 import com.qq.e.ads.nativ.ADSize;
@@ -26,12 +29,14 @@ import com.qq.e.comm.util.AdError;
 import com.xnad.sdk.ad.cache.ADTool;
 import com.xnad.sdk.ad.cache.wrapper.WrapperInterstitialADListener;
 import com.xnad.sdk.ad.entity.AdInfo;
+import com.xnad.sdk.ad.entity.MidasBannerAd;
 import com.xnad.sdk.ad.entity.MidasInteractionAd;
 import com.xnad.sdk.ad.entity.MidasNativeTemplateAd;
 import com.xnad.sdk.ad.entity.MidasRewardVideoAd;
 import com.xnad.sdk.ad.entity.MidasSelfRenderAd;
 import com.xnad.sdk.ad.entity.MidasSplashAd;
 import com.xnad.sdk.ad.listener.AdRequestListener;
+import com.xnad.sdk.ad.outlistener.AdBannerListener;
 import com.xnad.sdk.ad.outlistener.AdFullScreenVideoListener;
 import com.xnad.sdk.ad.outlistener.AdInteractionListener;
 import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
@@ -39,6 +44,7 @@ import com.xnad.sdk.ad.outlistener.AdOutChargeListener;
 import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
 import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
 import com.xnad.sdk.ad.outlistener.AdSplashListener;
+import com.xnad.sdk.config.AdParameter;
 import com.xnad.sdk.utils.LogUtils;
 
 import java.util.List;
@@ -61,6 +67,7 @@ public class YlhSdkRequestManager extends SdkRequestManager {
     protected final static int REQUEST_AD_COUNTS = 1;
 
     private final int MAX_DURATION = 30;
+
 
 
     @Override

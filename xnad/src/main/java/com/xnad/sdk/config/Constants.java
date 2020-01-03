@@ -11,6 +11,10 @@ public class Constants {
          */
         String SPLASH_TYPE = "0";
         /**
+         * banner广告
+         */
+        String BANNER_TYPE = "1";
+        /**
          * 插屏广告类型
          */
         String INTERACTION_TYPE = "2";
@@ -30,22 +34,6 @@ public class Constants {
          * 自渲染广告
          */
         String SELF_RENDER = "6";
-        /**
-         * banner广告类型
-         */
-        String BANNER_TYPE = "BANNER_TYPE";
-        /**
-         * 原生广告类型
-         */
-        String NATIVE_TYPE = "NATIVE_TYPE";
-        /**
-         * 信息流广告类型
-         */
-        String FEED_TYPE = "FEED_TYPE";
-        /**
-         * 竖版视频广告类型
-         */
-        String DRAW_VIDEO = "DRAW_VIDEO";
     }
     /**
      * APP内 使用到广告源

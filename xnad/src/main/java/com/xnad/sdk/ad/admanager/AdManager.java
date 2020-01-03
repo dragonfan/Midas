@@ -1,5 +1,6 @@
 package com.xnad.sdk.ad.admanager;
 
+import com.xnad.sdk.ad.outlistener.AdBannerListener;
 import com.xnad.sdk.ad.outlistener.AdFullScreenVideoListener;
 import com.xnad.sdk.ad.outlistener.AdInteractionListener;
 import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
@@ -63,4 +64,11 @@ public interface AdManager {
      * @param listener
      */
     void loadMidasNativeTemplateAd(AdParameter adParameter, AdNativeTemplateListener listener);
+
+    /**
+     * 请求banner广告
+     * @param adParameter   请求参数
+     * @param listener  banner事件回调
+     */
+    void loadMidasBannerAd(AdParameter adParameter, AdBannerListener listener);
 }
