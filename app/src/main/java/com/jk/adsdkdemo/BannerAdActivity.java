@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.jk.adsdkdemo.config.AdConfig;
+import com.jk.adsdkdemo.utils.ToastUtils;
 import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.outlistener.AdBannerListener;
@@ -71,7 +72,7 @@ public class BannerAdActivity extends AppCompatActivity {
 
             @Override
             public void adError(Object info, int errorCode, String errorMsg) {
-
+                ToastUtils.showShort(errorMsg);
             }
         });
 

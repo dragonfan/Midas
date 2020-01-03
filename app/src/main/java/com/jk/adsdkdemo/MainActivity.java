@@ -11,6 +11,7 @@ import android.provider.Settings;
 import android.view.View;
 import android.widget.Toast;
 
+import com.jk.adsdkdemo.utils.ToastUtils;
 import com.xnad.sdk.MidasAdSdk;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ToastUtils.initToast();
         setContentView(R.layout.activity_main);
         initView();
         if (Build.VERSION.SDK_INT >= 23) {
