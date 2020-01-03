@@ -27,6 +27,7 @@ import com.qq.e.ads.splash.SplashADListener;
 import com.qq.e.comm.constants.AdPatternType;
 import com.qq.e.comm.util.AdError;
 import com.xnad.sdk.ad.cache.ADTool;
+import com.xnad.sdk.ad.cache.wrapper.WrapperBannerADListener;
 import com.xnad.sdk.ad.cache.wrapper.WrapperInterstitialADListener;
 import com.xnad.sdk.ad.cache.wrapper.WrapperNativeTemplateAdListener;
 import com.xnad.sdk.ad.cache.wrapper.WrapperRewardVideoAdListener;
@@ -233,61 +234,14 @@ public class YlhSdkRequestManager extends SdkRequestManager {
 
         if (adParameter != null && adParameter.getActivity() != null
                 && adParameter.getViewContainer() != null) {
+            WrapperBannerADListener mWrapperBannerADListener = new WrapperBannerADListener();
+            mWrapperBannerADListener.setAdInfo(adInfo);
+            mWrapperBannerADListener.setLoadListener(adRequestListener);
+            mWrapperBannerADListener.setOutListener(adBannerListener);
+
             UnifiedBannerView bannerView = new UnifiedBannerView(adParameter.getActivity(),
-                    midasBannerAd.getAppId(), adParameter.getPosition(),
-                    new UnifiedBannerADListener() {
-                        @Override
-                        public void onNoAD(AdError adError) {
-                            if (adRequestListener != null) {
-                                adRequestListener.adError(adInfo, adError.getErrorCode(), adError.getErrorMsg());
-                            }
-                        }
+                    midasBannerAd.getAppId(), adParameter.getPosition(),mWrapperBannerADListener);
 
-                        @Override
-                        public void onADReceive() {
-                            if (adRequestListener != null) {
-                                adRequestListener.adSuccess(adInfo);
-                            }
-
-                            if (adBannerListener != null) {
-                                adBannerListener.adSuccess(adInfo);
-                            }
-                        }
-
-                        @Override
-                        public void onADExposure() {
-                            if (adBannerListener != null) {
-                                adBannerListener.onAdShow(adInfo);
-                            }
-                        }
-
-                        @Override
-                        public void onADClosed() {
-                            if (adBannerListener != null) {
-                                adBannerListener.adClose(adInfo);
-                            }
-                            adParameter.getViewContainer().removeAllViews();
-                        }
-
-                        @Override
-                        public void onADClicked() {
-                            if (adBannerListener != null) {
-                                adBannerListener.onAdClicked(adInfo);
-                            }
-                        }
-
-                        @Override
-                        public void onADLeftApplication() {
-                        }
-
-                        @Override
-                        public void onADOpenOverlay() {
-                        }
-
-                        @Override
-                        public void onADCloseOverlay() {
-                        }
-                    });
             adParameter.getViewContainer().removeAllViews();
             Point screenSize = new Point();
             adParameter.getActivity().getWindowManager().
@@ -297,6 +251,7 @@ public class YlhSdkRequestManager extends SdkRequestManager {
             midasBannerAd.setUnifiedBannerView(bannerView);
             bannerView.setRefresh(30);
             bannerView.loadAD();
+
         }
     }
 

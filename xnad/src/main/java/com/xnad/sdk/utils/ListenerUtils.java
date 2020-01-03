@@ -1,34 +1,41 @@
 package com.xnad.sdk.utils;
 
 import android.app.Activity;
+import android.graphics.Point;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.bytedance.sdk.openadsdk.TTAdConstant;
+import com.bytedance.sdk.openadsdk.TTAdDislike;
 import com.bytedance.sdk.openadsdk.TTAppDownloadListener;
+import com.bytedance.sdk.openadsdk.TTBannerAd;
 import com.bytedance.sdk.openadsdk.TTFeedAd;
 import com.bytedance.sdk.openadsdk.TTFullScreenVideoAd;
 import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
 import com.bytedance.sdk.openadsdk.TTRewardVideoAd;
 import com.bytedance.sdk.openadsdk.TTSplashAd;
+import com.qq.e.ads.banner2.UnifiedBannerView;
 import com.qq.e.ads.interstitial2.UnifiedInterstitialAD;
 import com.qq.e.ads.nativ.NativeExpressAD;
 import com.qq.e.ads.rewardvideo.RewardVideoAD;
 import com.qq.e.ads.splash.SplashAD;
 import com.xnad.sdk.ad.cache.ADTool;
 import com.xnad.sdk.ad.cache.AdContainerWrapper;
+import com.xnad.sdk.ad.cache.wrapper.WrapperBannerADListener;
 import com.xnad.sdk.ad.cache.wrapper.WrapperInterstitialADListener;
 import com.xnad.sdk.ad.cache.wrapper.WrapperNativeTemplateAdListener;
 import com.xnad.sdk.ad.cache.wrapper.WrapperRewardVideoAdListener;
 import com.xnad.sdk.ad.cache.wrapper.WrapperSplashADListener;
 import com.xnad.sdk.ad.entity.AdInfo;
+import com.xnad.sdk.ad.entity.MidasBannerAd;
 import com.xnad.sdk.ad.entity.MidasFullScreenVideoAd;
 import com.xnad.sdk.ad.entity.MidasInteractionAd;
 import com.xnad.sdk.ad.entity.MidasNativeTemplateAd;
 import com.xnad.sdk.ad.entity.MidasRewardVideoAd;
 import com.xnad.sdk.ad.entity.MidasSplashAd;
 import com.xnad.sdk.ad.listener.AdBasicListener;
+import com.xnad.sdk.ad.outlistener.AdBannerListener;
 import com.xnad.sdk.ad.outlistener.AdFullScreenVideoListener;
 import com.xnad.sdk.ad.outlistener.AdInteractionListener;
 import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
@@ -51,6 +58,7 @@ import com.xnad.sdk.config.Constants;
  */
 public class ListenerUtils {
     private static final String TAG = "ListenerUtils";
+
     /**
      * 设置插屏广告监听
      *
@@ -71,77 +79,144 @@ public class ListenerUtils {
                 //判断广告渠道
                 if (TextUtils.equals(info.getMidasAd().getAdSource(), Constants.AdSourceType.ChuanShanJia)) {
                     TTNativeExpressAd csjAd = ad.getTtNativeExpressAd();
-                    setCsjInteractionListener(activity, info, csjAd, (AdInteractionListener)adListener);
+                    setCsjInteractionListener(activity, info, csjAd, (AdInteractionListener) adListener);
                 } else if (TextUtils.equals(info.getMidasAd().getAdSource(), Constants.AdSourceType.YouLiangHui)) {
                     UnifiedInterstitialAD ylhAD = ad.getUnifiedInterstitialAD();
-                    setYlhInteractionListener(activity, adContainerWrapper, ylhAD, (AdInteractionListener)adListener);
+                    setYlhInteractionListener(activity, adContainerWrapper, ylhAD, (AdInteractionListener) adListener);
                 }
             }
             //自渲染广告
-        }
-        else if (TextUtils.equals(info.getAdType(), Constants.AdType.SELF_RENDER)) {
+        } else if (TextUtils.equals(info.getAdType(), Constants.AdType.SELF_RENDER)) {
             if (adListener != null) {
                 adListener.adSuccess(info);
             }
-          //开屏广告
-        }
-        else if (TextUtils.equals(info.getAdType(), Constants.AdType.SPLASH_TYPE)) {
+            //开屏广告
+        } else if (TextUtils.equals(info.getAdType(), Constants.AdType.SPLASH_TYPE)) {
             if (info.getMidasAd() instanceof MidasSplashAd) {
                 MidasSplashAd ad = (MidasSplashAd) info.getMidasAd();
                 //判断广告渠道
                 if (TextUtils.equals(info.getMidasAd().getAdSource(), Constants.AdSourceType.ChuanShanJia)) {
                     TTSplashAd csjAd = ad.getTtSplashAd();
-                    setCsjSplashListener(info, csjAd, (AdSplashListener)adListener);
+                    setCsjSplashListener(info, csjAd, (AdSplashListener) adListener);
                 } else if (TextUtils.equals(info.getMidasAd().getAdSource(), Constants.AdSourceType.YouLiangHui)) {
                     SplashAD ylhAd = ad.getSplashAD();
-                    setYlhSplashListener(adContainerWrapper, ylhAd, (AdSplashListener)adListener);
+                    setYlhSplashListener(adContainerWrapper, ylhAd, (AdSplashListener) adListener);
                 }
             }
-        //激励视频
-        }
-        else if (TextUtils.equals(info.getAdType(), Constants.AdType.REWARD_VIDEO_TYPE)) {
+            //激励视频
+        } else if (TextUtils.equals(info.getAdType(), Constants.AdType.REWARD_VIDEO_TYPE)) {
             if (info.getMidasAd() instanceof MidasRewardVideoAd) {
                 MidasRewardVideoAd ad = (MidasRewardVideoAd) info.getMidasAd();
                 //判断广告渠道
                 if (TextUtils.equals(info.getMidasAd().getAdSource(), Constants.AdSourceType.ChuanShanJia)) {
                     TTRewardVideoAd csjAd = ad.getTtRewardVideoAd();
-                    setCsjRewardVideoListener(activity,info, csjAd, (AdRewardVideoListener)adListener);
+                    setCsjRewardVideoListener(activity, info, csjAd, (AdRewardVideoListener) adListener);
                 } else if (TextUtils.equals(info.getMidasAd().getAdSource(), Constants.AdSourceType.YouLiangHui)) {
                     RewardVideoAD ylhAd = ad.getRewardVideoAD();
-                    setYlhRewardVideoListener(adContainerWrapper, ylhAd, (AdRewardVideoListener)adListener);
+                    setYlhRewardVideoListener(adContainerWrapper, ylhAd, (AdRewardVideoListener) adListener);
                 }
             }
             //全屏 视频
-        }
-        else if (TextUtils.equals(info.getAdType(), Constants.AdType.FULL_SCREEN_VIDEO_TYPE)) {
+        } else if (TextUtils.equals(info.getAdType(), Constants.AdType.FULL_SCREEN_VIDEO_TYPE)) {
             if (info.getMidasAd() instanceof MidasFullScreenVideoAd) {
                 MidasFullScreenVideoAd ad = (MidasFullScreenVideoAd) info.getMidasAd();
                 //判断广告渠道
                 if (TextUtils.equals(info.getMidasAd().getAdSource(), Constants.AdSourceType.ChuanShanJia)) {
                     TTFullScreenVideoAd csjAd = ad.getTtFullScreenVideoAd();
-                    setCsjFullVideoListener(activity,info, csjAd, (AdFullScreenVideoListener)adListener);
+                    setCsjFullVideoListener(activity, info, csjAd, (AdFullScreenVideoListener) adListener);
                 } else if (TextUtils.equals(info.getMidasAd().getAdSource(), Constants.AdSourceType.YouLiangHui)) {
 //                    if (listener != null) {
 //                        listener.adError(info, 3, "优量汇暂不支持全屏视频");
 //                    }
                 }
             }
-        //本地模板
-        }
-        else if (TextUtils.equals(info.getAdType(), Constants.AdType.NATIVE_TEMPLATE)) {
+            //本地模板
+        } else if (TextUtils.equals(info.getAdType(), Constants.AdType.NATIVE_TEMPLATE)) {
             if (info.getMidasAd() instanceof MidasNativeTemplateAd) {
                 MidasNativeTemplateAd ad = (MidasNativeTemplateAd) info.getMidasAd();
                 //判断广告渠道
                 if (TextUtils.equals(info.getMidasAd().getAdSource(), Constants.AdSourceType.ChuanShanJia)) {
                     TTNativeExpressAd csjAd = ad.getTtNativeExpressAd();
-                    setCsjNativeTemplateFullVideoListener(info, csjAd, (AdNativeTemplateListener)adListener);
+                    setCsjNativeTemplateFullVideoListener(info, csjAd, (AdNativeTemplateListener) adListener);
                 } else if (TextUtils.equals(info.getMidasAd().getAdSource(), Constants.AdSourceType.YouLiangHui)) {
                     NativeExpressAD ylhAd = ad.getNativeExpressAD();
-                    setYlhNativeTemplateFullVideoListener(adContainerWrapper, ylhAd, (AdNativeTemplateListener)adListener);
+                    setYlhNativeTemplateFullVideoListener(adContainerWrapper, ylhAd, (AdNativeTemplateListener) adListener);
+                }
+            }
+        //Banner 广告
+        } else if (TextUtils.equals(info.getAdType(), Constants.AdType.BANNER_TYPE)) {
+            if (info.getMidasAd() instanceof MidasBannerAd) {
+                MidasBannerAd ad = (MidasBannerAd) info.getMidasAd();
+                //判断广告渠道
+                if (TextUtils.equals(info.getMidasAd().getAdSource(), Constants.AdSourceType.ChuanShanJia)) {
+                    TTBannerAd csjAd = ad.getTTBannerAd();
+                    setCsjBannerListener(info, csjAd, (AdBannerListener) adListener);
+                } else if (TextUtils.equals(info.getMidasAd().getAdSource(), Constants.AdSourceType.YouLiangHui)) {
+                    UnifiedBannerView ylhAd = ad.getUnifiedBannerView();
+                    setYlhBannerFullVideoListener(adContainerWrapper, ylhAd, (AdBannerListener) adListener);
                 }
             }
 
         }
+    }
+
+    private static void setYlhBannerFullVideoListener(AdContainerWrapper adContainer, UnifiedBannerView ylhAd, AdBannerListener adListener) {
+        //设置自定义监听
+        if (adContainer.getListener() != null) {
+            WrapperBannerADListener listener = (WrapperBannerADListener) adContainer.getListener();
+            listener.setOutListener(adListener);
+        }
+        ylhAd.loadAD();
+    }
+
+    private static void setCsjBannerListener(AdInfo adInfo, TTBannerAd csjAd, AdBannerListener adBannerListener) {
+        if (adBannerListener != null){
+            adBannerListener.adSuccess(adInfo);
+        }
+        ViewGroup viewContainer = adInfo.getAdParameter().getViewContainer();
+
+        View bannerView = csjAd.getBannerView();
+
+        Point screenSize = new Point();
+        adInfo.getAdParameter().getActivity().getWindowManager().
+                getDefaultDisplay().getSize(screenSize);
+
+        //设置轮播的时间间隔  间隔在30s到120秒之间的值，不设置默认不轮播
+        csjAd.setSlideIntervalTime(30 * 1000);
+        viewContainer.removeAllViews();
+        viewContainer.addView(bannerView,new ViewGroup.
+                LayoutParams(screenSize.x,  Math.round(screenSize.x / 6.4F)));
+        //设置广告互动监听回调
+        csjAd.setBannerInteractionListener(new TTBannerAd.AdInteractionListener() {
+            @Override
+            public void onAdClicked(View view, int type) {
+                if (adBannerListener != null){
+                    adBannerListener.onAdClicked(adInfo);
+                }
+            }
+            @Override
+            public void onAdShow(View view, int type) {
+                if (adBannerListener != null){
+                    adBannerListener.onAdShow(adInfo);
+                }
+            }
+        });
+        //（可选）设置下载类广告的下载监听
+        AdUtils.bindBannerDownloadLinstener(csjAd);
+        //在banner中显示网盟提供的dislike icon，有助于广告投放精准度提升
+        csjAd.setShowDislikeIcon(new TTAdDislike.DislikeInteractionCallback() {
+            @Override
+            public void onSelected(int position, String value) {
+                //用户选择不喜欢原因后，移除广告展示
+                viewContainer.removeAllViews();
+                if (adBannerListener != null){
+                    adBannerListener.adClose(adInfo);
+                }
+            }
+            @Override
+            public void onCancel() {
+            }
+        });
     }
 
     private static void setYlhNativeTemplateFullVideoListener(AdContainerWrapper adContainer, NativeExpressAD ylhAd, AdNativeTemplateListener adListener) {
@@ -154,7 +229,7 @@ public class ListenerUtils {
         ylhAd.loadAD(1);
     }
 
-    private static void setCsjNativeTemplateFullVideoListener( AdInfo info, TTNativeExpressAd ttNativeAd, AdNativeTemplateListener adListener) {
+    private static void setCsjNativeTemplateFullVideoListener(AdInfo info, TTNativeExpressAd ttNativeAd, AdNativeTemplateListener adListener) {
         AdOutChargeListener adOutChargeListener = getNativeTemplateAdChargeListener();
         ttNativeAd.setExpressInteractionListener(new TTNativeExpressAd.ExpressAdInteractionListener() {
             @Override
@@ -233,8 +308,6 @@ public class ListenerUtils {
     }
 
 
-
-
     private static void setCsjFullVideoListener(Activity activity, AdInfo info, TTFullScreenVideoAd csjAd, AdFullScreenVideoListener adListener) {
         csjAd.setFullScreenVideoAdInteractionListener(new TTFullScreenVideoAd.FullScreenVideoAdInteractionListener() {
 
@@ -259,6 +332,7 @@ public class ListenerUtils {
                     adListener.adClose(info);
                 }
             }
+
             //广告播放完成回调
             @Override
             public void onVideoComplete() {
@@ -277,7 +351,7 @@ public class ListenerUtils {
         });
 
         //添加到缓存
-        ADTool.getInstance().cacheAd(csjAd,info);
+        ADTool.getInstance().cacheAd(csjAd, info);
         //step6:在获取到广告后展示
         csjAd.showFullScreenVideoAd(activity);
         if (adListener != null) {
@@ -390,7 +464,7 @@ public class ListenerUtils {
         }
     }
 
-    private static void setYlhSplashListener( AdContainerWrapper adContainer, SplashAD ylhAd, AdSplashListener adListener) {
+    private static void setYlhSplashListener(AdContainerWrapper adContainer, SplashAD ylhAd, AdSplashListener adListener) {
         //设置自定义监听
 
         if (adContainer.getListener() != null) {
@@ -519,63 +593,64 @@ public class ListenerUtils {
     }
 
 
-
     /**
-     *原生模板广告回调中间层（埋点可以埋到这里）
+     * 原生模板广告回调中间层（埋点可以埋到这里）
+     *
      * @return
      */
-    private static AdOutChargeListener getNativeTemplateAdChargeListener(){
+    private static AdOutChargeListener getNativeTemplateAdChargeListener() {
         return new AdOutChargeListener<AdInfo>() {
             /**
              * 时间间隔
              * 记录填充到展示，展示到点击间隔
              */
             private long intervalTime = 0L;
+
             @Override
             public void adClose(AdInfo info) {
-                if (((MidasNativeTemplateAd)info.getMidasAd()).getAdOutChargeListener() != null) {
-                    ((MidasNativeTemplateAd)info.getMidasAd()).getAdOutChargeListener().adClose(info);
+                if (((MidasNativeTemplateAd) info.getMidasAd()).getAdOutChargeListener() != null) {
+                    ((MidasNativeTemplateAd) info.getMidasAd()).getAdOutChargeListener().adClose(info);
                 }
-                StatisticUtils.advertisingClose(info,intervalTime);
+                StatisticUtils.advertisingClose(info, intervalTime);
             }
 
             @Override
             public void adSuccess(AdInfo info) {
-                if (((MidasNativeTemplateAd)info.getMidasAd()).getAdOutChargeListener() != null) {
-                    ((MidasNativeTemplateAd)info.getMidasAd()).getAdOutChargeListener().adSuccess(info);
+                if (((MidasNativeTemplateAd) info.getMidasAd()).getAdOutChargeListener() != null) {
+                    ((MidasNativeTemplateAd) info.getMidasAd()).getAdOutChargeListener().adSuccess(info);
                 }
 
             }
 
             @Override
             public void adError(AdInfo info, int errorCode, String errorMsg) {
-                if (((MidasNativeTemplateAd)info.getMidasAd()).getAdOutChargeListener() != null) {
-                    ((MidasNativeTemplateAd)info.getMidasAd()).getAdOutChargeListener().adError(info, errorCode, errorMsg);
+                if (((MidasNativeTemplateAd) info.getMidasAd()).getAdOutChargeListener() != null) {
+                    ((MidasNativeTemplateAd) info.getMidasAd()).getAdOutChargeListener().adError(info, errorCode, errorMsg);
                 }
             }
 
             @Override
             public void adExposed(AdInfo info) {
-                if (((MidasNativeTemplateAd)info.getMidasAd()).getAdOutChargeListener() != null) {
-                    ((MidasNativeTemplateAd)info.getMidasAd()).getAdOutChargeListener().adExposed(info);
+                if (((MidasNativeTemplateAd) info.getMidasAd()).getAdOutChargeListener() != null) {
+                    ((MidasNativeTemplateAd) info.getMidasAd()).getAdOutChargeListener().adExposed(info);
                 }
                 advertisingOfferShow(info);
             }
 
             @Override
             public void adClicked(AdInfo info) {
-                if (((MidasNativeTemplateAd)info.getMidasAd()).getAdOutChargeListener() != null) {
-                    ((MidasNativeTemplateAd)info.getMidasAd()).getAdOutChargeListener().adClicked(info);
+                if (((MidasNativeTemplateAd) info.getMidasAd()).getAdOutChargeListener() != null) {
+                    ((MidasNativeTemplateAd) info.getMidasAd()).getAdOutChargeListener().adClicked(info);
                 }
-                StatisticUtils.advertisingClick(info,intervalTime);
+                StatisticUtils.advertisingClick(info, intervalTime);
             }
 
             /**
              * 广告offer展示
              * @param adInfo    广告信息
              */
-            private void advertisingOfferShow(AdInfo adInfo){
-                StatisticUtils.advertisingOfferShow(adInfo,0);
+            private void advertisingOfferShow(AdInfo adInfo) {
+                StatisticUtils.advertisingOfferShow(adInfo, 0);
                 intervalTime = System.currentTimeMillis();
             }
         };

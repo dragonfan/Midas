@@ -70,6 +70,11 @@ public class WrapperInterstitialADListener implements UnifiedInterstitialADListe
         }
     }
 
+    @Override
+    public void onVideoCached() {
+
+    }
+
     /**
      * 插屏2.0广告展开时回调
      */

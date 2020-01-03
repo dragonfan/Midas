@@ -171,7 +171,7 @@ public class MidasAdManger implements AdManager {
         AdContainerWrapper adContainer = ADTool.getInstance().getAd(adInfo.getPosition(), strategyBean.getAdId());
         //判断是否有缓存并且有效
         if (adContainer != null&&adContainer.isValid()) {
-           //TODO 埋点?
+
             ADTool.getInstance().bindListener(mActivity,adContainer,  mAdListener);
             return;
         }

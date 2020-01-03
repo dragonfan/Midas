@@ -79,6 +79,11 @@ public class WrapperNativeTemplateAdListener implements NativeExpressAD.NativeEx
                 }
 
                 @Override
+                public void onVideoCached(NativeExpressADView nativeExpressADView) {
+
+                }
+
+                @Override
                 public void onVideoStart(NativeExpressADView nativeExpressADView) {
 
                 }

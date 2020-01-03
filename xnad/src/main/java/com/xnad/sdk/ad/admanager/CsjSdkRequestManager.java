@@ -701,6 +701,10 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     if (adBannerListener != null){
                         adBannerListener.adSuccess(adInfo);
                     }
+
+
+                    //添加到缓存
+                    ADTool.getInstance().cacheAd(this, adInfo);
                     MidasBannerAd midasBannerAd = (MidasBannerAd) adInfo.getMidasAd();
                     midasBannerAd.setTTBannerAd(ad);
                     midasBannerAd.setAddView(ad.getBannerView());
