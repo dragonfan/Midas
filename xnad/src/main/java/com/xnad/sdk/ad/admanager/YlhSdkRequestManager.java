@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 import com.qq.e.ads.cfg.VideoOption;
 import com.qq.e.ads.interstitial2.UnifiedInterstitialAD;
-import com.qq.e.ads.interstitial2.UnifiedInterstitialADListener;
 import com.qq.e.ads.nativ.ADSize;
 import com.qq.e.ads.nativ.NativeADUnifiedListener;
 import com.qq.e.ads.nativ.NativeExpressAD;
@@ -24,6 +23,8 @@ import com.qq.e.ads.splash.SplashAD;
 import com.qq.e.ads.splash.SplashADListener;
 import com.qq.e.comm.constants.AdPatternType;
 import com.qq.e.comm.util.AdError;
+import com.xnad.sdk.ad.cache.ADTool;
+import com.xnad.sdk.ad.cache.wrapper.WrapperInterstitialADListener;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.entity.MidasInteractionAd;
 import com.xnad.sdk.ad.entity.MidasNativeTemplateAd;
@@ -62,9 +63,6 @@ public class YlhSdkRequestManager extends SdkRequestManager {
     private final int MAX_DURATION = 30;
 
 
-
-
-
     @Override
     protected void requestNativeTemplateAd(Activity activity, AdInfo info, AdRequestListener listener,
                                            AdNativeTemplateListener adListener, AdOutChargeListener adOutChargeListener) {
@@ -73,6 +71,10 @@ public class YlhSdkRequestManager extends SdkRequestManager {
             @Override
             public void onADLoaded(List<NativeExpressADView> list) {
                 NativeExpressADView nativeExpressADView = list.get(0);
+
+                //添加到缓存
+                ADTool.getInstance().cacheAd(nativeExpressADView, info);
+
                 if (nativeExpressADView.getBoundData().getAdPatternType() == AdPatternType.NATIVE_VIDEO) {
                     nativeExpressADView.setMediaListener(new NativeExpressMediaListener() {
                         @Override
@@ -178,11 +180,13 @@ public class YlhSdkRequestManager extends SdkRequestManager {
             public void onADLeftApplication(NativeExpressADView nativeExpressADView) {
 
             }
+
             //广告展开遮盖时调用
             @Override
             public void onADOpenOverlay(NativeExpressADView nativeExpressADView) {
 
             }
+
             //广告关闭遮盖时调用
             @Override
             public void onADCloseOverlay(NativeExpressADView nativeExpressADView) {
@@ -219,6 +223,7 @@ public class YlhSdkRequestManager extends SdkRequestManager {
 
         midasNativeTemplateAd.setNativeExpressAD(nativeExpressAD);
     }
+
     public static int getVideoPlayPolicy(int autoPlayPolicy, Context context) {
         if (autoPlayPolicy == VideoOption.AutoPlayPolicy.ALWAYS) {
             return VideoOption.VideoPlayPolicy.AUTO;
@@ -234,6 +239,7 @@ public class YlhSdkRequestManager extends SdkRequestManager {
     }
 
     private UnifiedInterstitialAD iad;
+
     @Override
     protected void requestInteractionAd(Activity activity, AdInfo info, AdRequestListener listener, AdInteractionListener adListener) {
         MidasInteractionAd midasInteractionAd = (MidasInteractionAd) info.getMidasAd();
@@ -242,62 +248,15 @@ public class YlhSdkRequestManager extends SdkRequestManager {
             iad.destroy();
             iad = null;
         }
-        iad = new UnifiedInterstitialAD(activity, midasInteractionAd.getAppId(), midasInteractionAd.getAdId(), new UnifiedInterstitialADListener() {
-            //插屏2.0广告加载完毕，此回调后才可以调用 show 方法
-            @Override
-            public void onADReceive() {
-                //请求成功回调
-                if (listener != null) {
-                    listener.adSuccess(info);
-                }
 
-                //广告加载成功
-                if (iad != null) {
-                    iad.showAsPopupWindow();
-                }
-                if (adListener != null) {
-                    adListener.adSuccess(info);
-                }
-            }
+        //绑定监听
+        WrapperInterstitialADListener wrapperInterstitialADListener = new WrapperInterstitialADListener();
+        wrapperInterstitialADListener.setAdInfo(info);
+        wrapperInterstitialADListener.setLoadListener(listener);
+        wrapperInterstitialADListener.setOutListener(adListener);
 
-            @Override
-            public void onNoAD(AdError adError) {
-                if (listener != null) {
-                    listener.adError(info, adError.getErrorCode(), adError.getErrorMsg());
-                }
-            }
-            //插屏2.0广告展开时回调
-            @Override
-            public void onADOpened() {
 
-            }
-            //插屏2.0广告曝光时回调
-            @Override
-            public void onADExposure() {
-                if (adListener != null) {
-                    adListener.adExposed(info);
-                }
-            }
-            //插屏2.0广告点击时回调
-            @Override
-            public void onADClicked() {
-                if (adListener != null) {
-                    adListener.adClicked(info);
-                }
-            }
-            //插屏2.0广告点击离开应用时回调
-            @Override
-            public void onADLeftApplication() {
-
-            }
-            //插屏2.0广告关闭时回调
-            @Override
-            public void onADClosed() {
-                if (adListener != null) {
-                    adListener.adClose(info);
-                }
-            }
-        });
+        iad = new UnifiedInterstitialAD(activity, midasInteractionAd.getAppId(), midasInteractionAd.getAdId(), new WrapperInterstitialADListener());
         ((MidasInteractionAd) info.getMidasAd()).setUnifiedInterstitialAD(iad);
         iad.loadAD();
     }
@@ -308,7 +267,7 @@ public class YlhSdkRequestManager extends SdkRequestManager {
         NativeUnifiedAD mAdManager = new NativeUnifiedAD(activity, midasSelfRenderAd.getAppId(), midasSelfRenderAd.getAdId(), new NativeADUnifiedListener() {
             @Override
             public void onADLoaded(List<NativeUnifiedADData> list) {
-                if (list==null||list.size()==0) {
+                if (list == null || list.size() == 0) {
                     if (listener != null) {
                         listener.adError(info, 3, "没广告");
                     }
@@ -329,6 +288,9 @@ public class YlhSdkRequestManager extends SdkRequestManager {
                 if (adListener != null) {
                     adListener.adSuccess(info);
                 }
+
+                //添加到缓存
+                ADTool.getInstance().cacheAd(nativeUnifiedADData, info);
             }
 
             @Override
@@ -366,6 +328,8 @@ public class YlhSdkRequestManager extends SdkRequestManager {
         SplashAD splashAD = new SplashAD(activity, midasSplashAd.getAppId(), midasSplashAd.getAdId(), new SplashADListener() {
             @Override
             public void onADDismissed() {
+                //添加到缓存
+                ADTool.getInstance().cacheAd(((MidasSplashAd) adInfo.getMidasAd()).getSplashAD(), adInfo);
                 LogUtils.d(TAG, "YLH onADDismissed:");
                 if (adSplashListener != null) {
                     adSplashListener.adClose(adInfo);
@@ -380,6 +344,7 @@ public class YlhSdkRequestManager extends SdkRequestManager {
                     adRequestListener.adError(adInfo, adError.getErrorCode(), adError.getErrorMsg());
                 }
             }
+
             //广告成功展示时调用，成功展示不等于有效展示（比如广告容器高度不够）
             @Override
             public void onADPresent() {
@@ -401,6 +366,7 @@ public class YlhSdkRequestManager extends SdkRequestManager {
                     adSplashListener.adClicked(adInfo);
                 }
             }
+
             //倒计时回调，返回广告还将被展示的剩余时间，单位是 ms
             @Override
             public void onADTick(long l) {
@@ -408,6 +374,7 @@ public class YlhSdkRequestManager extends SdkRequestManager {
                     adSplashListener.adTick(adInfo, l);
                 }
             }
+
             //广告曝光时调用，此处的曝光不等于有效曝光（如展示时长未满足）
             @Override
             public void onADExposure() {
@@ -417,7 +384,7 @@ public class YlhSdkRequestManager extends SdkRequestManager {
                 }
             }
         }, timeOut);
-        ((MidasSplashAd)adInfo.getMidasAd()).setSplashAD(splashAD);
+        ((MidasSplashAd) adInfo.getMidasAd()).setSplashAD(splashAD);
         if (adSplashListener != null) {
             ViewGroup viewGroup = adSplashListener.getViewGroup();
             if (viewGroup != null) {
@@ -453,7 +420,8 @@ public class YlhSdkRequestManager extends SdkRequestManager {
                 if (adRequestListener != null) {
                     adRequestListener.adSuccess(adInfo);
                 }
-
+                //添加到缓存
+                ADTool.getInstance().cacheAd(finalRewardVideoAD, adInfo);
                 //广告加载成功标志
                 finalRewardVideoAD.showAD();
                 if (adRewardVideoListener != null) {
@@ -466,11 +434,13 @@ public class YlhSdkRequestManager extends SdkRequestManager {
                 //视频素材缓存成功，可在此回调后进行广告展示
 
             }
+
             //激励视频广告页面展示，此后RewardVideoAD.hasShown()返回true
             @Override
             public void onADShow() {
 
             }
+
             //激励视频广告曝光
             @Override
             public void onADExpose() {
@@ -478,6 +448,7 @@ public class YlhSdkRequestManager extends SdkRequestManager {
                     adRewardVideoListener.adExposed(adInfo);
                 }
             }
+
             //激励视频广告激励发放
             @Override
             public void onReward() {
@@ -492,6 +463,7 @@ public class YlhSdkRequestManager extends SdkRequestManager {
                     adRewardVideoListener.adClicked(adInfo);
                 }
             }
+
             //广告视频素材播放完毕
             @Override
             public void onVideoComplete() {

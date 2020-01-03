@@ -16,6 +16,7 @@ import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
 import com.bytedance.sdk.openadsdk.TTRewardVideoAd;
 import com.bytedance.sdk.openadsdk.TTSplashAd;
 import com.xnad.sdk.MidasAdSdk;
+import com.xnad.sdk.ad.cache.ADTool;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.entity.MidasFullScreenVideoAd;
 import com.xnad.sdk.ad.entity.MidasInteractionAd;
@@ -89,6 +90,10 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     }
                     return;
                 }
+
+                //添加到缓存
+                ADTool.getInstance().cacheAd(ttNativeAd,info);
+
                 midasNativeTemplateAd.setTtNativeExpressAd(ttNativeAd);
 
                 ttNativeAd.setExpressInteractionListener(new TTNativeExpressAd.ExpressAdInteractionListener() {
@@ -217,7 +222,8 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                 if (listener != null) {
                     listener.adSuccess(info);
                 }
-
+                //添加到缓存
+                ADTool.getInstance().cacheAd(ttNativeExpressAd,info);
                 ((MidasInteractionAd) info.getMidasAd()).setTtNativeExpressAd(ttNativeExpressAd);
                 ttNativeExpressAd.setExpressInteractionListener(new TTNativeExpressAd.AdInteractionListener() {
                     @Override
@@ -308,7 +314,8 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                 if (listener != null) {
                     listener.adSuccess(info);
                 }
-
+                //添加到缓存
+                ADTool.getInstance().cacheAd(ttFeedAd,info);
                 midasSelfRenderAd.setTtFeedAd(ttFeedAd);
                 if (adSelfRenderListener != null) {
                     adSelfRenderListener.adSuccess(info);
@@ -383,7 +390,8 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     if (listener != null) {
                         listener.adSuccess(info);
                     }
-
+                    //添加到缓存
+                    ADTool.getInstance().cacheAd(ad,info);
                     //step6:在获取到广告后展示
                     ad.showFullScreenVideoAd(activity);
                     if (adListener != null) {
@@ -441,6 +449,10 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     MidasSplashAd midasSplashAd = (MidasSplashAd) adInfo.getMidasAd();
                     midasSplashAd.setTtSplashAd(ttSplashAd);
                     midasSplashAd.setAddView(ttSplashAd.getSplashView());
+
+                    //添加到缓存
+                    ADTool.getInstance().cacheAd(ttSplashAd.getSplashView(),adInfo);
+
                     //请求成功回调
                     if (adRequestListener != null) {
                         adRequestListener.adSuccess(adInfo);
@@ -532,7 +544,8 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     if (adRequestListener != null) {
                         adRequestListener.adSuccess(adInfo);
                     }
-
+                    //添加到缓存
+                    ADTool.getInstance().cacheAd(mttRewardVideoAd,adInfo);
                     midasRewardVideoAd.setTtRewardVideoAd(mttRewardVideoAd);
                     mttRewardVideoAd.setRewardAdInteractionListener(new TTRewardVideoAd.RewardAdInteractionListener() {
                         @Override

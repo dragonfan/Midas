@@ -3,6 +3,8 @@ package com.xnad.sdk.ad.admanager;
 import android.app.Activity;
 import android.text.TextUtils;
 
+import com.xnad.sdk.ad.cache.ADTool;
+import com.xnad.sdk.ad.cache.AdContainerWrapper;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.entity.AdStrategyBean;
 import com.xnad.sdk.ad.entity.MidasConfigBean;
@@ -88,13 +90,14 @@ public class MidasAdManger implements AdManager {
 
     /**
      * 获取策略配置信息
-     * @param adInfo    广告信息
-     * @param adPosId   广告位id
+     *
+     * @param adInfo  广告信息
+     * @param adPosId 广告位id
      */
-    private void getMidasConfigBean(AdInfo adInfo, String adPosId){
+    private void getMidasConfigBean(AdInfo adInfo, String adPosId) {
         //埋点流程开始
         long beginTime = System.currentTimeMillis();
-        StatisticUtils.singleStatisticBegin(adInfo,beginTime);
+        StatisticUtils.singleStatisticBegin(adInfo, beginTime);
         mStrategyBeanList.clear();
 
         ApiProvider.getStrategyInfo(adPosId, new HttpCallback<MidasConfigBean>() {
@@ -104,29 +107,29 @@ public class MidasAdManger implements AdManager {
                     mAdListener.adError(adInfo, errorCode, message);
                 }
                 //广告策略请求事件埋点
-                StatisticUtils.strategyConfigurationRequest(adInfo, adPosId,"",
-                        httpResponseCode+"",errorCode + "", beginTime);
+                StatisticUtils.strategyConfigurationRequest(adInfo, adPosId, "",
+                        httpResponseCode + "", errorCode + "", beginTime);
             }
 
             @Override
             public void onSuccess(int httpResponseCode, MidasConfigBean midasConfigBean) {
                 List<AdStrategyBean> adStrategyBeans = midasConfigBean.getAdStrategy();
-                if (adStrategyBeans==null || adStrategyBeans.size()==0) {
+                if (adStrategyBeans == null || adStrategyBeans.size() == 0) {
                     onFailure(httpResponseCode, ErrorCode.STRATEGY_DATA_EMPTY.errorCode
-                            ,ErrorCode.STRATEGY_DATA_EMPTY.errorMsg);
+                            , ErrorCode.STRATEGY_DATA_EMPTY.errorMsg);
                     return;
                 }
                 mStrategyBeanList.addAll(adStrategyBeans);
                 AdStrategyBean mAdsInfoBean = mStrategyBeanList.remove(0);
                 if (mAdsInfoBean == null) {
                     onFailure(httpResponseCode, ErrorCode.STRATEGY_DATA_EMPTY.errorCode
-                            ,ErrorCode.STRATEGY_DATA_EMPTY.errorMsg);
+                            , ErrorCode.STRATEGY_DATA_EMPTY.errorMsg);
                     return;
                 }
                 //广告策略请求事件埋点
                 adInfo.getStatisticBaseProperties().setPriorityS(mAdsInfoBean.getRequestOrder());
                 StatisticUtils.strategyConfigurationRequest(adInfo, adPosId,
-                        midasConfigBean.getAdstrategyid(), 200+"",
+                        midasConfigBean.getAdstrategyid(), 200 + "",
                         0 + "", beginTime);
 
 
@@ -147,7 +150,7 @@ public class MidasAdManger implements AdManager {
             adInfo = new AdInfo();
         }
         if (adInfo.getStatisticBaseProperties() != null
-                && !TextUtils.isEmpty(strategyBean.getRequestOrder())){
+                && !TextUtils.isEmpty(strategyBean.getRequestOrder())) {
             adInfo.getStatisticBaseProperties().setPriorityS(strategyBean.getRequestOrder());
         }
         //某些特有的数据清空，避免污染下一次请求数据
@@ -159,8 +162,17 @@ public class MidasAdManger implements AdManager {
         adInfo.getMidasAd().setAdId(strategyBean.getAdId());
         //广告对应的appid
         adInfo.getMidasAd().setAppId(strategyBean.getAdsAppid());
-        //后续如果做api请求，在此处判断拦截处理[请求类型 0 - SDK 1 - API]
-        sdkRequest(adInfo);
+
+        //查询本地缓存
+        AdContainerWrapper adContainer = ADTool.getInstance().getAd(adInfo.getPosition(), strategyBean.getAdId());
+        if (adContainer == null) {
+            //后续如果做api请求，在此处判断拦截处理[请求类型 0 - SDK 1 - API]
+            sdkRequest(adInfo);
+        } else {
+            ADTool.getInstance().bindListener(mActivity,adContainer, (AdInteractionListener) mAdListener);
+        }
+
+
     }
 
     /**
@@ -176,7 +188,7 @@ public class MidasAdManger implements AdManager {
                 StatisticUtils.advertisingSourceRequest(adInfo, 1,
                         200 + "", beginTime);
                 //广告位请求事件埋点[放在广告源后面，可以清晰知道请求次数]
-                StatisticUtils.advertisingPositionRequest(adInfo,firstRequestAdTime);
+                StatisticUtils.advertisingPositionRequest(adInfo, firstRequestAdTime);
             }
 
             @Override
@@ -184,10 +196,10 @@ public class MidasAdManger implements AdManager {
                 //广告源请求事件埋点
                 StatisticUtils.advertisingSourceRequest(adInfo, 0,
                         errorCode + "", beginTime);
-                if (mStrategyBeanList ==null|| mStrategyBeanList.size()==0) {
+                if (mStrategyBeanList == null || mStrategyBeanList.size() == 0) {
                     //广告位请求事件埋点[与监听有时序关系，下面的监听先移除的
                     // ,放在广告源后面，可以清晰知道请求次数]
-                    StatisticUtils.advertisingPositionRequest(adInfo,firstRequestAdTime);
+                    StatisticUtils.advertisingPositionRequest(adInfo, firstRequestAdTime);
                 }
                 if (mLoopAdListener != null) {
                     mLoopAdListener.loopAdError(info, errorCode, errorMsg);
