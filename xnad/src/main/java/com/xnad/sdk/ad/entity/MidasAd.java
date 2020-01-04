@@ -28,6 +28,10 @@ public abstract class MidasAd implements Ad{
      *      特定广告类型才有多个如信息流广告，其他默认为1
      */
     private int sourceRequestNum;
+    /**
+     * 频控展示最高次数
+     */
+    private int showNum;
 
     protected View addView;
 
@@ -111,4 +115,12 @@ public abstract class MidasAd implements Ad{
         return null;
     }
 
+
+    public int getShowNum() {
+        return showNum;
+    }
+
+    public void setShowNum(int showNum) {
+        this.showNum = showNum;
+    }
 }

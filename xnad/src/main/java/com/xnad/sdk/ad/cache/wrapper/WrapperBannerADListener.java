@@ -1,10 +1,14 @@
 package com.xnad.sdk.ad.cache.wrapper;
 
+import android.graphics.Point;
+import android.view.ViewGroup;
+
 import com.qq.e.ads.banner2.UnifiedBannerADListener;
 import com.qq.e.ads.splash.SplashADListener;
 import com.qq.e.comm.util.AdError;
 import com.xnad.sdk.ad.cache.ADTool;
 import com.xnad.sdk.ad.entity.AdInfo;
+import com.xnad.sdk.ad.entity.MidasBannerAd;
 import com.xnad.sdk.ad.listener.AdRequestListener;
 import com.xnad.sdk.ad.outlistener.AdBannerListener;
 import com.xnad.sdk.ad.outlistener.AdSplashListener;
@@ -53,6 +57,15 @@ public class WrapperBannerADListener implements UnifiedBannerADListener {
             outListener.adSuccess(adInfo);
         }
 
+
+//        adInfo.getAdParameter().getViewContainer().removeAllViews();
+//        Point screenSize = new Point();
+//        adInfo.getAdParameter().getActivity().getWindowManager().
+//                getDefaultDisplay().getSize(screenSize);
+//        MidasBannerAd midasBannerAd = (MidasBannerAd) adInfo.getMidasAd();
+//        adInfo.getAdParameter().getViewContainer().addView(midasBannerAd.getUnifiedBannerView(), new ViewGroup.
+//                LayoutParams(screenSize.x, Math.round(screenSize.x / 6.4F)));
+
         //添加到缓存
         ADTool.getInstance().cacheAd(this, adInfo);
     }
@@ -62,6 +75,9 @@ public class WrapperBannerADListener implements UnifiedBannerADListener {
         if (outListener != null) {
             outListener.onAdShow(adInfo);
         }
+
+
+
     }
 
     @Override

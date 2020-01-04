@@ -23,6 +23,6 @@ public interface LoopAdListener {
      * @param errorCode
      * @param errorMsg
      */
-    void loopAdError(AdInfo adInfo, int errorCode, String errorMsg);
+    void loopAdError(boolean showAd, AdInfo adInfo, int errorCode, String errorMsg);
 
 }

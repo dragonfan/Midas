@@ -1,13 +1,19 @@
 package com.xnad.sdk.utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
+import androidx.core.content.SharedPreferencesCompat;
+
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Desc:app工具类
@@ -48,8 +54,9 @@ public class AppUtils {
 
     /**
      * 获取应用程序名称
-     * @param context   上下文
-     * @return  String app名称
+     *
+     * @param context 上下文
+     * @return String app名称
      */
     public static synchronized String getAppName(Context context) {
         String appName;
@@ -67,9 +74,11 @@ public class AppUtils {
             return "未知";
         }
     }
+
     /**
      * 获取IMEI
-     * @return  String  imei
+     *
+     * @return String  imei
      */
     public static String getIMEI() {
         String imei = "";
@@ -126,5 +135,31 @@ public class AppUtils {
             return true;
         }
 
+    }
+
+    public static void putAdCount(String key) {
+        int adCount = SpUtils.getInt(getKey(key), 0);
+        SpUtils.putInt(getKey(key), adCount++);
+    }
+    public static int getAdCount(String key) {
+        return SpUtils.getInt(getKey(key), 0);
+
+    }
+    private static String getKey(String key) {
+        return getDay() + "_" + key;
+    }
+
+    /**
+     * 获取当前日期
+     *
+     * @return
+     */
+    public static String getDay() {
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            return simpleDateFormat.format(new Date());
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

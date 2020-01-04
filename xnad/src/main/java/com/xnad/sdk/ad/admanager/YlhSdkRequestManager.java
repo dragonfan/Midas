@@ -16,6 +16,11 @@ import com.qq.e.ads.nativ.NativeExpressAD;
 import com.qq.e.ads.nativ.NativeUnifiedAD;
 import com.qq.e.ads.rewardvideo.RewardVideoAD;
 import com.qq.e.ads.splash.SplashAD;
+import com.qq.e.ads.splash.SplashADListener;
+import com.qq.e.comm.constants.AdPatternType;
+import com.qq.e.comm.util.AdError;
+import com.xnad.sdk.ad.cache.ADTool;
+import com.xnad.sdk.ad.cache.AdContainerWrapper;
 import com.xnad.sdk.ad.cache.wrapper.WrapperBannerADListener;
 import com.xnad.sdk.ad.cache.wrapper.WrapperInterstitialADListener;
 import com.xnad.sdk.ad.cache.wrapper.WrapperNativeTemplateAdListener;
@@ -39,6 +44,10 @@ import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
 import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
 import com.xnad.sdk.ad.outlistener.AdSplashListener;
 import com.xnad.sdk.config.AdParameter;
+import com.xnad.sdk.utils.AppUtils;
+import com.xnad.sdk.utils.LogUtils;
+
+import java.util.List;
 
 /**
  * @ProjectName: MidasAdSdk
@@ -180,10 +189,18 @@ public class YlhSdkRequestManager extends SdkRequestManager {
         SplashAD splashAD = new SplashAD(activity, midasSplashAd.getAppId(), midasSplashAd.getAdId(), wrapperSplashADListener, timeOut);
         ((MidasSplashAd) adInfo.getMidasAd()).setSplashAD(splashAD);
         if (adSplashListener != null) {
-            ViewGroup viewGroup = adSplashListener.getViewGroup();
-            if (viewGroup != null) {
-                splashAD.fetchAndShowIn(viewGroup);
+            //判断是否显示
+            if (adRequestListener.adShow(adInfo)) {
+                ViewGroup viewGroup = adSplashListener.getViewGroup();
+                if (viewGroup != null) {
+                    splashAD.fetchAndShowIn(viewGroup);
+                }
+            } else {
+                splashAD.preLoad();
+                //添加到缓存
+                ADTool.getInstance().cacheAd(wrapperSplashADListener, adInfo);
             }
+
         }
     }
 

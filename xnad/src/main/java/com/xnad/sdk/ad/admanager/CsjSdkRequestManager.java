@@ -43,6 +43,7 @@ import com.xnad.sdk.config.TTAdManagerHolder;
 import com.xnad.sdk.utils.AdUtils;
 import com.xnad.sdk.utils.AppUtils;
 import com.xnad.sdk.utils.LogUtils;
+import com.xnad.sdk.utils.SpUtils;
 
 import java.util.List;
 
@@ -100,7 +101,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                 }
 
                 //添加到缓存
-                ADTool.getInstance().cacheAd(ttNativeAd,info);
+                ADTool.getInstance().cacheAd(ttNativeAd, info);
 
                 midasNativeTemplateAd.setTtNativeExpressAd(ttNativeAd);
 
@@ -231,7 +232,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     listener.adSuccess(info);
                 }
                 //添加到缓存
-                ADTool.getInstance().cacheAd(ttNativeExpressAd,info);
+                ADTool.getInstance().cacheAd(ttNativeExpressAd, info);
                 ((MidasInteractionAd) info.getMidasAd()).setTtNativeExpressAd(ttNativeExpressAd);
                 ttNativeExpressAd.setExpressInteractionListener(new TTNativeExpressAd.AdInteractionListener() {
                     @Override
@@ -302,6 +303,8 @@ public class CsjSdkRequestManager extends SdkRequestManager {
 
             @Override
             public void onFeedAdLoad(List<TTFeedAd> list) {
+
+
                 LogUtils.d(TAG, "onADLoaded->请求穿山甲成功");
                 if (list == null || list.size() == 0) {
                     if (listener != null) {
@@ -322,12 +325,19 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                 if (listener != null) {
                     listener.adSuccess(info);
                 }
-                //添加到缓存
-                ADTool.getInstance().cacheAd(ttFeedAd,info);
                 midasSelfRenderAd.setTtFeedAd(ttFeedAd);
-                if (adSelfRenderListener != null) {
-                    adSelfRenderListener.adSuccess(info);
+
+                //如果需要显示才回调监听,否则直接缓存起来
+                if (listener.adShow(info)) {
+                    if (adSelfRenderListener != null) {
+                        adSelfRenderListener.adSuccess(info);
+                    }
+                } else {
+                    //添加到缓存
+                    ADTool.getInstance().cacheAd(ttFeedAd, info);
                 }
+
+
             }
         });
     }
@@ -378,6 +388,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                                 adListener.adClose(info);
                             }
                         }
+
                         //广告播放完成回调
                         @Override
                         public void onVideoComplete() {
@@ -399,7 +410,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                         listener.adSuccess(info);
                     }
                     //添加到缓存
-                    ADTool.getInstance().cacheAd(ad,info);
+                    ADTool.getInstance().cacheAd(ad, info);
                     //step6:在获取到广告后展示
                     ad.showFullScreenVideoAd(activity);
                     if (adListener != null) {
@@ -458,47 +469,56 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     midasSplashAd.setTtSplashAd(ttSplashAd);
                     midasSplashAd.setAddView(ttSplashAd.getSplashView());
 
-                    //添加到缓存
-                    ADTool.getInstance().cacheAd(ttSplashAd.getSplashView(),adInfo);
 
                     //请求成功回调
                     if (adRequestListener != null) {
                         adRequestListener.adSuccess(adInfo);
                     }
-                    if (adSplashListener != null) {
-                        adSplashListener.adSuccess(adInfo);
+                    if (adRequestListener.adShow(adInfo)) {
+                        if (adSplashListener != null) {
+                            adSplashListener.adSuccess(adInfo);
+                        }
+
+                        //缓存展示次数
+                        AppUtils.putAdCount(midasSplashAd.getAdId());
+
+                        ttSplashAd.setSplashInteractionListener(new TTSplashAd.AdInteractionListener() {
+                            @Override
+                            public void onAdClicked(View view, int i) {
+                                if (adSplashListener != null) {
+                                    adSplashListener.adClicked(adInfo);
+                                }
+                            }
+
+                            @Override
+                            public void onAdShow(View view, int i) {
+                                if (adSplashListener != null) {
+                                    adSplashListener.adExposed(adInfo);
+                                }
+                            }
+
+                            //开屏广告跳过
+                            @Override
+                            public void onAdSkip() {
+                                if (adSplashListener != null) {
+                                    adSplashListener.adClose(adInfo);
+                                }
+                            }
+
+                            //倒计时结束
+                            @Override
+                            public void onAdTimeOver() {
+                                if (adSplashListener != null) {
+                                    adSplashListener.adClose(adInfo);
+                                }
+                            }
+                        });
+                    } else {
+                        //添加到缓存
+                        ADTool.getInstance().cacheAd(ttSplashAd.getSplashView(), adInfo);
                     }
-                    ttSplashAd.setSplashInteractionListener(new TTSplashAd.AdInteractionListener() {
-                        @Override
-                        public void onAdClicked(View view, int i) {
-                            if (adSplashListener != null) {
-                                adSplashListener.adClicked(adInfo);
-                            }
-                        }
 
-                        @Override
-                        public void onAdShow(View view, int i) {
-                            if (adSplashListener != null) {
-                                adSplashListener.adExposed(adInfo);
-                            }
-                        }
 
-                        //开屏广告跳过
-                        @Override
-                        public void onAdSkip() {
-                            if (adSplashListener != null) {
-                                adSplashListener.adClose(adInfo);
-                            }
-                        }
-
-                        //倒计时结束
-                        @Override
-                        public void onAdTimeOver() {
-                            if (adSplashListener != null) {
-                                adSplashListener.adClose(adInfo);
-                            }
-                        }
-                    });
                 } else {
                     if (adRequestListener != null) {
                         adRequestListener.adError(adInfo, 1, "广告对象为空");
@@ -553,7 +573,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                         adRequestListener.adSuccess(adInfo);
                     }
                     //添加到缓存
-                    ADTool.getInstance().cacheAd(mttRewardVideoAd,adInfo);
+                    ADTool.getInstance().cacheAd(mttRewardVideoAd, adInfo);
                     midasRewardVideoAd.setTtRewardVideoAd(mttRewardVideoAd);
                     mttRewardVideoAd.setRewardAdInteractionListener(new TTRewardVideoAd.RewardAdInteractionListener() {
                         @Override
@@ -675,7 +695,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     .setSupportDeepLink(true)
                     //保持与优量汇的宽高比一致
                     .setImageAcceptedSize(640, 100)
-                    .setExpressViewAcceptedSize(screenSize.x,0)
+                    .setExpressViewAcceptedSize(screenSize.x, 0)
                     .build();
             ttAdNative.loadBannerAd(adSlot, new TTAdNative.BannerAdListener() {
 
@@ -683,6 +703,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                 public void onError(int code, String message) {
                     adRequestListener.adError(adInfo, code, message);
                 }
+
                 @Override
                 public void onBannerAdLoad(final TTBannerAd ad) {
                     if (ad == null) {
@@ -697,7 +718,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     if (adRequestListener != null) {
                         adRequestListener.adSuccess(adInfo);
                     }
-                    if (adBannerListener != null){
+                    if (adBannerListener != null) {
                         adBannerListener.adSuccess(adInfo);
                     }
 
@@ -711,19 +732,20 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     //设置轮播的时间间隔  间隔在30s到120秒之间的值，不设置默认不轮播
                     ad.setSlideIntervalTime(30 * 1000);
                     viewContainer.removeAllViews();
-                    viewContainer.addView(bannerView,new ViewGroup.
-                            LayoutParams(screenSize.x,  Math.round(screenSize.x / 6.4F)));
+                    viewContainer.addView(bannerView, new ViewGroup.
+                            LayoutParams(screenSize.x, Math.round(screenSize.x / 6.4F)));
                     //设置广告互动监听回调
                     ad.setBannerInteractionListener(new TTBannerAd.AdInteractionListener() {
                         @Override
                         public void onAdClicked(View view, int type) {
-                            if (adBannerListener != null){
+                            if (adBannerListener != null) {
                                 adBannerListener.onAdClicked(adInfo);
                             }
                         }
+
                         @Override
                         public void onAdShow(View view, int type) {
-                            if (adBannerListener != null){
+                            if (adBannerListener != null) {
                                 adBannerListener.onAdShow(adInfo);
                             }
                         }
@@ -736,17 +758,18 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                         public void onSelected(int position, String value) {
                             //用户选择不喜欢原因后，移除广告展示
                             viewContainer.removeAllViews();
-                            if (adBannerListener != null){
+                            if (adBannerListener != null) {
                                 adBannerListener.adClose(adInfo);
                             }
                         }
+
                         @Override
                         public void onCancel() {
                         }
                     });
                 }
             });
-        }else {
+        } else {
             adRequestListener.adError(adInfo, ErrorCode.AD_PARAMS_ERROR.errorCode,
                     ErrorCode.AD_PARAMS_ERROR.errorMsg);
         }

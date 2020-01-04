@@ -82,6 +82,7 @@ public class SplashAdActivity extends AppCompatActivity implements View.OnClickL
                         splashContainer.addView(view);
                     }
                 }
+
             }
             //曝光回调
             @Override

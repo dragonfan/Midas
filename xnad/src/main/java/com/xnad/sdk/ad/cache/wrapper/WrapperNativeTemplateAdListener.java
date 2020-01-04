@@ -65,49 +65,31 @@ public class WrapperNativeTemplateAdListener implements NativeExpressAD.NativeEx
             nativeExpressADView.setMediaListener(new NativeExpressMediaListener() {
                 @Override
                 public void onVideoInit(NativeExpressADView nativeExpressADView) {
-
                 }
-
                 @Override
                 public void onVideoLoading(NativeExpressADView nativeExpressADView) {
-
                 }
-
                 @Override
                 public void onVideoReady(NativeExpressADView nativeExpressADView, long l) {
-
                 }
-
                 @Override
                 public void onVideoCached(NativeExpressADView nativeExpressADView) {
-
                 }
-
                 @Override
                 public void onVideoStart(NativeExpressADView nativeExpressADView) {
-
                 }
-
                 @Override
                 public void onVideoPause(NativeExpressADView nativeExpressADView) {
-
                 }
-
                 @Override
                 public void onVideoComplete(NativeExpressADView nativeExpressADView) {
-
                 }
-
                 @Override
                 public void onVideoError(NativeExpressADView nativeExpressADView, AdError adError) {
-
                 }
-
                 @Override
                 public void onVideoPageOpen(NativeExpressADView nativeExpressADView) {
-
                 }
-
                 @Override
                 public void onVideoPageClose(NativeExpressADView nativeExpressADView) {
 

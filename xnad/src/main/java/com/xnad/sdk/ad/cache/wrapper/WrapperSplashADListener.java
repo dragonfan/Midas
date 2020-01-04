@@ -1,5 +1,7 @@
 package com.xnad.sdk.ad.cache.wrapper;
 
+import android.view.ViewGroup;
+
 import com.qq.e.ads.interstitial2.UnifiedInterstitialAD;
 import com.qq.e.ads.interstitial2.UnifiedInterstitialADListener;
 import com.qq.e.ads.splash.SplashADListener;
@@ -7,9 +9,11 @@ import com.qq.e.comm.util.AdError;
 import com.xnad.sdk.ad.cache.ADTool;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.entity.MidasInteractionAd;
+import com.xnad.sdk.ad.entity.MidasSplashAd;
 import com.xnad.sdk.ad.listener.AdRequestListener;
 import com.xnad.sdk.ad.outlistener.AdInteractionListener;
 import com.xnad.sdk.ad.outlistener.AdSplashListener;
+import com.xnad.sdk.utils.AppUtils;
 import com.xnad.sdk.utils.LogUtils;
 
 /**
@@ -37,6 +41,12 @@ public class WrapperSplashADListener implements SplashADListener {
      * 广告信息
      */
     AdInfo adInfo;
+
+    /**
+     * 是否曝光过
+     */
+    boolean isADExposure;
+
     @Override
     public void onADDismissed() {
 
@@ -49,6 +59,9 @@ public class WrapperSplashADListener implements SplashADListener {
     @Override
     public void onNoAD(AdError adError) {
         LogUtils.d( "YLH onNoAD:");
+
+        //添加到缓存
+        ADTool.getInstance().remove( adInfo);
         //优量汇广告加载失败
         if (adRequestListener != null) {
             adRequestListener.adError(adInfo, adError.getErrorCode(), adError.getErrorMsg());
@@ -68,8 +81,6 @@ public class WrapperSplashADListener implements SplashADListener {
             outListener.adSuccess(adInfo);
         }
 
-        //添加到缓存
-        ADTool.getInstance().cacheAd(this, adInfo);
     }
 
     @Override
@@ -95,6 +106,16 @@ public class WrapperSplashADListener implements SplashADListener {
         if (outListener != null) {
             outListener.adExposed(adInfo);
         }
+        if (!isADExposure) {
+            isADExposure = true;
+            try {
+                MidasSplashAd midasSplashAd = (MidasSplashAd) adInfo.getMidasAd();
+                //缓存展示次数
+                AppUtils.putAdCount(midasSplashAd.getAdId());
+            } catch (Exception e) {
+            }
+        }
+
     }
 
 

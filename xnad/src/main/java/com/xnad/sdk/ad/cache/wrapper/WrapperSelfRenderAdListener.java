@@ -57,15 +57,22 @@ public class WrapperSelfRenderAdListener implements NativeADUnifiedListener {
         MidasSelfRenderAd midasSelfRenderAd = (MidasSelfRenderAd) adInfo.getMidasAd();
         midasSelfRenderAd.setNativeUnifiedADData(nativeUnifiedADData);
 
-        //添加到缓存
-        ADTool.getInstance().cacheAd(this, adInfo);
+        //如果需要显示才回调监听,否则直接缓存起来
+        if (adRequestListener.adShow(adInfo)) {
+            if (outListener != null) {
+                outListener.adSuccess(adInfo);
+            }
+        }else{
+            //添加到缓存
+            ADTool.getInstance().cacheAd(this,adInfo);
+        }
+
+
         //请求成功回调
         if (adRequestListener != null) {
             adRequestListener.adSuccess(adInfo);
         }
-        if (outListener != null) {
-            outListener.adSuccess(adInfo);
-        }
+
 
     }
 

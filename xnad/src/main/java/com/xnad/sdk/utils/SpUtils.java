@@ -38,6 +38,7 @@ public class SpUtils {
         editor.putInt(key, value);
         SharedPreferencesCompat.apply(editor);
     }
+
     public static int getInt(String key, int defaultValue) {
         SharedPreferences sp = getSharedPreferences();
         return sp.getInt(key, defaultValue);
@@ -69,6 +70,9 @@ public class SpUtils {
         SharedPreferences sp = getSharedPreferences();
         return sp.getLong(key, defaultValue);
     }
+
+
+
     /**
      * 移除某个key值已经对应的值
      *

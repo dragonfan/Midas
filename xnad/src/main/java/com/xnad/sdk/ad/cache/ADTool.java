@@ -3,7 +3,9 @@ package com.xnad.sdk.ad.cache;
 import android.app.Activity;
 import android.text.TextUtils;
 
+import com.qq.e.ads.splash.SplashAD;
 import com.xnad.sdk.ad.entity.AdInfo;
+import com.xnad.sdk.ad.entity.MidasSplashAd;
 import com.xnad.sdk.ad.listener.AdBasicListener;
 import com.xnad.sdk.ad.outlistener.AdInteractionListener;
 import com.xnad.sdk.config.Constants;
@@ -24,8 +26,10 @@ import java.util.HashMap;
  * @author zhoutao
  */
 public class ADTool {
-
-    HashMap<String, HashMap<String, AdContainerWrapper>> mCache = new HashMap<>();
+    /**
+     * 缓存
+     */
+    HashMap<String, AdContainerWrapper> mCache = new HashMap<>();
     private static final ADTool ourInstance = new ADTool();
 
     public static ADTool getInstance() {
@@ -35,32 +39,14 @@ public class ADTool {
     private ADTool() {
     }
 
-
     /**
-     * 根据广告位ID获取对应的缓存广告集合
+     * 根据广告位ID获取对应的缓存广告
      *
      * @param positionId 广告位ID
-     * @return
+     * @return 缓存广告
      */
-    public HashMap<String, AdContainerWrapper> getAds(String positionId) {
+    public AdContainerWrapper getAd(String positionId) {
         return mCache.get(positionId);
-    }
-
-
-    /**
-     * 根据广告位ID 和 广告ID 获取对应的缓存广告
-     *
-     * @param positionId 广告位ID
-     * @param adId       广告ID
-     * @return
-     */
-    public AdContainerWrapper getAd(String positionId, String adId) {
-        HashMap<String, AdContainerWrapper> ads = mCache.get(positionId);
-        if (ads != null) {
-            return ads.get(adId);
-        } else {
-            return null;
-        }
     }
 
     /**
@@ -77,30 +63,33 @@ public class ADTool {
         adContainerWrapper.addView(info, info.getMidasAd().getAdSource(), info.getAdType());
         adContainerWrapper.addListener(listener);
         String positionId = info.getPosition();
-        assertPositionId(positionId);
 
         //添加到集合缓存
-        HashMap<String, AdContainerWrapper> ads = mCache.get(info.getPosition());
-        ads.put(info.getMidasAd().getAdId(), adContainerWrapper);
-        mCache.put(positionId, ads);
+        mCache.put(positionId, adContainerWrapper);
+    }
+
+    public void remove(AdInfo adInfo) {
+        try {
+            AdContainerWrapper adContainerWrapper = mCache.get(adInfo.getPosition());
+            MidasSplashAd mMidasSplashAd = (MidasSplashAd) adContainerWrapper.getAdInfo().getMidasAd();
+            SplashAD splashAD = ((MidasSplashAd) adInfo.getMidasAd()).getSplashAD();
+            if (mMidasSplashAd.getSplashAD() == splashAD) {
+                mCache.remove(adInfo.getPosition());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * 绑定监听
-     * @param activity 上下文
+     *
+     * @param activity           上下文
      * @param adContainerWrapper 广告缓存对象
-     * @param adListener  对外的监听
+     * @param adListener         对外的监听
      */
-    public void bindListener( Activity activity,AdContainerWrapper adContainerWrapper, AdBasicListener adListener) {
-        ListenerUtils.setListenerAndShow(activity,adContainerWrapper,adListener);
+    public void bindListener(Activity activity, AdContainerWrapper adContainerWrapper, AdBasicListener adListener) {
+        ListenerUtils.setListenerAndShow(activity, adContainerWrapper, adListener);
     }
-
-
-    private void assertPositionId(String position) {
-        if (!mCache.containsKey(position)) {
-            mCache.put(position, new HashMap<>(16));
-        }
-    }
-
 
 }

@@ -3,6 +3,8 @@ package com.xnad.sdk.ad.admanager;
 import android.app.Activity;
 import android.text.TextUtils;
 
+import com.xnad.sdk.ad.cache.ADTool;
+import com.xnad.sdk.ad.cache.AdContainerWrapper;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.entity.AdStrategyBean;
 import com.xnad.sdk.ad.entity.MidasBannerAd;
@@ -29,6 +31,7 @@ import com.xnad.sdk.config.Constants;
 import com.xnad.sdk.config.ErrorCode;
 import com.xnad.sdk.http.ApiProvider;
 import com.xnad.sdk.http.callback.HttpCallback;
+import com.xnad.sdk.utils.AppUtils;
 import com.xnad.sdk.utils.StatisticUtils;
 
 import java.util.ArrayList;
@@ -69,12 +72,11 @@ public class MidasAdManger implements AdManager {
 
     private LoopAdListener mLoopAdListener = new LoopAdListener() {
         @Override
-        public void loopAdError(AdInfo adInfo, int errorCode, String errorMsg) {
+        public void loopAdError(boolean isShow, AdInfo adInfo, int errorCode, String errorMsg) {
             if (mStrategyBeanList == null || mStrategyBeanList.size() == 0) {
                 if (mAdListener != null) {
                     mAdListener.adError(adInfo, errorCode, errorMsg);
                 }
-
                 return;
             }
             AdStrategyBean strategyBean = mStrategyBeanList.remove(0);
@@ -84,17 +86,26 @@ public class MidasAdManger implements AdManager {
                 }
                 return;
             }
-            againRequest(adInfo, strategyBean);
+            againRequest(isShow, adInfo, strategyBean);
         }
     };
 
     /**
      * 获取策略配置信息
      *
-     * @param adInfo  广告信息
-     * @param adPosId 广告位id
+     * @param isShowAd 是否展示广告
+     * @param adInfo   广告信息
+     * @param adPosId  广告位id
      */
-    private void getMidasConfigBean(AdInfo adInfo, String adPosId) {
+    private void getMidasConfigBean(boolean isShowAd, AdInfo adInfo, String adPosId) {
+
+//        查询本地缓存
+        AdContainerWrapper adContainer = ADTool.getInstance().getAd(adInfo.getPosition());
+        //判断是否有缓存并且有效
+        if (adContainer != null && adContainer.isValid()) {
+            ADTool.getInstance().bindListener(mActivity, adContainer, mAdListener);
+        }
+
         //埋点流程开始
         long beginTime = System.currentTimeMillis();
         StatisticUtils.singleStatisticBegin(adInfo, beginTime);
@@ -120,7 +131,12 @@ public class MidasAdManger implements AdManager {
                     return;
                 }
                 mStrategyBeanList.addAll(adStrategyBeans);
-                AdStrategyBean mAdsInfoBean = mStrategyBeanList.remove(0);
+
+
+                AdStrategyBean mAdsInfoBean = pickStrategy();
+
+
+//                AdStrategyBean mAdsInfoBean = mStrategyBeanList.remove(0);
                 if (mAdsInfoBean == null) {
                     onFailure(httpResponseCode, ErrorCode.STRATEGY_DATA_EMPTY.errorCode
                             , ErrorCode.STRATEGY_DATA_EMPTY.errorMsg);
@@ -131,12 +147,38 @@ public class MidasAdManger implements AdManager {
                 StatisticUtils.strategyConfigurationRequest(adInfo, adPosId,
                         midasConfigBean.getAdstrategyid(), 200 + "",
                         0 + "", beginTime);
-
-
                 firstRequestAdTime = System.currentTimeMillis();
-                againRequest(adInfo, mAdsInfoBean);
+                againRequest(isShowAd, adInfo, mAdsInfoBean);
+
             }
         });
+    }
+
+    private AdStrategyBean pickStrategy() {
+        AdStrategyBean mAdsInfoBean = null;
+        int size = mStrategyBeanList.size();
+        int index = 0;
+        while (index < size) {
+
+            AdStrategyBean adStrategyBean = mStrategyBeanList.remove(0);
+            if (adStrategyBean != null) {
+                if (adStrategyBean.getShowNum() == 0) {
+                    return adStrategyBean;
+                }
+                //如果当前的策略超过了频控,则跳过, 取下一个策略
+                if (AppUtils.getAdCount(adStrategyBean.getAdId()) <= adStrategyBean.getShowNum()) {
+                    return adStrategyBean;
+                }
+                if (mStrategyBeanList.size() == 0) {
+                    return adStrategyBean;
+                }
+            }
+
+            index++;
+        }
+
+
+        return mAdsInfoBean;
     }
 
     /**
@@ -145,7 +187,7 @@ public class MidasAdManger implements AdManager {
      * @param adInfo
      * @param strategyBean
      */
-    public void againRequest(AdInfo adInfo, AdStrategyBean strategyBean) {
+    public void againRequest(boolean isShowAd, AdInfo adInfo, AdStrategyBean strategyBean) {
         if (adInfo == null) {
             adInfo = new AdInfo();
         }
@@ -162,21 +204,11 @@ public class MidasAdManger implements AdManager {
         adInfo.getMidasAd().setAdId(strategyBean.getAdId());
         //广告对应的appid
         adInfo.getMidasAd().setAppId(strategyBean.getAdsAppid());
-
-
-
-//        //查询本地缓存
-//        AdContainerWrapper adContainer = ADTool.getInstance().getAd(adInfo.getPosition(), strategyBean.getAdId());
-//        //判断是否有缓存并且有效
-//        if (adContainer != null&&adContainer.isValid()) {
-//
-//            ADTool.getInstance().bindListener(mActivity,adContainer,  mAdListener);
-//            return;
-//        }
-
+        //频控次数
+        adInfo.getMidasAd().setShowNum(strategyBean.getShowNum());
 
         //后续如果做api请求，在此处判断拦截处理[请求类型 0 - SDK 1 - API]
-        sdkRequest(adInfo);
+        sdkRequest(isShowAd, adInfo);
 
 
     }
@@ -184,7 +216,7 @@ public class MidasAdManger implements AdManager {
     /**
      * sdk 请求
      */
-    private void sdkRequest(AdInfo adInfo) {
+    private void sdkRequest(boolean isShowAd, AdInfo adInfo) {
         long beginTime = System.currentTimeMillis();
         AdRequestManager adRequestManager = new RequestManagerFactory().produce(adInfo);
         adRequestManager.requestAd(mActivity, adInfo, new AdRequestListener() {
@@ -195,6 +227,26 @@ public class MidasAdManger implements AdManager {
                         200 + "", beginTime);
                 //广告位请求事件埋点[放在广告源后面，可以清晰知道请求次数]
                 StatisticUtils.advertisingPositionRequest(adInfo, firstRequestAdTime);
+
+
+
+                //如果本次广告已经被消费,那么再添加一个广告到缓存,这个广告不要显示,
+                if (adShow(info)) {
+                    //那么加载一个广告到缓存中
+                    getMidasConfigBean(false, adInfo, adInfo.getPosition());
+                }
+            }
+
+            @Override
+            public boolean adShow(AdInfo info) {
+                // 查询内存是否有缓存并且有效 ,如果有缓存那么广告不显示,做预加载用的
+                AdContainerWrapper adContainer = ADTool.getInstance().getAd(adInfo.getPosition());
+                if (adContainer != null && adContainer.isValid()) {
+                    return false;
+                }
+                //如果没有缓存,判断这个广告是不是真的需要显示
+                //一般在APP调用时赋值 或 开始缓存时赋值
+                return isShowAd;
             }
 
             @Override
@@ -208,7 +260,9 @@ public class MidasAdManger implements AdManager {
                     StatisticUtils.advertisingPositionRequest(adInfo, firstRequestAdTime);
                 }
                 if (mLoopAdListener != null) {
-                    mLoopAdListener.loopAdError(info, errorCode, errorMsg);
+                    //加载或者预加载失败判断是否需要显示这个广告
+                    boolean isShowAd = adShow(info);
+                    mLoopAdListener.loopAdError(isShowAd, info, errorCode, errorMsg);
                 }
             }
         }, mAdListener);
@@ -229,7 +283,7 @@ public class MidasAdManger implements AdManager {
             mActivity = adParameter.getActivity();
             //设置广告位置信息
             adInfo.setPosition(adParameter.getPosition());
-            getMidasConfigBean(adInfo, adParameter.getPosition());
+            getMidasConfigBean(true, adInfo, adParameter.getPosition());
         } catch (Exception e) {
             if (mAdListener != null) {
                 mAdListener.adError(adInfo, ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorCode,
@@ -256,7 +310,7 @@ public class MidasAdManger implements AdManager {
             mActivity = adParameter.getActivity();
             //设置广告位置信息
             adInfo.setPosition(adParameter.getPosition());
-            getMidasConfigBean(adInfo, adParameter.getPosition());
+            getMidasConfigBean(true, adInfo, adParameter.getPosition());
         } catch (Exception e) {
             if (mAdListener != null) {
                 mAdListener.adError(adInfo, ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorCode,
@@ -280,7 +334,7 @@ public class MidasAdManger implements AdManager {
             mActivity = adParameter.getActivity();
             //设置广告位置信息
             adInfo.setPosition(adParameter.getPosition());
-            getMidasConfigBean(adInfo, adParameter.getPosition());
+            getMidasConfigBean(true, adInfo, adParameter.getPosition());
         } catch (Exception e) {
             if (mAdListener != null) {
                 mAdListener.adError(adInfo, ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorCode,
@@ -303,7 +357,7 @@ public class MidasAdManger implements AdManager {
             mActivity = adParameter.getActivity();
             //设置广告位置信息
             adInfo.setPosition(adParameter.getPosition());
-            getMidasConfigBean(adInfo, adParameter.getPosition());
+            getMidasConfigBean(true, adInfo, adParameter.getPosition());
         } catch (Exception e) {
             if (mAdListener != null) {
                 mAdListener.adError(adInfo, ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorCode,
@@ -326,7 +380,7 @@ public class MidasAdManger implements AdManager {
             mActivity = adParameter.getActivity();
             //设置广告位置信息
             adInfo.setPosition(adParameter.getPosition());
-            getMidasConfigBean(adInfo, adParameter.getPosition());
+            getMidasConfigBean(true, adInfo, adParameter.getPosition());
         } catch (Exception e) {
             if (mAdListener != null) {
                 mAdListener.adError(adInfo, ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorCode,
@@ -350,7 +404,7 @@ public class MidasAdManger implements AdManager {
         try {
             //设置广告位置信息
             adInfo.setPosition(adParameter.getPosition());
-            getMidasConfigBean(adInfo, adParameter.getPosition());
+            getMidasConfigBean(true, adInfo, adParameter.getPosition());
         } catch (Exception e) {
             if (mAdListener != null) {
                 mAdListener.adError(adInfo, ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorCode,
@@ -374,7 +428,7 @@ public class MidasAdManger implements AdManager {
         try {
             //设置广告位置信息
             adInfo.setPosition(adParameter.getPosition());
-            getMidasConfigBean(adInfo, adParameter.getPosition());
+            getMidasConfigBean(true, adInfo, adParameter.getPosition());
         } catch (Exception e) {
             if (mAdListener != null) {
                 mAdListener.adError(adInfo, ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorCode,

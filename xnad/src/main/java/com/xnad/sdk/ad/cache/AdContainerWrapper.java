@@ -7,7 +7,9 @@ import com.bytedance.sdk.openadsdk.TTFullScreenVideoAd;
 import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
 import com.qq.e.ads.nativ.NativeExpressADView;
 import com.xnad.sdk.ad.entity.AdInfo;
+import com.xnad.sdk.ad.entity.MidasAd;
 import com.xnad.sdk.config.Constants;
+import com.xnad.sdk.utils.AppUtils;
 
 /**
  * Desc:
@@ -37,7 +39,7 @@ public class AdContainerWrapper {
     /**
      * 有效时间
      */
-    private long validTime;
+    private static final long VALID_TIME = 45 * 60 * 1000;
     /**
      * 监听
      */
@@ -60,18 +62,22 @@ public class AdContainerWrapper {
         this.receiveTime = System.currentTimeMillis();
     }
 
-    public void setValidTime(long validTime) {
-        this.validTime = 3 * 60 * 60 * 1000;
-    }
-
     /**
      * 是否是有效的广告
      *
      * @return
      */
     public boolean isValid() {
-        //当前时间 - 缓存时间 小于 有效时间 这个广告才能使用
-        return (System.currentTimeMillis() - receiveTime) < validTime;
+        MidasAd midasAd = adInfo.getMidasAd();
+        //频控为0 是兜底广告 可以显示
+        if (midasAd.getShowNum()==0) {
+            return true;
+        }
+        //是否超过频控次数
+        boolean isOverflow = AppUtils.getAdCount(adInfo.getMidasAd().getAdId()) <= midasAd.getShowNum();
+
+        //当前时间 - 缓存时间 小于 有效时间  && 未超过频控次数   这个广告才能使用
+        return (System.currentTimeMillis() - receiveTime) < VALID_TIME   && isOverflow ;
     }
 
     public long getReceiveTime() {
