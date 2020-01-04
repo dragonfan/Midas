@@ -24,15 +24,15 @@ public interface AdConfig {
     /**
      * 全屏视频广告位id
      */
-     String FULL_SCREEN_AD_POSITION = "9149847831";
+     String FULL_SCREEN_AD_POSITION = "7267675031";
     /**
      * 插屏广告位id
      */
-     String INSERT_SCREEN_AD_POSITION = "2944155021";
+     String INSERT_SCREEN_AD_POSITION = "1899507121";
     /**
      * 原生模板广告位id
      */
-     String FEED_TEMPLATE_AD_POSITION = "7206347951";
+     String FEED_TEMPLATE_AD_POSITION = "7583689651";
     /**
      * 自渲染广告位id
      */

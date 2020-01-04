@@ -682,7 +682,6 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                 @Override
                 public void onError(int code, String message) {
                     adRequestListener.adError(adInfo, code, message);
-                    viewContainer.removeAllViews();
                 }
                 @Override
                 public void onBannerAdLoad(final TTBannerAd ad) {
