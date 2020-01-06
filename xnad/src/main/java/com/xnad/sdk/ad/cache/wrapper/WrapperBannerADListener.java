@@ -55,10 +55,7 @@ public class WrapperBannerADListener implements UnifiedBannerADListener {
         if (adRequestListener != null) {
             adRequestListener.adSuccess(adInfo);
         }
-        //资源加载到
-        if (!isExposed && adRequestListener != null) {
-            adRequestListener.adLoad(adInfo);
-        }
+
         if (outListener != null) {
             outListener.adSuccess(adInfo);
         }

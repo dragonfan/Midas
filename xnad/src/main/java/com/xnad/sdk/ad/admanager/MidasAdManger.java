@@ -151,6 +151,7 @@ public class MidasAdManger implements AdManager {
                 againRequest(isShowAd, adInfo, mAdsInfoBean);
 
             }
+
         });
     }
 
@@ -237,17 +238,6 @@ public class MidasAdManger implements AdManager {
                 }
             }
 
-            @Override
-            public boolean adShow(AdInfo info) {
-                // 查询内存是否有缓存并且有效 ,如果有缓存那么广告不显示,做预加载用的
-                AdContainerWrapper adContainer = ADTool.getInstance().getAd(adInfo.getPosition());
-                if (adContainer != null && adContainer.isValid()&& adContainer.isValidActivity(mActivity)) {
-                    return false;
-                }
-                //如果没有缓存,判断这个广告是不是真的需要显示
-                //一般在APP调用时赋值 或 开始缓存时赋值
-                return isShowAd;
-            }
 
             @Override
             public void adError(AdInfo info, int errorCode, String errorMsg) {
@@ -265,6 +255,19 @@ public class MidasAdManger implements AdManager {
                     mLoopAdListener.loopAdError(isShowAd, info, errorCode, errorMsg);
                 }
             }
+
+            @Override
+            public boolean adShow(AdInfo info) {
+                // 查询内存是否有缓存并且有效 ,如果有缓存那么广告不显示,做预加载用的
+                AdContainerWrapper adContainer = ADTool.getInstance().getAd(adInfo.getPosition());
+                if (adContainer != null && adContainer.isValid()&& adContainer.isValidActivity(mActivity)) {
+                    return false;
+                }
+                //如果没有缓存,判断这个广告是不是真的需要显示
+                //一般在APP调用时赋值 或 开始缓存时赋值
+                return isShowAd;
+            }
+
         }, mAdListener);
     }
 

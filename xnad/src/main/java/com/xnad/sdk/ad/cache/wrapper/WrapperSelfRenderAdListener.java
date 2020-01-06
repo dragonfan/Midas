@@ -11,6 +11,7 @@ import com.xnad.sdk.ad.listener.AdRequestListener;
 import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
 import com.xnad.sdk.ad.outlistener.AdSplashListener;
 import com.xnad.sdk.utils.LogUtils;
+import com.xnad.sdk.utils.StatisticUtils;
 
 import java.util.List;
 
@@ -72,11 +73,6 @@ public class WrapperSelfRenderAdListener implements NativeADUnifiedListener {
         //请求成功回调
         if (adRequestListener != null) {
             adRequestListener.adSuccess(adInfo);
-        }
-
-        //资源加载到
-        if (adRequestListener != null) {
-            adRequestListener.adLoad(adInfo);
         }
 
 

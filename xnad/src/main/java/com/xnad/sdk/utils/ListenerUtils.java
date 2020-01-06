@@ -728,7 +728,7 @@ public class ListenerUtils {
                 if (((MidasNativeTemplateAd) info.getMidasAd()).getAdOutChargeListener() != null) {
                     ((MidasNativeTemplateAd) info.getMidasAd()).getAdOutChargeListener().adSuccess(info);
                 }
-
+                intervalTime = System.currentTimeMillis();
             }
 
             @Override
@@ -754,17 +754,12 @@ public class ListenerUtils {
                 StatisticUtils.advertisingClick(info, intervalTime);
             }
 
-            @Override
-            public void adLoad(AdInfo info) {
-                StatisticUtils.advertistingImageLoad(info, System.currentTimeMillis());
-            }
-
             /**
              * 广告offer展示
              * @param adInfo    广告信息
              */
             private void advertisingOfferShow(AdInfo adInfo) {
-                StatisticUtils.advertisingOfferShow(adInfo, 0);
+                StatisticUtils.advertisingOfferShow(adInfo, intervalTime);
                 intervalTime = System.currentTimeMillis();
             }
         };
@@ -793,6 +788,7 @@ public class ListenerUtils {
                 if (listener != null) {
                     listener.adSuccess(info);
                 }
+                intervalTime = System.currentTimeMillis();
             }
 
             @Override
@@ -819,10 +815,7 @@ public class ListenerUtils {
                 StatisticUtils.advertisingClick(info, intervalTime);
             }
 
-            @Override
-            public void adLoad(AdInfo info) {
-                StatisticUtils.advertistingImageLoad(info, System.currentTimeMillis());
-            }
+
 
             @Override
             public void adTick(AdInfo info, long l) {
@@ -844,7 +837,7 @@ public class ListenerUtils {
              * @param adInfo    广告信息
              */
             private void advertisingOfferShow(AdInfo adInfo) {
-                StatisticUtils.advertisingOfferShow(adInfo, 0);
+                StatisticUtils.advertisingOfferShow(adInfo, intervalTime);
                 intervalTime = System.currentTimeMillis();
             }
         };
@@ -878,6 +871,7 @@ public class ListenerUtils {
                 if (listener != null) {
                     listener.adSuccess(info);
                 }
+                intervalTime = System.currentTimeMillis();
             }
 
             @Override
@@ -903,10 +897,6 @@ public class ListenerUtils {
                 StatisticUtils.advertisingClick(info, intervalTime);
             }
 
-            @Override
-            public void adLoad(AdInfo info) {
-                StatisticUtils.advertistingImageLoad(info, System.currentTimeMillis());
-            }
 
             @Override
             public void onVideoRewardVerify(AdInfo info, boolean rewardVerify, int rewardAmount, String rewardName) {
@@ -930,7 +920,7 @@ public class ListenerUtils {
              * @param adInfo    广告信息
              */
             private void advertisingOfferShow(AdInfo adInfo) {
-                StatisticUtils.advertisingOfferShow(adInfo, 0);
+                StatisticUtils.advertisingOfferShow(adInfo, intervalTime);
                 intervalTime = System.currentTimeMillis();
             }
         };
@@ -963,6 +953,7 @@ public class ListenerUtils {
                 if (listener != null) {
                     listener.adSuccess(info);
                 }
+                intervalTime = System.currentTimeMillis();
             }
 
             @Override
@@ -989,11 +980,6 @@ public class ListenerUtils {
             }
 
             @Override
-            public void adLoad(AdInfo info) {
-                StatisticUtils.advertistingImageLoad(info, System.currentTimeMillis());
-            }
-
-            @Override
             public void adVideoComplete(AdInfo info) {
                 if (listener != null) {
                     listener.adVideoComplete(info);
@@ -1012,7 +998,7 @@ public class ListenerUtils {
              * @param adInfo    广告信息
              */
             private void advertisingOfferShow(AdInfo adInfo) {
-                StatisticUtils.advertisingOfferShow(adInfo, 0);
+                StatisticUtils.advertisingOfferShow(adInfo, intervalTime);
                 intervalTime = System.currentTimeMillis();
             }
         };
@@ -1046,6 +1032,7 @@ public class ListenerUtils {
                 if (listener != null) {
                     listener.adSuccess(info);
                 }
+                intervalTime = System.currentTimeMillis();
             }
 
             @Override
@@ -1071,17 +1058,12 @@ public class ListenerUtils {
                 StatisticUtils.advertisingClick(info, intervalTime);
             }
 
-            @Override
-            public void adLoad(AdInfo info) {
-                StatisticUtils.advertistingImageLoad(info, System.currentTimeMillis());
-            }
-
             /**
              * 广告offer展示
              * @param adInfo    广告信息
              */
             private void advertisingOfferShow(AdInfo adInfo) {
-                StatisticUtils.advertisingOfferShow(adInfo, 0);
+                StatisticUtils.advertisingOfferShow(adInfo, intervalTime);
                 intervalTime = System.currentTimeMillis();
             }
         };
@@ -1107,6 +1089,7 @@ public class ListenerUtils {
                 if (listener != null) {
                     listener.adSuccess(info);
                 }
+                intervalTime = System.currentTimeMillis();
             }
 
             @Override
@@ -1145,7 +1128,7 @@ public class ListenerUtils {
              * @param adInfo    广告信息
              */
             private void advertisingOfferShow(AdInfo adInfo) {
-                StatisticUtils.advertisingOfferShow(adInfo, 0);
+                StatisticUtils.advertisingOfferShow(adInfo, intervalTime);
                 intervalTime = System.currentTimeMillis();
             }
         };
@@ -1172,6 +1155,7 @@ public class ListenerUtils {
                 if (midasSelfRenderAd.getAdOutChargeListener() != null) {
                     midasSelfRenderAd.getAdOutChargeListener().adSuccess(adInfo);
                 }
+                intervalTime = System.currentTimeMillis();
             }
 
             @Override
@@ -1201,10 +1185,6 @@ public class ListenerUtils {
                 StatisticUtils.advertisingClick(adInfo, intervalTime);
             }
 
-            @Override
-            public void adLoad(AdInfo info) {
-                StatisticUtils.advertistingImageLoad(adInfo, System.currentTimeMillis());
-            }
 
             @Override
             public void adClose(AdInfo info) {
@@ -1219,7 +1199,7 @@ public class ListenerUtils {
              * @param adInfo    广告信息
              */
             private void advertisingOfferShow(AdInfo adInfo) {
-                StatisticUtils.advertisingOfferShow(adInfo, 0);
+                StatisticUtils.advertisingOfferShow(adInfo, intervalTime);
                 intervalTime = System.currentTimeMillis();
             }
         });

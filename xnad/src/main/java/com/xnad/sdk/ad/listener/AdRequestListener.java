@@ -37,13 +37,5 @@ public abstract class AdRequestListener {
     }
 
 
-    /**
-     * 广告缓存回调
-     * @param info
-     *      desc:1.展示后业务缓存一个广告源使用
-     */
-    public boolean adLoad(AdInfo info){
-        return false;
-    }
 
 }

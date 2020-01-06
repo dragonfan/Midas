@@ -194,10 +194,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                 if (listener != null) {
                     listener.adSuccess(info);
                 }
-                //资源加载到
-                if (listener != null) {
-                    listener.adLoad(info);
-                }
+
 
             }
         });
@@ -248,10 +245,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                 if (listener != null) {
                     listener.adSuccess(info);
                 }
-                //资源加载到
-                if (listener != null) {
-                    listener.adLoad(info);
-                }
+
                 ((MidasInteractionAd) info.getMidasAd()).setTtNativeExpressAd(ttNativeExpressAd);
                 if (listener.adShow(info)) {
                     ttNativeExpressAd.setExpressInteractionListener(new TTNativeExpressAd.AdInteractionListener() {
@@ -355,10 +349,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                 if (listener != null) {
                     listener.adSuccess(info);
                 }
-                //资源加载到
-                if (listener != null) {
-                    listener.adLoad(info);
-                }
+
                 midasSelfRenderAd.setTtFeedAd(ttFeedAd);
 
                 //如果需要显示才回调监听,否则直接缓存起来
@@ -406,10 +397,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     if (listener != null) {
                         listener.adSuccess(info);
                     }
-                    //资源加载到
-                    if (listener != null) {
-                        listener.adLoad(info);
-                    }
+
                     if (listener.adShow(info)) {
                         ad.setFullScreenVideoAdInteractionListener(new TTFullScreenVideoAd.FullScreenVideoAdInteractionListener() {
                             boolean isExposed = false;
@@ -524,10 +512,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     if (adRequestListener != null) {
                         adRequestListener.adSuccess(adInfo);
                     }
-                    //资源加载到
-                    if (adRequestListener != null) {
-                        adRequestListener.adLoad(adInfo);
-                    }
+
                     if (adRequestListener.adShow(adInfo)) {
                         if (adSplashListener != null) {
                             adSplashListener.adSuccess(adInfo);
@@ -631,10 +616,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     if (adRequestListener != null) {
                         adRequestListener.adSuccess(adInfo);
                     }
-                    //资源加载到
-                    if (adRequestListener != null) {
-                        adRequestListener.adLoad(adInfo);
-                    }
+
                     midasRewardVideoAd.setTtRewardVideoAd(mttRewardVideoAd);
                     if (adRequestListener.adShow(adInfo)) {
                         mttRewardVideoAd.setRewardAdInteractionListener(new TTRewardVideoAd.RewardAdInteractionListener() {
@@ -792,10 +774,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     if (adRequestListener != null) {
                         adRequestListener.adSuccess(adInfo);
                     }
-                    //资源加载到
-                    if (adRequestListener != null) {
-                        adRequestListener.adLoad(adInfo);
-                    }
+
                     TTNativeExpressAd ttNativeExpressAd = ads.get(0);
                     midasBannerAd.setTTBannerAd(ttNativeExpressAd);
                     ttNativeExpressAd.setSlideIntervalTime(30 * 1000);

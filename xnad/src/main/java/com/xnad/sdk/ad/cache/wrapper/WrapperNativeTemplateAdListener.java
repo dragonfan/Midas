@@ -124,11 +124,6 @@ public class WrapperNativeTemplateAdListener implements NativeExpressAD.NativeEx
             adRequestListener.adSuccess(adInfo);
         }
 
-        //资源加载到
-        if (!isExposed && adRequestListener != null) {
-            adRequestListener.adLoad(adInfo);
-        }
-
 
     }
 
