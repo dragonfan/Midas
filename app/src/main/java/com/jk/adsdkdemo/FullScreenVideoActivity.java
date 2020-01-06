@@ -1,6 +1,8 @@
 package com.jk.adsdkdemo;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,9 +15,6 @@ import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.outlistener.AdFullScreenVideoListener;
 import com.xnad.sdk.config.AdParameter;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * 全屏视频页面<p>

@@ -1,6 +1,7 @@
 package com.jk.adsdkdemo;
 
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,8 +32,6 @@ import com.xnad.sdk.config.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * @ProjectName: ${PROJECT_NAME}

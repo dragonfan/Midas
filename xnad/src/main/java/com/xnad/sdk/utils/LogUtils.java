@@ -10,6 +10,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.IntDef;
+import android.support.annotation.IntRange;
+import android.support.annotation.RequiresApi;
+import android.support.v4.util.SimpleArrayMap;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -49,11 +53,6 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-
-import androidx.annotation.IntDef;
-import androidx.annotation.IntRange;
-import androidx.annotation.RequiresApi;
-import androidx.collection.SimpleArrayMap;
 
 /**
  * Desc:日志工具类

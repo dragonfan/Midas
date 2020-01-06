@@ -4,6 +4,8 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.LayoutRes;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
@@ -13,9 +15,6 @@ import com.jk.adsdkdemo.R;
 import com.xnad.sdk.utils.AppUtils;
 
 import java.lang.reflect.Field;
-
-import androidx.annotation.DrawableRes;
-import androidx.annotation.LayoutRes;
 
 /**
  * Desc:可自定义toast布局显示样式

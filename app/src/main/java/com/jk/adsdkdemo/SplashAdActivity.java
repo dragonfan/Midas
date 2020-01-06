@@ -1,6 +1,8 @@
 package com.jk.adsdkdemo;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -15,9 +17,6 @@ import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.outlistener.AdSplashListener;
 import com.xnad.sdk.config.AdParameter;
 import com.xnad.sdk.config.Constants;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * 开屏广告页面<p>
