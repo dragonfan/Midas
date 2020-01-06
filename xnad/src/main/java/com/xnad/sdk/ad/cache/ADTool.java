@@ -7,6 +7,7 @@ import com.qq.e.ads.splash.SplashAD;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.entity.MidasSplashAd;
 import com.xnad.sdk.ad.listener.AdBasicListener;
+import com.xnad.sdk.ad.listener.AdRequestListener;
 import com.xnad.sdk.ad.outlistener.AdInteractionListener;
 import com.xnad.sdk.config.Constants;
 import com.xnad.sdk.utils.ListenerUtils;
@@ -88,8 +89,8 @@ public class ADTool {
      * @param adContainerWrapper 广告缓存对象
      * @param adListener         对外的监听
      */
-    public void bindListener(Activity activity, AdContainerWrapper adContainerWrapper, AdBasicListener adListener) {
-        ListenerUtils.setListenerAndShow(activity, adContainerWrapper, adListener);
+    public void bindListener(Activity activity, AdContainerWrapper adContainerWrapper, AdRequestListener adRequestListener, AdBasicListener adListener) {
+        ListenerUtils.setListenerAndShow(activity, adContainerWrapper, adRequestListener, adListener);
     }
 
 }

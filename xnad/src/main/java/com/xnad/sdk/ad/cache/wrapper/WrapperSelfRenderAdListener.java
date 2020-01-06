@@ -39,6 +39,7 @@ public class WrapperSelfRenderAdListener implements NativeADUnifiedListener {
      * 广告信息
      */
     AdInfo adInfo;
+
     @Override
     public void onADLoaded(List<NativeUnifiedADData> list) {
         if (list == null || list.size() == 0) {

@@ -12,6 +12,7 @@ import com.xnad.sdk.ad.entity.MidasSelfRenderAd;
 import com.xnad.sdk.ad.listener.AdRequestListener;
 import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
 import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
+import com.xnad.sdk.utils.AppUtils;
 
 import java.util.List;
 
@@ -41,7 +42,10 @@ public class WrapperRewardVideoAdListener implements RewardVideoADListener {
      */
     AdInfo adInfo;
 
-
+    /**
+     * 是否曝光
+     */
+    boolean isExposed = false;
 
     //广告加载成功，可在此回调后进行广告展示，此时广告过期时间确定，可通过RewardVideoAD.getExpireTimestamp()获取
     @Override
@@ -50,14 +54,18 @@ public class WrapperRewardVideoAdListener implements RewardVideoADListener {
         if (adRequestListener != null) {
             adRequestListener.adSuccess(adInfo);
         }
-        //添加到缓存
-        ADTool.getInstance().cacheAd(this, adInfo);
-        MidasRewardVideoAd midasRewardVideoAd = (MidasRewardVideoAd) adInfo.getMidasAd();
-        RewardVideoAD rewardVideoAD = midasRewardVideoAd.getRewardVideoAD();
-        //广告加载成功标志
-        rewardVideoAD.showAD();
-        if (outListener != null) {
-            outListener.adSuccess(adInfo);
+
+        if (adRequestListener==null||adRequestListener.adShow(adInfo)) {
+            MidasRewardVideoAd midasRewardVideoAd = (MidasRewardVideoAd) adInfo.getMidasAd();
+            RewardVideoAD rewardVideoAD = midasRewardVideoAd.getRewardVideoAD();
+            //广告加载成功标志
+            rewardVideoAD.showAD();
+            if (outListener != null) {
+                outListener.adSuccess(adInfo);
+            }
+        }else{
+            //添加到缓存
+            ADTool.getInstance().cacheAd(this, adInfo);
         }
     }
 
@@ -78,6 +86,10 @@ public class WrapperRewardVideoAdListener implements RewardVideoADListener {
     public void onADExpose() {
         if (outListener != null) {
             outListener.adExposed(adInfo);
+        }
+        if (!isExposed) {
+            isExposed = true;
+            AppUtils.getAdCount(adInfo.getMidasAd().getAdId());
         }
     }
 

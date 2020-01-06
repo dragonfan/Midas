@@ -14,6 +14,7 @@ import com.xnad.sdk.ad.entity.MidasAd;
 import com.xnad.sdk.ad.entity.MidasInteractionAd;
 import com.xnad.sdk.ad.listener.AdRequestListener;
 import com.xnad.sdk.ad.outlistener.AdInteractionListener;
+import com.xnad.sdk.utils.AppUtils;
 
 import java.util.List;
 
@@ -42,6 +43,10 @@ public class WrapperInterstitialADListener implements UnifiedInterstitialADListe
      * 广告信息
      */
     AdInfo info;
+    /**
+     * 是否曝光
+     */
+    boolean isExposed = false;
 
     //插屏2.0广告加载完毕，此回调后才可以调用 show 方法
     @Override
@@ -88,6 +93,11 @@ public class WrapperInterstitialADListener implements UnifiedInterstitialADListe
     public void onADExposure() {
         if (outListener != null) {
             outListener.adExposed(info);
+        }
+
+        if (!isExposed) {
+            isExposed = true;
+            AppUtils.getAdCount(info.getMidasAd().getAdId());
         }
     }
 

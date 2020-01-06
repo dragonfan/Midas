@@ -15,6 +15,7 @@ import com.xnad.sdk.ad.listener.AdRequestListener;
 import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
 import com.xnad.sdk.ad.outlistener.AdOutChargeListener;
 import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
+import com.xnad.sdk.utils.AppUtils;
 import com.xnad.sdk.utils.LogUtils;
 import com.xnad.sdk.utils.StatisticUtils;
 
@@ -54,6 +55,10 @@ public class WrapperNativeTemplateAdListener implements NativeExpressAD.NativeEx
      * 记录填充到展示，展示到点击间隔
      */
     private long intervalTime = 0L;
+    /**
+     * 是否曝光
+     */
+    boolean isExposed = false;
 
     @Override
     public void onADLoaded(List<NativeExpressADView> list) {
@@ -145,6 +150,10 @@ public class WrapperNativeTemplateAdListener implements NativeExpressAD.NativeEx
     public void onADExposure(NativeExpressADView nativeExpressADView) {
         if (adOutChargeListener != null) {
             adOutChargeListener.adExposed(adInfo);
+        }
+        if (!isExposed) {
+            isExposed = true;
+            AppUtils.getAdCount(adInfo.getMidasAd().getAdId());
         }
     }
 

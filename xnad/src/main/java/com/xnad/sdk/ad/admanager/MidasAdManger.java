@@ -102,8 +102,8 @@ public class MidasAdManger implements AdManager {
 //        查询本地缓存
         AdContainerWrapper adContainer = ADTool.getInstance().getAd(adInfo.getPosition());
         //判断是否有缓存并且有效
-        if (adContainer != null && adContainer.isValid()) {
-            ADTool.getInstance().bindListener(mActivity, adContainer, mAdListener);
+        if (adContainer != null && adContainer.isValid()&& adContainer.isValidActivity(mActivity)) {
+            ADTool.getInstance().bindListener(mActivity, adContainer,null, mAdListener);
         }
 
         //埋点流程开始
@@ -241,7 +241,7 @@ public class MidasAdManger implements AdManager {
             public boolean adShow(AdInfo info) {
                 // 查询内存是否有缓存并且有效 ,如果有缓存那么广告不显示,做预加载用的
                 AdContainerWrapper adContainer = ADTool.getInstance().getAd(adInfo.getPosition());
-                if (adContainer != null && adContainer.isValid()) {
+                if (adContainer != null && adContainer.isValid()&& adContainer.isValidActivity(mActivity)) {
                     return false;
                 }
                 //如果没有缓存,判断这个广告是不是真的需要显示

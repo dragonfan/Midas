@@ -12,6 +12,7 @@ import com.xnad.sdk.ad.entity.MidasBannerAd;
 import com.xnad.sdk.ad.listener.AdRequestListener;
 import com.xnad.sdk.ad.outlistener.AdBannerListener;
 import com.xnad.sdk.ad.outlistener.AdSplashListener;
+import com.xnad.sdk.utils.AppUtils;
 import com.xnad.sdk.utils.LogUtils;
 
 /**
@@ -39,6 +40,8 @@ public class WrapperBannerADListener implements UnifiedBannerADListener {
      * 广告信息
      */
     AdInfo adInfo;
+
+    boolean isExposed = false;
 
     @Override
     public void onNoAD(AdError adError) {
@@ -75,7 +78,10 @@ public class WrapperBannerADListener implements UnifiedBannerADListener {
         if (outListener != null) {
             outListener.onAdShow(adInfo);
         }
-
+        if (!isExposed) {
+            isExposed = true;
+            AppUtils.getAdCount(adInfo.getMidasAd().getAdId());
+        }
 
 
     }

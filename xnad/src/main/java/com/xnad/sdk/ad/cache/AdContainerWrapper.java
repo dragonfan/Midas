@@ -1,5 +1,6 @@
 package com.xnad.sdk.ad.cache;
 
+import android.app.Activity;
 import android.text.TextUtils;
 
 import com.bytedance.sdk.openadsdk.TTFeedAd;
@@ -70,14 +71,24 @@ public class AdContainerWrapper {
     public boolean isValid() {
         MidasAd midasAd = adInfo.getMidasAd();
         //频控为0 是兜底广告 可以显示
-        if (midasAd.getShowNum()==0) {
+        if (midasAd.getShowNum() == 0) {
             return true;
         }
         //是否超过频控次数
         boolean isOverflow = AppUtils.getAdCount(adInfo.getMidasAd().getAdId()) <= midasAd.getShowNum();
 
         //当前时间 - 缓存时间 小于 有效时间  && 未超过频控次数   这个广告才能使用
-        return (System.currentTimeMillis() - receiveTime) < VALID_TIME   && isOverflow ;
+        return (System.currentTimeMillis() - receiveTime) < VALID_TIME && isOverflow;
+    }
+
+    public boolean isValidActivity(Activity act) {
+        //如果是一个穿山甲的banner广告,缓存上下文发生变化,不使用缓存
+        if (TextUtils.equals(adInfo.getAdType(), Constants.AdType.BANNER_TYPE) &&
+                TextUtils.equals(adInfo.getMidasAd().getAdSource(), Constants.AdSourceType.ChuanShanJia) && act != adInfo.getAdParameter().getActivity()) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public long getReceiveTime() {

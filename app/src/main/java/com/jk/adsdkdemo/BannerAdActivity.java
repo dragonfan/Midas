@@ -1,6 +1,8 @@
 package com.jk.adsdkdemo;
 
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.EditText;
 

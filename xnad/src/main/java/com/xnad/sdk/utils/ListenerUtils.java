@@ -5,9 +5,12 @@ import android.graphics.Point;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
+import com.bytedance.sdk.openadsdk.AdSlot;
 import com.bytedance.sdk.openadsdk.TTAdConstant;
 import com.bytedance.sdk.openadsdk.TTAdDislike;
+import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTAppDownloadListener;
 import com.bytedance.sdk.openadsdk.TTBannerAd;
 import com.bytedance.sdk.openadsdk.TTFullScreenVideoAd;
@@ -35,6 +38,7 @@ import com.xnad.sdk.ad.entity.MidasRewardVideoAd;
 import com.xnad.sdk.ad.entity.MidasSelfRenderAd;
 import com.xnad.sdk.ad.entity.MidasSplashAd;
 import com.xnad.sdk.ad.listener.AdBasicListener;
+import com.xnad.sdk.ad.listener.AdRequestListener;
 import com.xnad.sdk.ad.outlistener.AdBannerListener;
 import com.xnad.sdk.ad.outlistener.AdFullScreenVideoListener;
 import com.xnad.sdk.ad.outlistener.AdInteractionListener;
@@ -42,7 +46,12 @@ import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
 import com.xnad.sdk.ad.outlistener.AdOutChargeListener;
 import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
 import com.xnad.sdk.ad.outlistener.AdSplashListener;
+import com.xnad.sdk.config.AdParameter;
 import com.xnad.sdk.config.Constants;
+import com.xnad.sdk.config.ErrorCode;
+import com.xnad.sdk.config.TTAdManagerHolder;
+
+import java.util.List;
 
 /**
  * Desc:
@@ -66,7 +75,7 @@ public class ListenerUtils {
      * @param adContainerWrapper
      * @param adListener
      */
-    public static void setListenerAndShow(Activity activity, AdContainerWrapper adContainerWrapper, AdBasicListener adListener) {
+    public static void setListenerAndShow(Activity activity, AdContainerWrapper adContainerWrapper, AdRequestListener adRequestListener, AdBasicListener adListener) {
         AdInfo info = adContainerWrapper.getAdInfo();
         if (info.getMidasAd() == null) {
             return;
@@ -186,14 +195,13 @@ public class ListenerUtils {
      */
     private static void setCsjBannerListener(Activity activity, AdInfo adInfo, TTNativeExpressAd ttNativeExpressAd, AdBannerListener adBannerListener) {
 
+
+
         ViewGroup viewContainer = adInfo.getAdParameter().getViewContainer();
         int screenWidth = AppUtils.getScreenWidth();
         ttNativeExpressAd.setSlideIntervalTime(30 * 1000);
 
 
-        if (adBannerListener != null) {
-            adBannerListener.adSuccess(adInfo);
-        }
         ttNativeExpressAd.setExpressInteractionListener(new TTNativeExpressAd.ExpressAdInteractionListener() {
             @Override
             public void onAdClicked(View view, int type) {
@@ -258,6 +266,10 @@ public class ListenerUtils {
             public void onDownloadFinished(long totalBytes, String fileName, String appName) {
             }
         });
+        if (adBannerListener != null) {
+            adBannerListener.adSuccess(adInfo);
+        }
+        //------------------------------------------------------------------------------------------------------------
 
     }
 
@@ -1108,7 +1120,7 @@ public class ListenerUtils {
              * 记录填充到展示，展示到点击间隔
              */
             private long intervalTime = 0L;
-
+            boolean isExposed = false;
             @Override
             public void adSuccess(AdInfo info) {
                 if (midasSelfRenderAd.getAdOutChargeListener() != null) {
@@ -1127,6 +1139,10 @@ public class ListenerUtils {
             public void adExposed(AdInfo info) {
                 if (midasSelfRenderAd.getAdOutChargeListener() != null) {
                     midasSelfRenderAd.getAdOutChargeListener().adExposed(adInfo);
+                }
+                if (!isExposed) {
+                    isExposed = true;
+                    AppUtils.getAdCount(info.getMidasAd().getAdId());
                 }
                 advertisingOfferShow(adInfo);
             }

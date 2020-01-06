@@ -108,12 +108,8 @@ public class WrapperSplashADListener implements SplashADListener {
         }
         if (!isADExposure) {
             isADExposure = true;
-            try {
-                MidasSplashAd midasSplashAd = (MidasSplashAd) adInfo.getMidasAd();
-                //缓存展示次数
-                AppUtils.putAdCount(midasSplashAd.getAdId());
-            } catch (Exception e) {
-            }
+            //缓存展示次数
+            AppUtils.putAdCount(adInfo.getMidasAd().getAdId());
         }
 
     }

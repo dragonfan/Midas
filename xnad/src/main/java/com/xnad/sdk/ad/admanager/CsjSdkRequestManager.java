@@ -107,6 +107,8 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                 if (listener.adShow(info)) {
 
                     ttNativeAd.setExpressInteractionListener(new TTNativeExpressAd.ExpressAdInteractionListener() {
+                        boolean isExposed = false;
+
                         @Override
                         public void onAdClicked(View view, int type) {
                             if (adOutChargeListener != null) {
@@ -118,6 +120,10 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                         public void onAdShow(View view, int type) {
                             if (adOutChargeListener != null) {
                                 adOutChargeListener.adExposed(info);
+                            }
+                            if (!isExposed) {
+                                isExposed = true;
+                                AppUtils.getAdCount(midasNativeTemplateAd.getAdId());
                             }
                         }
 
@@ -178,7 +184,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     if (adListener != null) {
                         adListener.adSuccess(info);
                     }
-                }else{
+                } else {
                     // 不需要展示 添加到缓存 即可
                     ADTool.getInstance().cacheAd(ttNativeAd, info);
 
@@ -239,47 +245,57 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                 if (listener != null) {
                     listener.adSuccess(info);
                 }
-                //添加到缓存
-                ADTool.getInstance().cacheAd(ttNativeExpressAd, info);
+
                 ((MidasInteractionAd) info.getMidasAd()).setTtNativeExpressAd(ttNativeExpressAd);
-                ttNativeExpressAd.setExpressInteractionListener(new TTNativeExpressAd.AdInteractionListener() {
-                    @Override
-                    public void onAdClicked(View view, int i) {
-                        if (adListener != null) {
-                            adListener.adClicked(info);
+                if (listener.adShow(info)) {
+                    ttNativeExpressAd.setExpressInteractionListener(new TTNativeExpressAd.AdInteractionListener() {
+                        boolean isExposed = false;
+                        @Override
+                        public void onAdClicked(View view, int i) {
+                            if (adListener != null) {
+                                adListener.adClicked(info);
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onAdShow(View view, int i) {
-                        if (adListener != null) {
-                            adListener.adExposed(info);
+                        @Override
+                        public void onAdShow(View view, int i) {
+                            if (adListener != null) {
+                                adListener.adExposed(info);
+                            }
+                            if (!isExposed) {
+                                isExposed = true;
+                                AppUtils.getAdCount(info.getMidasAd().getAdId());
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onRenderFail(View view, String s, int i) {
-                        if (adListener != null) {
-                            adListener.adError(info, i, s);
+                        @Override
+                        public void onRenderFail(View view, String s, int i) {
+                            if (adListener != null) {
+                                adListener.adError(info, i, s);
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onRenderSuccess(View view, float v, float v1) {
-                        if (adListener != null) {
-                            adListener.adSuccess(info);
+                        @Override
+                        public void onRenderSuccess(View view, float v, float v1) {
+                            if (adListener != null) {
+                                adListener.adSuccess(info);
+                            }
+                            ttNativeExpressAd.showInteractionExpressAd(activity);
                         }
-                        ttNativeExpressAd.showInteractionExpressAd(activity);
-                    }
 
-                    @Override
-                    public void onAdDismiss() {
-                        if (adListener != null) {
-                            adListener.adClose(info);
+                        @Override
+                        public void onAdDismiss() {
+                            if (adListener != null) {
+                                adListener.adClose(info);
+                            }
                         }
-                    }
-                });
-                ttNativeExpressAd.render();
+                    });
+                    ttNativeExpressAd.render();
+                } else {
+                    //添加到缓存
+                    ADTool.getInstance().cacheAd(ttNativeExpressAd, info);
+                }
+
             }
         });
     }
@@ -372,58 +388,71 @@ public class CsjSdkRequestManager extends SdkRequestManager {
             @Override
             public void onFullScreenVideoAdLoad(TTFullScreenVideoAd ad) {
                 if (ad != null) {
+
+
                     midasFullScreenVideoAd.setTtFullScreenVideoAd(ad);
-                    ad.setFullScreenVideoAdInteractionListener(new TTFullScreenVideoAd.FullScreenVideoAdInteractionListener() {
 
-                        @Override
-                        public void onAdShow() {
-                            if (adListener != null) {
-                                adListener.adExposed(info);
-                            }
-                        }
-
-                        //广告下载bar点击回调
-                        @Override
-                        public void onAdVideoBarClick() {
-                            if (adListener != null) {
-                                adListener.adClicked(info);
-                            }
-                        }
-
-                        @Override
-                        public void onAdClose() {
-                            if (adListener != null) {
-                                adListener.adClose(info);
-                            }
-                        }
-
-                        //广告播放完成回调
-                        @Override
-                        public void onVideoComplete() {
-                            if (adListener != null) {
-                                adListener.adVideoComplete(info);
-                            }
-                        }
-
-                        //广告跳过视频播放回调
-                        @Override
-                        public void onSkippedVideo() {
-                            if (adListener != null) {
-                                adListener.adSkippedVideo(info);
-                            }
-                        }
-                    });
                     //请求成功回调
                     if (listener != null) {
                         listener.adSuccess(info);
                     }
-                    //添加到缓存
-                    ADTool.getInstance().cacheAd(ad, info);
-                    //step6:在获取到广告后展示
-                    ad.showFullScreenVideoAd(activity);
-                    if (adListener != null) {
-                        adListener.adSuccess(info);
+
+                    if (listener.adShow(info)) {
+                        ad.setFullScreenVideoAdInteractionListener(new TTFullScreenVideoAd.FullScreenVideoAdInteractionListener() {
+                            boolean isExposed = false;
+                            @Override
+                            public void onAdShow() {
+                                if (adListener != null) {
+                                    adListener.adExposed(info);
+                                }
+                                if (!isExposed) {
+                                    isExposed = true;
+                                    AppUtils.getAdCount(info.getMidasAd().getAdId());
+                                }
+                            }
+
+                            //广告下载bar点击回调
+                            @Override
+                            public void onAdVideoBarClick() {
+                                if (adListener != null) {
+                                    adListener.adClicked(info);
+                                }
+                            }
+
+                            @Override
+                            public void onAdClose() {
+                                if (adListener != null) {
+                                    adListener.adClose(info);
+                                }
+                            }
+
+                            //广告播放完成回调
+                            @Override
+                            public void onVideoComplete() {
+                                if (adListener != null) {
+                                    adListener.adVideoComplete(info);
+                                }
+                            }
+
+                            //广告跳过视频播放回调
+                            @Override
+                            public void onSkippedVideo() {
+                                if (adListener != null) {
+                                    adListener.adSkippedVideo(info);
+                                }
+                            }
+                        });
+                        //step6:在获取到广告后展示
+                        ad.showFullScreenVideoAd(activity);
+                        if (adListener != null) {
+                            adListener.adSuccess(info);
+                        }
+                    } else {
+                        //添加到缓存
+                        ADTool.getInstance().cacheAd(ad, info);
                     }
+
+
                 } else {
                     if (listener != null) {
                         listener.adError(info, 1, "请求广告为空");
@@ -491,6 +520,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                         AppUtils.putAdCount(midasSplashAd.getAdId());
 
                         ttSplashAd.setSplashInteractionListener(new TTSplashAd.AdInteractionListener() {
+                            boolean isExposed = false;
                             @Override
                             public void onAdClicked(View view, int i) {
                                 if (adSplashListener != null) {
@@ -502,6 +532,10 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                             public void onAdShow(View view, int i) {
                                 if (adSplashListener != null) {
                                     adSplashListener.adExposed(adInfo);
+                                }
+                                if (!isExposed) {
+                                    isExposed = true;
+                                    AppUtils.getAdCount(adInfo.getMidasAd().getAdId());
                                 }
                             }
 
@@ -580,100 +614,110 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     if (adRequestListener != null) {
                         adRequestListener.adSuccess(adInfo);
                     }
-                    //添加到缓存
-                    ADTool.getInstance().cacheAd(mttRewardVideoAd, adInfo);
+
                     midasRewardVideoAd.setTtRewardVideoAd(mttRewardVideoAd);
-                    mttRewardVideoAd.setRewardAdInteractionListener(new TTRewardVideoAd.RewardAdInteractionListener() {
-                        @Override
-                        public void onAdShow() {
-                            if (adRewardVideoListener != null) {
-                                adRewardVideoListener.adExposed(adInfo);
+                    if (adRequestListener.adShow(adInfo)) {
+                        mttRewardVideoAd.setRewardAdInteractionListener(new TTRewardVideoAd.RewardAdInteractionListener() {
+                            boolean isExposed = false;
+                            @Override
+                            public void onAdShow() {
+                                if (adRewardVideoListener != null) {
+                                    adRewardVideoListener.adExposed(adInfo);
+                                }
+                                if (!isExposed) {
+                                    isExposed = true;
+                                    AppUtils.getAdCount(adInfo.getMidasAd().getAdId());
+                                }
                             }
-                        }
 
-                        @Override
-                        public void onAdVideoBarClick() {
-                            LogUtils.d(TAG, "rewardVideoAd bar click");
-                            if (adRewardVideoListener != null) {
-                                adRewardVideoListener.adClicked(adInfo);
+                            @Override
+                            public void onAdVideoBarClick() {
+                                LogUtils.d(TAG, "rewardVideoAd bar click");
+                                if (adRewardVideoListener != null) {
+                                    adRewardVideoListener.adClicked(adInfo);
+                                }
                             }
-                        }
 
-                        @Override
-                        public void onAdClose() {
-                            LogUtils.d(TAG, "rewardVideoAd close");
-                            if (adRewardVideoListener != null) {
-                                adRewardVideoListener.adClose(adInfo);
+                            @Override
+                            public void onAdClose() {
+                                LogUtils.d(TAG, "rewardVideoAd close");
+                                if (adRewardVideoListener != null) {
+                                    adRewardVideoListener.adClose(adInfo);
+                                }
                             }
-                        }
 
-                        //视频播放完成回调
-                        @Override
-                        public void onVideoComplete() {
-                            LogUtils.d(TAG, "rewardVideoAd complete");
-                            if (adRewardVideoListener != null) {
-                                adRewardVideoListener.onVideoComplete(adInfo);
+                            //视频播放完成回调
+                            @Override
+                            public void onVideoComplete() {
+                                LogUtils.d(TAG, "rewardVideoAd complete");
+                                if (adRewardVideoListener != null) {
+                                    adRewardVideoListener.onVideoComplete(adInfo);
+                                }
                             }
-                        }
 
-                        @Override
-                        public void onVideoError() {
-                            LogUtils.d(TAG, "rewardVideoAd error");
-                            if (adRewardVideoListener != null) {
-                                adRewardVideoListener.adError(adInfo, 1, "rewardVideoAd error");
+                            @Override
+                            public void onVideoError() {
+                                LogUtils.d(TAG, "rewardVideoAd error");
+                                if (adRewardVideoListener != null) {
+                                    adRewardVideoListener.adError(adInfo, 1, "rewardVideoAd error");
+                                }
                             }
-                        }
 
-                        //视频播放完成后，奖励验证回调，rewardVerify：是否有效，rewardAmount：奖励梳理，rewardName：奖励名称
-                        @Override
-                        public void onRewardVerify(boolean rewardVerify, int rewardAmount, String rewardName) {
-                            LogUtils.d(TAG, "verify:" + rewardVerify + " amount:" + rewardAmount + " name:" + rewardName);
-                            if (adRewardVideoListener != null) {
-                                adRewardVideoListener.onVideoRewardVerify(adInfo, rewardVerify, rewardAmount, rewardName);
+                            //视频播放完成后，奖励验证回调，rewardVerify：是否有效，rewardAmount：奖励梳理，rewardName：奖励名称
+                            @Override
+                            public void onRewardVerify(boolean rewardVerify, int rewardAmount, String rewardName) {
+                                LogUtils.d(TAG, "verify:" + rewardVerify + " amount:" + rewardAmount + " name:" + rewardName);
+                                if (adRewardVideoListener != null) {
+                                    adRewardVideoListener.onVideoRewardVerify(adInfo, rewardVerify, rewardAmount, rewardName);
+                                }
                             }
+
+                            @Override
+                            public void onSkippedVideo() {
+
+                            }
+                        });
+                        mttRewardVideoAd.setDownloadListener(new TTAppDownloadListener() {
+                            @Override
+                            public void onIdle() {
+
+                            }
+
+                            @Override
+                            public void onDownloadActive(long totalBytes, long currBytes, String fileName, String appName) {
+                                LogUtils.d(TAG, "下载中，点击下载区域暂停");
+
+                            }
+
+                            @Override
+                            public void onDownloadPaused(long totalBytes, long currBytes, String fileName, String appName) {
+                                LogUtils.d(TAG, "下载暂停，点击下载区域继续");
+                            }
+
+                            @Override
+                            public void onDownloadFailed(long totalBytes, long currBytes, String fileName, String appName) {
+                                LogUtils.d(TAG, "下载失败，点击下载区域重新下载");
+                            }
+
+                            @Override
+                            public void onDownloadFinished(long totalBytes, String fileName, String appName) {
+                                LogUtils.d(TAG, "下载完成，点击下载区域重新下载");
+                            }
+
+                            @Override
+                            public void onInstalled(String fileName, String appName) {
+                                LogUtils.d(TAG, "安装完成，点击下载区域打开");
+                            }
+                        });
+                        mttRewardVideoAd.showRewardVideoAd(activity);
+                        if (adRewardVideoListener != null) {
+                            adRewardVideoListener.adSuccess(adInfo);
                         }
-
-                        @Override
-                        public void onSkippedVideo() {
-
-                        }
-                    });
-                    mttRewardVideoAd.setDownloadListener(new TTAppDownloadListener() {
-                        @Override
-                        public void onIdle() {
-
-                        }
-
-                        @Override
-                        public void onDownloadActive(long totalBytes, long currBytes, String fileName, String appName) {
-                            LogUtils.d(TAG, "下载中，点击下载区域暂停");
-
-                        }
-
-                        @Override
-                        public void onDownloadPaused(long totalBytes, long currBytes, String fileName, String appName) {
-                            LogUtils.d(TAG, "下载暂停，点击下载区域继续");
-                        }
-
-                        @Override
-                        public void onDownloadFailed(long totalBytes, long currBytes, String fileName, String appName) {
-                            LogUtils.d(TAG, "下载失败，点击下载区域重新下载");
-                        }
-
-                        @Override
-                        public void onDownloadFinished(long totalBytes, String fileName, String appName) {
-                            LogUtils.d(TAG, "下载完成，点击下载区域重新下载");
-                        }
-
-                        @Override
-                        public void onInstalled(String fileName, String appName) {
-                            LogUtils.d(TAG, "安装完成，点击下载区域打开");
-                        }
-                    });
-                    mttRewardVideoAd.showRewardVideoAd(activity);
-                    if (adRewardVideoListener != null) {
-                        adRewardVideoListener.adSuccess(adInfo);
+                    } else {
+                        //添加到缓存
+                        ADTool.getInstance().cacheAd(mttRewardVideoAd, adInfo);
                     }
+
                 } else {
                     if (adRequestListener != null) {
                         adRequestListener.adError(adInfo, 1, "请求结果为空");
@@ -707,9 +751,9 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     //请求广告数量为1到3条
                     .setAdCount(1)
                     //期望模板广告view的size,单位dp
-                    .setExpressViewAcceptedSize(dpScreenWidth,Math.round(dpScreenWidth / 6.4F))
+                    .setExpressViewAcceptedSize(dpScreenWidth, Math.round(dpScreenWidth / 6.4F))
                     //这个参数设置即可，不影响模板广告的size
-                    .setImageAcceptedSize(640,100 )
+                    .setImageAcceptedSize(640, 100)
                     .build();
 
             ttAdNative.loadBannerExpressAd(adSlot, new TTAdNative.NativeExpressAdListener() {
@@ -720,7 +764,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
 
                 @Override
                 public void onNativeExpressAdLoad(List<TTNativeExpressAd> ads) {
-                    if (ads == null || ads.size() == 0){
+                    if (ads == null || ads.size() == 0) {
                         adRequestListener.adError(adInfo, ErrorCode.CSJ_AD_LOAD_EMPTY.errorCode,
                                 ErrorCode.CSJ_AD_LOAD_EMPTY.errorMsg);
                         return;
@@ -732,31 +776,38 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     TTNativeExpressAd ttNativeExpressAd = ads.get(0);
                     midasBannerAd.setTTBannerAd(ttNativeExpressAd);
                     ttNativeExpressAd.setSlideIntervalTime(30 * 1000);
-
                     if (adRequestListener.adShow(adInfo)) {
                         if (adBannerListener != null) {
                             adBannerListener.adSuccess(adInfo);
                         }
 
                         ttNativeExpressAd.setExpressInteractionListener(new TTNativeExpressAd.ExpressAdInteractionListener() {
+                            boolean isExposed = false;
                             @Override
                             public void onAdClicked(View view, int type) {
                                 if (adBannerListener != null) {
                                     adBannerListener.onAdClicked(adInfo);
                                 }
                             }
+
                             @Override
                             public void onAdShow(View view, int type) {
                                 if (adBannerListener != null) {
                                     adBannerListener.onAdShow(adInfo);
                                 }
+                                if (!isExposed) {
+                                    isExposed = true;
+                                    AppUtils.getAdCount(adInfo.getMidasAd().getAdId());
+                                }
                             }
+
                             @Override
                             public void onRenderFail(View view, String msg, int code) {
                                 if (adBannerListener != null) {
                                     adBannerListener.adError(adInfo, code, msg);
                                 }
                             }
+
                             @Override
                             public void onRenderSuccess(View view, float width, float height) {
                                 //返回view的宽高 单位 dp
@@ -773,42 +824,45 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                                 //用户选择不喜欢原因后，移除广告展示
                                 viewContainer.removeAllViews();
                             }
+
                             @Override
                             public void onCancel() {
 
                             }
                         });
                         if (ttNativeExpressAd.getInteractionType() !=
-                                TTAdConstant.INTERACTION_TYPE_DOWNLOAD){
+                                TTAdConstant.INTERACTION_TYPE_DOWNLOAD) {
                             return;
                         }
                         ttNativeExpressAd.setDownloadListener(new TTAppDownloadListener() {
                             @Override
                             public void onIdle() {
                             }
+
                             @Override
                             public void onDownloadActive(long totalBytes, long currBytes, String fileName, String appName) {
                             }
+
                             @Override
                             public void onDownloadPaused(long totalBytes, long currBytes, String fileName, String appName) {
                             }
+
                             @Override
                             public void onDownloadFailed(long totalBytes, long currBytes, String fileName, String appName) {
                             }
+
                             @Override
                             public void onInstalled(String fileName, String appName) {
                             }
+
                             @Override
                             public void onDownloadFinished(long totalBytes, String fileName, String appName) {
                             }
                         });
 
+                    } else {
+                        ADTool.getInstance().cacheAd(ttNativeExpressAd, adInfo);
                     }
-                    else{
-                        ADTool.getInstance().cacheAd(ttNativeExpressAd,adInfo);
-                    }
-
-
 
 
                 }
