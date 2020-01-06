@@ -2,6 +2,7 @@ package com.jk.adsdkdemo;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
@@ -18,8 +19,6 @@ import com.xnad.sdk.ad.entity.MidasNativeTemplateAd;
 import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
 import com.xnad.sdk.ad.outlistener.AdOutChargeListener;
 import com.xnad.sdk.config.AdParameter;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 /**
   *
