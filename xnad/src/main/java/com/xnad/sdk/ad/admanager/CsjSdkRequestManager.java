@@ -97,88 +97,99 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     return;
                 }
 
-                //添加到缓存
-                ADTool.getInstance().cacheAd(ttNativeAd, info);
 
                 midasNativeTemplateAd.setTtNativeExpressAd(ttNativeAd);
 
-                ttNativeAd.setExpressInteractionListener(new TTNativeExpressAd.ExpressAdInteractionListener() {
-                    @Override
-                    public void onAdClicked(View view, int type) {
-                        if (adOutChargeListener != null) {
-                            adOutChargeListener.adClicked(info);
-                        }
-                    }
+                //是否需要展示广告
+                //如果需要展示需要做两件事
+                //  1,展示/曝光广告
+                //  2,把广告的状态回调给客户端
+                if (listener.adShow(info)) {
 
-                    @Override
-                    public void onAdShow(View view, int type) {
-                        if (adOutChargeListener != null) {
-                            adOutChargeListener.adExposed(info);
+                    ttNativeAd.setExpressInteractionListener(new TTNativeExpressAd.ExpressAdInteractionListener() {
+                        @Override
+                        public void onAdClicked(View view, int type) {
+                            if (adOutChargeListener != null) {
+                                adOutChargeListener.adClicked(info);
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onRenderFail(View view, String msg, int code) {
+                        @Override
+                        public void onAdShow(View view, int type) {
+                            if (adOutChargeListener != null) {
+                                adOutChargeListener.adExposed(info);
+                            }
+                        }
+
+                        @Override
+                        public void onRenderFail(View view, String msg, int code) {
 //                Log.e("ExpressView","render fail:"+(System.currentTimeMillis() - startTime));
-                        if (adOutChargeListener != null) {
-                            adOutChargeListener.adError(info, code, msg);
+                            if (adOutChargeListener != null) {
+                                adOutChargeListener.adError(info, code, msg);
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onRenderSuccess(View view, float width, float height) {
-                        midasNativeTemplateAd.setAddView(view);
-                        if (adOutChargeListener != null) {
-                            adOutChargeListener.adSuccess(info);
+                        @Override
+                        public void onRenderSuccess(View view, float width, float height) {
+                            midasNativeTemplateAd.setAddView(view);
+                            if (adOutChargeListener != null) {
+                                adOutChargeListener.adSuccess(info);
+                            }
                         }
-                    }
-                });
-                //dislike设置
+                    });
+                    //dislike设置
 //        bindDislike(ttNativeExpressAd, false);
-                if (ttNativeAd.getInteractionType() == TTAdConstant.INTERACTION_TYPE_DOWNLOAD) {
-                    ttNativeAd.setDownloadListener(new TTAppDownloadListener() {
-                        @Override
-                        public void onIdle() {
+                    if (ttNativeAd.getInteractionType() == TTAdConstant.INTERACTION_TYPE_DOWNLOAD) {
+                        ttNativeAd.setDownloadListener(new TTAppDownloadListener() {
+                            @Override
+                            public void onIdle() {
 //                TToast.show(NativeExpressActivity.this, "点击开始下载", Toast.LENGTH_LONG);
-                        }
+                            }
 
-                        @Override
-                        public void onDownloadActive(long totalBytes, long currBytes, String fileName, String appName) {
+                            @Override
+                            public void onDownloadActive(long totalBytes, long currBytes, String fileName, String appName) {
 //                if (!mHasShowDownloadActive) {
 //                    mHasShowDownloadActive = true;
 //                    TToast.show(NativeExpressActivity.this, "下载中，点击暂停", Toast.LENGTH_LONG);
 //                }
-                        }
+                            }
 
-                        @Override
-                        public void onDownloadPaused(long totalBytes, long currBytes, String fileName, String appName) {
+                            @Override
+                            public void onDownloadPaused(long totalBytes, long currBytes, String fileName, String appName) {
 //                TToast.show(NativeExpressActivity.this, "下载暂停，点击继续", Toast.LENGTH_LONG);
-                        }
+                            }
 
-                        @Override
-                        public void onDownloadFailed(long totalBytes, long currBytes, String fileName, String appName) {
+                            @Override
+                            public void onDownloadFailed(long totalBytes, long currBytes, String fileName, String appName) {
 //                TToast.show(NativeExpressActivity.this, "下载失败，点击重新下载", Toast.LENGTH_LONG);
-                        }
+                            }
 
-                        @Override
-                        public void onInstalled(String fileName, String appName) {
+                            @Override
+                            public void onInstalled(String fileName, String appName) {
 //                TToast.show(NativeExpressActivity.this, "安装完成，点击图片打开", Toast.LENGTH_LONG);
-                        }
+                            }
 
-                        @Override
-                        public void onDownloadFinished(long totalBytes, String fileName, String appName) {
+                            @Override
+                            public void onDownloadFinished(long totalBytes, String fileName, String appName) {
 //                TToast.show(NativeExpressActivity.this, "点击安装", Toast.LENGTH_LONG);
-                        }
-                    });
+                            }
+                        });
+                    }
+                    if (adListener != null) {
+                        adListener.adSuccess(info);
+                    }
+                }else{
+                    // 不需要展示 添加到缓存 即可
+                    ADTool.getInstance().cacheAd(ttNativeAd, info);
+
                 }
+
                 //请求成功回调
                 if (listener != null) {
                     listener.adSuccess(info);
                 }
 
-                if (adListener != null) {
-                    adListener.adSuccess(info);
-                }
+
             }
         });
     }
@@ -717,75 +728,89 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     if (adRequestListener != null) {
                         adRequestListener.adSuccess(adInfo);
                     }
-                    if (adBannerListener != null) {
-                        adBannerListener.adSuccess(adInfo);
-                    }
+
                     TTNativeExpressAd ttNativeExpressAd = ads.get(0);
+                    midasBannerAd.setTTBannerAd(ttNativeExpressAd);
                     ttNativeExpressAd.setSlideIntervalTime(30 * 1000);
-                    ttNativeExpressAd.setExpressInteractionListener(new TTNativeExpressAd.ExpressAdInteractionListener() {
-                        @Override
-                        public void onAdClicked(View view, int type) {
-                            if (adBannerListener != null) {
-                                adBannerListener.onAdClicked(adInfo);
-                            }
-                        }
-                        @Override
-                        public void onAdShow(View view, int type) {
-                            if (adBannerListener != null) {
-                                adBannerListener.onAdShow(adInfo);
-                            }
-                        }
-                        @Override
-                        public void onRenderFail(View view, String msg, int code) {
-                            if (adBannerListener != null) {
-                                adBannerListener.adError(adInfo, code, msg);
-                            }
-                        }
-                        @Override
-                        public void onRenderSuccess(View view, float width, float height) {
-                            //返回view的宽高 单位 dp
-                            viewContainer.removeAllViews();
-                            viewContainer.addView(view, new ViewGroup.
-                                    LayoutParams(screenWidth, Math.round(screenWidth / 6.4F)));
-                        }
-                    });
-                    ttNativeExpressAd.render();
 
-                    ttNativeExpressAd.setDislikeCallback(activity, new TTAdDislike.DislikeInteractionCallback() {
-                        @Override
-                        public void onSelected(int position, String value) {
-                            //用户选择不喜欢原因后，移除广告展示
-                            viewContainer.removeAllViews();
+                    if (adRequestListener.adShow(adInfo)) {
+                        if (adBannerListener != null) {
+                            adBannerListener.adSuccess(adInfo);
                         }
-                        @Override
-                        public void onCancel() {
 
+                        ttNativeExpressAd.setExpressInteractionListener(new TTNativeExpressAd.ExpressAdInteractionListener() {
+                            @Override
+                            public void onAdClicked(View view, int type) {
+                                if (adBannerListener != null) {
+                                    adBannerListener.onAdClicked(adInfo);
+                                }
+                            }
+                            @Override
+                            public void onAdShow(View view, int type) {
+                                if (adBannerListener != null) {
+                                    adBannerListener.onAdShow(adInfo);
+                                }
+                            }
+                            @Override
+                            public void onRenderFail(View view, String msg, int code) {
+                                if (adBannerListener != null) {
+                                    adBannerListener.adError(adInfo, code, msg);
+                                }
+                            }
+                            @Override
+                            public void onRenderSuccess(View view, float width, float height) {
+                                //返回view的宽高 单位 dp
+                                viewContainer.removeAllViews();
+                                viewContainer.addView(view, new ViewGroup.
+                                        LayoutParams(screenWidth, Math.round(screenWidth / 6.4F)));
+                            }
+                        });
+                        ttNativeExpressAd.render();
+
+                        ttNativeExpressAd.setDislikeCallback(activity, new TTAdDislike.DislikeInteractionCallback() {
+                            @Override
+                            public void onSelected(int position, String value) {
+                                //用户选择不喜欢原因后，移除广告展示
+                                viewContainer.removeAllViews();
+                            }
+                            @Override
+                            public void onCancel() {
+
+                            }
+                        });
+                        if (ttNativeExpressAd.getInteractionType() !=
+                                TTAdConstant.INTERACTION_TYPE_DOWNLOAD){
+                            return;
                         }
-                    });
-                    if (ttNativeExpressAd.getInteractionType() !=
-                            TTAdConstant.INTERACTION_TYPE_DOWNLOAD){
-                        return;
+                        ttNativeExpressAd.setDownloadListener(new TTAppDownloadListener() {
+                            @Override
+                            public void onIdle() {
+                            }
+                            @Override
+                            public void onDownloadActive(long totalBytes, long currBytes, String fileName, String appName) {
+                            }
+                            @Override
+                            public void onDownloadPaused(long totalBytes, long currBytes, String fileName, String appName) {
+                            }
+                            @Override
+                            public void onDownloadFailed(long totalBytes, long currBytes, String fileName, String appName) {
+                            }
+                            @Override
+                            public void onInstalled(String fileName, String appName) {
+                            }
+                            @Override
+                            public void onDownloadFinished(long totalBytes, String fileName, String appName) {
+                            }
+                        });
+
                     }
-                    ttNativeExpressAd.setDownloadListener(new TTAppDownloadListener() {
-                        @Override
-                        public void onIdle() {
-                        }
-                        @Override
-                        public void onDownloadActive(long totalBytes, long currBytes, String fileName, String appName) {
-                        }
-                        @Override
-                        public void onDownloadPaused(long totalBytes, long currBytes, String fileName, String appName) {
-                        }
-                        @Override
-                        public void onDownloadFailed(long totalBytes, long currBytes, String fileName, String appName) {
-                        }
-                        @Override
-                        public void onInstalled(String fileName, String appName) {
-                        }
-                        @Override
-                        public void onDownloadFinished(long totalBytes, String fileName, String appName) {
-                        }
-                    });
+                    else{
+                        ADTool.getInstance().cacheAd(ttNativeExpressAd,adInfo);
+                    }
+
+
+
+
                 }
             });
         } else {

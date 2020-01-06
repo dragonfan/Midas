@@ -62,6 +62,9 @@ public class WrapperNativeTemplateAdListener implements NativeExpressAD.NativeEx
 
 
         if (nativeExpressADView.getBoundData().getAdPatternType() == AdPatternType.NATIVE_VIDEO) {
+
+
+
             nativeExpressADView.setMediaListener(new NativeExpressMediaListener() {
                 @Override
                 public void onVideoInit(NativeExpressADView nativeExpressADView) {
@@ -95,22 +98,29 @@ public class WrapperNativeTemplateAdListener implements NativeExpressAD.NativeEx
 
                 }
             });
+
         }
         MidasNativeTemplateAd midasNativeTemplateAd = (MidasNativeTemplateAd) adInfo.getMidasAd();
         midasNativeTemplateAd.setAddView(nativeExpressADView);
 //                nativeExpressADView.render();
 
-        //添加到缓存
-        ADTool.getInstance().cacheAd(WrapperNativeTemplateAdListener.this, adInfo);
+
+        if (adRequestListener==null || adRequestListener.adShow(adInfo)) {
+            if (outListener != null) {
+                outListener.adSuccess(adInfo);
+            }
+        }else{
+            //添加到缓存
+            ADTool.getInstance().cacheAd(WrapperNativeTemplateAdListener.this, adInfo);
+        }
+
         // 广告可见才会产生曝光，否则将无法产生收益。
         //请求成功回调
         if (adRequestListener != null) {
             adRequestListener.adSuccess(adInfo);
         }
 
-        if (outListener != null) {
-            outListener.adSuccess(adInfo);
-        }
+
     }
 
     //NativeExpressADView 渲染广告失败

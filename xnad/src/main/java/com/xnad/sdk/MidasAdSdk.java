@@ -3,6 +3,7 @@ package com.xnad.sdk;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.qq.e.ads.cfg.MultiProcessFlag;
 import com.xnad.sdk.ad.factory.MidasAdManagerFactory;
 import com.xnad.sdk.ad.admanager.AdManager;
 import com.xnad.sdk.config.AdConfig;
@@ -56,6 +57,9 @@ public final class MidasAdSdk {
         //初始化基本配置信息
         //强烈建议在应用对应的Application#onCreate()方法中调用，避免出现content为null的异常
         TTAdManagerHolder.init(context, adConfig.getCsjAppId());
+
+        MultiProcessFlag.setMultiProcess(true);
+
         mIsInit = true;
         LogUtils.d("Midas sdk init time=" + (System.currentTimeMillis() - beginTime));
         //初始化牛数

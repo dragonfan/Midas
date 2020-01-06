@@ -150,8 +150,8 @@ public class ListenerUtils {
                 MidasBannerAd ad = (MidasBannerAd) info.getMidasAd();
                 //判断广告渠道
                 if (TextUtils.equals(info.getMidasAd().getAdSource(), Constants.AdSourceType.ChuanShanJia)) {
-                    TTBannerAd csjAd = ad.getTTBannerAd();
-                    setCsjBannerListener(info, csjAd, getAdBannerListener((AdBannerListener) adListener));
+                    TTNativeExpressAd csjAd = ad.getTTBannerAd();
+                    setCsjBannerListener(activity,info, csjAd, getAdBannerListener((AdBannerListener) adListener));
                 } else if (TextUtils.equals(info.getMidasAd().getAdSource(), Constants.AdSourceType.YouLiangHui)) {
                     UnifiedBannerView ylhAd = ad.getUnifiedBannerView();
                     setYlhBannerFullVideoListener(adContainerWrapper, ylhAd, getAdBannerListener((AdBannerListener) adListener));
@@ -179,61 +179,86 @@ public class ListenerUtils {
 
     /**
      * 穿山甲监听
-     *
+     * @param activity  上下文
      * @param adInfo           广告信息
-     * @param csjAd            穿山甲广告
+     * @param ttNativeExpressAd            穿山甲广告
      * @param adBannerListener 广告监听
      */
-    private static void setCsjBannerListener(AdInfo adInfo, TTBannerAd csjAd, AdBannerListener adBannerListener) {
+    private static void setCsjBannerListener(Activity activity, AdInfo adInfo, TTNativeExpressAd ttNativeExpressAd, AdBannerListener adBannerListener) {
+
+        ViewGroup viewContainer = adInfo.getAdParameter().getViewContainer();
+        int screenWidth = AppUtils.getScreenWidth();
+        ttNativeExpressAd.setSlideIntervalTime(30 * 1000);
+
+
         if (adBannerListener != null) {
             adBannerListener.adSuccess(adInfo);
         }
-        ViewGroup viewContainer = adInfo.getAdParameter().getViewContainer();
-
-        View bannerView = csjAd.getBannerView();
-
-        Point screenSize = new Point();
-        adInfo.getAdParameter().getActivity().getWindowManager().
-                getDefaultDisplay().getSize(screenSize);
-
-        //设置轮播的时间间隔  间隔在30s到120秒之间的值，不设置默认不轮播
-        csjAd.setSlideIntervalTime(30 * 1000);
-        viewContainer.removeAllViews();
-        viewContainer.addView(bannerView, new ViewGroup.
-                LayoutParams(screenSize.x, Math.round(screenSize.x / 6.4F)));
-        //设置广告互动监听回调
-        csjAd.setBannerInteractionListener(new TTBannerAd.AdInteractionListener() {
+        ttNativeExpressAd.setExpressInteractionListener(new TTNativeExpressAd.ExpressAdInteractionListener() {
             @Override
             public void onAdClicked(View view, int type) {
                 if (adBannerListener != null) {
                     adBannerListener.onAdClicked(adInfo);
                 }
             }
-
             @Override
             public void onAdShow(View view, int type) {
                 if (adBannerListener != null) {
                     adBannerListener.onAdShow(adInfo);
                 }
             }
+            @Override
+            public void onRenderFail(View view, String msg, int code) {
+                if (adBannerListener != null) {
+                    adBannerListener.adError(adInfo, code, msg);
+                }
+            }
+            @Override
+            public void onRenderSuccess(View view, float width, float height) {
+                //返回view的宽高 单位 dp
+                viewContainer.removeAllViews();
+                viewContainer.addView(view, new ViewGroup.
+                        LayoutParams(screenWidth, Math.round(screenWidth / 6.4F)));
+            }
         });
-        //（可选）设置下载类广告的下载监听
-//        AdUtils.bindBannerDownloadLinstener(csjAd);
-        //在banner中显示网盟提供的dislike icon，有助于广告投放精准度提升
-        csjAd.setShowDislikeIcon(new TTAdDislike.DislikeInteractionCallback() {
+        ttNativeExpressAd.render();
+
+        ttNativeExpressAd.setDislikeCallback(activity, new TTAdDislike.DislikeInteractionCallback() {
             @Override
             public void onSelected(int position, String value) {
                 //用户选择不喜欢原因后，移除广告展示
                 viewContainer.removeAllViews();
-                if (adBannerListener != null) {
-                    adBannerListener.adClose(adInfo);
-                }
             }
-
             @Override
             public void onCancel() {
+
             }
         });
+        if (ttNativeExpressAd.getInteractionType() !=
+                TTAdConstant.INTERACTION_TYPE_DOWNLOAD){
+            return;
+        }
+        ttNativeExpressAd.setDownloadListener(new TTAppDownloadListener() {
+            @Override
+            public void onIdle() {
+            }
+            @Override
+            public void onDownloadActive(long totalBytes, long currBytes, String fileName, String appName) {
+            }
+            @Override
+            public void onDownloadPaused(long totalBytes, long currBytes, String fileName, String appName) {
+            }
+            @Override
+            public void onDownloadFailed(long totalBytes, long currBytes, String fileName, String appName) {
+            }
+            @Override
+            public void onInstalled(String fileName, String appName) {
+            }
+            @Override
+            public void onDownloadFinished(long totalBytes, String fileName, String appName) {
+            }
+        });
+
     }
 
     /**

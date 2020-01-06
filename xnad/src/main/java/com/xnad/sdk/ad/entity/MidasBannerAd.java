@@ -1,6 +1,7 @@
 package com.xnad.sdk.ad.entity;
 
 import com.bytedance.sdk.openadsdk.TTBannerAd;
+import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
 import com.qq.e.ads.banner2.UnifiedBannerView;
 
 /**
@@ -19,17 +20,17 @@ public class MidasBannerAd extends MidasAd{
     /**
      * 穿山甲banner广告对象
      */
-    private TTBannerAd mTTBannerAd;
+    private TTNativeExpressAd mTTBannerAd;
     /**
      *优量汇banner广告对象
      */
     UnifiedBannerView   mUnifiedBannerView;
 
-    public TTBannerAd getTTBannerAd() {
+    public TTNativeExpressAd getTTBannerAd() {
         return mTTBannerAd;
     }
 
-    public void setTTBannerAd(TTBannerAd TTBannerAd) {
+    public void setTTBannerAd(TTNativeExpressAd TTBannerAd) {
         mTTBannerAd = TTBannerAd;
     }
 
