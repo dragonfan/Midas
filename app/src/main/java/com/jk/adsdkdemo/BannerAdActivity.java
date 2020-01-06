@@ -1,9 +1,12 @@
 package com.jk.adsdkdemo;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.EditText;
+
 
 import com.jk.adsdkdemo.config.AdConfig;
 import com.jk.adsdkdemo.utils.ToastUtils;
@@ -12,8 +15,6 @@ import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.outlistener.AdBannerListener;
 import com.xnad.sdk.config.AdParameter;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Desc:banner广告类型activity

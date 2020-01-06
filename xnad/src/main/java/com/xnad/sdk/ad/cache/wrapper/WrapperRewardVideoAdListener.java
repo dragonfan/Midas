@@ -54,7 +54,10 @@ public class WrapperRewardVideoAdListener implements RewardVideoADListener {
         if (adRequestListener != null) {
             adRequestListener.adSuccess(adInfo);
         }
-
+        //资源加载到
+        if (!isExposed && adRequestListener != null) {
+            adRequestListener.adLoad(adInfo);
+        }
         if (adRequestListener==null||adRequestListener.adShow(adInfo)) {
             MidasRewardVideoAd midasRewardVideoAd = (MidasRewardVideoAd) adInfo.getMidasAd();
             RewardVideoAD rewardVideoAD = midasRewardVideoAd.getRewardVideoAD();

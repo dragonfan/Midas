@@ -160,7 +160,7 @@ public class ListenerUtils {
                 //判断广告渠道
                 if (TextUtils.equals(info.getMidasAd().getAdSource(), Constants.AdSourceType.ChuanShanJia)) {
                     TTNativeExpressAd csjAd = ad.getTTBannerAd();
-                    setCsjBannerListener(activity,info, csjAd, getAdBannerListener((AdBannerListener) adListener));
+                    setCsjBannerListener(activity, info, csjAd, getAdBannerListener((AdBannerListener) adListener));
                 } else if (TextUtils.equals(info.getMidasAd().getAdSource(), Constants.AdSourceType.YouLiangHui)) {
                     UnifiedBannerView ylhAd = ad.getUnifiedBannerView();
                     setYlhBannerFullVideoListener(adContainerWrapper, ylhAd, getAdBannerListener((AdBannerListener) adListener));
@@ -188,13 +188,13 @@ public class ListenerUtils {
 
     /**
      * 穿山甲监听
-     * @param activity  上下文
-     * @param adInfo           广告信息
-     * @param ttNativeExpressAd            穿山甲广告
-     * @param adBannerListener 广告监听
+     *
+     * @param activity          上下文
+     * @param adInfo            广告信息
+     * @param ttNativeExpressAd 穿山甲广告
+     * @param adBannerListener  广告监听
      */
     private static void setCsjBannerListener(Activity activity, AdInfo adInfo, TTNativeExpressAd ttNativeExpressAd, AdBannerListener adBannerListener) {
-
 
 
         ViewGroup viewContainer = adInfo.getAdParameter().getViewContainer();
@@ -209,18 +209,21 @@ public class ListenerUtils {
                     adBannerListener.onAdClicked(adInfo);
                 }
             }
+
             @Override
             public void onAdShow(View view, int type) {
                 if (adBannerListener != null) {
                     adBannerListener.onAdShow(adInfo);
                 }
             }
+
             @Override
             public void onRenderFail(View view, String msg, int code) {
                 if (adBannerListener != null) {
                     adBannerListener.adError(adInfo, code, msg);
                 }
             }
+
             @Override
             public void onRenderSuccess(View view, float width, float height) {
                 //返回view的宽高 单位 dp
@@ -237,31 +240,37 @@ public class ListenerUtils {
                 //用户选择不喜欢原因后，移除广告展示
                 viewContainer.removeAllViews();
             }
+
             @Override
             public void onCancel() {
 
             }
         });
         if (ttNativeExpressAd.getInteractionType() !=
-                TTAdConstant.INTERACTION_TYPE_DOWNLOAD){
+                TTAdConstant.INTERACTION_TYPE_DOWNLOAD) {
             return;
         }
         ttNativeExpressAd.setDownloadListener(new TTAppDownloadListener() {
             @Override
             public void onIdle() {
             }
+
             @Override
             public void onDownloadActive(long totalBytes, long currBytes, String fileName, String appName) {
             }
+
             @Override
             public void onDownloadPaused(long totalBytes, long currBytes, String fileName, String appName) {
             }
+
             @Override
             public void onDownloadFailed(long totalBytes, long currBytes, String fileName, String appName) {
             }
+
             @Override
             public void onInstalled(String fileName, String appName) {
             }
+
             @Override
             public void onDownloadFinished(long totalBytes, String fileName, String appName) {
             }
@@ -297,7 +306,7 @@ public class ListenerUtils {
      * @param ttNativeAd 广告
      * @param adListener 外部监听
      */
-    private static void setCsjNativeTemplateFullVideoListener(AdInfo info, TTNativeExpressAd ttNativeAd, AdNativeTemplateListener adListener,AdOutChargeListener adOutChargeListener) {
+    private static void setCsjNativeTemplateFullVideoListener(AdInfo info, TTNativeExpressAd ttNativeAd, AdNativeTemplateListener adListener, AdOutChargeListener adOutChargeListener) {
         ttNativeAd.setExpressInteractionListener(new TTNativeExpressAd.ExpressAdInteractionListener() {
             @Override
             public void onAdClicked(View view, int type) {
@@ -745,6 +754,11 @@ public class ListenerUtils {
                 StatisticUtils.advertisingClick(info, intervalTime);
             }
 
+            @Override
+            public void adLoad(AdInfo info) {
+                StatisticUtils.advertistingImageLoad(info, System.currentTimeMillis());
+            }
+
             /**
              * 广告offer展示
              * @param adInfo    广告信息
@@ -806,6 +820,11 @@ public class ListenerUtils {
             }
 
             @Override
+            public void adLoad(AdInfo info) {
+                StatisticUtils.advertistingImageLoad(info, System.currentTimeMillis());
+            }
+
+            @Override
             public void adTick(AdInfo info, long l) {
                 if (listener != null) {
                     listener.adTick(info, l);
@@ -833,22 +852,24 @@ public class ListenerUtils {
 
     /**
      * 激励视频广告回调中间层（埋点可以埋到这里）
+     *
      * @param listener
      * @return
      */
-    public static AdRewardVideoListener getRewardVideoAdListener(AdRewardVideoListener listener){
+    public static AdRewardVideoListener getRewardVideoAdListener(AdRewardVideoListener listener) {
 
         return new AdRewardVideoListener<AdInfo>() {
             long intervalTime = 0L;
+
             @Override
             public void adClose(AdInfo info) {
                 if (listener != null) {
                     listener.adClose(info);
                 }
-                if (TextUtils.equals(Constants.AdType.REWARD_VIDEO_TYPE,info.getAdType())){
-                    StatisticUtils.advertisingRewardedClose(info,intervalTime);
-                }else {
-                    StatisticUtils.advertisingClose(info,intervalTime);
+                if (TextUtils.equals(Constants.AdType.REWARD_VIDEO_TYPE, info.getAdType())) {
+                    StatisticUtils.advertisingRewardedClose(info, intervalTime);
+                } else {
+                    StatisticUtils.advertisingClose(info, intervalTime);
                 }
             }
 
@@ -879,7 +900,12 @@ public class ListenerUtils {
                 if (listener != null) {
                     listener.adClicked(info);
                 }
-                StatisticUtils.advertisingClick(info,intervalTime);
+                StatisticUtils.advertisingClick(info, intervalTime);
+            }
+
+            @Override
+            public void adLoad(AdInfo info) {
+                StatisticUtils.advertistingImageLoad(info, System.currentTimeMillis());
             }
 
             @Override
@@ -887,8 +913,8 @@ public class ListenerUtils {
                 if (listener != null) {
                     listener.onVideoRewardVerify(info, rewardVerify, rewardAmount, rewardName);
                 }
-                if (TextUtils.equals(Constants.AdType.REWARD_VIDEO_TYPE,info.getAdType())){
-                    StatisticUtils.advertisingRewarded(info,intervalTime);
+                if (TextUtils.equals(Constants.AdType.REWARD_VIDEO_TYPE, info.getAdType())) {
+                    StatisticUtils.advertisingRewarded(info, intervalTime);
                 }
             }
 
@@ -909,23 +935,26 @@ public class ListenerUtils {
             }
         };
     }
+
     /**
      * 全屏视频广告回调中间层（埋点可以埋到这里）
+     *
      * @param listener
      * @return
      */
-    public static AdFullScreenVideoListener getFullScreenVideoAdListener(AdFullScreenVideoListener listener){
+    public static AdFullScreenVideoListener getFullScreenVideoAdListener(AdFullScreenVideoListener listener) {
         return new AdFullScreenVideoListener<AdInfo>() {
             long intervalTime = 0L;
+
             @Override
             public void adClose(AdInfo info) {
                 if (listener != null) {
                     listener.adClose(info);
                 }
-                if (TextUtils.equals(Constants.AdType.REWARD_VIDEO_TYPE,info.getAdType())){
-                    StatisticUtils.advertisingRewardedClose(info,intervalTime);
-                }else {
-                    StatisticUtils.advertisingClose(info,intervalTime);
+                if (TextUtils.equals(Constants.AdType.REWARD_VIDEO_TYPE, info.getAdType())) {
+                    StatisticUtils.advertisingRewardedClose(info, intervalTime);
+                } else {
+                    StatisticUtils.advertisingClose(info, intervalTime);
                 }
             }
 
@@ -956,7 +985,12 @@ public class ListenerUtils {
                 if (listener != null) {
                     listener.adClicked(info);
                 }
-                StatisticUtils.advertisingClick(info,intervalTime);
+                StatisticUtils.advertisingClick(info, intervalTime);
+            }
+
+            @Override
+            public void adLoad(AdInfo info) {
+                StatisticUtils.advertistingImageLoad(info, System.currentTimeMillis());
             }
 
             @Override
@@ -986,11 +1020,12 @@ public class ListenerUtils {
 
     /**
      * 插屏广告回调中间层（埋点可以埋到这里）
+     *
      * @param listener
      * @return
      */
-    public static AdInteractionListener getInteractionListener(AdInteractionListener listener){
-        return new AdInteractionListener<AdInfo>(){
+    public static AdInteractionListener getInteractionListener(AdInteractionListener listener) {
+        return new AdInteractionListener<AdInfo>() {
 
             /**
              * 时间间隔
@@ -1003,7 +1038,7 @@ public class ListenerUtils {
                 if (listener != null) {
                     listener.adClose(info);
                 }
-                StatisticUtils.advertisingClose(info,intervalTime);
+                StatisticUtils.advertisingClose(info, intervalTime);
             }
 
             @Override
@@ -1033,7 +1068,12 @@ public class ListenerUtils {
                 if (listener != null) {
                     listener.adClicked(info);
                 }
-                StatisticUtils.advertisingClick(info,intervalTime);
+                StatisticUtils.advertisingClick(info, intervalTime);
+            }
+
+            @Override
+            public void adLoad(AdInfo info) {
+                StatisticUtils.advertistingImageLoad(info, System.currentTimeMillis());
             }
 
             /**
@@ -1046,12 +1086,14 @@ public class ListenerUtils {
             }
         };
     }
+
     /**
      * banner广告回调中间层（埋点可以埋到这里）
+     *
      * @param listener
      * @return
      */
-    public static AdBannerListener getAdBannerListener(AdBannerListener listener){
+    public static AdBannerListener getAdBannerListener(AdBannerListener listener) {
         return new AdBannerListener() {
 
             /**
@@ -1087,7 +1129,7 @@ public class ListenerUtils {
                 if (listener != null) {
                     listener.onAdClicked(info);
                 }
-                StatisticUtils.advertisingClick(info,intervalTime);
+                StatisticUtils.advertisingClick(info, intervalTime);
             }
 
             @Override
@@ -1095,8 +1137,9 @@ public class ListenerUtils {
                 if (listener != null) {
                     listener.adClose(info);
                 }
-                StatisticUtils.advertisingClose(info,intervalTime);
+                StatisticUtils.advertisingClose(info, intervalTime);
             }
+
             /**
              * 广告offer展示
              * @param adInfo    广告信息
@@ -1107,13 +1150,15 @@ public class ListenerUtils {
             }
         };
     }
+
     /**
      * 自渲染广告回调中间层
+     *
      * @param adInfo
      */
     public static void bindSelfRenderAdListener(AdInfo adInfo) {
         MidasSelfRenderAd midasSelfRenderAd = (MidasSelfRenderAd) adInfo.getMidasAd();
-        midasSelfRenderAd.setBindViewListener(new AdOutChargeListener<AdInfo>(){
+        midasSelfRenderAd.setBindViewListener(new AdOutChargeListener<AdInfo>() {
 
             /**
              * 时间间隔
@@ -1121,6 +1166,7 @@ public class ListenerUtils {
              */
             private long intervalTime = 0L;
             boolean isExposed = false;
+
             @Override
             public void adSuccess(AdInfo info) {
                 if (midasSelfRenderAd.getAdOutChargeListener() != null) {
@@ -1142,7 +1188,7 @@ public class ListenerUtils {
                 }
                 if (!isExposed) {
                     isExposed = true;
-                    AppUtils.getAdCount(info.getMidasAd().getAdId());
+                    AppUtils.getAdCount(adInfo.getMidasAd().getAdId());
                 }
                 advertisingOfferShow(adInfo);
             }
@@ -1152,7 +1198,12 @@ public class ListenerUtils {
                 if (midasSelfRenderAd.getAdOutChargeListener() != null) {
                     midasSelfRenderAd.getAdOutChargeListener().adClicked(adInfo);
                 }
-                StatisticUtils.advertisingClick(adInfo,intervalTime);
+                StatisticUtils.advertisingClick(adInfo, intervalTime);
+            }
+
+            @Override
+            public void adLoad(AdInfo info) {
+                StatisticUtils.advertistingImageLoad(adInfo, System.currentTimeMillis());
             }
 
             @Override
@@ -1160,8 +1211,9 @@ public class ListenerUtils {
                 if (midasSelfRenderAd.getAdOutChargeListener() != null) {
                     midasSelfRenderAd.getAdOutChargeListener().adClose(adInfo);
                 }
-                StatisticUtils.advertisingClose(adInfo,intervalTime);
+                StatisticUtils.advertisingClose(adInfo, intervalTime);
             }
+
             /**
              * 广告offer展示
              * @param adInfo    广告信息
@@ -1172,7 +1224,6 @@ public class ListenerUtils {
             }
         });
     }
-
 
 
 }

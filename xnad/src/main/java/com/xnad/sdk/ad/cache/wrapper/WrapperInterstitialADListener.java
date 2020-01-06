@@ -55,17 +55,24 @@ public class WrapperInterstitialADListener implements UnifiedInterstitialADListe
         if (loadListener != null) {
             loadListener.adSuccess(info);
         }
-        UnifiedInterstitialAD iad = ((MidasInteractionAd) info.getMidasAd()).getUnifiedInterstitialAD();
-        //广告加载成功
-        if (iad != null) {
-            iad.close();
-            iad.showAsPopupWindow();
+        //资源加载到
+        if (!isExposed && loadListener != null) {
+            loadListener.adLoad(info);
         }
-        if (outListener != null) {
-            outListener.adSuccess(info);
+        if (loadListener==null||loadListener.adShow(info)) {
+            UnifiedInterstitialAD iad = ((MidasInteractionAd) info.getMidasAd()).getUnifiedInterstitialAD();
+            //广告加载成功
+            if (iad != null) {
+                iad.close();
+                iad.showAsPopupWindow();
+            }
+            if (outListener != null) {
+                outListener.adSuccess(info);
+            }
+        }else{
+            //添加到缓存
+            ADTool.getInstance().cacheAd(this, info);
         }
-        //添加到缓存
-        ADTool.getInstance().cacheAd(this, info);
     }
 
     @Override

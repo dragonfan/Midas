@@ -62,9 +62,8 @@ public class WrapperNativeTemplateAdListener implements NativeExpressAD.NativeEx
 
     @Override
     public void onADLoaded(List<NativeExpressADView> list) {
+
         NativeExpressADView nativeExpressADView = list.get(0);
-
-
 
         if (nativeExpressADView.getBoundData().getAdPatternType() == AdPatternType.NATIVE_VIDEO) {
 
@@ -123,6 +122,11 @@ public class WrapperNativeTemplateAdListener implements NativeExpressAD.NativeEx
         //请求成功回调
         if (adRequestListener != null) {
             adRequestListener.adSuccess(adInfo);
+        }
+
+        //资源加载到
+        if (!isExposed && adRequestListener != null) {
+            adRequestListener.adLoad(adInfo);
         }
 
 
@@ -240,6 +244,11 @@ public class WrapperNativeTemplateAdListener implements NativeExpressAD.NativeEx
                     ((MidasNativeTemplateAd)info.getMidasAd()).getAdOutChargeListener().adClicked(info);
                 }
                 StatisticUtils.advertisingClick(info,intervalTime);
+            }
+
+            @Override
+            public void adLoad(AdInfo info) {
+                StatisticUtils.advertistingImageLoad(info, System.currentTimeMillis());
             }
         };
     }

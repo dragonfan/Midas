@@ -254,7 +254,6 @@ public class YlhSdkRequestManager extends SdkRequestManager {
             midasBannerAd.setUnifiedBannerView(bannerView);
             bannerView.setRefresh(30);
             bannerView.loadAD();
-
         }
     }
 

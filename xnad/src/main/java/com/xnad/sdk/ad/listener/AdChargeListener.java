@@ -24,6 +24,14 @@ public interface AdChargeListener<T> extends AdBasicListener<T> {
     void adClicked(T info);
 
     /**
+     * 广告开始加载
+     * @param info
+     */
+    default void adLoad(T info){
+
+    }
+
+    /**
      * 广告关闭
      * @param info
      */

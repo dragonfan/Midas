@@ -74,6 +74,11 @@ public class WrapperSelfRenderAdListener implements NativeADUnifiedListener {
             adRequestListener.adSuccess(adInfo);
         }
 
+        //资源加载到
+        if (adRequestListener != null) {
+            adRequestListener.adLoad(adInfo);
+        }
+
 
     }
 
