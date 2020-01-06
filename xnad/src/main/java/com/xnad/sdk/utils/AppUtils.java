@@ -1,14 +1,13 @@
 package com.xnad.sdk.utils;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
-
-import androidx.core.content.SharedPreferencesCompat;
+import android.util.DisplayMetrics;
+import android.view.WindowManager;
 
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
@@ -136,6 +135,22 @@ public class AppUtils {
         }
 
     }
+
+
+    public static int px2dp(float pxValue) {
+        final float scale = getContext().getResources().getDisplayMetrics().density;
+        return (int) (pxValue / scale + 0.5f);
+    }
+
+    public static int getScreenWidth() {
+        DisplayMetrics dm = new DisplayMetrics();
+        WindowManager windowManager = (WindowManager)
+                getContext().getSystemService(Context.WINDOW_SERVICE);
+        windowManager.getDefaultDisplay().getMetrics(dm);
+        return dm.widthPixels;
+    }
+
+
 
     public static void putAdCount(String key) {
         int adCount = SpUtils.getInt(getKey(key), 0);

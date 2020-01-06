@@ -10,7 +10,6 @@ import com.bytedance.sdk.openadsdk.TTAdConstant;
 import com.bytedance.sdk.openadsdk.TTAdDislike;
 import com.bytedance.sdk.openadsdk.TTAppDownloadListener;
 import com.bytedance.sdk.openadsdk.TTBannerAd;
-import com.bytedance.sdk.openadsdk.TTFeedAd;
 import com.bytedance.sdk.openadsdk.TTFullScreenVideoAd;
 import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
 import com.bytedance.sdk.openadsdk.TTRewardVideoAd;
@@ -219,7 +218,7 @@ public class ListenerUtils {
             }
         });
         //（可选）设置下载类广告的下载监听
-        AdUtils.bindBannerDownloadLinstener(csjAd);
+//        AdUtils.bindBannerDownloadLinstener(csjAd);
         //在banner中显示网盟提供的dislike icon，有助于广告投放精准度提升
         csjAd.setShowDislikeIcon(new TTAdDislike.DislikeInteractionCallback() {
             @Override
