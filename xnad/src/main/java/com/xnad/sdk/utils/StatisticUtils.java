@@ -3,14 +3,17 @@ package com.xnad.sdk.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.xiaoniu.statistic.Configuration;
 import com.xiaoniu.statistic.EventType;
 import com.xiaoniu.statistic.NiuDataAPI;
+import com.xiaoniu.statistic.NiuDataTrackEventCallBack;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.entity.MidasAd;
 import com.xnad.sdk.ad.entity.StatisticBaseProperties;
 import com.xnad.sdk.ad.entity.StatisticEvent;
+import com.xnad.sdk.http.XnIdProvider;
 
 import org.json.JSONObject;
 
@@ -64,6 +67,22 @@ public class StatisticUtils {
         }
         //初始化
         NiuDataAPI.init(context,configuration);
+        NiuDataAPI.setTrackEventCallback(new NiuDataTrackEventCallBack() {
+            //监测埋点sdk 内置埋点 上报回调
+            @Override
+            public void onTrackAutoCollectEvent(String eventCode, JSONObject eventProperties) {
+                //如果是激活事件
+                if (TextUtils.equals("active", eventCode)) {
+                    //网络请求获取xnId
+                    Log.e("requestXnId", "active"+Thread.currentThread().getName());
+                    XnIdProvider.INSTANCE.requestDelayFiveSecondAfterActive();
+                }
+            }
+            //监测埋点sdk 自定义埋点 上报回调
+            @Override
+            public void onTrackEvent(String eventCode, JSONObject eventProperties) {
+            }
+        });
     }
 
     /**
@@ -162,7 +181,10 @@ public class StatisticUtils {
      * @param beginTime    开始时间
      */
     public static void singleStatisticBegin(AdInfo adInfo, long beginTime){
-        String xnId = "";
+        String xnId = XnIdProvider.INSTANCE.getXnIdFromLocal();
+        if (TextUtils.isEmpty(xnId) && !XnIdProvider.INSTANCE.isUserMarkToOld()){
+            XnIdProvider.INSTANCE.requestXnId(false);
+        }
         String sessionId = getNiuDateUUID() + beginTime;
         if (adInfo != null){
             StatisticBaseProperties baseProperties

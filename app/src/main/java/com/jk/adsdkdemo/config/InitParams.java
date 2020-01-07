@@ -31,8 +31,9 @@ public interface InitParams {
     String CHANNEL = "vivo";
     /**
      * 埋点地址
+     *  喝水生产埋点地址 String DATA_PROBE_URL = "http://aidataprobe2.openxiaoniu.com/aidataprobe2/dhs";
      */
-    String DATA_PROBE_URL = "http://aidataprobe2.openxiaoniu.com/aidataprobe2/dhs";
+    String DATA_PROBE_URL = "http://testaidataprobe2.51huihuahua.com/apis/v1/dataprobe2/dhs";
     /**
      * 是否是正式环境 true对应生产环境
      */

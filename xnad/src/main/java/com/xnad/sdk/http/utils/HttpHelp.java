@@ -4,11 +4,11 @@ import android.os.Handler;
 
 import com.google.gson.Gson;
 import com.google.gson.internal.$Gson$Types;
-import com.xnad.sdk.BuildConfig;
 import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.config.ErrorCode;
 import com.xnad.sdk.http.callback.HttpCallback;
 import com.xnad.sdk.http.model.BaseResponse;
+import com.xnad.sdk.http.protocol.Protocal;
 import com.xnad.sdk.utils.LogUtils;
 
 import java.io.IOException;
@@ -71,7 +71,6 @@ public class HttpHelp {
         if (callback != null){
             mHandler.post(() -> callback.onStart());
         }
-        callback.onStart();
         //创建/Call
         Call call = mOkHttpClient.newCall(request);
         //加入队列 异步操作
@@ -135,8 +134,8 @@ public class HttpHelp {
 
     public static String getBaseUrl(){
         if (MidasAdSdk.isFormal()) {
-            return BuildConfig.API_DOMAIN_HOST_PRODUCT;
+            return Protocal.API_DOMAIN_HOST_PRODUCT;
         }
-        return BuildConfig.API_DOMAIN_HOST_TEST;
+        return Protocal.API_DOMAIN_HOST_TEST;
     }
 }

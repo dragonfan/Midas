@@ -67,6 +67,14 @@ public class Constants {
          * 第二次上报IMEI
          */
         String AGAIN_REPORT_IMEI = "again_report_imei";
+        /**
+         * xnId存储
+         */
+        String XN_ID = "xn_id";
+        /**
+         * 大数据标识老用户
+         */
+        String BIG_DATA_MARK_OLD_USER = "big_data_mark_old_user";
     }
 
 

@@ -1,18 +1,13 @@
 package com.xnad.sdk.utils;
 
 import android.app.Activity;
-import android.graphics.Point;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
-import com.bytedance.sdk.openadsdk.AdSlot;
 import com.bytedance.sdk.openadsdk.TTAdConstant;
 import com.bytedance.sdk.openadsdk.TTAdDislike;
-import com.bytedance.sdk.openadsdk.TTAdNative;
 import com.bytedance.sdk.openadsdk.TTAppDownloadListener;
-import com.bytedance.sdk.openadsdk.TTBannerAd;
 import com.bytedance.sdk.openadsdk.TTFullScreenVideoAd;
 import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
 import com.bytedance.sdk.openadsdk.TTRewardVideoAd;
@@ -46,12 +41,7 @@ import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
 import com.xnad.sdk.ad.outlistener.AdOutChargeListener;
 import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
 import com.xnad.sdk.ad.outlistener.AdSplashListener;
-import com.xnad.sdk.config.AdParameter;
 import com.xnad.sdk.config.Constants;
-import com.xnad.sdk.config.ErrorCode;
-import com.xnad.sdk.config.TTAdManagerHolder;
-
-import java.util.List;
 
 /**
  * Desc:

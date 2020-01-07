@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -97,6 +98,21 @@ public class AppUtils {
         }
         return imei;
     }
+
+    /**
+     * 获取 Android ID
+     * @return androidID
+     */
+    public static String getAndroidID() {
+        String androidID = "";
+        try {
+            androidID = Settings.Secure.getString(getContext().getContentResolver(),
+                    Settings.Secure.ANDROID_ID);
+        } catch (Exception e) {
+        }
+        return androidID;
+    }
+
 
     /**
      * 检测权限
