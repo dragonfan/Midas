@@ -75,7 +75,9 @@ public class SelfRenderActivity extends AppCompatActivity implements View.OnClic
 
     String position = null;
 
-    //在生命周期调用相应的方法
+    /**
+     * 在生命周期调用相应的方法
+     */
     MidasSelfRenderAd midasSelfRenderAd;
 
     @Override

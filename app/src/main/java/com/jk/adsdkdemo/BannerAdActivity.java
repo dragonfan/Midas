@@ -3,13 +3,11 @@ package com.jk.adsdkdemo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.EditText;
-
+import android.widget.Toast;
 
 import com.jk.adsdkdemo.config.AdConfig;
-import com.jk.adsdkdemo.utils.ToastUtils;
 import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.outlistener.AdBannerListener;
@@ -74,7 +72,8 @@ public class BannerAdActivity extends AppCompatActivity {
 
             @Override
             public void adError(Object info, int errorCode, String errorMsg) {
-                ToastUtils.showShort(errorMsg);
+                Toast.makeText(getApplicationContext(),
+                        errorMsg,Toast.LENGTH_SHORT).show();
             }
         });
 
