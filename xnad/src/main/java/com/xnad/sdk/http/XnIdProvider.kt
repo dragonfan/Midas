@@ -37,7 +37,7 @@ object XnIdProvider : Serializable {
     /**
      * 请求xnId失败轮训间隔
      */
-    private const val FAILD_RQEUEST_XN_ID_DELAY_TIME = 2000
+    private const val FAILED_REQUEST_XN_ID_DELAY_TIME = 2000
     private const val MAX_REQUEST_COUNT = 3
     var mRequestCount: Int = 0
     private var mLocalXnId : String = ""
@@ -131,7 +131,7 @@ object XnIdProvider : Serializable {
                         mRequestCount++
                         mHandler.postDelayed({
                             requestXnId(true) },
-                                FAILD_RQEUEST_XN_ID_DELAY_TIME.toLong())
+                                FAILED_REQUEST_XN_ID_DELAY_TIME.toLong())
                     }
                 }
                 override fun onResponse(call: Call, response: Response) {
