@@ -1,6 +1,7 @@
 package com.xnad.sdk.config;
 
 import android.app.Activity;
+import android.support.annotation.LayoutRes;
 import android.view.ViewGroup;
 
 /**
@@ -34,6 +35,8 @@ public final class AdParameter {
     float width;
     //模板要添加进去的容器
     ViewGroup mViewContainer;
+    //自渲染布局ID
+    int mLayoutId;
 
     AdParameter(Builder builder) {
         this.activity = builder.activity;
@@ -45,6 +48,7 @@ public final class AdParameter {
         this.rewardName = builder.rewardName;
         this.width = builder.width;
         this.mViewContainer = builder.mViewContainer;
+        this.mLayoutId = builder.mLayoutId;
     }
 
     public Activity getActivity() {
@@ -79,6 +83,10 @@ public final class AdParameter {
         return width;
     }
 
+    public int getLayoutId() {
+        return mLayoutId;
+    }
+
     public ViewGroup getViewContainer() {
         return mViewContainer;
     }
@@ -104,6 +112,8 @@ public final class AdParameter {
         float width;
         //模板要添加进去的容器
         ViewGroup mViewContainer;
+        //自渲染布局ID
+        int mLayoutId;
 
         public Builder(Activity activity, String position) {
             this.activity = activity;
@@ -142,6 +152,11 @@ public final class AdParameter {
 
         public Builder setViewContainer(ViewGroup viewContainer) {
             this.mViewContainer = viewContainer;
+            return this;
+        }
+
+        public Builder setLayoutId(@LayoutRes int layoutId) {
+            this.mLayoutId = layoutId;
             return this;
         }
 

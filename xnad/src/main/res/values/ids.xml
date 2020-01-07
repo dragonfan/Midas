@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--广告小图标-->
+    <item name="ivAdIcon" type="id"/>
+    <!--广告标题-->
+    <item name="tvAdTitle" type="id"/>
+    <!--广告描述-->
+    <item name="tvAdDesc" type="id"/>
+    <!--小按钮操作-->
+    <item name="tvSmallButton" type="id"/>
+    <!--大按钮操作-->
+    <item name="tvBigButton" type="id"/>
+    <!--原生广告的大图-->
+    <item name="ivAdImage" type="id"/>
+    <!--原生广告的视频组件-->
+    <item name="adMediaView" type="id"/>
+</resources>

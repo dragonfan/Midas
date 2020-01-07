@@ -6,14 +6,12 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,28 +47,16 @@ public class SelfRenderActivity extends AppCompatActivity implements View.OnClic
 
     private final String TAG = SelfRenderActivity.class.getSimpleName();
 
-    private Button requestBt, preloadBt;
     private FrameLayout mContainer;
     private EditText positionEt;
-    private Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_big_img_fake_video);
         mContainer = findViewById(R.id.container);
-        requestBt = findViewById(R.id.button_request_ad);
-        requestBt.setOnClickListener(this);
         positionEt = findViewById(R.id.et_position_id);
         positionEt.setText(AdConfig.SELF_RENDER_AD_POSITION);
-        spinner = findViewById(R.id.spinner);
-        preloadBt = findViewById(R.id.button_preloading_ad);
-        preloadBt.setOnClickListener(this);
-
-        String[] ctype = new String[]{"success_page_ad_1", "success_page_ad_2", "success_page_ad_3", "newlist_1_1", "homepage_ad_1", "homepage_ad_2", "lock_screen_advertising", "external_advertising_ad_1", "external_big_image_02"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ctype);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        findViewById(R.id.button_request_ad).setOnClickListener(this);
     }
 
     String position = null;

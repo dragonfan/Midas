@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="位置:"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/dp_20" />
+
+        <EditText
+            android:id="@+id/et_position_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_12dp"
+            android:text="62137164_6_1"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/dp_20" />
+
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/view_container"
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
+    <Button
+        android:id="@+id/button_request_ad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="请求广告" />
+
+</LinearLayout>

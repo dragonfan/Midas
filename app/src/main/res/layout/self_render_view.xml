@@ -1,0 +1,96 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#eeeeee"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="5dp">
+
+        <ImageView
+            android:id="@+id/ivAdIcon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="8dp" />
+
+        <TextView
+            android:id="@+id/tvAdTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text=""
+            android:textColor="#333"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tvSmallButton"
+            android:layout_width="wrap_content"
+            android:layout_height="26dp"
+            android:background="@drawable/shape_ad_small_button"
+            android:text="查看详情"
+            android:textColor="#f69534"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textSize="11sp" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- 原生广告的视频组件 -->
+        <com.qq.e.ads.nativ.MediaView
+            android:id="@+id/adMediaView"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_margin="10dp"
+            android:background="#fff"
+            android:visibility="gone" />
+
+        <!-- 原生广告的大图 -->
+        <ImageView
+            android:id="@+id/ivAdImage"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_margin="10dp"
+            android:scaleType="fitXY" />
+
+        <ImageView
+            android:id="@+id/ivAdAnim"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY" />
+    </FrameLayout>
+
+    <!--广告描述-->
+    <TextView
+        android:id="@+id/tvAdDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text=""
+        android:textColor="#666"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/tvBigButton"
+        android:layout_width="260dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/shape_ad_big_button"
+        android:gravity="center"
+        android:text="立即查看"
+        android:textColor="#fff"
+        android:textSize="15sp" />
+
+</LinearLayout>
