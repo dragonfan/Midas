@@ -60,13 +60,10 @@ public class SplashAdActivity extends AppCompatActivity implements View.OnClickL
         AdParameter adParameter = new AdParameter.Builder(this, position)
                 //设置超时时间
                 .setTimeOut(3000)
+                .setViewContainer(splashContainer)
                 .build();
         MidasAdSdk.getAdsManger().loadMidasSplashAd(adParameter, new AdSplashListener<AdInfo>() {
-            //返回容器给到sdk（优量汇填充广告的方式）
-            @Override
-            public ViewGroup getViewGroup() {
-                return splashContainer;
-            }
+
 
             //广告加载成功回调
             @Override
@@ -74,13 +71,7 @@ public class SplashAdActivity extends AppCompatActivity implements View.OnClickL
                 LogUtils.d(TAG, "-----adSuccess-----");
                 stateTxt.setText("-----adSuccess-----");
                 //穿山甲广告（穿山甲填充广告的方式）
-                if (Constants.AdSourceType.ChuanShanJia.equals(info.getMidasAd().getAdSource())) {
-                    View view = info.getMidasAd().getAddView();
-                    if (view != null) {
-                        splashContainer.removeAllViews();
-                        splashContainer.addView(view);
-                    }
-                }
+
 
             }
             //曝光回调

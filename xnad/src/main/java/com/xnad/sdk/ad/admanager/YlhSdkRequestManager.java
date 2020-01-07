@@ -191,9 +191,9 @@ public class YlhSdkRequestManager extends SdkRequestManager {
         if (adSplashListener != null) {
             //判断是否显示
             if (adRequestListener.adShow(adInfo)) {
-                ViewGroup viewGroup = adSplashListener.getViewGroup();
-                if (viewGroup != null) {
-                    splashAD.fetchAndShowIn(viewGroup);
+                ViewGroup viewContainer = adInfo.getAdParameter().getViewContainer();
+                if (viewContainer != null) {
+                    splashAD.fetchAndShowIn(viewContainer);
                 }
             } else {
                 splashAD.preLoad();

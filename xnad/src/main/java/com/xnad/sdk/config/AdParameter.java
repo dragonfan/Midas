@@ -82,7 +82,9 @@ public final class AdParameter {
     public ViewGroup getViewContainer() {
         return mViewContainer;
     }
-
+    public void setViewContainer(ViewGroup mViewContainer) {
+        this.mViewContainer = mViewContainer;
+    }
     public static class Builder {
         //上下文
         Activity activity;

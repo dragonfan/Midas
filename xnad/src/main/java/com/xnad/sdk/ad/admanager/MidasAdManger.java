@@ -53,9 +53,6 @@ public class MidasAdManger implements AdManager {
 
     private List<AdStrategyBean> mStrategyBeanList = new ArrayList();
 
-    public MidasAdManger() {
-    }
-
     /**
      * activity 对象,优量汇开屏、视频广用到
      */
@@ -70,25 +67,200 @@ public class MidasAdManger implements AdManager {
      */
     private long firstRequestAdTime;
 
-    private LoopAdListener mLoopAdListener = new LoopAdListener() {
-        @Override
-        public void loopAdError(boolean isShow, AdInfo adInfo, int errorCode, String errorMsg) {
-            if (mStrategyBeanList == null || mStrategyBeanList.size() == 0) {
-                if (mAdListener != null) {
-                    mAdListener.adError(adInfo, errorCode, errorMsg);
-                }
-                return;
-            }
-            AdStrategyBean strategyBean = mStrategyBeanList.remove(0);
-            if (strategyBean == null) {
-                if (mAdListener != null) {
-                    mAdListener.adError(adInfo, errorCode, errorMsg);
-                }
-                return;
-            }
-            againRequest(isShow, adInfo, strategyBean);
+
+    @Override
+    public void loadMidasSplashAd(AdParameter adParameter, AdSplashListener listener) {
+        if (adParameter == null) {
+            throw new NullPointerException("AdParameter is null");
         }
-    };
+        mAdListener = listener;
+        AdInfo adInfo = makeAdInfo(Constants.AdType.SPLASH_TYPE, adParameter);
+
+        try {
+            getMidasConfigBean(true, adInfo, adParameter.getPosition());
+        } catch (Exception e) {
+            if (mAdListener != null) {
+                mAdListener.adError(adInfo, ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorCode,
+                        ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorMsg);
+            }
+        }
+    }
+
+
+    @Override
+    public void loadMidasRewardVideoAd(AdParameter adParameter, AdRewardVideoListener listener) {
+        if (adParameter == null) {
+            throw new NullPointerException("AdParameter is null");
+        }
+        AdInfo adInfo = makeAdInfo(Constants.AdType.REWARD_VIDEO_TYPE, adParameter);
+
+        mAdListener = listener;
+        try {
+
+            getMidasConfigBean(true, adInfo, adParameter.getPosition());
+        } catch (Exception e) {
+            if (mAdListener != null) {
+                mAdListener.adError(adInfo, ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorCode,
+                        ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorMsg);
+            }
+        }
+
+    }
+
+
+    @Override
+    public void loadMidasFullScreenVideoAd(AdParameter adParameter, AdFullScreenVideoListener listener) {
+        if (adParameter == null) {
+            throw new NullPointerException("AdParameter is null");
+        }
+        mAdListener = listener;
+
+        AdInfo adInfo = makeAdInfo(Constants.AdType.FULL_SCREEN_VIDEO_TYPE, adParameter);
+
+        try {
+            getMidasConfigBean(true, adInfo, adParameter.getPosition());
+        } catch (Exception e) {
+            if (mAdListener != null) {
+                mAdListener.adError(adInfo, ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorCode,
+                        ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorMsg);
+            }
+        }
+    }
+
+    @Override
+    public void loadMidasSelfRenderAd(AdParameter adParameter, AdSelfRenderListener listener) {
+        if (adParameter == null) {
+            throw new NullPointerException("AdParameter is null");
+        }
+        mAdListener = listener;
+
+        AdInfo adInfo = makeAdInfo(Constants.AdType.SELF_RENDER, adParameter);
+
+        try {
+            getMidasConfigBean(true, adInfo, adParameter.getPosition());
+        } catch (Exception e) {
+            if (mAdListener != null) {
+                mAdListener.adError(adInfo, ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorCode,
+                        ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorMsg);
+            }
+        }
+    }
+
+    @Override
+    public void loadMidasInteractionAd(AdParameter adParameter, AdInteractionListener listener) {
+        if (adParameter == null) {
+            throw new NullPointerException("AdParameter is null");
+        }
+        mAdListener = listener;
+
+        AdInfo adInfo = makeAdInfo(Constants.AdType.INTERACTION_TYPE, adParameter);
+        try {
+            getMidasConfigBean(true, adInfo, adParameter.getPosition());
+        } catch (Exception e) {
+            if (mAdListener != null) {
+                mAdListener.adError(adInfo, ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorCode,
+                        ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorMsg);
+            }
+        }
+    }
+
+    @Override
+    public void loadMidasNativeTemplateAd(AdParameter adParameter, AdNativeTemplateListener listener) {
+        if (adParameter == null) {
+            throw new NullPointerException("AdParameter is null");
+        }
+        mAdListener = listener;
+
+        AdInfo adInfo = makeAdInfo(Constants.AdType.NATIVE_TEMPLATE, adParameter);
+
+        try {
+            getMidasConfigBean(true, adInfo, adParameter.getPosition());
+        } catch (Exception e) {
+            if (mAdListener != null) {
+                mAdListener.adError(adInfo, ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorCode,
+                        ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorMsg);
+            }
+        }
+    }
+
+    @Override
+    public void loadMidasBannerAd(AdParameter adParameter, AdBannerListener listener) {
+        if (adParameter == null) {
+            throw new NullPointerException("AdParameter is null");
+        }
+        mAdListener = listener;
+
+        AdInfo adInfo = makeAdInfo(Constants.AdType.BANNER_TYPE, adParameter);
+
+        try {
+            getMidasConfigBean(true, adInfo, adParameter.getPosition());
+        } catch (Exception e) {
+            if (mAdListener != null) {
+                mAdListener.adError(adInfo, ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorCode,
+                        ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorMsg);
+            }
+        }
+    }
+
+
+    /**
+     * 创建一个ADInfo 类
+     *
+     * @param adType
+     * @param adParameter
+     * @return
+     */
+    private AdInfo makeAdInfo(String adType, AdParameter adParameter) {
+        AdInfo adInfo = new AdInfo();
+        //设置请求参数
+        adInfo.setAdParameter(adParameter);
+        //设置广类型
+        adInfo.setAdType(adType);
+        //设置广告位置信息
+        adInfo.setPosition(adParameter.getPosition());
+        //保存为全局上下文
+        mActivity = adParameter.getActivity();
+        switch (adType) {
+            case Constants.AdType.SPLASH_TYPE:
+                MidasSplashAd midasSplashAd = new MidasSplashAd();
+                midasSplashAd.setTimeOut(adParameter.getTimeOut());
+                adInfo.setMidasAd(midasSplashAd);
+                break;
+            case Constants.AdType.BANNER_TYPE:
+                MidasBannerAd midasBannerAd = new MidasBannerAd();
+                adInfo.setMidasAd(midasBannerAd);
+                break;
+            case Constants.AdType.NATIVE_TEMPLATE:
+                MidasNativeTemplateAd midasNativeTemplateAd = new MidasNativeTemplateAd();
+                midasNativeTemplateAd.setWidth(adParameter.getWidth());
+                adInfo.setMidasAd(midasNativeTemplateAd);
+                break;
+            case Constants.AdType.INTERACTION_TYPE:
+                MidasInteractionAd midasInteractionAd = new MidasInteractionAd();
+                adInfo.setMidasAd(midasInteractionAd);
+                break;
+            case Constants.AdType.FULL_SCREEN_VIDEO_TYPE:
+                MidasFullScreenVideoAd midasScreenVideoAd = new MidasFullScreenVideoAd();
+                adInfo.setMidasAd(midasScreenVideoAd);
+                break;
+            case Constants.AdType.SELF_RENDER:
+                MidasSelfRenderAd midasSelfRenderAd = new MidasSelfRenderAd();
+                adInfo.setMidasAd(midasSelfRenderAd);
+                break;
+            case Constants.AdType.REWARD_VIDEO_TYPE:
+                MidasRewardVideoAd midasRewardVideoAd = new MidasRewardVideoAd();
+                midasRewardVideoAd.setUserId(adParameter.getUserId());
+                midasRewardVideoAd.setOrientation(adParameter.getOrientation());
+                midasRewardVideoAd.setRewardName(adParameter.getRewardName());
+                midasRewardVideoAd.setRewardAmount(adParameter.getRewardAmount());
+                adInfo.setMidasAd(midasRewardVideoAd);
+                break;
+            default:
+                break;
+        }
+        return adInfo;
+    }
+
 
     /**
      * 获取策略配置信息
@@ -102,8 +274,11 @@ public class MidasAdManger implements AdManager {
 //        查询本地缓存
         AdContainerWrapper adContainer = ADTool.getInstance().getAd(adInfo.getPosition());
         //判断是否有缓存并且有效
-        if (adContainer != null && adContainer.isValid()&& adContainer.isValidActivity(mActivity)) {
-            ADTool.getInstance().bindListener(mActivity, adContainer,null, mAdListener);
+        if (adContainer != null && adContainer.isValid() && adContainer.isValidActivity(mActivity)) {
+            //之前的缓存的ViewGroup不能使用了,需要替换掉
+            adContainer.getAdInfo().getAdParameter().setViewContainer(adInfo.getAdParameter().getViewContainer());
+            //绑定监听并显示广告
+            ADTool.getInstance().bindListener(mActivity, adContainer, null, mAdListener);
         }
 
         //埋点流程开始
@@ -155,6 +330,11 @@ public class MidasAdManger implements AdManager {
         });
     }
 
+    /**
+     * 选择策略
+     *
+     * @return
+     */
     private AdStrategyBean pickStrategy() {
         AdStrategyBean mAdsInfoBean = null;
         int size = mStrategyBeanList.size();
@@ -230,11 +410,14 @@ public class MidasAdManger implements AdManager {
                 StatisticUtils.advertisingPositionRequest(adInfo, firstRequestAdTime);
 
 
-
                 //如果本次广告已经被消费,那么再添加一个广告到缓存,这个广告不要显示,
                 if (adShow(info)) {
+
+                    AdParameter adParameter = info.getAdParameter();
+                    String adType = info.getAdType();
+                    AdInfo newAdInfo = makeAdInfo(adType, adParameter);
                     //那么加载一个广告到缓存中
-                    getMidasConfigBean(false, adInfo, adInfo.getPosition());
+                    getMidasConfigBean(false, newAdInfo, newAdInfo.getPosition());
                 }
             }
 
@@ -260,7 +443,7 @@ public class MidasAdManger implements AdManager {
             public boolean adShow(AdInfo info) {
                 // 查询内存是否有缓存并且有效 ,如果有缓存那么广告不显示,做预加载用的
                 AdContainerWrapper adContainer = ADTool.getInstance().getAd(adInfo.getPosition());
-                if (adContainer != null && adContainer.isValid()&& adContainer.isValidActivity(mActivity)) {
+                if (adContainer != null && adContainer.isValid() && adContainer.isValidActivity(mActivity)) {
                     return false;
                 }
                 //如果没有缓存,判断这个广告是不是真的需要显示
@@ -271,174 +454,24 @@ public class MidasAdManger implements AdManager {
         }, mAdListener);
     }
 
-    @Override
-    public void loadMidasSplashAd(AdParameter adParameter, AdSplashListener listener) {
-        if (adParameter == null) {
-            throw new NullPointerException("AdParameter is null");
-        }
-        mAdListener = listener;
-        AdInfo adInfo = new AdInfo();
-        adInfo.setAdType(Constants.AdType.SPLASH_TYPE);
-        MidasSplashAd midasSplashAd = new MidasSplashAd();
-        midasSplashAd.setTimeOut(adParameter.getTimeOut());
-        adInfo.setMidasAd(midasSplashAd);
-        try {
-            mActivity = adParameter.getActivity();
-            //设置广告位置信息
-            adInfo.setPosition(adParameter.getPosition());
-            getMidasConfigBean(true, adInfo, adParameter.getPosition());
-        } catch (Exception e) {
-            if (mAdListener != null) {
-                mAdListener.adError(adInfo, ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorCode,
-                        ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorMsg);
+    private LoopAdListener mLoopAdListener = new LoopAdListener() {
+        @Override
+        public void loopAdError(boolean isShow, AdInfo adInfo, int errorCode, String errorMsg) {
+            if (mStrategyBeanList == null || mStrategyBeanList.size() == 0) {
+                if (mAdListener != null) {
+                    mAdListener.adError(adInfo, errorCode, errorMsg);
+                }
+                return;
             }
-        }
-    }
-
-    @Override
-    public void loadMidasRewardVideoAd(AdParameter adParameter, AdRewardVideoListener listener) {
-        if (adParameter == null) {
-            throw new NullPointerException("AdParameter is null");
-        }
-        AdInfo adInfo = new AdInfo();
-        adInfo.setAdType(Constants.AdType.REWARD_VIDEO_TYPE);
-        MidasRewardVideoAd midasAdEntity = new MidasRewardVideoAd();
-        midasAdEntity.setUserId(adParameter.getUserId());
-        midasAdEntity.setOrientation(adParameter.getOrientation());
-        midasAdEntity.setRewardName(adParameter.getRewardName());
-        midasAdEntity.setRewardAmount(adParameter.getRewardAmount());
-        adInfo.setMidasAd(midasAdEntity);
-        mAdListener = listener;
-        try {
-            mActivity = adParameter.getActivity();
-            //设置广告位置信息
-            adInfo.setPosition(adParameter.getPosition());
-            getMidasConfigBean(true, adInfo, adParameter.getPosition());
-        } catch (Exception e) {
-            if (mAdListener != null) {
-                mAdListener.adError(adInfo, ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorCode,
-                        ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorMsg);
+            AdStrategyBean strategyBean = mStrategyBeanList.remove(0);
+            if (strategyBean == null) {
+                if (mAdListener != null) {
+                    mAdListener.adError(adInfo, errorCode, errorMsg);
+                }
+                return;
             }
+            againRequest(isShow, adInfo, strategyBean);
         }
-
-    }
-
-    @Override
-    public void loadMidasFullScreenVideoAd(AdParameter adParameter, AdFullScreenVideoListener listener) {
-        if (adParameter == null) {
-            throw new NullPointerException("AdParameter is null");
-        }
-        mAdListener = listener;
-        AdInfo adInfo = new AdInfo();
-        adInfo.setAdType(Constants.AdType.FULL_SCREEN_VIDEO_TYPE);
-        MidasFullScreenVideoAd midasAdEntity = new MidasFullScreenVideoAd();
-        adInfo.setMidasAd(midasAdEntity);
-        try {
-            mActivity = adParameter.getActivity();
-            //设置广告位置信息
-            adInfo.setPosition(adParameter.getPosition());
-            getMidasConfigBean(true, adInfo, adParameter.getPosition());
-        } catch (Exception e) {
-            if (mAdListener != null) {
-                mAdListener.adError(adInfo, ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorCode,
-                        ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorMsg);
-            }
-        }
-    }
-
-    @Override
-    public void loadMidasSelfRenderAd(AdParameter adParameter, AdSelfRenderListener listener) {
-        if (adParameter == null) {
-            throw new NullPointerException("AdParameter is null");
-        }
-        mAdListener = listener;
-        AdInfo adInfo = new AdInfo();
-        adInfo.setAdType(Constants.AdType.SELF_RENDER);
-        MidasSelfRenderAd midasAdEntity = new MidasSelfRenderAd();
-        adInfo.setMidasAd(midasAdEntity);
-        try {
-            mActivity = adParameter.getActivity();
-            //设置广告位置信息
-            adInfo.setPosition(adParameter.getPosition());
-            getMidasConfigBean(true, adInfo, adParameter.getPosition());
-        } catch (Exception e) {
-            if (mAdListener != null) {
-                mAdListener.adError(adInfo, ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorCode,
-                        ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorMsg);
-            }
-        }
-    }
-
-    @Override
-    public void loadMidasInteractionAd(AdParameter adParameter, AdInteractionListener listener) {
-        if (adParameter == null) {
-            throw new NullPointerException("AdParameter is null");
-        }
-        mAdListener = listener;
-        AdInfo adInfo = new AdInfo();
-        adInfo.setAdType(Constants.AdType.INTERACTION_TYPE);
-        MidasInteractionAd midasInteractionAd = new MidasInteractionAd();
-        adInfo.setMidasAd(midasInteractionAd);
-        try {
-            mActivity = adParameter.getActivity();
-            //设置广告位置信息
-            adInfo.setPosition(adParameter.getPosition());
-            getMidasConfigBean(true, adInfo, adParameter.getPosition());
-        } catch (Exception e) {
-            if (mAdListener != null) {
-                mAdListener.adError(adInfo, ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorCode,
-                        ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorMsg);
-            }
-        }
-    }
-
-    @Override
-    public void loadMidasNativeTemplateAd(AdParameter adParameter, AdNativeTemplateListener listener) {
-        if (adParameter == null) {
-            throw new NullPointerException("AdParameter is null");
-        }
-        mAdListener = listener;
-        mActivity = adParameter.getActivity();
-        AdInfo adInfo = new AdInfo();
-        adInfo.setAdType(Constants.AdType.NATIVE_TEMPLATE);
-        MidasNativeTemplateAd midasNativeTemplateAd = new MidasNativeTemplateAd();
-        midasNativeTemplateAd.setWidth(adParameter.getWidth());
-        adInfo.setMidasAd(midasNativeTemplateAd);
-        try {
-            //设置广告位置信息
-            adInfo.setPosition(adParameter.getPosition());
-            getMidasConfigBean(true, adInfo, adParameter.getPosition());
-        } catch (Exception e) {
-            if (mAdListener != null) {
-                mAdListener.adError(adInfo, ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorCode,
-                        ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorMsg);
-            }
-        }
-    }
-
-    @Override
-    public void loadMidasBannerAd(AdParameter adParameter, AdBannerListener listener) {
-        if (adParameter == null) {
-            throw new NullPointerException("AdParameter is null");
-        }
-        mAdListener = listener;
-        mActivity = adParameter.getActivity();
-        AdInfo adInfo = new AdInfo();
-        adInfo.setAdParameter(adParameter);
-        adInfo.setAdType(Constants.AdType.BANNER_TYPE);
-        MidasBannerAd midasBannerAd = new MidasBannerAd();
-        adInfo.setMidasAd(midasBannerAd);
-        try {
-            //设置广告位置信息
-            adInfo.setPosition(adParameter.getPosition());
-            getMidasConfigBean(true, adInfo, adParameter.getPosition());
-        } catch (Exception e) {
-            if (mAdListener != null) {
-                mAdListener.adError(adInfo, ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorCode,
-                        ErrorCode.STRATEGY_CONFIG_EXCEPTION.errorMsg);
-            }
-        }
-    }
-
+    };
 
 }

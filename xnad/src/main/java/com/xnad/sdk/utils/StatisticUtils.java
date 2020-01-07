@@ -186,6 +186,7 @@ public class StatisticUtils {
             XnIdProvider.INSTANCE.requestXnId(false);
         }
         String sessionId = getNiuDateUUID() + beginTime;
+        Log.d("SingleStatisticBegin",sessionId);
         if (adInfo != null){
             StatisticBaseProperties baseProperties
                     = new StatisticBaseProperties(xnId, sessionId);

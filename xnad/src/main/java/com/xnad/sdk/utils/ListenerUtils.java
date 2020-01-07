@@ -569,7 +569,7 @@ public class ListenerUtils {
         }
 
         if (adListener != null) {
-            ViewGroup viewGroup = adListener.getViewGroup();
+            ViewGroup viewGroup = adContainer.getAdInfo().getAdParameter().getViewContainer();
             if (viewGroup != null) {
                 ylhAd.fetchAndShowIn(viewGroup);
             }
@@ -615,10 +615,12 @@ public class ListenerUtils {
                 }
             }
         });
-
         if (adListener != null) {
             adListener.adSuccess(adInfo);
         }
+        //把广告添加到容器中
+        adInfo.getAdParameter().getViewContainer().removeAllViews();
+        adInfo.getAdParameter().getViewContainer().addView(csjAd.getSplashView());
     }
 
 
@@ -812,14 +814,6 @@ public class ListenerUtils {
                 if (listener != null) {
                     listener.adTick(info, l);
                 }
-            }
-
-            @Override
-            public ViewGroup getViewGroup() {
-                if (listener != null) {
-                    return listener.getViewGroup();
-                }
-                return null;
             }
 
             /**

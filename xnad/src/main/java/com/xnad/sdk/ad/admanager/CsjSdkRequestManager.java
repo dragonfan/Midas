@@ -37,6 +37,7 @@ import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
 import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
 import com.xnad.sdk.ad.outlistener.AdSplashListener;
 import com.xnad.sdk.config.AdParameter;
+import com.xnad.sdk.config.Constants;
 import com.xnad.sdk.config.ErrorCode;
 import com.xnad.sdk.config.TTAdManagerHolder;
 import com.xnad.sdk.utils.AppUtils;
@@ -514,13 +515,6 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     }
 
                     if (adRequestListener.adShow(adInfo)) {
-                        if (adSplashListener != null) {
-                            adSplashListener.adSuccess(adInfo);
-                        }
-
-                        //缓存展示次数
-                        AppUtils.putAdCount(midasSplashAd.getAdId());
-
                         ttSplashAd.setSplashInteractionListener(new TTSplashAd.AdInteractionListener() {
                             boolean isExposed = false;
                             @Override
@@ -557,6 +551,19 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                                 }
                             }
                         });
+
+                        if (adSplashListener != null) {
+                            adSplashListener.adSuccess(adInfo);
+                        }
+                        View view = ttSplashAd.getSplashView();
+                        ViewGroup viewContainer = adInfo.getAdParameter().getViewContainer();
+                        if (view != null && viewContainer !=null) {
+                            viewContainer.removeAllViews();
+                            viewContainer.addView(view);
+                        }
+                        //缓存展示次数
+                        AppUtils.putAdCount(midasSplashAd.getAdId());
+
                     } else {
                         //添加到缓存
                         ADTool.getInstance().cacheAd(ttSplashAd.getSplashView(), adInfo);

@@ -18,11 +18,6 @@ import com.xnad.sdk.ad.listener.AdChargeListener;
  * @Version: 1.0
  */
 public interface AdSplashListener<T extends AdInfo> extends AdChargeListener<T> {
-    /**
-     * 传入view容器：优量广告用到
-     * @return
-     */
-    ViewGroup getViewGroup();
 
     /**
      * 倒计时回调，返回广告还将被展示的剩余时间，单位是 ms
