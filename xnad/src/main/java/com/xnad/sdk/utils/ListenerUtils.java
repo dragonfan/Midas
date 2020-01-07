@@ -1240,6 +1240,8 @@ public class ListenerUtils {
             adDescTv.setText(midasSelfRenderAd.getDescription());
             //大图片
             ImageView adImgIv = view.findViewById(R.id.ivAdImage);
+            //详情大按钮
+            TextView tvBigButton = view.findViewById(R.id.tvBigButton);
 
             List<View> clickViewList = new ArrayList<>();
             ViewGroup viewGroup = (ViewGroup) view;
@@ -1301,7 +1303,25 @@ public class ListenerUtils {
                         }
                     }
                 });
+                //可根据广告类型，为交互区域设置不同提示信息
+                if (ttFeedAd.getInteractionType() == TTAdConstant.INTERACTION_TYPE_DOWNLOAD) {
+                    //兼容下载类广告，使用activity申请权限
+                    ttFeedAd.setActivityForDownloadApp(activity);
+                    if (tvBigButton != null){
+                        tvBigButton.setText("立即下载");
+                    }
+                    // 注册下载监听
+                    bindDownloadListener(tvBigButton,ttFeedAd);
+                } else {
+                    if (tvBigButton != null){
+                        tvBigButton.setText("查看详情");
+                    }
+                }
             }else if (Constants.AdSourceType.YouLiangHui.equals(adInfo.getMidasAd().getAdSource())){
+                NativeUnifiedADData nativeUnifiedADData = midasSelfRenderAd.getNativeUnifiedADData();
+                if (nativeUnifiedADData == null) {
+                    return;
+                }
 
                 if (midasSelfRenderAd.getMidasAdPatternType() == 2) {
                     //视频广告
@@ -1312,12 +1332,9 @@ public class ListenerUtils {
                     Glide.with(activity).load(midasSelfRenderAd.getImageUrl()).into(adImgIv);
                 }
 
-                NativeUnifiedADData nativeUnifiedADData = midasSelfRenderAd.getNativeUnifiedADData();
-                if (nativeUnifiedADData == null) {
-                    return;
-                }
                 nativeUnifiedADData.bindAdToView(activity, (NativeAdContainer) view, null,
                         clickViewList);
+                updateAdAction(tvBigButton,nativeUnifiedADData);
                 nativeUnifiedADData.setNativeAdEventListener(new NativeADEventListener() {
                     @Override
                     public void onADExposed() {
@@ -1325,6 +1342,7 @@ public class ListenerUtils {
                             selfRenderListener.adExposed(adInfo);
                             selfRenderListener.callbackView(view);
                         }
+
                     }
 
                     @Override
@@ -1343,7 +1361,7 @@ public class ListenerUtils {
 
                     @Override
                     public void onADStatusChanged() {
-
+                        updateAdAction(tvBigButton,nativeUnifiedADData);
                     }
                 });
             }else {
@@ -1352,7 +1370,87 @@ public class ListenerUtils {
         }catch (Exception e){
             Log.e("SdkRequestManager","" + e.getMessage());
         }
+    }
 
+
+    private static void updateAdAction(TextView textView, NativeUnifiedADData ad) {
+        if (textView == null){
+            return;
+        }
+        if (!ad.isAppAd()) {
+            textView.setText("查看详情");
+            return;
+        }
+        textView.setText("立即下载");
+        switch (ad.getAppStatus()) {
+            case 0://点击下载
+                textView.setText("立即下载");
+                break;
+            case 1://点击打开
+                textView.setText("点击打开");
+                break;
+            case 2://点击更新
+                textView.setText("立即下载");
+                break;
+            case 4:
+                // 特别注意：当进度小于0时，不要使用进度来渲染界面
+                textView.setText("下载中" + (ad.getProgress() > 0 ? ad.getProgress() : 0) + "%");
+                break;
+            case 8://点击安装
+                textView.setText("点击安装");
+                break;
+            case 16://点击重试
+                textView.setText("重新下载");
+                break;
+            default://继续下载
+                textView.setText("继续下载" + (ad.getProgress() > 0 ? ad.getProgress() : 0) + "%");
+        }
+    }
+
+    private static void bindDownloadListener(TextView textView,TTNativeAd ad) {
+        if (textView == null){
+            return;
+        }
+        ad.setDownloadListener(new TTAppDownloadListener() {
+            @Override
+            public void onIdle() {
+                textView.setText("立即下载");
+            }
+            @Override
+            public void onDownloadActive(long totalBytes, long currBytes, String fileName, String appName) {
+                if (totalBytes > 0) {
+                    if (currBytes < 0) {
+                        currBytes = 0;
+                    }
+                    textView.setText("下载中" + (currBytes * 100 / totalBytes) + "%");
+                }
+            }
+
+            @Override
+            public void onDownloadPaused(long totalBytes, long currBytes, String fileName, String appName) {
+                if (totalBytes > 0) {
+                    if (currBytes < 0) {
+                        currBytes = 0;
+                    }
+                    textView.setText("继续下载" + (currBytes * 100 / totalBytes) + "%");
+                }
+            }
+
+            @Override
+            public void onDownloadFailed(long totalBytes, long currBytes, String fileName, String appName) {
+                textView.setText("重新下载");
+            }
+
+            @Override
+            public void onInstalled(String fileName, String appName) {
+                textView.setText("点击打开");
+            }
+
+            @Override
+            public void onDownloadFinished(long totalBytes, String fileName, String appName) {
+                textView.setText("点击安装");
+            }
+        });
     }
 
 }
