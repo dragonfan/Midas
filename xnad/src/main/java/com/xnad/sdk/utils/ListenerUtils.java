@@ -20,8 +20,11 @@ import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
 import com.bytedance.sdk.openadsdk.TTRewardVideoAd;
 import com.bytedance.sdk.openadsdk.TTSplashAd;
 import com.qq.e.ads.banner2.UnifiedBannerView;
+import com.qq.e.ads.cfg.VideoOption;
 import com.qq.e.ads.interstitial2.UnifiedInterstitialAD;
+import com.qq.e.ads.nativ.MediaView;
 import com.qq.e.ads.nativ.NativeADEventListener;
+import com.qq.e.ads.nativ.NativeADMediaListener;
 import com.qq.e.ads.nativ.NativeExpressAD;
 import com.qq.e.ads.nativ.NativeUnifiedADData;
 import com.qq.e.ads.nativ.widget.NativeAdContainer;
@@ -1222,6 +1225,14 @@ public class ListenerUtils {
             MidasSelfRenderAd midasSelfRenderAd = (MidasSelfRenderAd) adInfo.getMidasAd();
             AdParameter adParameter = adInfo.getAdParameter();
             ViewGroup viewContainer = adParameter.getViewContainer();
+            if (viewContainer == null){
+
+                return;
+            }
+            if (adParameter.getLayoutId() == 0){
+
+                return;
+            }
             View view = LayoutInflater.from(activity).
                     inflate(adParameter.getLayoutId(),viewContainer,false);
             viewContainer.removeAllViews();
@@ -1229,17 +1240,23 @@ public class ListenerUtils {
             //小图标
             ImageView adSmallLogoIv = view.findViewById(R.id.ivAdIcon);
             String iconUrl = midasSelfRenderAd.getIconUrl();
-            if (!TextUtils.isEmpty(iconUrl)) {
+            if (!TextUtils.isEmpty(iconUrl) && adSmallLogoIv != null) {
                 Glide.with(activity).load(iconUrl).into(adSmallLogoIv);
             }
             //标题
             TextView adTitleTv = view.findViewById(R.id.tvAdTitle);
-            adTitleTv.setText(midasSelfRenderAd.getTitle());
+            if (adTitleTv != null){
+                adTitleTv.setText(midasSelfRenderAd.getTitle());
+            }
             //描述
             TextView adDescTv = view.findViewById(R.id.tvAdDesc);
-            adDescTv.setText(midasSelfRenderAd.getDescription());
+            if (adDescTv != null){
+                adDescTv.setText(midasSelfRenderAd.getDescription());
+            }
             //大图片
             ImageView adImgIv = view.findViewById(R.id.ivAdImage);
+            //视频播放view
+            MediaView mediaView = view.findViewById(R.id.adMediaView);
             //详情大按钮
             TextView tvBigButton = view.findViewById(R.id.tvBigButton);
 
@@ -1257,23 +1274,29 @@ public class ListenerUtils {
                 View bigBtnView = view.findViewById(R.id.tvBigButton);
                 if (smallBtnView != null){
                     creativeViewList.add(smallBtnView);
+                    clickViewList.add(smallBtnView);
                 }
                 if (bigBtnView != null){
                     creativeViewList.add(bigBtnView);
+                    clickViewList.add(bigBtnView);
                 }
             }catch (Exception e){
             }
             if (Constants.AdSourceType.ChuanShanJia.equals(adInfo.getMidasAd().getAdSource())) {
                 if (midasSelfRenderAd.getMidasAdPatternType() == 2) {
                     //视频广告
-                    adImgIv.setVisibility(View.GONE);
+                    if (adImgIv != null){
+                        adImgIv.setVisibility(View.GONE);
+                    }
 
                 }else {
                     adImgIv.setVisibility(View.VISIBLE);
                     List<String> imageList = midasSelfRenderAd.getImageList();
                     if (imageList != null && imageList.size() > 0) {
-                        Glide.with(activity).load(imageList.get(0))
-                                .into(adImgIv);
+                        if (adImgIv != null){
+                            Glide.with(activity).load(imageList.get(0))
+                                    .into(adImgIv);
+                        }
                     }
                 }
                 TTFeedAd ttFeedAd = midasSelfRenderAd.getTtFeedAd();
@@ -1325,11 +1348,64 @@ public class ListenerUtils {
 
                 if (midasSelfRenderAd.getMidasAdPatternType() == 2) {
                     //视频广告
-                    adImgIv.setVisibility(View.GONE);
-
+                    if (adImgIv != null){
+                        adImgIv.setVisibility(View.GONE);
+                    }
+                    if (mediaView != null){
+                        mediaView.setVisibility(View.VISIBLE);
+                        VideoOption videoOption = new VideoOption.Builder()
+                                .setAutoPlayPolicy(VideoOption.AutoPlayPolicy.ALWAYS)//总是自动播放
+                                .setAutoPlayMuted(true)//静音
+                                .setNeedCoverImage(true)//显示封面
+                                .setNeedProgressBar(false)//是否显示播放进度条
+                                .setEnableDetailPage(true)//点击按钮是否跳转详情
+                                .setEnableUserControl(false)//点击视频是否停止or播放,false点击会onADClicked回调
+                                .build();
+                        nativeUnifiedADData.bindMediaView(mediaView, videoOption, new NativeADMediaListener() {
+                            @Override
+                            public void onVideoInit() {
+                            }
+                            @Override
+                            public void onVideoLoading() {
+                            }
+                            @Override
+                            public void onVideoReady() {
+                            }
+                            @Override
+                            public void onVideoLoaded(int videoDuration) {
+                            }
+                            @Override
+                            public void onVideoStart() {
+                            }
+                            @Override
+                            public void onVideoPause() {
+                            }
+                            @Override
+                            public void onVideoResume() {
+                            }
+                            @Override
+                            public void onVideoCompleted() {
+                                nativeUnifiedADData.startVideo();
+                            }
+                            @Override
+                            public void onVideoError(AdError error) {
+                            }
+                            @Override
+                            public void onVideoStop() {
+                            }
+                            @Override
+                            public void onVideoClicked() {
+                            }
+                        });
+                    }
                 }else {
-                    adImgIv.setVisibility(View.VISIBLE);
-                    Glide.with(activity).load(midasSelfRenderAd.getImageUrl()).into(adImgIv);
+                    if (adImgIv != null){
+                        adImgIv.setVisibility(View.VISIBLE);
+                        Glide.with(activity).load(midasSelfRenderAd.getImageUrl()).into(adImgIv);
+                    }
+                    if (mediaView != null){
+                        mediaView.setVisibility(View.GONE);
+                    }
                 }
 
                 nativeUnifiedADData.bindAdToView(activity, (NativeAdContainer) view, null,
@@ -1452,5 +1528,53 @@ public class ListenerUtils {
             }
         });
     }
+
+    private static void a(MediaView mediaView, NativeUnifiedADData nativeUnifiedADData){
+        VideoOption videoOption = new VideoOption.Builder()
+                .setAutoPlayPolicy(VideoOption.AutoPlayPolicy.ALWAYS)//总是自动播放
+                .setAutoPlayMuted(true)//静音
+                .setNeedCoverImage(true)//显示封面
+                .setNeedProgressBar(false)//是否显示播放进度条
+                .setEnableDetailPage(true)//点击按钮是否跳转详情
+                .setEnableUserControl(false)//点击视频是否停止or播放,false点击会onADClicked回调
+                .build();
+        nativeUnifiedADData.bindMediaView(mediaView, videoOption, new NativeADMediaListener() {
+            @Override
+            public void onVideoInit() {
+            }
+            @Override
+            public void onVideoLoading() {
+            }
+            @Override
+            public void onVideoReady() {
+            }
+            @Override
+            public void onVideoLoaded(int videoDuration) {
+            }
+            @Override
+            public void onVideoStart() {
+            }
+            @Override
+            public void onVideoPause() {
+            }
+            @Override
+            public void onVideoResume() {
+            }
+            @Override
+            public void onVideoCompleted() {
+                nativeUnifiedADData.startVideo();
+            }
+            @Override
+            public void onVideoError(AdError error) {
+            }
+            @Override
+            public void onVideoStop() {
+            }
+            @Override
+            public void onVideoClicked() {
+            }
+        });
+    }
+
 
 }
