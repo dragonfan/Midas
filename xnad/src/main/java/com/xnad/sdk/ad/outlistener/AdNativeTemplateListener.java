@@ -1,5 +1,6 @@
 package com.xnad.sdk.ad.outlistener;
 
+import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.listener.AdBasicListener;
 
 /**
@@ -14,6 +15,6 @@ import com.xnad.sdk.ad.listener.AdBasicListener;
  * @UpdateRemark: 更新说明：
  * @Version: 1.0
  */
-public interface AdNativeTemplateListener<T> extends AdBasicListener<T> {
+public interface AdNativeTemplateListener<T extends AdInfo> extends AdBasicListener<T> {
 
 }

@@ -33,11 +33,11 @@ import java.util.List;
  */
 public class MidasSelfRenderAd extends MidasAd{
 
-    private ViewGroup container;
-    /**
-     * 外部计费回调（埋点用）
-     */
-    private AdOutChargeListener adOutChargeListener;
+//    private ViewGroup container;
+//    /**
+//     * 外部计费回调（埋点用）
+//     */
+//    private AdOutChargeListener adOutChargeListener;
 
     /**
      * 穿山甲自渲染信息流广告
@@ -47,10 +47,10 @@ public class MidasSelfRenderAd extends MidasAd{
      * 优量汇自渲染广告
      */
     private NativeUnifiedADData nativeUnifiedADData;
-    /**
-     * 绑定view监听器
-     */
-    private AdOutChargeListener bindViewListener;
+//    /**
+//     * 绑定view监听器
+//     */
+//    private AdOutChargeListener bindViewListener;
 
     public TTFeedAd getTtFeedAd() {
         return ttFeedAd;
@@ -60,26 +60,26 @@ public class MidasSelfRenderAd extends MidasAd{
         this.ttFeedAd = ttFeedAd;
     }
 
-    public AdOutChargeListener getAdOutChargeListener() {
-        return adOutChargeListener;
-    }
+//    public AdOutChargeListener getAdOutChargeListener() {
+//        return adOutChargeListener;
+//    }
+//
+//    public void setAdOutChargeListener(AdOutChargeListener adOutChargeListener) {
+//        this.adOutChargeListener = adOutChargeListener;
+//    }
+//
+//    public void bindViewToAdListener(Context context, ViewGroup viewGroup, List<View> clickViewList, List<View> creativeViewList, AdOutChargeListener adOutChargeListener) {
+//        this.adOutChargeListener = adOutChargeListener;
+//        bindAd(context, viewGroup, clickViewList, creativeViewList);
+//    }
 
-    public void setAdOutChargeListener(AdOutChargeListener adOutChargeListener) {
-        this.adOutChargeListener = adOutChargeListener;
-    }
-
-    public void bindViewToAdListener(Context context, ViewGroup viewGroup, List<View> clickViewList, List<View> creativeViewList, AdOutChargeListener adOutChargeListener) {
-        this.adOutChargeListener = adOutChargeListener;
-        bindAd(context, viewGroup, clickViewList, creativeViewList);
-    }
-
-    public ViewGroup getContainer() {
-        return container;
-    }
-
-    public void setContainer(ViewGroup container) {
-        this.container = container;
-    }
+//    public ViewGroup getContainer() {
+//        return container;
+//    }
+//
+//    public void setContainer(ViewGroup container) {
+//        this.container = container;
+//    }
 
     public NativeUnifiedADData getNativeUnifiedADData() {
         return nativeUnifiedADData;
@@ -89,76 +89,76 @@ public class MidasSelfRenderAd extends MidasAd{
         this.nativeUnifiedADData = nativeUnifiedADData;
     }
 
-    public void setBindViewListener(AdOutChargeListener bindViewListener) {
-        this.bindViewListener = bindViewListener;
-    }
+//    public void setBindViewListener(AdOutChargeListener bindViewListener) {
+//        this.bindViewListener = bindViewListener;
+//    }
 
-    private void bindAd(Context context, ViewGroup viewGroup, List<View> clickViewList, List<View> creativeViewList){
-        if (Constants.AdSourceType.ChuanShanJia.equals(getAdSource())) {
-            if (ttFeedAd == null) {
-                return;
-            }
-            ttFeedAd.registerViewForInteraction(viewGroup, clickViewList, creativeViewList, new TTNativeAd.AdInteractionListener() {
-                @Override
-                public void onAdClicked(View view, TTNativeAd ttNativeAd) {
-                    if (bindViewListener != null) {
-                        bindViewListener.adSuccess(null);
-                        bindViewListener.adClicked(null);
-                    }
-                }
-
-                @Override
-                public void onAdCreativeClick(View view, TTNativeAd ttNativeAd) {
-                    if (bindViewListener != null) {
-                        bindViewListener.adClicked(null);
-                    }
-                }
-
-                @Override
-                public void onAdShow(TTNativeAd ttNativeAd) {
-                    if (bindViewListener != null) {
-                        bindViewListener.adExposed(null);
-                    }
-                }
-            });
-//            if (viewGroup != null && !CollectionUtils.isEmpty(clickViewList) && !CollectionUtils.isEmpty(creativeViewList)) {
+//    private void bindAd(Context context, ViewGroup viewGroup, List<View> clickViewList, List<View> creativeViewList){
+//        if (Constants.AdSourceType.ChuanShanJia.equals(getAdSource())) {
+//            if (ttFeedAd == null) {
+//                return;
 //            }
-        } else {
-            if (nativeUnifiedADData == null) {
-                return;
-            }
-            nativeUnifiedADData.bindAdToView(context, (NativeAdContainer) viewGroup, null,
-                    clickViewList);
-            nativeUnifiedADData.setNativeAdEventListener(new NativeADEventListener() {
-                @Override
-                public void onADExposed() {
-                    if (bindViewListener != null) {
-                        bindViewListener.adSuccess(null);
-                        bindViewListener.adExposed(null);
-                    }
-                }
-
-                @Override
-                public void onADClicked() {
-                    if (bindViewListener != null) {
-                        bindViewListener.adClicked(null);
-                    }
-                }
-
-                @Override
-                public void onADError(AdError adError) {
-                    if (bindViewListener != null) {
-                        bindViewListener.adError(null, adError.getErrorCode(), adError.getErrorMsg());
-                    }
-                }
-
-                @Override
-                public void onADStatusChanged() {
-
-                }
-            });
-        }
-    }
+//            ttFeedAd.registerViewForInteraction(viewGroup, clickViewList, creativeViewList, new TTNativeAd.AdInteractionListener() {
+//                @Override
+//                public void onAdClicked(View view, TTNativeAd ttNativeAd) {
+//                    if (bindViewListener != null) {
+//                        bindViewListener.adSuccess(null);
+//                        bindViewListener.adClicked(null);
+//                    }
+//                }
+//
+//                @Override
+//                public void onAdCreativeClick(View view, TTNativeAd ttNativeAd) {
+//                    if (bindViewListener != null) {
+//                        bindViewListener.adClicked(null);
+//                    }
+//                }
+//
+//                @Override
+//                public void onAdShow(TTNativeAd ttNativeAd) {
+//                    if (bindViewListener != null) {
+//                        bindViewListener.adExposed(null);
+//                    }
+//                }
+//            });
+////            if (viewGroup != null && !CollectionUtils.isEmpty(clickViewList) && !CollectionUtils.isEmpty(creativeViewList)) {
+////            }
+//        } else {
+//            if (nativeUnifiedADData == null) {
+//                return;
+//            }
+//            nativeUnifiedADData.bindAdToView(context, (NativeAdContainer) viewGroup, null,
+//                    clickViewList);
+//            nativeUnifiedADData.setNativeAdEventListener(new NativeADEventListener() {
+//                @Override
+//                public void onADExposed() {
+//                    if (bindViewListener != null) {
+//                        bindViewListener.adSuccess(null);
+//                        bindViewListener.adExposed(null);
+//                    }
+//                }
+//
+//                @Override
+//                public void onADClicked() {
+//                    if (bindViewListener != null) {
+//                        bindViewListener.adClicked(null);
+//                    }
+//                }
+//
+//                @Override
+//                public void onADError(AdError adError) {
+//                    if (bindViewListener != null) {
+//                        bindViewListener.adError(null, adError.getErrorCode(), adError.getErrorMsg());
+//                    }
+//                }
+//
+//                @Override
+//                public void onADStatusChanged() {
+//
+//                }
+//            });
+//        }
+//    }
 
     @Override
     public void clear() {

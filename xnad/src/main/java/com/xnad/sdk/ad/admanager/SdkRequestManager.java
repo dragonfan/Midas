@@ -45,8 +45,7 @@ public abstract class SdkRequestManager implements AdRequestManager {
         } else if (Constants.AdType.FULL_SCREEN_VIDEO_TYPE.equals(adInfo.getAdType())){
             requestFullScreenVideoAd(activity, adInfo, listener, ListenerUtils.getFullScreenVideoAdListener((AdFullScreenVideoListener) adListener));
         } else if (Constants.AdType.SELF_RENDER.equals(adInfo.getAdType())){
-            requestSelfRenderAd(activity, adInfo, listener, (AdSelfRenderListener)adListener);
-            ListenerUtils.bindSelfRenderAdListener(adInfo);
+            requestSelfRenderAd(activity, adInfo, listener, ListenerUtils.getAdSelfRenderListener((AdSelfRenderListener)adListener));
         } else if (Constants.AdType.INTERACTION_TYPE.equals(adInfo.getAdType())){
             requestInteractionAd(activity, adInfo, listener, ListenerUtils.getInteractionListener((AdInteractionListener) adListener));
         } else if (Constants.AdType.NATIVE_TEMPLATE.equals(adInfo.getAdType())) {
@@ -65,7 +64,7 @@ public abstract class SdkRequestManager implements AdRequestManager {
 
     protected abstract void requestInteractionAd(Activity activity, AdInfo info, AdRequestListener listener, AdInteractionListener adListener);
 
-    protected abstract void requestSelfRenderAd(Activity activity, AdInfo info, AdRequestListener listener, AdSelfRenderListener adListener);
+    protected abstract void requestSelfRenderAd(Activity activity, AdInfo info, AdRequestListener listener, AdSelfRenderListener adListener );
 
     protected abstract void requestFullScreenVideoAd(Activity activity, AdInfo info, AdRequestListener listener, AdFullScreenVideoListener adListener);
 

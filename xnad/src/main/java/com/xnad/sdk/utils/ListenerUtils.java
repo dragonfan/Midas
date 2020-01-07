@@ -2,21 +2,33 @@ package com.xnad.sdk.utils;
 
 import android.app.Activity;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.bytedance.sdk.openadsdk.TTAdConstant;
 import com.bytedance.sdk.openadsdk.TTAdDislike;
 import com.bytedance.sdk.openadsdk.TTAppDownloadListener;
+import com.bytedance.sdk.openadsdk.TTFeedAd;
 import com.bytedance.sdk.openadsdk.TTFullScreenVideoAd;
+import com.bytedance.sdk.openadsdk.TTNativeAd;
 import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
 import com.bytedance.sdk.openadsdk.TTRewardVideoAd;
 import com.bytedance.sdk.openadsdk.TTSplashAd;
 import com.qq.e.ads.banner2.UnifiedBannerView;
 import com.qq.e.ads.interstitial2.UnifiedInterstitialAD;
+import com.qq.e.ads.nativ.NativeADEventListener;
 import com.qq.e.ads.nativ.NativeExpressAD;
+import com.qq.e.ads.nativ.NativeUnifiedADData;
+import com.qq.e.ads.nativ.widget.NativeAdContainer;
 import com.qq.e.ads.rewardvideo.RewardVideoAD;
 import com.qq.e.ads.splash.SplashAD;
+import com.qq.e.comm.util.AdError;
+import com.xnad.sdk.R;
 import com.xnad.sdk.ad.cache.ADTool;
 import com.xnad.sdk.ad.cache.AdContainerWrapper;
 import com.xnad.sdk.ad.cache.wrapper.WrapperBannerADListener;
@@ -40,8 +52,13 @@ import com.xnad.sdk.ad.outlistener.AdInteractionListener;
 import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
 import com.xnad.sdk.ad.outlistener.AdOutChargeListener;
 import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
+import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
 import com.xnad.sdk.ad.outlistener.AdSplashListener;
+import com.xnad.sdk.config.AdParameter;
 import com.xnad.sdk.config.Constants;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Desc:
@@ -89,7 +106,8 @@ public class ListenerUtils {
             if (adListener != null) {
                 adListener.adSuccess(info);
             }
-            ListenerUtils.bindSelfRenderAdListener(info);
+
+            showSelfRenderView(info,ListenerUtils.getAdSelfRenderListener((AdSelfRenderListener)adListener));
             //开屏广告
         } else if (TextUtils.equals(info.getAdType(), Constants.AdType.SPLASH_TYPE)) {
             if (info.getMidasAd() instanceof MidasSplashAd) {
@@ -1121,12 +1139,11 @@ public class ListenerUtils {
     /**
      * 自渲染广告回调中间层
      *
-     * @param adInfo
+     * @param listener
+     * @return
      */
-    public static void bindSelfRenderAdListener(AdInfo adInfo) {
-        MidasSelfRenderAd midasSelfRenderAd = (MidasSelfRenderAd) adInfo.getMidasAd();
-        midasSelfRenderAd.setBindViewListener(new AdOutChargeListener<AdInfo>() {
-
+    public static AdSelfRenderListener getAdSelfRenderListener(AdSelfRenderListener listener) {
+        return new AdSelfRenderListener<AdInfo>() {
             /**
              * 时间间隔
              * 记录填充到展示，展示到点击间隔
@@ -1135,24 +1152,31 @@ public class ListenerUtils {
             boolean isExposed = false;
 
             @Override
-            public void adSuccess(AdInfo info) {
-                if (midasSelfRenderAd.getAdOutChargeListener() != null) {
-                    midasSelfRenderAd.getAdOutChargeListener().adSuccess(adInfo);
+            public void callbackView(View view) {
+                if (listener != null) {
+                    listener.callbackView(view);
+                }
+            }
+
+            @Override
+            public void adSuccess(AdInfo adInfo) {
+                if (listener != null) {
+                    listener.adSuccess(adInfo);
                 }
                 intervalTime = System.currentTimeMillis();
             }
 
             @Override
-            public void adError(AdInfo info, int errorCode, String errorMsg) {
-                if (midasSelfRenderAd.getAdOutChargeListener() != null) {
-                    midasSelfRenderAd.getAdOutChargeListener().adError(adInfo, errorCode, errorMsg);
+            public void adError(AdInfo adInfo, int errorCode, String errorMsg) {
+                if (listener != null) {
+                    listener.adError(adInfo, errorCode, errorMsg);
                 }
             }
 
             @Override
-            public void adExposed(AdInfo info) {
-                if (midasSelfRenderAd.getAdOutChargeListener() != null) {
-                    midasSelfRenderAd.getAdOutChargeListener().adExposed(adInfo);
+            public void adExposed(AdInfo adInfo) {
+                if (listener != null) {
+                    listener.adExposed(adInfo);
                 }
                 if (!isExposed) {
                     isExposed = true;
@@ -1162,18 +1186,18 @@ public class ListenerUtils {
             }
 
             @Override
-            public void adClicked(AdInfo info) {
-                if (midasSelfRenderAd.getAdOutChargeListener() != null) {
-                    midasSelfRenderAd.getAdOutChargeListener().adClicked(adInfo);
+            public void adClicked(AdInfo adInfo) {
+                if (listener != null) {
+                    listener.adClicked(adInfo);
                 }
                 StatisticUtils.advertisingClick(adInfo, intervalTime);
             }
 
 
             @Override
-            public void adClose(AdInfo info) {
-                if (midasSelfRenderAd.getAdOutChargeListener() != null) {
-                    midasSelfRenderAd.getAdOutChargeListener().adClose(adInfo);
+            public void adClose(AdInfo adInfo) {
+                if (listener != null) {
+                    listener.adClose(adInfo);
                 }
                 StatisticUtils.advertisingClose(adInfo, intervalTime);
             }
@@ -1186,8 +1210,126 @@ public class ListenerUtils {
                 StatisticUtils.advertisingOfferShow(adInfo, intervalTime);
                 intervalTime = System.currentTimeMillis();
             }
-        });
+        };
     }
 
+    /**
+     * 显示自渲染视图
+     * @param adInfo    广告实体
+     */
+    public static void showSelfRenderView(AdInfo adInfo, AdSelfRenderListener selfRenderListener){
+        try {
+            MidasSelfRenderAd midasSelfRenderAd = (MidasSelfRenderAd) adInfo.getMidasAd();
+            AdParameter adParameter = adInfo.getAdParameter();
+            ViewGroup viewContainer = adParameter.getViewContainer();
+            View view = LayoutInflater.from(adParameter.getActivity()).
+                    inflate(adParameter.getLayoutId(),viewContainer,false);
+            viewContainer.removeAllViews();
+            viewContainer.addView(view);
+            //小图标
+            ImageView adSmallLogoIv = view.findViewById(R.id.ivAdIcon);
+            String iconUrl = midasSelfRenderAd.getIconUrl();
+            if (!TextUtils.isEmpty(iconUrl)) {
+                Glide.with(adParameter.getActivity()).load(iconUrl).into(adSmallLogoIv);
+            }
+            //标题
+            TextView adTitleTv = view.findViewById(R.id.tvAdTitle);
+            adTitleTv.setText(midasSelfRenderAd.getTitle());
+            //描述
+            TextView adDescTv = view.findViewById(R.id.tvAdDesc);
+            adDescTv.setText(midasSelfRenderAd.getDescription());
+            //大图片
+            ImageView adImgIv = view.findViewById(R.id.ivAdImage);
+            List<String> imageList = midasSelfRenderAd.getImageList();
+            if (imageList != null && imageList.size() > 0) {
+                Glide.with(adParameter.getActivity()).load(imageList.get(0)).into(adImgIv);
+            }
+
+            List<View> clickViewList = new ArrayList<>();
+            clickViewList.add(view);
+            //触发创意广告的view（点击下载或拨打电话）
+            List<View> creativeViewList = new ArrayList<>();
+            try {
+                View smallBtnView = view.findViewById(R.id.tvSmallButton);
+                View bigBtnView = view.findViewById(R.id.tvBigButton);
+                if (smallBtnView != null){
+                    creativeViewList.add(smallBtnView);
+                }
+                if (bigBtnView != null){
+                    creativeViewList.add(bigBtnView);
+                }
+            }catch (Exception e){
+            }
+            if (Constants.AdSourceType.ChuanShanJia.equals(adInfo.getMidasAd().getAdSource())) {
+                TTFeedAd ttFeedAd = midasSelfRenderAd.getTtFeedAd();
+                if (ttFeedAd == null) {
+                    return;
+                }
+                ttFeedAd.registerViewForInteraction(viewContainer, clickViewList, creativeViewList, new TTNativeAd.AdInteractionListener() {
+                    @Override
+                    public void onAdClicked(View view, TTNativeAd ttNativeAd) {
+                        if (selfRenderListener != null) {
+                            selfRenderListener.adClicked(adInfo);
+                        }
+                    }
+
+                    @Override
+                    public void onAdCreativeClick(View view, TTNativeAd ttNativeAd) {
+                        if (selfRenderListener != null) {
+                            selfRenderListener.adClicked(adInfo);
+                        }
+                    }
+
+                    @Override
+                    public void onAdShow(TTNativeAd ttNativeAd) {
+                        if (selfRenderListener != null) {
+                            selfRenderListener.adExposed(adInfo);
+                            selfRenderListener.callbackView(view);
+                        }
+                    }
+                });
+            }else if (Constants.AdSourceType.YouLiangHui.equals(adInfo.getMidasAd().getAdSource())){
+                NativeUnifiedADData nativeUnifiedADData = midasSelfRenderAd.getNativeUnifiedADData();
+                if (nativeUnifiedADData == null) {
+                    return;
+                }
+                nativeUnifiedADData.bindAdToView(adParameter.getActivity(), (NativeAdContainer) viewContainer, null,
+                        clickViewList);
+                nativeUnifiedADData.setNativeAdEventListener(new NativeADEventListener() {
+                    @Override
+                    public void onADExposed() {
+                        if (selfRenderListener != null) {
+                            selfRenderListener.adExposed(adInfo);
+                            selfRenderListener.callbackView(view);
+                        }
+                    }
+
+                    @Override
+                    public void onADClicked() {
+                        if (selfRenderListener != null) {
+                            selfRenderListener.adClicked(adInfo);
+                        }
+                    }
+
+                    @Override
+                    public void onADError(AdError adError) {
+                        if (selfRenderListener != null) {
+                            selfRenderListener.adError(adInfo, adError.getErrorCode(), adError.getErrorMsg());
+                        }
+                    }
+
+                    @Override
+                    public void onADStatusChanged() {
+
+                    }
+                });
+            }else {
+
+            }
+        }catch (Exception e){
+            Log.e("SdkRequestManager","" + e.getMessage());
+        }
+
+    }
 
 }

@@ -47,13 +47,12 @@ public class SelfRenderActivity extends AppCompatActivity implements View.OnClic
 
     private final String TAG = SelfRenderActivity.class.getSimpleName();
 
-    private FrameLayout mContainer;
     private EditText positionEt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContainer = findViewById(R.id.container);
+        setContentView(R.layout.activity_self_render);
         positionEt = findViewById(R.id.et_position_id);
         positionEt.setText(AdConfig.SELF_RENDER_AD_POSITION);
         findViewById(R.id.button_request_ad).setOnClickListener(this);
@@ -93,22 +92,40 @@ public class SelfRenderActivity extends AppCompatActivity implements View.OnClic
                     Toast.makeText(getApplicationContext(), "accept->输入的位置不能为空", Toast.LENGTH_LONG).show();
                     return;
                 }
+                ViewGroup viewContainer = findViewById(R.id.view_container);
                 AdParameter adParameter = new AdParameter.Builder(this, position)
+                        .setLayoutId(R.layout.self_render_view)
+                        .setViewContainer(viewContainer)
                         .build();
                 MidasAdSdk.getAdsManger().loadMidasSelfRenderAd(adParameter, new AdSelfRenderListener<AdInfo>() {
+                    @Override
+                    public void adExposed(AdInfo info) {
+
+                    }
+
+                    @Override
+                    public void adClicked(AdInfo info) {
+
+                    }
+
+                    @Override
+                    public void callbackView(View view) {
+
+                    }
+
                     //请求广告成功回调
                     @Override
                     public void adSuccess(AdInfo info) {
-                        //获取自渲染广告对象
-                        MidasSelfRenderAd midasSelfRenderAd = (MidasSelfRenderAd) info.getMidasAd();
-                        //区分广告源
-                        if (Constants.AdSourceType.ChuanShanJia.equals(midasSelfRenderAd.getAdSource())) {
-                            //调用穿山甲渲染方式
-                            cshBindView(midasSelfRenderAd);
-                        } else {
-                            //调用优量汇渲染方式
-                            ylhBindView(midasSelfRenderAd);
-                        }
+//                        //获取自渲染广告对象
+//                        MidasSelfRenderAd midasSelfRenderAd = (MidasSelfRenderAd) info.getMidasAd();
+//                        //区分广告源
+//                        if (Constants.AdSourceType.ChuanShanJia.equals(midasSelfRenderAd.getAdSource())) {
+//                            //调用穿山甲渲染方式
+//                            cshBindView(midasSelfRenderAd);
+//                        } else {
+//                            //调用优量汇渲染方式
+//                            ylhBindView(midasSelfRenderAd);
+//                        }
                     }
                     //请求广告失败回到
                     @Override
@@ -120,192 +137,192 @@ public class SelfRenderActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    private void ylhBindView(MidasSelfRenderAd midasSelfRenderAd) {
-        TextView title;
-        MediaView mediaView;
-        RelativeLayout adInfoContainer;
-        TextView name;
-        TextView desc;
-        ImageView logo;
-        ImageView poster;
-        Button download;
-        Button ctaButton;
-        NativeAdContainer container;
-//        AQuery logoAQ;
-        View btnsContainer;
-        Button btnPlay;
-        Button btnPause;
-        Button btnStop;
-        CheckBox btnMute;
-        FrameLayout customContainer;
-
-        View view = LayoutInflater.from(this).inflate(R.layout.news_item_ylh, null);
-        mediaView = view.findViewById(R.id.gdt_media_view);
-//        adInfoContainer = view.findViewById(R.id.ad_info);
-        logo = view.findViewById(R.id.img_logo);
-        poster = view.findViewById(R.id.img_poster);
-        name = view.findViewById(R.id.text_title);
-        desc = view.findViewById(R.id.text_desc);
-        download = view.findViewById(R.id.btn_download);
-        ctaButton = view.findViewById(R.id.btn_cta);
-        container = view.findViewById(R.id.native_ad_container);
-        btnsContainer = view.findViewById(R.id.video_btns_container);
-        btnPlay = view.findViewById(R.id.btn_play);
-        btnPause = view.findViewById(R.id.btn_pause);
-        btnStop = view.findViewById(R.id.btn_stop);
-        btnMute = view.findViewById(R.id.btn_mute);
-        customContainer = view.findViewById(R.id.custom_container);
-
-        Glide.with(this).load(midasSelfRenderAd.getIconUrl()).into(logo);
-        name.setText(midasSelfRenderAd.getTitle());
-        desc.setText(midasSelfRenderAd.getDescription());
-        Glide.with(this).load(midasSelfRenderAd.getImageUrl()).into(poster);
-        //是否是视频
-        if (midasSelfRenderAd.getMidasAdPatternType() == 2) {
-            poster.setVisibility(View.INVISIBLE);
-            mediaView.setVisibility(View.VISIBLE);
-            btnsContainer.setVisibility(View.VISIBLE);
-        } else {
-            poster.setVisibility(View.VISIBLE);
-            mediaView.setVisibility(View.INVISIBLE);
-            btnsContainer.setVisibility(View.GONE);
-        }
-        //优量汇点击的时间一定要在NativeAdContainer容器里面
-        List<View> clickableViews = new ArrayList<>();
-        clickableViews.add(customContainer);
-        clickableViews.add(download);
-        //优量汇的viewGroup一定要是NativeAdContainer对象
-        midasSelfRenderAd.bindViewToAdListener(this, container, clickableViews, null, new AdOutChargeListener<AdInfo>(){
-
-            @Override
-            public void adSuccess(AdInfo info) {
-                LogUtils.e("adSuccess");
-            }
-
-            @Override
-            public void adError(AdInfo info, int errorCode, String errorMsg) {
-                LogUtils.e("adError");
-            }
-
-            @Override
-            public void adExposed(AdInfo info) {
-                LogUtils.e("adExposed");
-            }
-
-            @Override
-            public void adClicked(AdInfo info) {
-                LogUtils.e("adClicked");
-            }
-        });
-        mContainer.removeAllViews();
-        mContainer.addView(view);
-    }
-
-    private void cshBindView(MidasSelfRenderAd midasSelfRenderAd) {
-        ImageView mIcon;
-        Button mCreativeButton;
-        TextView mTitle;
-        TextView mDescription;
-        TextView mSource;
-        Button mStopButton;
-        Button mRemoveButton;
-        ImageView mLargeImage;
-        ViewGroup container;
-
-        View view = LayoutInflater.from(this).inflate(R.layout.news_item_csj, null);
-
-
-        container = view.findViewById(R.id.container);
-        mTitle = (TextView) view.findViewById(R.id.tv_listitem_ad_title);
-        mDescription = (TextView) view.findViewById(R.id.tv_listitem_ad_desc);
-        mSource = (TextView) view.findViewById(R.id.tv_listitem_ad_source);
-        mLargeImage = (ImageView) view.findViewById(R.id.iv_listitem_image);
-        mIcon = (ImageView) view.findViewById(R.id.iv_listitem_icon);
-        mCreativeButton = (Button) view.findViewById(R.id.btn_listitem_creative);
-        mStopButton = (Button) view.findViewById(R.id.btn_listitem_stop);
-        mRemoveButton = (Button) view.findViewById(R.id.btn_listitem_remove);
-
-        mContainer.removeAllViews();
-        mContainer.addView(container);
-
-        // TODO: 2019/12/24 app 自己渲染
-
-        //可以被点击的view, 也可以把convertView放进来意味item可被点击
-        List<View> clickViewList = new ArrayList<>();
-        clickViewList.add(view);
-        //触发创意广告的view（点击下载或拨打电话）
-        List<View> creativeViewList = new ArrayList<>();
-        creativeViewList.add(mCreativeButton);
-        //如果需要点击图文区域也能进行下载或者拨打电话动作，请将图文区域的view传入
-//            creativeViewList.add(convertView);
-        //重要! 这个涉及到广告计费，必须正确调用。convertView必须使用ViewGroup。
-
-        midasSelfRenderAd.bindViewToAdListener(this, container, clickViewList, creativeViewList, new AdOutChargeListener<AdInfo>(){
-
-            @Override
-            public void adSuccess(AdInfo info) {
-                LogUtils.e("adSuccess");
-            }
-
-            @Override
-            public void adError(AdInfo info, int errorCode, String errorMsg) {
-                LogUtils.e("adError");
-            }
-
-            @Override
-            public void adExposed(AdInfo info) {
-                LogUtils.e("adExposed");
-            }
-
-            @Override
-            public void adClicked(AdInfo info) {
-                LogUtils.e("adClicked");
-            }
-        });
-        mTitle.setText(midasSelfRenderAd.getTitle());
-        mDescription.setText(midasSelfRenderAd.getDescription());
-        mSource.setText(midasSelfRenderAd.getSource() == null ? "广告来源" : midasSelfRenderAd.getSource());
-        String iconUrl = midasSelfRenderAd.getIconUrl();
-        if (!TextUtils.isEmpty(iconUrl)) {
-            Glide.with(this).load(iconUrl).into(mIcon);
-        }
-        List<String> imgs = midasSelfRenderAd.getImageList();
-        if (imgs != null && imgs.size() > 0) {
-            Glide.with(this).load(imgs.get(0)).into(mLargeImage);
-        }
-//        Button adCreativeButton = adViewHolder.mCreativeButton;
-//        switch (ad.getInteractionType()) {
-//            case TTAdConstant.INTERACTION_TYPE_DOWNLOAD:
-//                //如果初始化ttAdManager.createAdNative(getApplicationContext())没有传入activity 则需要在此传activity，否则影响使用Dislike逻辑
-//                if (mContext instanceof Activity) {
-//                    ad.setActivityForDownloadApp((Activity) mContext);
-//                }
-//                adCreativeButton.setVisibility(View.VISIBLE);
-//                adViewHolder.mStopButton.setVisibility(View.VISIBLE);
-//                adViewHolder.mRemoveButton.setVisibility(View.VISIBLE);
-//                bindDownloadListener(adCreativeButton, adViewHolder, ad);
-//                //绑定下载状态控制器
-//                bindDownLoadStatusController(adViewHolder, ad);
-//                break;
-//            case TTAdConstant.INTERACTION_TYPE_DIAL:
-//                adCreativeButton.setVisibility(View.VISIBLE);
-//                adCreativeButton.setText("立即拨打");
-//                adViewHolder.mStopButton.setVisibility(View.GONE);
-//                adViewHolder.mRemoveButton.setVisibility(View.GONE);
-//                break;
-//            case TTAdConstant.INTERACTION_TYPE_LANDING_PAGE:
-//            case TTAdConstant.INTERACTION_TYPE_BROWSER:
-////                    adCreativeButton.setVisibility(View.GONE);
-//                adCreativeButton.setVisibility(View.VISIBLE);
-//                adCreativeButton.setText("查看详情");
-//                adViewHolder.mStopButton.setVisibility(View.GONE);
-//                adViewHolder.mRemoveButton.setVisibility(View.GONE);
-//                break;
-//            default:
-//                adCreativeButton.setVisibility(View.GONE);
-//                adViewHolder.mStopButton.setVisibility(View.GONE);
-//                adViewHolder.mRemoveButton.setVisibility(View.GONE);
-//                TToast.show(mContext, "交互类型异常");
+//    private void ylhBindView(MidasSelfRenderAd midasSelfRenderAd) {
+//        TextView title;
+//        MediaView mediaView;
+//        RelativeLayout adInfoContainer;
+//        TextView name;
+//        TextView desc;
+//        ImageView logo;
+//        ImageView poster;
+//        Button download;
+//        Button ctaButton;
+//        NativeAdContainer container;
+////        AQuery logoAQ;
+//        View btnsContainer;
+//        Button btnPlay;
+//        Button btnPause;
+//        Button btnStop;
+//        CheckBox btnMute;
+//        FrameLayout customContainer;
+//
+//        View view = LayoutInflater.from(this).inflate(R.layout.news_item_ylh, null);
+//        mediaView = view.findViewById(R.id.gdt_media_view);
+////        adInfoContainer = view.findViewById(R.id.ad_info);
+//        logo = view.findViewById(R.id.img_logo);
+//        poster = view.findViewById(R.id.img_poster);
+//        name = view.findViewById(R.id.text_title);
+//        desc = view.findViewById(R.id.text_desc);
+//        download = view.findViewById(R.id.btn_download);
+//        ctaButton = view.findViewById(R.id.btn_cta);
+//        container = view.findViewById(R.id.native_ad_container);
+//        btnsContainer = view.findViewById(R.id.video_btns_container);
+//        btnPlay = view.findViewById(R.id.btn_play);
+//        btnPause = view.findViewById(R.id.btn_pause);
+//        btnStop = view.findViewById(R.id.btn_stop);
+//        btnMute = view.findViewById(R.id.btn_mute);
+//        customContainer = view.findViewById(R.id.custom_container);
+//
+//        Glide.with(this).load(midasSelfRenderAd.getIconUrl()).into(logo);
+//        name.setText(midasSelfRenderAd.getTitle());
+//        desc.setText(midasSelfRenderAd.getDescription());
+//        Glide.with(this).load(midasSelfRenderAd.getImageUrl()).into(poster);
+//        //是否是视频
+//        if (midasSelfRenderAd.getMidasAdPatternType() == 2) {
+//            poster.setVisibility(View.INVISIBLE);
+//            mediaView.setVisibility(View.VISIBLE);
+//            btnsContainer.setVisibility(View.VISIBLE);
+//        } else {
+//            poster.setVisibility(View.VISIBLE);
+//            mediaView.setVisibility(View.INVISIBLE);
+//            btnsContainer.setVisibility(View.GONE);
 //        }
-    }
+//        //优量汇点击的时间一定要在NativeAdContainer容器里面
+//        List<View> clickableViews = new ArrayList<>();
+//        clickableViews.add(customContainer);
+//        clickableViews.add(download);
+//        //优量汇的viewGroup一定要是NativeAdContainer对象
+//        midasSelfRenderAd.bindViewToAdListener(this, container, clickableViews, null, new AdOutChargeListener<AdInfo>(){
+//
+//            @Override
+//            public void adSuccess(AdInfo info) {
+//                LogUtils.e("adSuccess");
+//            }
+//
+//            @Override
+//            public void adError(AdInfo info, int errorCode, String errorMsg) {
+//                LogUtils.e("adError");
+//            }
+//
+//            @Override
+//            public void adExposed(AdInfo info) {
+//                LogUtils.e("adExposed");
+//            }
+//
+//            @Override
+//            public void adClicked(AdInfo info) {
+//                LogUtils.e("adClicked");
+//            }
+//        });
+//        mContainer.removeAllViews();
+//        mContainer.addView(view);
+//    }
+
+//    private void cshBindView(MidasSelfRenderAd midasSelfRenderAd) {
+//        ImageView mIcon;
+//        Button mCreativeButton;
+//        TextView mTitle;
+//        TextView mDescription;
+//        TextView mSource;
+//        Button mStopButton;
+//        Button mRemoveButton;
+//        ImageView mLargeImage;
+//        ViewGroup container;
+//
+//        View view = LayoutInflater.from(this).inflate(R.layout.news_item_csj, null);
+//
+//
+//        container = view.findViewById(R.id.container);
+//        mTitle = (TextView) view.findViewById(R.id.tv_listitem_ad_title);
+//        mDescription = (TextView) view.findViewById(R.id.tv_listitem_ad_desc);
+//        mSource = (TextView) view.findViewById(R.id.tv_listitem_ad_source);
+//        mLargeImage = (ImageView) view.findViewById(R.id.iv_listitem_image);
+//        mIcon = (ImageView) view.findViewById(R.id.iv_listitem_icon);
+//        mCreativeButton = (Button) view.findViewById(R.id.btn_listitem_creative);
+//        mStopButton = (Button) view.findViewById(R.id.btn_listitem_stop);
+//        mRemoveButton = (Button) view.findViewById(R.id.btn_listitem_remove);
+//
+//        mContainer.removeAllViews();
+//        mContainer.addView(container);
+//
+//        // TODO: 2019/12/24 app 自己渲染
+//
+//        //可以被点击的view, 也可以把convertView放进来意味item可被点击
+//        List<View> clickViewList = new ArrayList<>();
+//        clickViewList.add(view);
+//        //触发创意广告的view（点击下载或拨打电话）
+//        List<View> creativeViewList = new ArrayList<>();
+//        creativeViewList.add(mCreativeButton);
+//        //如果需要点击图文区域也能进行下载或者拨打电话动作，请将图文区域的view传入
+////            creativeViewList.add(convertView);
+//        //重要! 这个涉及到广告计费，必须正确调用。convertView必须使用ViewGroup。
+//
+//        midasSelfRenderAd.bindViewToAdListener(this, container, clickViewList, creativeViewList, new AdOutChargeListener<AdInfo>(){
+//
+//            @Override
+//            public void adSuccess(AdInfo info) {
+//                LogUtils.e("adSuccess");
+//            }
+//
+//            @Override
+//            public void adError(AdInfo info, int errorCode, String errorMsg) {
+//                LogUtils.e("adError");
+//            }
+//
+//            @Override
+//            public void adExposed(AdInfo info) {
+//                LogUtils.e("adExposed");
+//            }
+//
+//            @Override
+//            public void adClicked(AdInfo info) {
+//                LogUtils.e("adClicked");
+//            }
+//        });
+//        mTitle.setText(midasSelfRenderAd.getTitle());
+//        mDescription.setText(midasSelfRenderAd.getDescription());
+//        mSource.setText(midasSelfRenderAd.getSource() == null ? "广告来源" : midasSelfRenderAd.getSource());
+//        String iconUrl = midasSelfRenderAd.getIconUrl();
+//        if (!TextUtils.isEmpty(iconUrl)) {
+//            Glide.with(this).load(iconUrl).into(mIcon);
+//        }
+//        List<String> imgs = midasSelfRenderAd.getImageList();
+//        if (imgs != null && imgs.size() > 0) {
+//            Glide.with(this).load(imgs.get(0)).into(mLargeImage);
+//        }
+////        Button adCreativeButton = adViewHolder.mCreativeButton;
+////        switch (ad.getInteractionType()) {
+////            case TTAdConstant.INTERACTION_TYPE_DOWNLOAD:
+////                //如果初始化ttAdManager.createAdNative(getApplicationContext())没有传入activity 则需要在此传activity，否则影响使用Dislike逻辑
+////                if (mContext instanceof Activity) {
+////                    ad.setActivityForDownloadApp((Activity) mContext);
+////                }
+////                adCreativeButton.setVisibility(View.VISIBLE);
+////                adViewHolder.mStopButton.setVisibility(View.VISIBLE);
+////                adViewHolder.mRemoveButton.setVisibility(View.VISIBLE);
+////                bindDownloadListener(adCreativeButton, adViewHolder, ad);
+////                //绑定下载状态控制器
+////                bindDownLoadStatusController(adViewHolder, ad);
+////                break;
+////            case TTAdConstant.INTERACTION_TYPE_DIAL:
+////                adCreativeButton.setVisibility(View.VISIBLE);
+////                adCreativeButton.setText("立即拨打");
+////                adViewHolder.mStopButton.setVisibility(View.GONE);
+////                adViewHolder.mRemoveButton.setVisibility(View.GONE);
+////                break;
+////            case TTAdConstant.INTERACTION_TYPE_LANDING_PAGE:
+////            case TTAdConstant.INTERACTION_TYPE_BROWSER:
+//////                    adCreativeButton.setVisibility(View.GONE);
+////                adCreativeButton.setVisibility(View.VISIBLE);
+////                adCreativeButton.setText("查看详情");
+////                adViewHolder.mStopButton.setVisibility(View.GONE);
+////                adViewHolder.mRemoveButton.setVisibility(View.GONE);
+////                break;
+////            default:
+////                adCreativeButton.setVisibility(View.GONE);
+////                adViewHolder.mStopButton.setVisibility(View.GONE);
+////                adViewHolder.mRemoveButton.setVisibility(View.GONE);
+////                TToast.show(mContext, "交互类型异常");
+////        }
+//    }
 }

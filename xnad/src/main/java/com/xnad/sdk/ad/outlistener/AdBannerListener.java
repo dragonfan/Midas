@@ -15,7 +15,7 @@ import com.xnad.sdk.ad.listener.AdBasicListener;
  *
  * @author anyabo
  */
-public interface AdBannerListener extends AdBasicListener {
+public interface AdBannerListener<T extends AdInfo> extends AdBasicListener<T> {
 
     /**
      * 广告曝光展示时的回调

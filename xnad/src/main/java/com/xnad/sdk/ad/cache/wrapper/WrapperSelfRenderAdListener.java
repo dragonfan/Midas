@@ -10,6 +10,7 @@ import com.xnad.sdk.ad.entity.MidasSelfRenderAd;
 import com.xnad.sdk.ad.listener.AdRequestListener;
 import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
 import com.xnad.sdk.ad.outlistener.AdSplashListener;
+import com.xnad.sdk.utils.ListenerUtils;
 import com.xnad.sdk.utils.LogUtils;
 import com.xnad.sdk.utils.StatisticUtils;
 
@@ -64,6 +65,7 @@ public class WrapperSelfRenderAdListener implements NativeADUnifiedListener {
             if (outListener != null) {
                 outListener.adSuccess(adInfo);
             }
+            ListenerUtils.showSelfRenderView(adInfo,outListener);
         }else{
             //添加到缓存
             ADTool.getInstance().cacheAd(this,adInfo);

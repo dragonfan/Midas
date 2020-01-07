@@ -41,6 +41,7 @@ import com.xnad.sdk.config.Constants;
 import com.xnad.sdk.config.ErrorCode;
 import com.xnad.sdk.config.TTAdManagerHolder;
 import com.xnad.sdk.utils.AppUtils;
+import com.xnad.sdk.utils.ListenerUtils;
 import com.xnad.sdk.utils.LogUtils;
 
 import java.util.List;
@@ -358,6 +359,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     if (adSelfRenderListener != null) {
                         adSelfRenderListener.adSuccess(info);
                     }
+                    ListenerUtils.showSelfRenderView(info,adSelfRenderListener);
                 } else {
                     //添加到缓存
                     ADTool.getInstance().cacheAd(ttFeedAd, info);
