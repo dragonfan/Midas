@@ -145,7 +145,7 @@ public class YlhSdkRequestManager extends SdkRequestManager {
         wrapperSelfRenderAdListener.setLoadListener(listener);
         wrapperSelfRenderAdListener.setOutListener(adListener);
 
-        NativeUnifiedAD mAdManager = new NativeUnifiedAD(activity, "1101152570", "6040749702835933", wrapperSelfRenderAdListener);
+        NativeUnifiedAD mAdManager = new NativeUnifiedAD(activity, midasSelfRenderAd.getAppId(), midasSelfRenderAd.getAdId(), wrapperSelfRenderAdListener);
         //设置视频时长
 //        mAdManager.setMaxVideoDuration(12);
 
