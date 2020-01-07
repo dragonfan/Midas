@@ -16,11 +16,7 @@ import com.qq.e.ads.nativ.NativeExpressAD;
 import com.qq.e.ads.nativ.NativeUnifiedAD;
 import com.qq.e.ads.rewardvideo.RewardVideoAD;
 import com.qq.e.ads.splash.SplashAD;
-import com.qq.e.ads.splash.SplashADListener;
-import com.qq.e.comm.constants.AdPatternType;
-import com.qq.e.comm.util.AdError;
 import com.xnad.sdk.ad.cache.ADTool;
-import com.xnad.sdk.ad.cache.AdContainerWrapper;
 import com.xnad.sdk.ad.cache.wrapper.WrapperBannerADListener;
 import com.xnad.sdk.ad.cache.wrapper.WrapperInterstitialADListener;
 import com.xnad.sdk.ad.cache.wrapper.WrapperNativeTemplateAdListener;
@@ -44,10 +40,6 @@ import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
 import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
 import com.xnad.sdk.ad.outlistener.AdSplashListener;
 import com.xnad.sdk.config.AdParameter;
-import com.xnad.sdk.utils.AppUtils;
-import com.xnad.sdk.utils.LogUtils;
-
-import java.util.List;
 
 /**
  * @ProjectName: MidasAdSdk
@@ -153,9 +145,10 @@ public class YlhSdkRequestManager extends SdkRequestManager {
         wrapperSelfRenderAdListener.setLoadListener(listener);
         wrapperSelfRenderAdListener.setOutListener(adListener);
 
-        NativeUnifiedAD mAdManager = new NativeUnifiedAD(activity, midasSelfRenderAd.getAppId(), midasSelfRenderAd.getAdId(), wrapperSelfRenderAdListener);
+        NativeUnifiedAD mAdManager = new NativeUnifiedAD(activity, "1101152570", "6040749702835933", wrapperSelfRenderAdListener);
         //设置视频时长
-        mAdManager.setMaxVideoDuration(12);
+//        mAdManager.setMaxVideoDuration(12);
+
 
         // 本次拉回的视频广告，在用户看来是否为自动播放的
         mAdManager.setVideoPlayPolicy(VideoOption.VideoPlayPolicy.AUTO);

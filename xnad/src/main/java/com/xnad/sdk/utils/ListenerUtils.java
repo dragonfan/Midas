@@ -1235,8 +1235,6 @@ public class ListenerUtils {
             }
             View view = LayoutInflater.from(activity).
                     inflate(adParameter.getLayoutId(),viewContainer,false);
-            viewContainer.removeAllViews();
-            viewContainer.addView(view);
             //小图标
             ImageView adSmallLogoIv = view.findViewById(R.id.ivAdIcon);
             String iconUrl = midasSelfRenderAd.getIconUrl();
@@ -1282,6 +1280,12 @@ public class ListenerUtils {
                 }
             }catch (Exception e){
             }
+
+            NativeAdContainer inflateView = new NativeAdContainer(AppUtils.getContext());
+            inflateView.addView(view,new ViewGroup.LayoutParams(-1, -1));
+            viewContainer.removeAllViews();
+            viewContainer.addView(inflateView);
+
             if (Constants.AdSourceType.ChuanShanJia.equals(adInfo.getMidasAd().getAdSource())) {
                 if (midasSelfRenderAd.getMidasAdPatternType() == 2) {
                     //视频广告
@@ -1345,7 +1349,39 @@ public class ListenerUtils {
                 if (nativeUnifiedADData == null) {
                     return;
                 }
+                nativeUnifiedADData.bindAdToView(activity, inflateView, null,
+                        clickViewList);
+                updateAdAction(tvBigButton,nativeUnifiedADData);
+                if (selfRenderListener != null){
+                    selfRenderListener.callbackView(view);
+                }
+                nativeUnifiedADData.setNativeAdEventListener(new NativeADEventListener() {
+                    @Override
+                    public void onADExposed() {
+                        if (selfRenderListener != null) {
+                            selfRenderListener.adExposed(adInfo);
+                        }
+                    }
 
+                    @Override
+                    public void onADClicked() {
+                        if (selfRenderListener != null) {
+                            selfRenderListener.adClicked(adInfo);
+                        }
+                    }
+
+                    @Override
+                    public void onADError(AdError adError) {
+                        if (selfRenderListener != null) {
+                            selfRenderListener.adError(adInfo, adError.getErrorCode(), adError.getErrorMsg());
+                        }
+                    }
+
+                    @Override
+                    public void onADStatusChanged() {
+                        updateAdAction(tvBigButton,nativeUnifiedADData);
+                    }
+                });
                 if (midasSelfRenderAd.getMidasAdPatternType() == 2) {
                     //视频广告
                     if (adImgIv != null){
@@ -1389,6 +1425,7 @@ public class ListenerUtils {
                             }
                             @Override
                             public void onVideoError(AdError error) {
+                                Log.e("AdError","error" + error.getErrorMsg());
                             }
                             @Override
                             public void onVideoStop() {
@@ -1408,38 +1445,6 @@ public class ListenerUtils {
                     }
                 }
 
-                nativeUnifiedADData.bindAdToView(activity, (NativeAdContainer) view, null,
-                        clickViewList);
-                updateAdAction(tvBigButton,nativeUnifiedADData);
-                nativeUnifiedADData.setNativeAdEventListener(new NativeADEventListener() {
-                    @Override
-                    public void onADExposed() {
-                        if (selfRenderListener != null) {
-                            selfRenderListener.adExposed(adInfo);
-                            selfRenderListener.callbackView(view);
-                        }
-
-                    }
-
-                    @Override
-                    public void onADClicked() {
-                        if (selfRenderListener != null) {
-                            selfRenderListener.adClicked(adInfo);
-                        }
-                    }
-
-                    @Override
-                    public void onADError(AdError adError) {
-                        if (selfRenderListener != null) {
-                            selfRenderListener.adError(adInfo, adError.getErrorCode(), adError.getErrorMsg());
-                        }
-                    }
-
-                    @Override
-                    public void onADStatusChanged() {
-                        updateAdAction(tvBigButton,nativeUnifiedADData);
-                    }
-                });
             }else {
 
             }
