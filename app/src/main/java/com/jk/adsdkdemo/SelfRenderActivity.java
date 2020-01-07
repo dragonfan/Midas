@@ -3,33 +3,18 @@ package com.jk.adsdkdemo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.jk.adsdkdemo.config.AdConfig;
 import com.jk.adsdkdemo.utils.LogUtils;
-import com.qq.e.ads.nativ.MediaView;
-import com.qq.e.ads.nativ.widget.NativeAdContainer;
 import com.xnad.sdk.MidasAdSdk;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.entity.MidasSelfRenderAd;
-import com.xnad.sdk.ad.outlistener.AdOutChargeListener;
 import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
 import com.xnad.sdk.config.AdParameter;
-import com.xnad.sdk.config.Constants;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @ProjectName: ${PROJECT_NAME}
@@ -217,7 +202,7 @@ public class SelfRenderActivity extends AppCompatActivity implements View.OnClic
 //        mContainer.removeAllViews();
 //        mContainer.addView(view);
 //    }
-
+//
 //    private void cshBindView(MidasSelfRenderAd midasSelfRenderAd) {
 //        ImageView mIcon;
 //        Button mCreativeButton;

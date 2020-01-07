@@ -1240,10 +1240,6 @@ public class ListenerUtils {
             adDescTv.setText(midasSelfRenderAd.getDescription());
             //大图片
             ImageView adImgIv = view.findViewById(R.id.ivAdImage);
-            List<String> imageList = midasSelfRenderAd.getImageList();
-            if (imageList != null && imageList.size() > 0) {
-                Glide.with(adParameter.getActivity()).load(imageList.get(0)).into(adImgIv);
-            }
 
             List<View> clickViewList = new ArrayList<>();
             clickViewList.add(view);
@@ -1261,6 +1257,18 @@ public class ListenerUtils {
             }catch (Exception e){
             }
             if (Constants.AdSourceType.ChuanShanJia.equals(adInfo.getMidasAd().getAdSource())) {
+                if (midasSelfRenderAd.getMidasAdPatternType() == 2) {
+                    //视频广告
+                    adImgIv.setVisibility(View.GONE);
+
+                }else {
+                    adImgIv.setVisibility(View.VISIBLE);
+                    List<String> imageList = midasSelfRenderAd.getImageList();
+                    if (imageList != null && imageList.size() > 0) {
+                        Glide.with(adParameter.getActivity()).load(imageList.get(0))
+                                .into(adImgIv);
+                    }
+                }
                 TTFeedAd ttFeedAd = midasSelfRenderAd.getTtFeedAd();
                 if (ttFeedAd == null) {
                     return;
@@ -1289,6 +1297,16 @@ public class ListenerUtils {
                     }
                 });
             }else if (Constants.AdSourceType.YouLiangHui.equals(adInfo.getMidasAd().getAdSource())){
+
+                if (midasSelfRenderAd.getMidasAdPatternType() == 2) {
+                    //视频广告
+                    adImgIv.setVisibility(View.GONE);
+
+                }else {
+                    adImgIv.setVisibility(View.VISIBLE);
+                    Glide.with(adParameter.getActivity()).load(midasSelfRenderAd.getImageUrl()).into(adImgIv);
+                }
+
                 NativeUnifiedADData nativeUnifiedADData = midasSelfRenderAd.getNativeUnifiedADData();
                 if (nativeUnifiedADData == null) {
                     return;
