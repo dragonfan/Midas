@@ -6,8 +6,10 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.jk.adsdkdemo.config.AdConfig;
 import com.jk.adsdkdemo.utils.LogUtils;
 import com.xnad.sdk.MidasAdSdk;
@@ -95,7 +97,9 @@ public class SelfRenderActivity extends AppCompatActivity implements View.OnClic
 
                     @Override
                     public void callbackView(View view) {
-
+                        ImageView animView = view.findViewById(R.id.ivAdAnim);
+                        Glide.with(view.getContext()).load(R.drawable.iv_ad_anim)
+                                .into(animView);
                     }
 
                     //请求广告成功回调

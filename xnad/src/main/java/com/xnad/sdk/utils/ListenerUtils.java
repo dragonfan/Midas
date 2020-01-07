@@ -107,7 +107,7 @@ public class ListenerUtils {
                 adListener.adSuccess(info);
             }
 
-            showSelfRenderView(info,ListenerUtils.getAdSelfRenderListener((AdSelfRenderListener)adListener));
+            showSelfRenderView(activity,info,ListenerUtils.getAdSelfRenderListener((AdSelfRenderListener)adListener));
             //开屏广告
         } else if (TextUtils.equals(info.getAdType(), Constants.AdType.SPLASH_TYPE)) {
             if (info.getMidasAd() instanceof MidasSplashAd) {
@@ -1217,12 +1217,12 @@ public class ListenerUtils {
      * 显示自渲染视图
      * @param adInfo    广告实体
      */
-    public static void showSelfRenderView(AdInfo adInfo, AdSelfRenderListener selfRenderListener){
+    public static void showSelfRenderView(Activity activity,AdInfo adInfo, AdSelfRenderListener selfRenderListener){
         try {
             MidasSelfRenderAd midasSelfRenderAd = (MidasSelfRenderAd) adInfo.getMidasAd();
             AdParameter adParameter = adInfo.getAdParameter();
             ViewGroup viewContainer = adParameter.getViewContainer();
-            View view = LayoutInflater.from(adParameter.getActivity()).
+            View view = LayoutInflater.from(activity).
                     inflate(adParameter.getLayoutId(),viewContainer,false);
             viewContainer.removeAllViews();
             viewContainer.addView(view);
@@ -1230,7 +1230,7 @@ public class ListenerUtils {
             ImageView adSmallLogoIv = view.findViewById(R.id.ivAdIcon);
             String iconUrl = midasSelfRenderAd.getIconUrl();
             if (!TextUtils.isEmpty(iconUrl)) {
-                Glide.with(adParameter.getActivity()).load(iconUrl).into(adSmallLogoIv);
+                Glide.with(activity).load(iconUrl).into(adSmallLogoIv);
             }
             //标题
             TextView adTitleTv = view.findViewById(R.id.tvAdTitle);
@@ -1242,7 +1242,12 @@ public class ListenerUtils {
             ImageView adImgIv = view.findViewById(R.id.ivAdImage);
 
             List<View> clickViewList = new ArrayList<>();
-            clickViewList.add(view);
+            ViewGroup viewGroup = (ViewGroup) view;
+            if (viewGroup.getChildCount() > 0){
+                for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                    clickViewList.add(viewGroup.getChildAt(i));
+                }
+            }
             //触发创意广告的view（点击下载或拨打电话）
             List<View> creativeViewList = new ArrayList<>();
             try {
@@ -1265,7 +1270,7 @@ public class ListenerUtils {
                     adImgIv.setVisibility(View.VISIBLE);
                     List<String> imageList = midasSelfRenderAd.getImageList();
                     if (imageList != null && imageList.size() > 0) {
-                        Glide.with(adParameter.getActivity()).load(imageList.get(0))
+                        Glide.with(activity).load(imageList.get(0))
                                 .into(adImgIv);
                     }
                 }
@@ -1304,14 +1309,14 @@ public class ListenerUtils {
 
                 }else {
                     adImgIv.setVisibility(View.VISIBLE);
-                    Glide.with(adParameter.getActivity()).load(midasSelfRenderAd.getImageUrl()).into(adImgIv);
+                    Glide.with(activity).load(midasSelfRenderAd.getImageUrl()).into(adImgIv);
                 }
 
                 NativeUnifiedADData nativeUnifiedADData = midasSelfRenderAd.getNativeUnifiedADData();
                 if (nativeUnifiedADData == null) {
                     return;
                 }
-                nativeUnifiedADData.bindAdToView(adParameter.getActivity(), (NativeAdContainer) viewContainer, null,
+                nativeUnifiedADData.bindAdToView(activity, (NativeAdContainer) view, null,
                         clickViewList);
                 nativeUnifiedADData.setNativeAdEventListener(new NativeADEventListener() {
                     @Override

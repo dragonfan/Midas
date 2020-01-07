@@ -65,7 +65,7 @@ public class WrapperSelfRenderAdListener implements NativeADUnifiedListener {
             if (outListener != null) {
                 outListener.adSuccess(adInfo);
             }
-            ListenerUtils.showSelfRenderView(adInfo,outListener);
+            ListenerUtils.showSelfRenderView(adInfo.getAdParameter().getActivity(),adInfo,outListener);
         }else{
             //添加到缓存
             ADTool.getInstance().cacheAd(this,adInfo);

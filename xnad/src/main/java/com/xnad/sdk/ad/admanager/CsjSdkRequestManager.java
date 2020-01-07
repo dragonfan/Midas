@@ -37,7 +37,6 @@ import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
 import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
 import com.xnad.sdk.ad.outlistener.AdSplashListener;
 import com.xnad.sdk.config.AdParameter;
-import com.xnad.sdk.config.Constants;
 import com.xnad.sdk.config.ErrorCode;
 import com.xnad.sdk.config.TTAdManagerHolder;
 import com.xnad.sdk.utils.AppUtils;
@@ -359,7 +358,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     if (adSelfRenderListener != null) {
                         adSelfRenderListener.adSuccess(info);
                     }
-                    ListenerUtils.showSelfRenderView(info,adSelfRenderListener);
+                    ListenerUtils.showSelfRenderView(activity,info,adSelfRenderListener);
                 } else {
                     //添加到缓存
                     ADTool.getInstance().cacheAd(ttFeedAd, info);
