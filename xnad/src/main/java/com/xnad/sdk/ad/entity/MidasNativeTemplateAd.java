@@ -41,7 +41,7 @@ public class MidasNativeTemplateAd extends MidasAd {
     private float width;
 
 
-    public void setAdOutChargeListener(AdOutChargeListener<AdInfo> adOutChargeListener){
+    public void setAdOutChargeListener(AdOutChargeListener adOutChargeListener){
         this.adOutChargeListener = adOutChargeListener;
     }
 

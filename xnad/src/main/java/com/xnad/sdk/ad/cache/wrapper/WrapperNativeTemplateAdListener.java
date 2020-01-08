@@ -200,7 +200,7 @@ public class WrapperNativeTemplateAdListener implements NativeExpressAD.NativeEx
      * @return
      */
     private AdOutChargeListener getNativeTemplateAdChargeListener(){
-        return new AdOutChargeListener<AdInfo>() {
+        return new AdOutChargeListener() {
 
             @Override
             public void adClose(AdInfo info) {
