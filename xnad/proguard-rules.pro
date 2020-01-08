@@ -112,3 +112,6 @@
 
 -keep class com.bun.miitmdid.** {*;}
 -keep class com.bun.miitmdid.core.** {*;}
+
+#优量汇FileProvider
+-keep class com.xnad.sdk.ad.provider.** {*;}
