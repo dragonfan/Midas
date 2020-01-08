@@ -521,6 +521,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                             boolean isExposed = false;
                             @Override
                             public void onAdClicked(View view, int i) {
+                                LogUtils.d("onAdClicked");
                                 if (adSplashListener != null) {
                                     adSplashListener.adClicked(adInfo);
                                 }
@@ -528,6 +529,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
 
                             @Override
                             public void onAdShow(View view, int i) {
+                                LogUtils.d("onAdShow");
                                 if (adSplashListener != null) {
                                     adSplashListener.adExposed(adInfo);
                                 }
@@ -540,6 +542,10 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                             //开屏广告跳过
                             @Override
                             public void onAdSkip() {
+                                try {
+                                    adInfo.getAdParameter().getViewContainer().removeAllViews();
+                                } catch (Exception e) {
+                                }
                                 if (adSplashListener != null) {
                                     adSplashListener.adClose(adInfo);
                                 }
@@ -548,6 +554,11 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                             //倒计时结束
                             @Override
                             public void onAdTimeOver() {
+                                try {
+                                    adInfo.getAdParameter().getViewContainer().removeAllViews();
+                                } catch (Exception e) {
+                                }
+                                LogUtils.d("onAdTimeOver");
                                 if (adSplashListener != null) {
                                     adSplashListener.adClose(adInfo);
                                 }

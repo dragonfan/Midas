@@ -11,6 +11,7 @@ import com.xnad.sdk.config.Constants;
 import com.xnad.sdk.config.ErrorCode;
 import com.xnad.sdk.http.protocol.Protocal;
 import com.xnad.sdk.utils.AppUtils;
+import com.xnad.sdk.utils.LogUtils;
 import com.xnad.sdk.utils.MacUtils;
 import com.xnad.sdk.utils.SpUtils;
 
@@ -74,7 +75,7 @@ public class XnIdProvider {
      * 激活5秒后请求xnId接口
      */
     public void requestDelayFiveSecondAfterActive() {
-        Log.e("requestXnId", "requestDelayFiveSecondAfterActive");
+        LogUtils.e("requestXnId", "requestDelayFiveSecondAfterActive");
         mHandler.postDelayed(() -> requestXnId(true), ACTIVE_OBTAIN_XN_ID_DELAY_TIME);
     }
 
@@ -123,11 +124,11 @@ public class XnIdProvider {
      */
     public void requestXnId(boolean isNeedLoop) {
         try {
-            Log.e("requestXnId", "requestXnId" + isNeedLoop);
+            LogUtils.e("requestXnId", "requestXnId" + isNeedLoop);
             if (isNeedLoop && mRequestCount >= MAX_REQUEST_COUNT){
                 return;
             }
-            Log.e("requestXnId", "requestXnId" + mRequestCount);
+            LogUtils.e("requestXnId", "requestXnId" + mRequestCount);
             JSONObject requestJson = new JSONObject();
             String oaId = !TextUtils.isEmpty(NiuDataAPI.getOaid()) ? NiuDataAPI.getOaid() : "";
             requestJson.put("imei", AppUtils.getIMEI());
@@ -159,7 +160,7 @@ public class XnIdProvider {
                         if (response.code() == ErrorCode.HTTP_RESPONSE_SUCCESS_CODE.errorCode) {
                             try {
                                 String jsonStr = response.body().string();
-                                Log.e("onResponse", "jsonStr : " + jsonStr);
+                                LogUtils.e("onResponse", "jsonStr : " + jsonStr);
 
                                 JSONObject jsonObject = new JSONObject(jsonStr);
                                 int code = jsonObject.getInt("code");
@@ -186,7 +187,7 @@ public class XnIdProvider {
                 }
             });
         } catch ( Exception e) {
-            Log.e("onResponse", "Exception : " + e.getMessage());
+            LogUtils.e("onResponse", "Exception : " + e.getMessage());
         }
     }
 

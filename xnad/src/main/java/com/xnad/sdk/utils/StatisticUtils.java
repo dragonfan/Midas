@@ -74,7 +74,7 @@ public class StatisticUtils {
                 //如果是激活事件
                 if (TextUtils.equals("active", eventCode)) {
                     //网络请求获取xnId
-                    Log.e("requestXnId", "active"+Thread.currentThread().getName());
+                    LogUtils.e("requestXnId", "active"+Thread.currentThread().getName());
                     XnIdProvider.getInstance().requestDelayFiveSecondAfterActive();
                 }
             }
@@ -186,7 +186,7 @@ public class StatisticUtils {
             XnIdProvider.getInstance().requestXnId(false);
         }
         String sessionId = getNiuDateUUID() + beginTime;
-        Log.d("SingleStatisticBegin",sessionId);
+        LogUtils.d("SingleStatisticBegin",sessionId);
         if (adInfo != null){
             StatisticBaseProperties baseProperties
                     = new StatisticBaseProperties(xnId, sessionId);

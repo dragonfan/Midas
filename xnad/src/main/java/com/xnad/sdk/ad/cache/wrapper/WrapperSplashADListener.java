@@ -94,9 +94,7 @@ public class WrapperSplashADListener implements SplashADListener {
     //倒计时回调，返回广告还将被展示的剩余时间，单位是 ms
     @Override
     public void onADTick(long l) {
-        if (outListener != null) {
-            outListener.adTick(adInfo, l);
-        }
+
     }
 
     //广告曝光时调用，此处的曝光不等于有效曝光（如展示时长未满足）

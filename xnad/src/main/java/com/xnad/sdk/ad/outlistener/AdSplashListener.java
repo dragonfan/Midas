@@ -20,12 +20,12 @@ import com.xnad.sdk.ad.listener.AdChargeListener;
  */
 public interface AdSplashListener extends AdChargeListener<AdInfo> {
 
-    /**
-     * 倒计时回调，返回广告还将被展示的剩余时间，单位是 ms
-     * @param info 广告信息
-     * @param time 时间
-     */
-    default void adTick(AdInfo info, long time) {
-
-    }
+//    /**
+//     * 倒计时回调，返回广告还将被展示的剩余时间，单位是 ms
+//     * @param info 广告信息
+//     * @param time 时间
+//     */
+//    default void adTick(AdInfo info, long time) {
+//
+//    }
 }

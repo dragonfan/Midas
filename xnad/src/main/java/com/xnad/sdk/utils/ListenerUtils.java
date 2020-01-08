@@ -627,14 +627,23 @@ public class ListenerUtils {
             //开屏广告跳过
             @Override
             public void onAdSkip() {
+                try {
+                    adInfo.getAdParameter().getViewContainer().removeAllViews();
+                } catch (Exception e) {
+                }
                 if (adListener != null) {
                     adListener.adClose(adInfo);
                 }
+
             }
 
             //倒计时结束
             @Override
             public void onAdTimeOver() {
+                try {
+                    adInfo.getAdParameter().getViewContainer().removeAllViews();
+                } catch (Exception e) {
+                }
                 if (adListener != null) {
                     adListener.adClose(adInfo);
                 }
@@ -713,7 +722,9 @@ public class ListenerUtils {
             WrapperInterstitialADListener listener = (WrapperInterstitialADListener) adContainer.getListener();
             listener.setOutListener(outListener);
         }
-        unifiedInterstitialAd.showAsPopupWindow(activity);
+        unifiedInterstitialAd.show(activity);
+
+
     }
 
 
@@ -832,13 +843,6 @@ public class ListenerUtils {
                 StatisticUtils.advertisingClick(info, intervalTime);
             }
 
-
-            @Override
-            public void adTick(AdInfo info, long l) {
-                if (listener != null) {
-                    listener.adTick(info, l);
-                }
-            }
 
             /**
              * 广告offer展示
@@ -1304,7 +1308,7 @@ public class ListenerUtils {
                                     .into(adImgIv);
                         }
                     }
-                    Log.e("midasSelfRenderAd","穿山甲视频"+ imageList.get(0));
+                    LogUtils.e("midasSelfRenderAd","穿山甲视频"+ imageList.get(0));
                 } else {
 //                    adImgIv.setVisibility(View.VISIBLE);
                     List<String> imageList = midasSelfRenderAd.getImageList();
@@ -1314,7 +1318,7 @@ public class ListenerUtils {
                                     .into(adImgIv);
                         }
                     }
-                    Log.e("midasSelfRenderAd","穿山甲图片" + imageList.get(0));
+                    LogUtils.e("midasSelfRenderAd","穿山甲图片" + imageList.get(0));
                 }
                 TTFeedAd ttFeedAd = midasSelfRenderAd.getTtFeedAd();
                 if (ttFeedAd == null) {
@@ -1399,7 +1403,7 @@ public class ListenerUtils {
                 });
                 //视频广告
                 if (midasSelfRenderAd.getMidasAdPatternType() == 2) {
-                    Log.e("midasSelfRenderAd","优量汇视频");
+                    LogUtils.e("midasSelfRenderAd","优量汇视频");
                     if (adImgIv != null) {
                         adImgIv.setVisibility(View.GONE);
                     }
@@ -1456,7 +1460,7 @@ public class ListenerUtils {
 
                             @Override
                             public void onVideoError(AdError error) {
-                                Log.e("AdError", "error" + error.getErrorMsg());
+                                LogUtils.e("AdError", "error" + error.getErrorMsg());
                             }
 
                             @Override
@@ -1469,7 +1473,7 @@ public class ListenerUtils {
                         });
                     }
                 } else {
-                    Log.e("midasSelfRenderAd","优量汇图片" + midasSelfRenderAd.getImageUrl());
+                    LogUtils.e("midasSelfRenderAd","优量汇图片" + midasSelfRenderAd.getImageUrl());
                     if (adImgIv != null) {
                         adImgIv.setVisibility(View.VISIBLE);
                         Glide.with(activity).load(midasSelfRenderAd.getImageUrl()).into(adImgIv);
@@ -1483,7 +1487,7 @@ public class ListenerUtils {
 
             }
         } catch (Exception e) {
-            Log.e("SdkRequestManager", "" + e.getMessage());
+            LogUtils.e("SdkRequestManager", "" + e.getMessage());
         }
     }
 

@@ -19,6 +19,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.xnad.sdk.BuildConfig;
+import com.xnad.sdk.MidasAdSdk;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -656,7 +657,7 @@ public class LogUtils {
         private String  mDefaultDir;// The default storage directory of log.
         private String  mDir;       // The storage directory of log.
         private String  mFilePrefix        = "util";// The file prefix of log.
-        private boolean mLogSwitch         = BuildConfig.DEBUG;  // The switch of log.
+        private boolean mLogSwitch         = !MidasAdSdk.isFormal();  // The switch of log.
         private boolean mLog2ConsoleSwitch = true;  // The logcat's switch of log.
         private String  mGlobalTag         = null;  // The global tag of log.
         private boolean mTagIsSpace        = true;  // The global tag is space.
