@@ -2,17 +2,14 @@ package com.xnad.sdk.ad.cache.wrapper;
 
 import com.qq.e.ads.nativ.NativeADUnifiedListener;
 import com.qq.e.ads.nativ.NativeUnifiedADData;
-import com.qq.e.ads.splash.SplashADListener;
+import com.qq.e.ads.nativ.VideoPreloadListener;
 import com.qq.e.comm.util.AdError;
 import com.xnad.sdk.ad.cache.ADTool;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.entity.MidasSelfRenderAd;
 import com.xnad.sdk.ad.listener.AdRequestListener;
 import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
-import com.xnad.sdk.ad.outlistener.AdSplashListener;
 import com.xnad.sdk.utils.ListenerUtils;
-import com.xnad.sdk.utils.LogUtils;
-import com.xnad.sdk.utils.StatisticUtils;
 
 import java.util.List;
 
@@ -59,7 +56,6 @@ public class WrapperSelfRenderAdListener implements NativeADUnifiedListener {
         }
         MidasSelfRenderAd midasSelfRenderAd = (MidasSelfRenderAd) adInfo.getMidasAd();
         midasSelfRenderAd.setNativeUnifiedADData(nativeUnifiedADData);
-
         //如果需要显示才回调监听,否则直接缓存起来
         if (adRequestListener.adShow(adInfo)) {
             if (outListener != null) {
@@ -68,15 +64,21 @@ public class WrapperSelfRenderAdListener implements NativeADUnifiedListener {
             ListenerUtils.showSelfRenderView(adInfo.getAdParameter().getActivity(),adInfo,outListener);
         }else{
             //添加到缓存
+            nativeUnifiedADData.preloadVideo(new VideoPreloadListener() {
+                @Override
+                public void onVideoCached() {
+
+                }
+                @Override
+                public void onVideoCacheFailed(int i, String s) {
+                }
+            });
             ADTool.getInstance().cacheAd(this,adInfo);
         }
-
-
         //请求成功回调
         if (adRequestListener != null) {
             adRequestListener.adSuccess(adInfo);
         }
-
 
     }
 

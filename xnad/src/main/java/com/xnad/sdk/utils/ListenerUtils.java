@@ -1294,12 +1294,9 @@ public class ListenerUtils {
             if (Constants.AdSourceType.ChuanShanJia.equals(adInfo.getMidasAd().getAdSource())) {
                 if (midasSelfRenderAd.getMidasAdPatternType() == AdPatternType.NATIVE_VIDEO) {
                     //视频广告
-                    if (adImgIv != null) {
-                        adImgIv.setVisibility(View.GONE);
-                    }
-
-                } else {
-                    adImgIv.setVisibility(View.VISIBLE);
+//                    if (adImgIv != null) {
+//                        adImgIv.setVisibility(View.GONE);
+//                    }
                     List<String> imageList = midasSelfRenderAd.getImageList();
                     if (imageList != null && imageList.size() > 0) {
                         if (adImgIv != null) {
@@ -1307,6 +1304,17 @@ public class ListenerUtils {
                                     .into(adImgIv);
                         }
                     }
+                    Log.e("midasSelfRenderAd","穿山甲视频"+ imageList.get(0));
+                } else {
+//                    adImgIv.setVisibility(View.VISIBLE);
+                    List<String> imageList = midasSelfRenderAd.getImageList();
+                    if (imageList != null && imageList.size() > 0) {
+                        if (adImgIv != null) {
+                            Glide.with(activity).load(imageList.get(0))
+                                    .into(adImgIv);
+                        }
+                    }
+                    Log.e("midasSelfRenderAd","穿山甲图片" + imageList.get(0));
                 }
                 TTFeedAd ttFeedAd = midasSelfRenderAd.getTtFeedAd();
                 if (ttFeedAd == null) {
@@ -1389,6 +1397,7 @@ public class ListenerUtils {
                 });
                 //视频广告
                 if (midasSelfRenderAd.getMidasAdPatternType() == AdPatternType.NATIVE_VIDEO) {
+                    Log.e("midasSelfRenderAd","优量汇视频");
                     if (adImgIv != null) {
                         adImgIv.setVisibility(View.GONE);
                     }
@@ -1457,6 +1466,7 @@ public class ListenerUtils {
                         });
                     }
                 } else {
+                    Log.e("midasSelfRenderAd","优量汇图片" + midasSelfRenderAd.getImageUrl());
                     if (adImgIv != null) {
                         adImgIv.setVisibility(View.VISIBLE);
                         Glide.with(activity).load(midasSelfRenderAd.getImageUrl()).into(adImgIv);
