@@ -96,6 +96,7 @@ public final class MidasAdSdk {
 
             @Override
             public void onActivityResumed(Activity activity) {
+                //修复自渲染视频广告的播放暂停,不能点击的BUG
                 if (activity!=null) {
                     String activityName = activity.getClass().getSimpleName();
                     NativeUnifiedADData ad = ADTool.getInstance().getSelfRenderAdCache(activityName);
@@ -122,6 +123,7 @@ public final class MidasAdSdk {
 
             @Override
             public void onActivityDestroyed(Activity activity) {
+                //修复自渲染视频广告的播放暂停,不能点击的BUG
                 if (activity!=null) {
                     String activityName = activity.getClass().getSimpleName();
                     NativeUnifiedADData ad = ADTool.getInstance().getSelfRenderAdCache(activityName);
