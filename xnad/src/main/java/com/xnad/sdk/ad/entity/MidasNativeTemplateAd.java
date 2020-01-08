@@ -1,7 +1,5 @@
 package com.xnad.sdk.ad.entity;
 
-import android.view.View;
-
 import com.bytedance.sdk.openadsdk.TTNativeExpressAd;
 import com.qq.e.ads.nativ.NativeExpressAD;
 import com.qq.e.ads.nativ.NativeExpressADView;
