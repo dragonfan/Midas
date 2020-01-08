@@ -1,5 +1,7 @@
 package com.xnad.sdk.config;
 
+import android.os.Build;
+
 /**
  * Desc:
  * <p>
@@ -39,7 +41,10 @@ public class AdConfig {
      */
     private String serverUrl;
 
-
+    /**
+     * 根据Build 创建一个广告配置
+     * @param build
+     */
     public AdConfig(Build build) {
         super();
         mAppId = build.mAppId;
@@ -50,27 +55,50 @@ public class AdConfig {
         serverUrl = build.serverUrl;
     }
 
-
+    /**
+     * 获取应用 ID
+     * @return 应用 ID
+     */
     public String getAppId() {
         return mAppId;
     }
 
+    /**
+     * 获取应用渠道号
+     * @return 应用渠道号
+     */
     public String getChannel() {
         return mChannel;
     }
 
+    /**
+     * 是否是正式环境
+     * @return true对应生产环境
+     */
     public boolean isIsFormal() {
         return mIsFormal;
     }
 
+    /**
+     * 获取穿山甲ID
+     * @return 穿山甲ID
+     */
     public String getCsjAppId() {
         return csjAppId;
     }
 
+    /**
+     * 获取产品ID
+     * @return 产品ID
+     */
     public String getProductId() {
         return mProductId;
     }
 
+    /**
+     * 获取服务器地址
+     * @return 小牛埋点 服务器地址
+     */
     public String getServerUrl() {
         return serverUrl;
     }
@@ -121,10 +149,6 @@ public class AdConfig {
             return this;
         }
 
-        public String getProductId() {
-            return mProductId;
-        }
-
         public String getCsjAppId() {
             return csjAppId;
         }
@@ -133,16 +157,19 @@ public class AdConfig {
             this.csjAppId = csjAppId;
             return this;
         }
-
+        /**
+         * 设置产品ID
+         * @return 产品ID
+         */
         public Build setProductId(String productId) {
             this.mProductId = productId;
             return this;
         }
 
-        public String getServerUrl() {
-            return serverUrl;
-        }
-
+        /**
+         * 设置服务器地址
+         * @return 小牛埋点 服务器地址
+         */
         public Build setServerUrl(String serverUrl) {
             this.serverUrl = serverUrl;
             return this;

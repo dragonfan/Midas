@@ -321,9 +321,6 @@ public class MidasSelfRenderAd extends MidasAd{
      */
     public void resume(){
         try {
-            if (!Constants.AdSourceType.YouLiangHui.equals(getSource())) {
-                return;
-            }
             if (nativeUnifiedADData != null) {
                 nativeUnifiedADData.resume();
             }

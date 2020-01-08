@@ -3,6 +3,7 @@ package com.xnad.sdk.ad.cache;
 import android.app.Activity;
 import android.text.TextUtils;
 
+import com.qq.e.ads.nativ.NativeUnifiedADData;
 import com.qq.e.ads.splash.SplashAD;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.entity.MidasSplashAd;
@@ -31,6 +32,8 @@ public class ADTool {
      * 缓存
      */
     HashMap<String, AdContainerWrapper> mCache = new HashMap<>();
+    HashMap<String, NativeUnifiedADData> mSelfRenderAdCache = new HashMap<>();
+
     private static final ADTool ourInstance = new ADTool();
 
     public static ADTool getInstance() {
@@ -93,4 +96,21 @@ public class ADTool {
         ListenerUtils.setListenerAndShow(activity, adContainerWrapper, adRequestListener, adListener);
     }
 
+    /**
+     * 缓存当前正在播放的
+     * @param key 当前界面的名字
+     * @param value 广告实体
+     */
+    public void cachePlaySelfRenderAd(String key, NativeUnifiedADData value) {
+        mSelfRenderAdCache.put(key,value);
+    }
+
+    /**
+     * key
+     * @param activityName 界面名称
+     * @return
+     */
+    public NativeUnifiedADData getSelfRenderAdCache(String activityName) {
+        return  mSelfRenderAdCache.get(activityName);
+    }
 }

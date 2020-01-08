@@ -1,6 +1,7 @@
 package com.xnad.sdk.utils;
 
 import android.app.Activity;
+import android.app.Application;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -1354,6 +1355,8 @@ public class ListenerUtils {
                 if (nativeUnifiedAdData == null) {
                     return;
                 }
+
+
                 nativeUnifiedAdData.bindAdToView(activity, inflateView, null,
                         clickViewList);
                 updateAdAction(tvBigButton, nativeUnifiedAdData);
@@ -1393,6 +1396,7 @@ public class ListenerUtils {
                         adImgIv.setVisibility(View.GONE);
                     }
                     if (mediaView != null) {
+                        ADTool.getInstance().cachePlaySelfRenderAd(activity.getClass().getSimpleName(),nativeUnifiedAdData);
                         mediaView.setVisibility(View.VISIBLE);
                         VideoOption videoOption = new VideoOption.Builder()
                                 //总是自动播放

@@ -1,9 +1,14 @@
 package com.xnad.sdk;
 
+import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
+import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.qq.e.ads.cfg.MultiProcessFlag;
+import com.qq.e.ads.nativ.NativeUnifiedADData;
+import com.xnad.sdk.ad.cache.ADTool;
 import com.xnad.sdk.ad.factory.MidasAdManagerFactory;
 import com.xnad.sdk.ad.admanager.AdManager;
 import com.xnad.sdk.config.AdConfig;
@@ -71,6 +76,61 @@ public final class MidasAdSdk {
             SpUtils.putBoolean(Constants.SpUtils.FIRST_REPORT_IMEI, true);
         }
         LogUtils.d("Midas and niuDate sdk init time=" + (System.currentTimeMillis() - beginTime));
+
+
+        registerActivityLifecycleCallbacks(context);
+    }
+
+    private static void registerActivityLifecycleCallbacks(Context context) {
+        Application mApplication = (Application) context;
+        mApplication.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+
+            }
+
+            @Override
+            public void onActivityStarted(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityResumed(Activity activity) {
+                if (activity!=null) {
+                    String activityName = activity.getClass().getSimpleName();
+                    NativeUnifiedADData ad = ADTool.getInstance().getSelfRenderAdCache(activityName);
+                    if (ad!=null) {
+                        ad.resume();
+                    }
+                }
+            }
+
+            @Override
+            public void onActivityPaused(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityStopped(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+                if (activity!=null) {
+                    String activityName = activity.getClass().getSimpleName();
+                    NativeUnifiedADData ad = ADTool.getInstance().getSelfRenderAdCache(activityName);
+                    if (ad!=null) {
+                        ad.destroy();
+                    }
+                }
+            }
+        });
     }
 
     /**
