@@ -64,6 +64,7 @@ public class RewardVideoActivity extends AppCompatActivity implements View.OnCli
                 //金币数量
                 .setRewardAmount(3)
                 .build();
+        LogUtils.d(TAG, "-----start-----");
         MidasAdSdk.getAdsManger().loadMidasRewardVideoAd(adParameter, new AdRewardVideoListener() {
             //激励奖励回调
             @Override

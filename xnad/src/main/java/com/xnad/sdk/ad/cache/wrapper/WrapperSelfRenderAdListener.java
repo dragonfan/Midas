@@ -9,6 +9,7 @@ import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.entity.MidasSelfRenderAd;
 import com.xnad.sdk.ad.listener.AdRequestListener;
 import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
+import com.xnad.sdk.utils.AppUtils;
 import com.xnad.sdk.utils.ListenerUtils;
 
 import java.util.List;
@@ -63,6 +64,8 @@ public class WrapperSelfRenderAdListener implements NativeADUnifiedListener {
             }
             ListenerUtils.showSelfRenderView(adInfo.getAdParameter().getActivity(),adInfo,outListener);
         }else{
+
+            AppUtils.cacheImages(nativeUnifiedADData.getImgList());
             //添加到缓存
             nativeUnifiedADData.preloadVideo(new VideoPreloadListener() {
                 @Override

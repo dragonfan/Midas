@@ -360,6 +360,7 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     }
                     ListenerUtils.showSelfRenderView(activity,info,adSelfRenderListener);
                 } else {
+                    AppUtils.cacheImages(midasSelfRenderAd.getImageList());
                     //添加到缓存
                     ADTool.getInstance().cacheAd(ttFeedAd, info);
                 }
@@ -883,18 +884,4 @@ public class CsjSdkRequestManager extends SdkRequestManager {
         }
     }
 
-    private void caheImage(TTFeedAd ttFeedAd) {
-        if (ttFeedAd == null) {
-            return;
-        }
-        TTImage image = ttFeedAd.getImageList().get(0);
-        TTImage icon = ttFeedAd.getIcon();
-        if (image != null && image.isValid() && icon != null && icon.isValid()) {
-            try {
-                cacheImg(image.getImageUrl(), icon.getImageUrl());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
 }

@@ -3,16 +3,24 @@ package com.xnad.sdk.utils;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
+
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -101,6 +109,7 @@ public class AppUtils {
 
     /**
      * 获取 Android ID
+     *
      * @return androidID
      */
     public static String getAndroidID() {
@@ -167,15 +176,21 @@ public class AppUtils {
     }
 
 
-
+    /**
+     * 广告曝光后计数加一
+     *
+     * @param key
+     */
     public static void putAdCount(String key) {
         int adCount = SpUtils.getInt(getKey(key), 0);
         SpUtils.putInt(getKey(key), adCount++);
     }
+
     public static int getAdCount(String key) {
         return SpUtils.getInt(getKey(key), 0);
 
     }
+
     private static String getKey(String key) {
         return getDay() + "_" + key;
     }
@@ -193,4 +208,27 @@ public class AppUtils {
             return null;
         }
     }
+
+
+    /**
+     * 缓存图片集合
+     * @param imgList
+     */
+    public static void cacheImages(List<String> imgList) {
+        if (imgList==null) {
+            return;
+        }
+        for (String s : imgList) {
+            Glide.with(AppUtils.getContext())
+                    .load(s)
+                    .into(new SimpleTarget<Drawable>() {
+                        @Override
+                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                            LogUtils.e("cache success");
+                        }
+                    });
+        }
+    }
+
+
 }
