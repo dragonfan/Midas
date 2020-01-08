@@ -30,7 +30,6 @@ import com.qq.e.ads.nativ.NativeUnifiedADData;
 import com.qq.e.ads.nativ.widget.NativeAdContainer;
 import com.qq.e.ads.rewardvideo.RewardVideoAD;
 import com.qq.e.ads.splash.SplashAD;
-import com.qq.e.comm.constants.AdPatternType;
 import com.qq.e.comm.util.AdError;
 import com.xnad.sdk.R;
 import com.xnad.sdk.ad.cache.ADTool;
@@ -1292,7 +1291,7 @@ public class ListenerUtils {
             viewContainer.addView(inflateView);
 
             if (Constants.AdSourceType.ChuanShanJia.equals(adInfo.getMidasAd().getAdSource())) {
-                if (midasSelfRenderAd.getMidasAdPatternType() == AdPatternType.NATIVE_VIDEO) {
+                if (midasSelfRenderAd.getMidasAdPatternType() == 2) {
                     //视频广告
 //                    if (adImgIv != null) {
 //                        adImgIv.setVisibility(View.GONE);
@@ -1396,7 +1395,7 @@ public class ListenerUtils {
                     }
                 });
                 //视频广告
-                if (midasSelfRenderAd.getMidasAdPatternType() == AdPatternType.NATIVE_VIDEO) {
+                if (midasSelfRenderAd.getMidasAdPatternType() == 2) {
                     Log.e("midasSelfRenderAd","优量汇视频");
                     if (adImgIv != null) {
                         adImgIv.setVisibility(View.GONE);
