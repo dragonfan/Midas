@@ -85,7 +85,7 @@ public class FeedTemplateActivity extends AppCompatActivity implements View.OnCl
                         //模板广告宽度
                         .setWidth(fWidth)
                         .build();
-                MidasAdSdk.getAdsManger().loadMidasNativeTemplateAd(adParameter, new AdNativeTemplateListener<AdInfo>(){
+                MidasAdSdk.getAdsManger().loadMidasNativeTemplateAd(adParameter, new AdNativeTemplateListener(){
                     //请求广告成功回调
                     @Override
                     public void adSuccess(AdInfo info) {
@@ -108,7 +108,7 @@ public class FeedTemplateActivity extends AppCompatActivity implements View.OnCl
      */
     private void renderAd(MidasNativeTemplateAd midasNativeTemplateAd){
         //设置广告监听
-        midasNativeTemplateAd.setAdOutChargeListener(new AdOutChargeListener<AdInfo>() {
+        midasNativeTemplateAd.setAdOutChargeListener(new AdOutChargeListener() {
             //加载广告成功
             @Override
             public void adSuccess(AdInfo info) {

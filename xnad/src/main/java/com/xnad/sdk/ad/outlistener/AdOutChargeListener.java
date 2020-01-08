@@ -15,5 +15,5 @@ import com.xnad.sdk.ad.listener.AdChargeListener;
  * @UpdateRemark: 更新说明：
  * @Version: 1.0
  */
-public interface AdOutChargeListener<T extends AdInfo> extends AdChargeListener<T> {
+public interface AdOutChargeListener extends AdChargeListener<AdInfo> {
 }

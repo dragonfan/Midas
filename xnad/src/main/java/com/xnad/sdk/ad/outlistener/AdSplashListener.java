@@ -2,6 +2,7 @@ package com.xnad.sdk.ad.outlistener;
 
 import android.view.ViewGroup;
 
+import com.xiaoniu.statistic.T;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.listener.AdChargeListener;
 
@@ -17,13 +18,14 @@ import com.xnad.sdk.ad.listener.AdChargeListener;
  * @UpdateRemark: 更新说明：
  * @Version: 1.0
  */
-public interface AdSplashListener<T extends AdInfo> extends AdChargeListener<T> {
+public interface AdSplashListener extends AdChargeListener<AdInfo> {
 
     /**
      * 倒计时回调，返回广告还将被展示的剩余时间，单位是 ms
-     * @param l
+     * @param info 广告信息
+     * @param time 时间
      */
-    default void adTick(T info, long l) {
+    default void adTick(AdInfo info, long time) {
 
     }
 }

@@ -1,5 +1,6 @@
 package com.xnad.sdk.ad.outlistener;
 
+import com.xiaoniu.statistic.T;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.listener.AdChargeListener;
 
@@ -9,13 +10,13 @@ import com.xnad.sdk.ad.listener.AdChargeListener;
  * @author fanhailong
  * @since 2019/11/17 13:52
  */
-public interface AdFullScreenVideoListener<T extends AdInfo> extends AdChargeListener<T> {
+public interface AdFullScreenVideoListener extends AdChargeListener<AdInfo> {
 
     /**
      * 视频播放完回调
      * @param info
      */
-    void adVideoComplete(T info);
+    void adVideoComplete(AdInfo info);
 
-    void adSkippedVideo(T info);
+    void adSkippedVideo(AdInfo info);
 }

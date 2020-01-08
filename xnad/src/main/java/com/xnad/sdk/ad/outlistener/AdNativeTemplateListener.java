@@ -15,6 +15,6 @@ import com.xnad.sdk.ad.listener.AdBasicListener;
  * @UpdateRemark: 更新说明：
  * @Version: 1.0
  */
-public interface AdNativeTemplateListener<T extends AdInfo> extends AdBasicListener<T> {
+public interface AdNativeTemplateListener extends AdBasicListener<AdInfo> {
 
 }

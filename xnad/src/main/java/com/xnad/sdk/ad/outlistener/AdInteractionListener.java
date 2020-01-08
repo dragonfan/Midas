@@ -1,5 +1,6 @@
 package com.xnad.sdk.ad.outlistener;
 
+import com.xiaoniu.statistic.T;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.listener.AdChargeListener;
 
@@ -15,5 +16,5 @@ import com.xnad.sdk.ad.listener.AdChargeListener;
  * @UpdateRemark: 更新说明：
  * @Version: 1.0
  */
-public interface AdInteractionListener<T extends AdInfo> extends AdChargeListener<T> {
+public interface AdInteractionListener extends AdChargeListener<AdInfo> {
 }

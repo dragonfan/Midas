@@ -1,5 +1,6 @@
 package com.xnad.sdk.ad.outlistener;
 
+import com.xiaoniu.statistic.T;
 import com.xnad.sdk.ad.entity.AdInfo;
 import com.xnad.sdk.ad.listener.AdBasicListener;
 
@@ -15,7 +16,7 @@ import com.xnad.sdk.ad.listener.AdBasicListener;
  *
  * @author anyabo
  */
-public interface AdBannerListener<T extends AdInfo> extends AdBasicListener<T> {
+public interface AdBannerListener extends AdBasicListener<AdInfo> {
 
     /**
      * 广告曝光展示时的回调

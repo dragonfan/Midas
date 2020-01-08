@@ -58,7 +58,7 @@ public class FullScreenVideoActivity extends AppCompatActivity implements View.O
         //传参，上下文和position（广告后台生成）
         AdParameter adParameter = new AdParameter.Builder(this, position)
                 .build();
-        MidasAdSdk.getAdsManger().loadMidasFullScreenVideoAd(adParameter, new AdFullScreenVideoListener<AdInfo>() {
+        MidasAdSdk.getAdsManger().loadMidasFullScreenVideoAd(adParameter, new AdFullScreenVideoListener() {
             //广告播放完成回调
             @Override
             public void adVideoComplete(AdInfo info) {

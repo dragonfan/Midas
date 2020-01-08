@@ -84,7 +84,7 @@ public class SelfRenderActivity extends AppCompatActivity implements View.OnClic
                         .setLayoutId(R.layout.self_render_view)
                         .setViewContainer(viewContainer)
                         .build();
-                MidasAdSdk.getAdsManger().loadMidasSelfRenderAd(adParameter, new AdSelfRenderListener<AdInfo>() {
+                MidasAdSdk.getAdsManger().loadMidasSelfRenderAd(adParameter, new AdSelfRenderListener() {
                     @Override
                     public void adExposed(AdInfo info) {
 

@@ -30,6 +30,7 @@ import com.qq.e.ads.nativ.NativeUnifiedADData;
 import com.qq.e.ads.nativ.widget.NativeAdContainer;
 import com.qq.e.ads.rewardvideo.RewardVideoAD;
 import com.qq.e.ads.splash.SplashAD;
+import com.qq.e.comm.constants.AdPatternType;
 import com.qq.e.comm.util.AdError;
 import com.xnad.sdk.R;
 import com.xnad.sdk.ad.cache.ADTool;
@@ -81,10 +82,10 @@ public class ListenerUtils {
     /**
      * 设置插屏广告监听
      *
-     * @param activity 上下文
+     * @param activity           上下文
      * @param adContainerWrapper 广告缓存
-     * @param adRequestListener 请求监听
-     * @param adListener 对外监听
+     * @param adRequestListener  请求监听
+     * @param adListener         对外监听
      */
     public static void setListenerAndShow(Activity activity, AdContainerWrapper adContainerWrapper, AdRequestListener adRequestListener, AdBasicListener adListener) {
         AdInfo info = adContainerWrapper.getAdInfo();
@@ -101,17 +102,18 @@ public class ListenerUtils {
                     TTNativeExpressAd csjAd = ad.getTtNativeExpressAd();
                     setCsjInteractionListener(activity, info, csjAd, getInteractionListener((AdInteractionListener) adListener));
                 } else if (TextUtils.equals(info.getMidasAd().getAdSource(), Constants.AdSourceType.YouLiangHui)) {
-                    UnifiedInterstitialAD ylhAD = ad.getUnifiedInterstitialAD();
-                    setYlhInteractionListener(activity, adContainerWrapper, ylhAD, getInteractionListener((AdInteractionListener) adListener));
+                    UnifiedInterstitialAD ylhAd = ad.getUnifiedInterstitialAD();
+                    setYlhInteractionListener(activity, adContainerWrapper, ylhAd, getInteractionListener((AdInteractionListener) adListener));
                 }
             }
             //自渲染广告
         } else if (TextUtils.equals(info.getAdType(), Constants.AdType.SELF_RENDER)) {
-            if (adListener != null) {
-                adListener.adSuccess(info);
+            AdSelfRenderListener outAdListener = (AdSelfRenderListener) adListener;
+            if (outAdListener != null) {
+                outAdListener.adSuccess(info);
             }
 
-            showSelfRenderView(activity,info,ListenerUtils.getAdSelfRenderListener((AdSelfRenderListener)adListener));
+            showSelfRenderView(activity, info, ListenerUtils.getAdSelfRenderListener(outAdListener));
             //开屏广告
         } else if (TextUtils.equals(info.getAdType(), Constants.AdType.SPLASH_TYPE)) {
             if (info.getMidasAd() instanceof MidasSplashAd) {
@@ -146,11 +148,12 @@ public class ListenerUtils {
                 if (TextUtils.equals(info.getMidasAd().getAdSource(), Constants.AdSourceType.ChuanShanJia)) {
                     TTFullScreenVideoAd csjAd = ad.getTtFullScreenVideoAd();
                     setCsjFullVideoListener(activity, info, csjAd, getFullScreenVideoAdListener((AdFullScreenVideoListener) adListener));
-                } else if (TextUtils.equals(info.getMidasAd().getAdSource(), Constants.AdSourceType.YouLiangHui)) {
+                }
+//                else if (TextUtils.equals(info.getMidasAd().getAdSource(), Constants.AdSourceType.YouLiangHui)) {
 //                    if (listener != null) {
 //                        listener.adError(info, 3, "优量汇暂不支持全屏视频");
 //                    }
-                }
+//                }
             }
             //本地模板
         } else if (TextUtils.equals(info.getAdType(), Constants.AdType.NATIVE_TEMPLATE)) {
@@ -579,8 +582,8 @@ public class ListenerUtils {
      * 优量汇监听广告
      *
      * @param adContainer 广告信息
-     * @param ylhAd      开屏广告
-     * @param adListener 开屏对外监听
+     * @param ylhAd       开屏广告
+     * @param adListener  开屏对外监听
      */
     private static void setYlhSplashListener(AdContainerWrapper adContainer, SplashAD ylhAd, AdSplashListener adListener) {
         //设置自定义监听
@@ -601,8 +604,8 @@ public class ListenerUtils {
     /**
      * 设置穿山甲 开屏广告 监听
      *
-     * @param adInfo 广告信息
-     * @param csjAd 穿山甲开屏广告
+     * @param adInfo     广告信息
+     * @param csjAd      穿山甲开屏广告
      * @param adListener 开屏广告对外监听
      */
     private static void setCsjSplashListener(AdInfo adInfo, TTSplashAd csjAd, AdSplashListener adListener) {
@@ -649,9 +652,9 @@ public class ListenerUtils {
     /**
      * 设置穿山甲 插屏广告 监听
      *
-     * @param activity 上下文
-     * @param adInfo 广告信息
-     * @param csjAd 穿山甲广告对象
+     * @param activity   上下文
+     * @param adInfo     广告信息
+     * @param csjAd      穿山甲广告对象
      * @param adListener 对外监听
      */
     private static void setCsjInteractionListener(Activity activity, AdInfo adInfo, TTNativeExpressAd csjAd, AdInteractionListener adListener) {
@@ -700,17 +703,17 @@ public class ListenerUtils {
     /**
      * 设置优良汇 插屏 监听
      *
-     * @param activity 上下文
-     * @param adContainer 广告缓存对象
-     * @param unifiedInterstitialAD 优量汇广告对象
-     * @param outListener 对外监听
+     * @param activity              上下文
+     * @param adContainer           广告缓存对象
+     * @param unifiedInterstitialAd 优量汇广告对象
+     * @param outListener           对外监听
      */
-    public static void setYlhInteractionListener(Activity activity, AdContainerWrapper adContainer, UnifiedInterstitialAD unifiedInterstitialAD, AdInteractionListener outListener) {
+    private static void setYlhInteractionListener(Activity activity, AdContainerWrapper adContainer, UnifiedInterstitialAD unifiedInterstitialAd, AdInteractionListener outListener) {
         if (adContainer.getListener() != null) {
             WrapperInterstitialADListener listener = (WrapperInterstitialADListener) adContainer.getListener();
             listener.setOutListener(outListener);
         }
-        unifiedInterstitialAD.showAsPopupWindow(activity);
+        unifiedInterstitialAd.showAsPopupWindow(activity);
     }
 
 
@@ -719,10 +722,10 @@ public class ListenerUtils {
     /**
      * 原生模板广告回调中间层（埋点可以埋到这里）
      *
-     * @return
+     * @return 返回一个对外的监听
      */
     public static AdOutChargeListener getNativeTemplateAdChargeListener() {
-        return new AdOutChargeListener<AdInfo>() {
+        return new AdOutChargeListener() {
             /**
              * 时间间隔
              * 记录填充到展示，展示到点击间隔
@@ -783,10 +786,10 @@ public class ListenerUtils {
      * 开屏广告回调中间层（埋点可以埋到这里）
      *
      * @param listener 对外监听
-     * @return 返回对外监听,中间层用来埋点
+     * @return 返回对外监听, 中间层用来埋点
      */
     public static AdSplashListener getAdSplashListener(AdSplashListener listener) {
-        return new AdSplashListener<AdInfo>() {
+        return new AdSplashListener() {
             long intervalTime = 0L;
 
             @Override
@@ -830,7 +833,6 @@ public class ListenerUtils {
             }
 
 
-
             @Override
             public void adTick(AdInfo info, long l) {
                 if (listener != null) {
@@ -853,11 +855,11 @@ public class ListenerUtils {
      * 激励视频广告回调中间层（埋点可以埋到这里）
      *
      * @param listener 对外监听
-     * @return 返回对外监听,中间层用来埋点
+     * @return 返回对外监听, 中间层用来埋点
      */
     public static AdRewardVideoListener getRewardVideoAdListener(AdRewardVideoListener listener) {
 
-        return new AdRewardVideoListener<AdInfo>() {
+        return new AdRewardVideoListener() {
             long intervalTime = 0L;
 
             @Override
@@ -936,10 +938,10 @@ public class ListenerUtils {
      * 全屏视频广告回调中间层（埋点可以埋到这里）
      *
      * @param listener 对外监听
-     * @return 返回对外监听,中间层用来埋点
+     * @return 返回对外监听, 中间层用来埋点
      */
     public static AdFullScreenVideoListener getFullScreenVideoAdListener(AdFullScreenVideoListener listener) {
-        return new AdFullScreenVideoListener<AdInfo>() {
+        return new AdFullScreenVideoListener() {
             long intervalTime = 0L;
 
             @Override
@@ -1014,10 +1016,10 @@ public class ListenerUtils {
      * 插屏广告回调中间层（埋点可以埋到这里）
      *
      * @param listener 对外监听
-     * @return 返回对外监听,中间层用来埋点
+     * @return 返回对外监听, 中间层用来埋点
      */
     public static AdInteractionListener getInteractionListener(AdInteractionListener listener) {
-        return new AdInteractionListener<AdInfo>() {
+        return new AdInteractionListener() {
 
             /**
              * 时间间隔
@@ -1079,7 +1081,7 @@ public class ListenerUtils {
      * banner广告回调中间层（埋点可以埋到这里）
      *
      * @param listener 对外监听
-     * @return 返回对外监听,中间层用来埋点
+     * @return 返回对外监听, 中间层用来埋点
      */
     public static AdBannerListener getAdBannerListener(AdBannerListener listener) {
         return new AdBannerListener() {
@@ -1090,20 +1092,6 @@ public class ListenerUtils {
              */
             private long intervalTime = 0L;
 
-            @Override
-            public void adSuccess(Object info) {
-                if (listener != null) {
-                    listener.adSuccess(info);
-                }
-                intervalTime = System.currentTimeMillis();
-            }
-
-            @Override
-            public void adError(Object info, int errorCode, String errorMsg) {
-                if (listener != null) {
-                    listener.adError(info, errorCode, errorMsg);
-                }
-            }
 
             @Override
             public void onAdShow(AdInfo info) {
@@ -1111,6 +1099,21 @@ public class ListenerUtils {
                     listener.onAdShow(info);
                 }
                 advertisingOfferShow(info);
+            }
+
+            @Override
+            public void adSuccess(AdInfo info) {
+                if (listener != null) {
+                    listener.adSuccess(info);
+                }
+                intervalTime = System.currentTimeMillis();
+            }
+
+            @Override
+            public void adError(AdInfo info, int errorCode, String errorMsg) {
+                if (listener != null) {
+                    listener.adError(info, errorCode, errorMsg);
+                }
             }
 
             @Override
@@ -1144,10 +1147,10 @@ public class ListenerUtils {
      * 自渲染广告回调中间层
      *
      * @param listener 对外监听
-     * @return 返回对外监听,中间层用来埋点
+     * @return 返回对外监听, 中间层用来埋点
      */
     public static AdSelfRenderListener getAdSelfRenderListener(AdSelfRenderListener listener) {
-        return new AdSelfRenderListener<AdInfo>() {
+        return new AdSelfRenderListener() {
             /**
              * 时间间隔
              * 记录填充到展示，展示到点击间隔
@@ -1219,23 +1222,24 @@ public class ListenerUtils {
 
     /**
      * 显示自渲染视图
-     * @param adInfo    广告实体
+     *
+     * @param adInfo 广告实体
      */
-    public static void showSelfRenderView(Activity activity,AdInfo adInfo, AdSelfRenderListener selfRenderListener){
+    public static void showSelfRenderView(Activity activity, AdInfo adInfo, AdSelfRenderListener selfRenderListener) {
         try {
             MidasSelfRenderAd midasSelfRenderAd = (MidasSelfRenderAd) adInfo.getMidasAd();
             AdParameter adParameter = adInfo.getAdParameter();
             ViewGroup viewContainer = adParameter.getViewContainer();
-            if (viewContainer == null){
+            if (viewContainer == null) {
 
                 return;
             }
-            if (adParameter.getLayoutId() == 0){
+            if (adParameter.getLayoutId() == 0) {
 
                 return;
             }
             View view = LayoutInflater.from(activity).
-                    inflate(adParameter.getLayoutId(),viewContainer,false);
+                    inflate(adParameter.getLayoutId(), viewContainer, false);
             //小图标
             ImageView adSmallLogoIv = view.findViewById(R.id.ivAdIcon);
             String iconUrl = midasSelfRenderAd.getIconUrl();
@@ -1244,12 +1248,12 @@ public class ListenerUtils {
             }
             //标题
             TextView adTitleTv = view.findViewById(R.id.tvAdTitle);
-            if (adTitleTv != null){
+            if (adTitleTv != null) {
                 adTitleTv.setText(midasSelfRenderAd.getTitle());
             }
             //描述
             TextView adDescTv = view.findViewById(R.id.tvAdDesc);
-            if (adDescTv != null){
+            if (adDescTv != null) {
                 adDescTv.setText(midasSelfRenderAd.getDescription());
             }
             //大图片
@@ -1261,7 +1265,7 @@ public class ListenerUtils {
 
             List<View> clickViewList = new ArrayList<>();
             ViewGroup viewGroup = (ViewGroup) view;
-            if (viewGroup.getChildCount() > 0){
+            if (viewGroup.getChildCount() > 0) {
                 for (int i = 0; i < viewGroup.getChildCount(); i++) {
                     clickViewList.add(viewGroup.getChildAt(i));
                 }
@@ -1271,34 +1275,34 @@ public class ListenerUtils {
             try {
                 View smallBtnView = view.findViewById(R.id.tvSmallButton);
                 View bigBtnView = view.findViewById(R.id.tvBigButton);
-                if (smallBtnView != null){
+                if (smallBtnView != null) {
                     creativeViewList.add(smallBtnView);
                     clickViewList.add(smallBtnView);
                 }
-                if (bigBtnView != null){
+                if (bigBtnView != null) {
                     creativeViewList.add(bigBtnView);
                     clickViewList.add(bigBtnView);
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
             }
 
             NativeAdContainer inflateView = new NativeAdContainer(AppUtils.getContext());
-            inflateView.addView(view,new ViewGroup.LayoutParams(-1, -1));
+            inflateView.addView(view, new ViewGroup.LayoutParams(-1, -1));
             viewContainer.removeAllViews();
             viewContainer.addView(inflateView);
 
             if (Constants.AdSourceType.ChuanShanJia.equals(adInfo.getMidasAd().getAdSource())) {
-                if (midasSelfRenderAd.getMidasAdPatternType() == 2) {
+                if (midasSelfRenderAd.getMidasAdPatternType() == AdPatternType.NATIVE_VIDEO) {
                     //视频广告
-                    if (adImgIv != null){
+                    if (adImgIv != null) {
                         adImgIv.setVisibility(View.GONE);
                     }
 
-                }else {
+                } else {
                     adImgIv.setVisibility(View.VISIBLE);
                     List<String> imageList = midasSelfRenderAd.getImageList();
                     if (imageList != null && imageList.size() > 0) {
-                        if (adImgIv != null){
+                        if (adImgIv != null) {
                             Glide.with(activity).load(imageList.get(0))
                                     .into(adImgIv);
                         }
@@ -1335,25 +1339,25 @@ public class ListenerUtils {
                 if (ttFeedAd.getInteractionType() == TTAdConstant.INTERACTION_TYPE_DOWNLOAD) {
                     //兼容下载类广告，使用activity申请权限
                     ttFeedAd.setActivityForDownloadApp(activity);
-                    if (tvBigButton != null){
+                    if (tvBigButton != null) {
                         tvBigButton.setText("立即下载");
                     }
                     // 注册下载监听
-                    bindDownloadListener(tvBigButton,ttFeedAd);
+                    bindDownloadListener(tvBigButton, ttFeedAd);
                 } else {
-                    if (tvBigButton != null){
+                    if (tvBigButton != null) {
                         tvBigButton.setText("查看详情");
                     }
                 }
-            }else if (Constants.AdSourceType.YouLiangHui.equals(adInfo.getMidasAd().getAdSource())){
+            } else if (Constants.AdSourceType.YouLiangHui.equals(adInfo.getMidasAd().getAdSource())) {
                 NativeUnifiedADData nativeUnifiedAdData = midasSelfRenderAd.getNativeUnifiedADData();
                 if (nativeUnifiedAdData == null) {
                     return;
                 }
                 nativeUnifiedAdData.bindAdToView(activity, inflateView, null,
                         clickViewList);
-                updateAdAction(tvBigButton,nativeUnifiedAdData);
-                if (selfRenderListener != null){
+                updateAdAction(tvBigButton, nativeUnifiedAdData);
+                if (selfRenderListener != null) {
                     selfRenderListener.callbackView(view);
                 }
                 nativeUnifiedAdData.setNativeAdEventListener(new NativeADEventListener() {
@@ -1380,88 +1384,105 @@ public class ListenerUtils {
 
                     @Override
                     public void onADStatusChanged() {
-                        updateAdAction(tvBigButton,nativeUnifiedAdData);
+                        updateAdAction(tvBigButton, nativeUnifiedAdData);
                     }
                 });
-                if (midasSelfRenderAd.getMidasAdPatternType() == 2) {
-                    //视频广告
-                    if (adImgIv != null){
+                //视频广告
+                if (midasSelfRenderAd.getMidasAdPatternType() == AdPatternType.NATIVE_VIDEO) {
+                    if (adImgIv != null) {
                         adImgIv.setVisibility(View.GONE);
                     }
-                    if (mediaView != null){
+                    if (mediaView != null) {
                         mediaView.setVisibility(View.VISIBLE);
                         VideoOption videoOption = new VideoOption.Builder()
-                                .setAutoPlayPolicy(VideoOption.AutoPlayPolicy.ALWAYS)//总是自动播放
-                                .setAutoPlayMuted(true)//静音
-                                .setNeedCoverImage(true)//显示封面
-                                .setNeedProgressBar(false)//是否显示播放进度条
-                                .setEnableDetailPage(true)//点击按钮是否跳转详情
-                                .setEnableUserControl(false)//点击视频是否停止or播放,false点击会onADClicked回调
+                                //总是自动播放
+                                .setAutoPlayPolicy(VideoOption.AutoPlayPolicy.ALWAYS)
+                                //静音
+                                .setAutoPlayMuted(true)
+                                //显示封面
+                                .setNeedCoverImage(true)
+                                //是否显示播放进度条
+                                .setNeedProgressBar(false)
+                                //点击按钮是否跳转详情
+                                .setEnableDetailPage(true)
+                                //点击视频是否停止or播放,false点击会onADClicked回调
+                                .setEnableUserControl(false)
                                 .build();
                         nativeUnifiedAdData.bindMediaView(mediaView, videoOption, new NativeADMediaListener() {
                             @Override
                             public void onVideoInit() {
                             }
+
                             @Override
                             public void onVideoLoading() {
                             }
+
                             @Override
                             public void onVideoReady() {
                             }
+
                             @Override
                             public void onVideoLoaded(int videoDuration) {
                             }
+
                             @Override
                             public void onVideoStart() {
                             }
+
                             @Override
                             public void onVideoPause() {
                             }
+
                             @Override
                             public void onVideoResume() {
                             }
+
                             @Override
                             public void onVideoCompleted() {
                                 nativeUnifiedAdData.startVideo();
                             }
+
                             @Override
                             public void onVideoError(AdError error) {
-                                Log.e("AdError","error" + error.getErrorMsg());
+                                Log.e("AdError", "error" + error.getErrorMsg());
                             }
+
                             @Override
                             public void onVideoStop() {
                             }
+
                             @Override
                             public void onVideoClicked() {
                             }
                         });
                     }
-                }else {
-                    if (adImgIv != null){
+                } else {
+                    if (adImgIv != null) {
                         adImgIv.setVisibility(View.VISIBLE);
                         Glide.with(activity).load(midasSelfRenderAd.getImageUrl()).into(adImgIv);
                     }
-                    if (mediaView != null){
+                    if (mediaView != null) {
                         mediaView.setVisibility(View.GONE);
                     }
                 }
 
-            }else {
+            } else {
 
             }
-        }catch (Exception e){
-            Log.e("SdkRequestManager","" + e.getMessage());
+        } catch (Exception e) {
+            Log.e("SdkRequestManager", "" + e.getMessage());
         }
     }
 
 
     /**
      * 根据下载状态更新底部按钮文字
+     *
      * @param textView 文本控件
-     * @param ad 优量汇广告对象
+     * @param ad       优量汇广告对象
      */
     private static void updateAdAction(TextView textView, NativeUnifiedADData ad) {
-        if (textView == null){
+        if (textView == null) {
             return;
         }
         if (!ad.isAppAd()) {
@@ -1470,37 +1491,45 @@ public class ListenerUtils {
         }
         textView.setText("立即下载");
         switch (ad.getAppStatus()) {
-            case 0://点击下载
+            //点击下载
+            case 0:
                 textView.setText("立即下载");
                 break;
-            case 1://点击打开
+            //点击打开
+            case 1:
                 textView.setText("点击打开");
                 break;
-            case 2://点击更新
+            //点击更新
+            case 2:
                 textView.setText("立即下载");
                 break;
+            // 特别注意：当进度小于0时，不要使用进度来渲染界面
             case 4:
-                // 特别注意：当进度小于0时，不要使用进度来渲染界面
                 textView.setText("下载中" + (ad.getProgress() > 0 ? ad.getProgress() : 0) + "%");
                 break;
-            case 8://点击安装
+            //点击安装
+            case 8:
                 textView.setText("点击安装");
                 break;
-            case 16://点击重试
+            //点击重试
+            case 16:
                 textView.setText("重新下载");
                 break;
-            default://继续下载
+            //继续下载
+            default:
                 textView.setText("继续下载" + (ad.getProgress() > 0 ? ad.getProgress() : 0) + "%");
+                break;
         }
     }
 
     /**
      * 根据下载状态更新底部按钮文字
+     *
      * @param textView 文本控件
-     * @param ad 穿山甲 广告对象
+     * @param ad       穿山甲 广告对象
      */
-    private static void bindDownloadListener(TextView textView,TTNativeAd ad) {
-        if (textView == null){
+    private static void bindDownloadListener(TextView textView, TTNativeAd ad) {
+        if (textView == null) {
             return;
         }
         ad.setDownloadListener(new TTAppDownloadListener() {
@@ -1508,6 +1537,7 @@ public class ListenerUtils {
             public void onIdle() {
                 textView.setText("立即下载");
             }
+
             @Override
             public void onDownloadActive(long totalBytes, long currBytes, String fileName, String appName) {
                 if (totalBytes > 0) {
@@ -1544,9 +1574,6 @@ public class ListenerUtils {
             }
         });
     }
-
-
-
 
 
 }

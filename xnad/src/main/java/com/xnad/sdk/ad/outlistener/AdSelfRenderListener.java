@@ -12,7 +12,7 @@ import com.xnad.sdk.ad.listener.AdChargeListener;
  * @author fanhailong
  * @since 2019/11/17 13:52
  */
-public interface AdSelfRenderListener<T extends AdInfo> extends AdChargeListener<T> {
+public interface AdSelfRenderListener extends AdChargeListener<AdInfo> {
     /**
      * 广告显示后的view
      * @param view

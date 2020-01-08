@@ -60,7 +60,7 @@ public class SplashAdActivity extends AppCompatActivity implements View.OnClickL
                 .setTimeOut(3000)
                 .setViewContainer(splashContainer)
                 .build();
-        MidasAdSdk.getAdsManger().loadMidasSplashAd(adParameter, new AdSplashListener<AdInfo>() {
+        MidasAdSdk.getAdsManger().loadMidasSplashAd(adParameter, new AdSplashListener() {
 
 
             //广告加载成功回调

@@ -66,12 +66,12 @@ public class BannerAdActivity extends AppCompatActivity {
             }
 
             @Override
-            public void adSuccess(Object info) {
+            public void adSuccess(AdInfo info) {
 
             }
 
             @Override
-            public void adError(Object info, int errorCode, String errorMsg) {
+            public void adError(AdInfo info, int errorCode, String errorMsg) {
                 Toast.makeText(getApplicationContext(),
                         errorMsg,Toast.LENGTH_SHORT).show();
             }
