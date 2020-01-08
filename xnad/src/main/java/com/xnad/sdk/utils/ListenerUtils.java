@@ -81,9 +81,10 @@ public class ListenerUtils {
     /**
      * 设置插屏广告监听
      *
-     * @param activity
-     * @param adContainerWrapper
-     * @param adListener
+     * @param activity 上下文
+     * @param adContainerWrapper 广告缓存
+     * @param adRequestListener 请求监听
+     * @param adListener 对外监听
      */
     public static void setListenerAndShow(Activity activity, AdContainerWrapper adContainerWrapper, AdRequestListener adRequestListener, AdBasicListener adListener) {
         AdInfo info = adContainerWrapper.getAdInfo();
@@ -577,9 +578,9 @@ public class ListenerUtils {
     /**
      * 优量汇监听广告
      *
-     * @param adContainer
-     * @param ylhAd
-     * @param adListener
+     * @param adContainer 广告信息
+     * @param ylhAd      开屏广告
+     * @param adListener 开屏对外监听
      */
     private static void setYlhSplashListener(AdContainerWrapper adContainer, SplashAD ylhAd, AdSplashListener adListener) {
         //设置自定义监听
@@ -600,9 +601,9 @@ public class ListenerUtils {
     /**
      * 设置穿山甲 开屏广告 监听
      *
-     * @param adInfo
-     * @param csjAd
-     * @param adListener
+     * @param adInfo 广告信息
+     * @param csjAd 穿山甲开屏广告
+     * @param adListener 开屏广告对外监听
      */
     private static void setCsjSplashListener(AdInfo adInfo, TTSplashAd csjAd, AdSplashListener adListener) {
         csjAd.setSplashInteractionListener(new TTSplashAd.AdInteractionListener() {
@@ -648,10 +649,10 @@ public class ListenerUtils {
     /**
      * 设置穿山甲 插屏广告 监听
      *
-     * @param activity
-     * @param adInfo
-     * @param csjAd
-     * @param adListener
+     * @param activity 上下文
+     * @param adInfo 广告信息
+     * @param csjAd 穿山甲广告对象
+     * @param adListener 对外监听
      */
     private static void setCsjInteractionListener(Activity activity, AdInfo adInfo, TTNativeExpressAd csjAd, AdInteractionListener adListener) {
         //设置监听
@@ -699,10 +700,10 @@ public class ListenerUtils {
     /**
      * 设置优良汇 插屏 监听
      *
-     * @param activity
-     * @param adContainer
-     * @param unifiedInterstitialAD
-     * @param outListener
+     * @param activity 上下文
+     * @param adContainer 广告缓存对象
+     * @param unifiedInterstitialAD 优量汇广告对象
+     * @param outListener 对外监听
      */
     public static void setYlhInteractionListener(Activity activity, AdContainerWrapper adContainer, UnifiedInterstitialAD unifiedInterstitialAD, AdInteractionListener outListener) {
         if (adContainer.getListener() != null) {
@@ -781,8 +782,8 @@ public class ListenerUtils {
     /**
      * 开屏广告回调中间层（埋点可以埋到这里）
      *
-     * @param listener
-     * @return
+     * @param listener 对外监听
+     * @return 返回对外监听,中间层用来埋点
      */
     public static AdSplashListener getAdSplashListener(AdSplashListener listener) {
         return new AdSplashListener<AdInfo>() {
@@ -851,8 +852,8 @@ public class ListenerUtils {
     /**
      * 激励视频广告回调中间层（埋点可以埋到这里）
      *
-     * @param listener
-     * @return
+     * @param listener 对外监听
+     * @return 返回对外监听,中间层用来埋点
      */
     public static AdRewardVideoListener getRewardVideoAdListener(AdRewardVideoListener listener) {
 
@@ -934,8 +935,8 @@ public class ListenerUtils {
     /**
      * 全屏视频广告回调中间层（埋点可以埋到这里）
      *
-     * @param listener
-     * @return
+     * @param listener 对外监听
+     * @return 返回对外监听,中间层用来埋点
      */
     public static AdFullScreenVideoListener getFullScreenVideoAdListener(AdFullScreenVideoListener listener) {
         return new AdFullScreenVideoListener<AdInfo>() {
@@ -1012,8 +1013,8 @@ public class ListenerUtils {
     /**
      * 插屏广告回调中间层（埋点可以埋到这里）
      *
-     * @param listener
-     * @return
+     * @param listener 对外监听
+     * @return 返回对外监听,中间层用来埋点
      */
     public static AdInteractionListener getInteractionListener(AdInteractionListener listener) {
         return new AdInteractionListener<AdInfo>() {
@@ -1077,8 +1078,8 @@ public class ListenerUtils {
     /**
      * banner广告回调中间层（埋点可以埋到这里）
      *
-     * @param listener
-     * @return
+     * @param listener 对外监听
+     * @return 返回对外监听,中间层用来埋点
      */
     public static AdBannerListener getAdBannerListener(AdBannerListener listener) {
         return new AdBannerListener() {
@@ -1142,8 +1143,8 @@ public class ListenerUtils {
     /**
      * 自渲染广告回调中间层
      *
-     * @param listener
-     * @return
+     * @param listener 对外监听
+     * @return 返回对外监听,中间层用来埋点
      */
     public static AdSelfRenderListener getAdSelfRenderListener(AdSelfRenderListener listener) {
         return new AdSelfRenderListener<AdInfo>() {
@@ -1345,17 +1346,17 @@ public class ListenerUtils {
                     }
                 }
             }else if (Constants.AdSourceType.YouLiangHui.equals(adInfo.getMidasAd().getAdSource())){
-                NativeUnifiedADData nativeUnifiedADData = midasSelfRenderAd.getNativeUnifiedADData();
-                if (nativeUnifiedADData == null) {
+                NativeUnifiedADData nativeUnifiedAdData = midasSelfRenderAd.getNativeUnifiedADData();
+                if (nativeUnifiedAdData == null) {
                     return;
                 }
-                nativeUnifiedADData.bindAdToView(activity, inflateView, null,
+                nativeUnifiedAdData.bindAdToView(activity, inflateView, null,
                         clickViewList);
-                updateAdAction(tvBigButton,nativeUnifiedADData);
+                updateAdAction(tvBigButton,nativeUnifiedAdData);
                 if (selfRenderListener != null){
                     selfRenderListener.callbackView(view);
                 }
-                nativeUnifiedADData.setNativeAdEventListener(new NativeADEventListener() {
+                nativeUnifiedAdData.setNativeAdEventListener(new NativeADEventListener() {
                     @Override
                     public void onADExposed() {
                         if (selfRenderListener != null) {
@@ -1379,7 +1380,7 @@ public class ListenerUtils {
 
                     @Override
                     public void onADStatusChanged() {
-                        updateAdAction(tvBigButton,nativeUnifiedADData);
+                        updateAdAction(tvBigButton,nativeUnifiedAdData);
                     }
                 });
                 if (midasSelfRenderAd.getMidasAdPatternType() == 2) {
@@ -1397,7 +1398,7 @@ public class ListenerUtils {
                                 .setEnableDetailPage(true)//点击按钮是否跳转详情
                                 .setEnableUserControl(false)//点击视频是否停止or播放,false点击会onADClicked回调
                                 .build();
-                        nativeUnifiedADData.bindMediaView(mediaView, videoOption, new NativeADMediaListener() {
+                        nativeUnifiedAdData.bindMediaView(mediaView, videoOption, new NativeADMediaListener() {
                             @Override
                             public void onVideoInit() {
                             }
@@ -1421,7 +1422,7 @@ public class ListenerUtils {
                             }
                             @Override
                             public void onVideoCompleted() {
-                                nativeUnifiedADData.startVideo();
+                                nativeUnifiedAdData.startVideo();
                             }
                             @Override
                             public void onVideoError(AdError error) {
@@ -1454,6 +1455,11 @@ public class ListenerUtils {
     }
 
 
+    /**
+     * 根据下载状态更新底部按钮文字
+     * @param textView 文本控件
+     * @param ad 优量汇广告对象
+     */
     private static void updateAdAction(TextView textView, NativeUnifiedADData ad) {
         if (textView == null){
             return;
@@ -1488,6 +1494,11 @@ public class ListenerUtils {
         }
     }
 
+    /**
+     * 根据下载状态更新底部按钮文字
+     * @param textView 文本控件
+     * @param ad 穿山甲 广告对象
+     */
     private static void bindDownloadListener(TextView textView,TTNativeAd ad) {
         if (textView == null){
             return;
@@ -1534,52 +1545,8 @@ public class ListenerUtils {
         });
     }
 
-    private static void a(MediaView mediaView, NativeUnifiedADData nativeUnifiedADData){
-        VideoOption videoOption = new VideoOption.Builder()
-                .setAutoPlayPolicy(VideoOption.AutoPlayPolicy.ALWAYS)//总是自动播放
-                .setAutoPlayMuted(true)//静音
-                .setNeedCoverImage(true)//显示封面
-                .setNeedProgressBar(false)//是否显示播放进度条
-                .setEnableDetailPage(true)//点击按钮是否跳转详情
-                .setEnableUserControl(false)//点击视频是否停止or播放,false点击会onADClicked回调
-                .build();
-        nativeUnifiedADData.bindMediaView(mediaView, videoOption, new NativeADMediaListener() {
-            @Override
-            public void onVideoInit() {
-            }
-            @Override
-            public void onVideoLoading() {
-            }
-            @Override
-            public void onVideoReady() {
-            }
-            @Override
-            public void onVideoLoaded(int videoDuration) {
-            }
-            @Override
-            public void onVideoStart() {
-            }
-            @Override
-            public void onVideoPause() {
-            }
-            @Override
-            public void onVideoResume() {
-            }
-            @Override
-            public void onVideoCompleted() {
-                nativeUnifiedADData.startVideo();
-            }
-            @Override
-            public void onVideoError(AdError error) {
-            }
-            @Override
-            public void onVideoStop() {
-            }
-            @Override
-            public void onVideoClicked() {
-            }
-        });
-    }
+
+
 
 
 }
