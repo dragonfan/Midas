@@ -51,7 +51,7 @@ public class ApiProvider {
             //sdk版本号
             requestJson.put("sdkVersion", BuildConfig.VERSION_CODE);
             //设备唯一标识:可为空
-            requestJson.put("primary_id", XnIdProvider.INSTANCE.getXnIdFromLocal());
+            requestJson.put("primary_id", XnIdProvider.getInstance().getXnIdFromLocal());
         } catch (Exception e) {
         }
         HttpHelp.getInstance().postJson("pizarroadsenseapi/ads/strategyInfo",

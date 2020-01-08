@@ -75,7 +75,7 @@ public class StatisticUtils {
                 if (TextUtils.equals("active", eventCode)) {
                     //网络请求获取xnId
                     Log.e("requestXnId", "active"+Thread.currentThread().getName());
-                    XnIdProvider.INSTANCE.requestDelayFiveSecondAfterActive();
+                    XnIdProvider.getInstance().requestDelayFiveSecondAfterActive();
                 }
             }
             //监测埋点sdk 自定义埋点 上报回调
@@ -181,9 +181,9 @@ public class StatisticUtils {
      * @param beginTime    开始时间
      */
     public static void singleStatisticBegin(AdInfo adInfo, long beginTime){
-        String xnId = XnIdProvider.INSTANCE.getXnIdFromLocal();
-        if (TextUtils.isEmpty(xnId) && !XnIdProvider.INSTANCE.isUserMarkToOld()){
-            XnIdProvider.INSTANCE.requestXnId(false);
+        String xnId = XnIdProvider.getInstance().getXnIdFromLocal();
+        if (TextUtils.isEmpty(xnId) && !XnIdProvider.getInstance().isUserMarkToOld()){
+            XnIdProvider.getInstance().requestXnId(false);
         }
         String sessionId = getNiuDateUUID() + beginTime;
         Log.d("SingleStatisticBegin",sessionId);
