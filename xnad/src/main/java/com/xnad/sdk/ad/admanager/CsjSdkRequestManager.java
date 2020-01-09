@@ -60,7 +60,7 @@ import java.util.List;
 public class CsjSdkRequestManager extends SdkRequestManager {
 
     @Override
-    protected void requestNativeTemplateAd(Activity activity, AdInfo info, AdRequestListener listener, AdNativeTemplateListener adListener, AdOutChargeListener adOutChargeListener) {
+    protected void requestNativeTemplateAd(Activity activity, AdInfo info, AdRequestListener listener, AdNativeTemplateListener adListener) {
         MidasNativeTemplateAd midasNativeTemplateAd = (MidasNativeTemplateAd) info.getMidasAd();
         AdSlot adSlot = new AdSlot.Builder()
                 //广告位id
@@ -101,6 +101,9 @@ public class CsjSdkRequestManager extends SdkRequestManager {
 
                 midasNativeTemplateAd.setTtNativeExpressAd(ttNativeAd);
 
+
+                ViewGroup viewContainer = info.getAdParameter().getViewContainer();
+
                 //是否需要展示广告
                 //如果需要展示需要做两件事
                 //  1,展示/曝光广告
@@ -112,15 +115,15 @@ public class CsjSdkRequestManager extends SdkRequestManager {
 
                         @Override
                         public void onAdClicked(View view, int type) {
-                            if (adOutChargeListener != null) {
-                                adOutChargeListener.adClicked(info);
+                            if (adListener != null) {
+                                adListener.adClicked(info);
                             }
                         }
 
                         @Override
                         public void onAdShow(View view, int type) {
-                            if (adOutChargeListener != null) {
-                                adOutChargeListener.adExposed(info);
+                            if (adListener != null) {
+                                adListener.adExposed(info);
                             }
                             if (!isExposed) {
                                 isExposed = true;
@@ -131,21 +134,24 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                         @Override
                         public void onRenderFail(View view, String msg, int code) {
 //                Log.e("ExpressView","render fail:"+(System.currentTimeMillis() - startTime));
-                            if (adOutChargeListener != null) {
-                                adOutChargeListener.adError(info, code, msg);
+                            if (adListener != null) {
+                                adListener.adError(info, code, msg);
                             }
                         }
 
                         @Override
                         public void onRenderSuccess(View view, float width, float height) {
                             midasNativeTemplateAd.setAddView(view);
-                            if (adOutChargeListener != null) {
-                                adOutChargeListener.adSuccess(info);
+                            if (viewContainer!=null) {
+                                viewContainer.removeAllViews();
+                                viewContainer.addView(view);
+                            }
+                            if (adListener != null) {
+                                adListener.adRenderSuccess(info);
                             }
                         }
                     });
-                    //dislike设置
-//        bindDislike(ttNativeExpressAd, false);
+
                     if (ttNativeAd.getInteractionType() == TTAdConstant.INTERACTION_TYPE_DOWNLOAD) {
                         ttNativeAd.setDownloadListener(new TTAppDownloadListener() {
                             @Override
@@ -185,6 +191,8 @@ public class CsjSdkRequestManager extends SdkRequestManager {
                     if (adListener != null) {
                         adListener.adSuccess(info);
                     }
+
+                    ttNativeAd.render();
                 } else {
                     // 不需要展示 添加到缓存 即可
                     ADTool.getInstance().cacheAd(ttNativeAd, info);

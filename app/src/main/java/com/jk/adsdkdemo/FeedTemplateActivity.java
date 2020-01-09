@@ -84,15 +84,28 @@ public class FeedTemplateActivity extends AppCompatActivity implements View.OnCl
                 AdParameter adParameter = new AdParameter.Builder(this, position)
                         //模板广告宽度
                         .setWidth(fWidth)
+                        .setViewContainer(mExpressContainer)
                         .build();
                 MidasAdSdk.getAdsManger().loadMidasNativeTemplateAd(adParameter, new AdNativeTemplateListener(){
+                    @Override
+                    public void adRenderSuccess(AdInfo adInfo) {
+
+                    }
+
+                    @Override
+                    public void adExposed(AdInfo info) {
+
+                    }
+
+                    @Override
+                    public void adClicked(AdInfo info) {
+
+                    }
+
                     //请求广告成功回调
                     @Override
                     public void adSuccess(AdInfo info) {
-                        //获取原始广告对象
-                        midasNativeTemplateAd = (MidasNativeTemplateAd) info.getMidasAd();
-                        //渲染广告
-                        renderAd(midasNativeTemplateAd);
+
                     }
                     //请求广告失败回调
                     @Override
@@ -103,49 +116,6 @@ public class FeedTemplateActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    /**
-     * 请求到广告后渲染广告
-     */
-    private void renderAd(MidasNativeTemplateAd midasNativeTemplateAd){
-        //设置广告监听
-        midasNativeTemplateAd.setAdOutChargeListener(new AdOutChargeListener() {
-            //加载广告成功
-            @Override
-            public void adSuccess(AdInfo info) {
-                LogUtils.e("adSuccess");
-                View addView = midasNativeTemplateAd.getAddView();
-                if (addView != null) {
-                    mExpressContainer.removeAllViews();
-                    mExpressContainer.addView(addView);
-                }
-            }
-            //广告加载失败
-            @Override
-            public void adError(AdInfo info, int errorCode, String errorMsg) {
-                LogUtils.e("adError, errorCode= %i, errorMsg = %s"+errorMsg + errorMsg);
-            }
-            //广告曝光回调
-            @Override
-            public void adExposed(AdInfo info) {
-                LogUtils.e("adExposed");
-            }
-            //广告点击回调
-            @Override
-            public void adClicked(AdInfo info) {
-                LogUtils.e("adClicked");
-            }
-            //优量点击移除广告
-            @Override
-            public void adClose(AdInfo info) {
-                LogUtils.e("adClicked");
-                if (mExpressContainer != null) {
-                    mExpressContainer.removeAllViews();
-                }
-            }
-        });
-        //开始渲染广告
-        midasNativeTemplateAd.render();
-    }
 
     @Override
     protected void onDestroy() {

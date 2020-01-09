@@ -15,6 +15,10 @@ import com.xnad.sdk.ad.listener.AdBasicListener;
  * @UpdateRemark: 更新说明：
  * @Version: 1.0
  */
-public interface AdNativeTemplateListener extends AdBasicListener<AdInfo> {
-
+public interface AdNativeTemplateListener extends AdOutChargeListener {
+    /**
+     * 渲染成功
+     * @param adInfo 广告信息
+     */
+    void adRenderSuccess(AdInfo adInfo);
 }

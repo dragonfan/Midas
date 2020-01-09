@@ -1,5 +1,7 @@
 package com.xnad.sdk.ad.cache.wrapper;
 
+import android.view.ViewGroup;
+
 import com.qq.e.ads.nativ.NativeExpressAD;
 import com.qq.e.ads.nativ.NativeExpressADView;
 import com.qq.e.ads.nativ.NativeExpressMediaListener;
@@ -43,18 +45,9 @@ public class WrapperNativeTemplateAdListener implements NativeExpressAD.NativeEx
      */
     AdNativeTemplateListener outListener;
     /**
-     * 计费监听
-     */
-    AdOutChargeListener adOutChargeListener;
-    /**
      * 广告信息
      */
     AdInfo adInfo;
-    /**
-     * 时间间隔
-     * 记录填充到展示，展示到点击间隔
-     */
-    private long intervalTime = 0L;
     /**
      * 是否曝光
      */
@@ -104,12 +97,21 @@ public class WrapperNativeTemplateAdListener implements NativeExpressAD.NativeEx
             });
 
         }
+
+
+
         MidasNativeTemplateAd midasNativeTemplateAd = (MidasNativeTemplateAd) adInfo.getMidasAd();
         midasNativeTemplateAd.setAddView(nativeExpressADView);
 //                nativeExpressADView.render();
 
 
         if (adRequestListener==null || adRequestListener.adShow(adInfo)) {
+            ViewGroup viewContainer = adInfo.getAdParameter().getViewContainer();
+            if (viewContainer!=null) {
+                viewContainer.removeAllViews();
+                viewContainer.addView(nativeExpressADView);
+            }
+            nativeExpressADView.render();
             if (outListener != null) {
                 outListener.adSuccess(adInfo);
             }
@@ -131,8 +133,8 @@ public class WrapperNativeTemplateAdListener implements NativeExpressAD.NativeEx
     @Override
     public void onRenderFail(NativeExpressADView nativeExpressADView) {
         LogUtils.d( "YLH onRenderFail:");
-        if (adOutChargeListener != null) {
-            adOutChargeListener.adError(adInfo, 2, "on render fail");
+        if (outListener != null) {
+            outListener.adError(adInfo, 2, "on render fail");
         }
     }
 
@@ -140,15 +142,15 @@ public class WrapperNativeTemplateAdListener implements NativeExpressAD.NativeEx
     @Override
     public void onRenderSuccess(NativeExpressADView nativeExpressADView) {
         LogUtils.d("YLH onRenderSuccess:");
-        if (adOutChargeListener != null) {
-            adOutChargeListener.adSuccess(adInfo);
+        if (outListener != null) {
+            outListener.adRenderSuccess(adInfo);
         }
     }
 
     @Override
     public void onADExposure(NativeExpressADView nativeExpressADView) {
-        if (adOutChargeListener != null) {
-            adOutChargeListener.adExposed(adInfo);
+        if (outListener != null) {
+            outListener.adExposed(adInfo);
         }
         if (!isExposed) {
             isExposed = true;
@@ -158,15 +160,15 @@ public class WrapperNativeTemplateAdListener implements NativeExpressAD.NativeEx
 
     @Override
     public void onADClicked(NativeExpressADView nativeExpressADView) {
-        if (adOutChargeListener != null) {
-            adOutChargeListener.adClicked(adInfo);
+        if (outListener != null) {
+            outListener.adClicked(adInfo);
         }
     }
 
     @Override
     public void onADClosed(NativeExpressADView nativeExpressADView) {
-        if (adOutChargeListener != null) {
-            adOutChargeListener.adClose(adInfo);
+        if (outListener != null) {
+            outListener.adClose(adInfo);
         }
     }
 
@@ -195,61 +197,6 @@ public class WrapperNativeTemplateAdListener implements NativeExpressAD.NativeEx
         }
     }
 
-    /**
-     *原生模板广告回调中间层（埋点可以埋到这里）
-     * @return
-     */
-    private AdOutChargeListener getNativeTemplateAdChargeListener(){
-        return new AdOutChargeListener() {
-
-            @Override
-            public void adClose(AdInfo info) {
-                if (((MidasNativeTemplateAd)info.getMidasAd()).getAdOutChargeListener() != null) {
-                    ((MidasNativeTemplateAd)info.getMidasAd()).getAdOutChargeListener().adClose(info);
-                }
-                StatisticUtils.advertisingClose(info,intervalTime);
-            }
-
-            @Override
-            public void adSuccess(AdInfo info) {
-                if (((MidasNativeTemplateAd)info.getMidasAd()).getAdOutChargeListener() != null) {
-                    ((MidasNativeTemplateAd)info.getMidasAd()).getAdOutChargeListener().adSuccess(info);
-                }
-
-            }
-
-            @Override
-            public void adError(AdInfo info, int errorCode, String errorMsg) {
-                if (((MidasNativeTemplateAd)info.getMidasAd()).getAdOutChargeListener() != null) {
-                    ((MidasNativeTemplateAd)info.getMidasAd()).getAdOutChargeListener().adError(info, errorCode, errorMsg);
-                }
-            }
-
-            @Override
-            public void adExposed(AdInfo info) {
-                if (((MidasNativeTemplateAd)info.getMidasAd()).getAdOutChargeListener() != null) {
-                    ((MidasNativeTemplateAd)info.getMidasAd()).getAdOutChargeListener().adExposed(info);
-                }
-                advertisingOfferShow(info);
-            }
-
-            @Override
-            public void adClicked(AdInfo info) {
-                if (((MidasNativeTemplateAd)info.getMidasAd()).getAdOutChargeListener() != null) {
-                    ((MidasNativeTemplateAd)info.getMidasAd()).getAdOutChargeListener().adClicked(info);
-                }
-                StatisticUtils.advertisingClick(info,intervalTime);
-            }
-
-            @Override
-            public void adLoad(AdInfo info) {
-                StatisticUtils.advertistingImageLoad(info, System.currentTimeMillis());
-            }
-        };
-    }
-
-
-
 
     public void setLoadListener(AdRequestListener listener) {
         adRequestListener = listener;
@@ -264,19 +211,11 @@ public class WrapperNativeTemplateAdListener implements NativeExpressAD.NativeEx
 
         outListener = listener;
 
-        adOutChargeListener =  getNativeTemplateAdChargeListener();
     }
 
     public void setAdInfo(AdInfo info) {
         this.adInfo = info;
     }
-    /**
-     * 广告offer展示
-     * @param adInfo    广告信息
-     */
-    private void advertisingOfferShow(AdInfo adInfo){
-        StatisticUtils.advertisingOfferShow(adInfo,0);
-        intervalTime = System.currentTimeMillis();
-    }
+
 
 }

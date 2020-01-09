@@ -110,6 +110,7 @@ public class HttpHelp {
                                         ErrorCode.API_DATA_PARSE_EXCEPTION.errorCode,
                                         ErrorCode.API_RESPONSE_NOT_ARRIVED_EXCEPTION.errorCode,
                                         ErrorCode.API_DATA_PARSE_EXCEPTION.errorMsg));
+                                return;
                             }
                         }
                     } catch (Exception e) {

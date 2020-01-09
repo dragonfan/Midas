@@ -58,7 +58,7 @@ public abstract class SdkRequestManager implements AdRequestManager {
         } else if (Constants.AdType.INTERACTION_TYPE.equals(adInfo.getAdType())){
             requestInteractionAd(activity, adInfo, listener, ListenerUtils.getInteractionListener((AdInteractionListener) adListener));
         } else if (Constants.AdType.NATIVE_TEMPLATE.equals(adInfo.getAdType())) {
-            requestNativeTemplateAd(activity, adInfo, listener, (AdNativeTemplateListener) adListener, ListenerUtils.getNativeTemplateAdChargeListener());
+            requestNativeTemplateAd(activity, adInfo, listener, ListenerUtils.getNativeTemplateAdChargeListener((AdNativeTemplateListener) adListener));
         } else if(Constants.AdType.BANNER_TYPE.equals(adInfo.getAdType())){
             requestBannerAd(adInfo,listener, ListenerUtils.getAdBannerListener((AdBannerListener) adListener));
         } else{
@@ -69,7 +69,7 @@ public abstract class SdkRequestManager implements AdRequestManager {
     }
 
 
-    protected abstract void requestNativeTemplateAd(Activity activity, AdInfo info, AdRequestListener adRequestListener, AdNativeTemplateListener adNativeTemplateListener, AdOutChargeListener adOutChargeListener);
+    protected abstract void requestNativeTemplateAd(Activity activity, AdInfo info, AdRequestListener adRequestListener, AdNativeTemplateListener adNativeTemplateListener);
 
     protected abstract void requestInteractionAd(Activity activity, AdInfo info, AdRequestListener listener, AdInteractionListener adListener);
 

@@ -55,15 +55,9 @@ import com.xnad.sdk.config.AdParameter;
  */
 public class YlhSdkRequestManager extends SdkRequestManager {
 
-    // 广告请求数量
-    protected final static int REQUEST_AD_COUNTS = 1;
-
-    private final int MAX_DURATION = 30;
-
-
     @Override
     protected void requestNativeTemplateAd(Activity activity, AdInfo info, AdRequestListener listener,
-                                           AdNativeTemplateListener adListener, AdOutChargeListener adOutChargeListener) {
+                                           AdNativeTemplateListener adListener) {
         MidasNativeTemplateAd midasNativeTemplateAd = (MidasNativeTemplateAd) info.getMidasAd();
 
 

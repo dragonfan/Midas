@@ -59,16 +59,21 @@ public class ApiProvider {
                     @Override
                     public void onFailure(int httpResponseCode,
                                           int errorCode, String message) {
-                        String beforeConfigInfoJson = SpUtils.getString(
-                                Constants.SpUtils.MIDAS_PREFIX + adPositionId, "");
-                        if (!TextUtils.isEmpty(beforeConfigInfoJson)) {
-                            try {
-                                MidasConfigBean configBean = mGson.fromJson(
-                                        beforeConfigInfoJson, MidasConfigBean.class);
-                                httpCallback.onSuccess(httpResponseCode, (T) configBean);
-                            } catch (Exception e) {
-                                httpCallback.onFailure(httpResponseCode, ErrorCode.API_DATA_PARSE_EXCEPTION.
-                                        errorCode, ErrorCode.API_DATA_PARSE_EXCEPTION.errorMsg);
+                        if (httpResponseCode !=
+                                ErrorCode.HTTP_RESPONSE_SUCCESS_CODE.errorCode) {
+                            String beforeConfigInfoJson = SpUtils.getString(
+                                    Constants.SpUtils.MIDAS_PREFIX + adPositionId, "");
+                            if (!TextUtils.isEmpty(beforeConfigInfoJson)) {
+                                try {
+                                    MidasConfigBean configBean = mGson.fromJson(
+                                            beforeConfigInfoJson, MidasConfigBean.class);
+                                    httpCallback.onSuccess(httpResponseCode, (T) configBean);
+                                } catch (Exception e) {
+                                    httpCallback.onFailure(httpResponseCode, ErrorCode.API_DATA_PARSE_EXCEPTION.
+                                            errorCode, ErrorCode.API_DATA_PARSE_EXCEPTION.errorMsg);
+                                }
+                            }else {
+                                httpCallback.onFailure(httpResponseCode, errorCode, message);
                             }
                         }else {
                             httpCallback.onFailure(httpResponseCode, errorCode, message);

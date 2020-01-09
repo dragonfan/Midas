@@ -1,9 +1,7 @@
 package com.xnad.sdk.utils;
 
 import android.app.Activity;
-import android.app.Application;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +52,6 @@ import com.xnad.sdk.ad.outlistener.AdBannerListener;
 import com.xnad.sdk.ad.outlistener.AdFullScreenVideoListener;
 import com.xnad.sdk.ad.outlistener.AdInteractionListener;
 import com.xnad.sdk.ad.outlistener.AdNativeTemplateListener;
-import com.xnad.sdk.ad.outlistener.AdOutChargeListener;
 import com.xnad.sdk.ad.outlistener.AdRewardVideoListener;
 import com.xnad.sdk.ad.outlistener.AdSelfRenderListener;
 import com.xnad.sdk.ad.outlistener.AdSplashListener;
@@ -162,10 +159,10 @@ public class ListenerUtils {
                 //判断广告渠道
                 if (TextUtils.equals(info.getMidasAd().getAdSource(), Constants.AdSourceType.ChuanShanJia)) {
                     TTNativeExpressAd csjAd = ad.getTtNativeExpressAd();
-                    setCsjNativeTemplateFullVideoListener(info, csjAd, (AdNativeTemplateListener) adListener, getNativeTemplateAdChargeListener());
+                    setCsjNativeTemplateListener(info, csjAd, getNativeTemplateAdChargeListener((AdNativeTemplateListener) adListener));
                 } else if (TextUtils.equals(info.getMidasAd().getAdSource(), Constants.AdSourceType.YouLiangHui)) {
                     NativeExpressAD ylhAd = ad.getNativeExpressAD();
-                    setYlhNativeTemplateFullVideoListener(adContainerWrapper, ylhAd, (AdNativeTemplateListener) adListener);
+                    setYlhNativeTemplateListener(adContainerWrapper, ylhAd, getNativeTemplateAdChargeListener((AdNativeTemplateListener) adListener));
                 }
             }
             //Banner 广告
@@ -178,7 +175,7 @@ public class ListenerUtils {
                     setCsjBannerListener(activity, info, csjAd, getAdBannerListener((AdBannerListener) adListener));
                 } else if (TextUtils.equals(info.getMidasAd().getAdSource(), Constants.AdSourceType.YouLiangHui)) {
                     UnifiedBannerView ylhAd = ad.getUnifiedBannerView();
-                    setYlhBannerFullVideoListener(adContainerWrapper, ylhAd, getAdBannerListener((AdBannerListener) adListener));
+                    setYlhBannerListener(adContainerWrapper, ylhAd, getAdBannerListener((AdBannerListener) adListener));
                 }
             }
 
@@ -192,7 +189,7 @@ public class ListenerUtils {
      * @param ylhAd       广告
      * @param adListener  广告监听
      */
-    private static void setYlhBannerFullVideoListener(AdContainerWrapper adContainer, UnifiedBannerView ylhAd, AdBannerListener adListener) {
+    private static void setYlhBannerListener(AdContainerWrapper adContainer, UnifiedBannerView ylhAd, AdBannerListener adListener) {
         //设置自定义监听
         if (adContainer.getListener() != null) {
             WrapperBannerADListener listener = (WrapperBannerADListener) adContainer.getListener();
@@ -304,7 +301,7 @@ public class ListenerUtils {
      * @param ylhAd       广告
      * @param adListener  监听
      */
-    private static void setYlhNativeTemplateFullVideoListener(AdContainerWrapper adContainer, NativeExpressAD ylhAd, AdNativeTemplateListener adListener) {
+    private static void setYlhNativeTemplateListener(AdContainerWrapper adContainer, NativeExpressAD ylhAd, AdNativeTemplateListener adListener) {
         //设置自定义监听
         if (adContainer.getListener() != null) {
             WrapperNativeTemplateAdListener listener = (WrapperNativeTemplateAdListener) adContainer.getListener();
@@ -321,27 +318,27 @@ public class ListenerUtils {
      * @param ttNativeAd 广告
      * @param adListener 外部监听
      */
-    private static void setCsjNativeTemplateFullVideoListener(AdInfo info, TTNativeExpressAd ttNativeAd, AdNativeTemplateListener adListener, AdOutChargeListener adOutChargeListener) {
+    private static void setCsjNativeTemplateListener(AdInfo info, TTNativeExpressAd ttNativeAd, AdNativeTemplateListener adListener) {
         ttNativeAd.setExpressInteractionListener(new TTNativeExpressAd.ExpressAdInteractionListener() {
             @Override
             public void onAdClicked(View view, int type) {
-                if (adOutChargeListener != null) {
-                    adOutChargeListener.adClicked(info);
+                if (adListener != null) {
+                    adListener.adClicked(info);
                 }
             }
 
             @Override
             public void onAdShow(View view, int type) {
-                if (adOutChargeListener != null) {
-                    adOutChargeListener.adExposed(info);
+                if (adListener != null) {
+                    adListener.adExposed(info);
                 }
             }
 
             @Override
             public void onRenderFail(View view, String msg, int code) {
 //                Log.e("ExpressView","render fail:"+(System.currentTimeMillis() - startTime));
-                if (adOutChargeListener != null) {
-                    adOutChargeListener.adError(info, code, msg);
+                if (adListener != null) {
+                    adListener.adError(info, code, msg);
                 }
             }
 
@@ -349,13 +346,17 @@ public class ListenerUtils {
             public void onRenderSuccess(View view, float width, float height) {
                 MidasNativeTemplateAd midasNativeTemplateAd = (MidasNativeTemplateAd) info.getMidasAd();
                 midasNativeTemplateAd.setAddView(view);
-                if (adOutChargeListener != null) {
-                    adOutChargeListener.adSuccess(info);
+                ViewGroup viewContainer = info.getAdParameter().getViewContainer();
+                if (viewContainer!=null) {
+                    viewContainer.removeAllViews();
+                    viewContainer.addView(view);
+                }
+                if (adListener != null) {
+                    adListener.adSuccess(info);
                 }
             }
         });
-        //dislike设置
-//        bindDislike(ttNativeExpressAd, false);
+
         if (ttNativeAd.getInteractionType() == TTAdConstant.INTERACTION_TYPE_DOWNLOAD) {
             ttNativeAd.setDownloadListener(new TTAppDownloadListener() {
                 @Override
@@ -396,6 +397,7 @@ public class ListenerUtils {
         if (adListener != null) {
             adListener.adSuccess(info);
         }
+        ttNativeAd.render();
     }
 
     /**
@@ -734,9 +736,17 @@ public class ListenerUtils {
      * 原生模板广告回调中间层（埋点可以埋到这里）
      *
      * @return 返回一个对外的监听
+     * @param adListener
      */
-    public static AdOutChargeListener getNativeTemplateAdChargeListener() {
-        return new AdOutChargeListener() {
+    public static AdNativeTemplateListener getNativeTemplateAdChargeListener(AdNativeTemplateListener adListener) {
+        return new AdNativeTemplateListener() {
+            @Override
+            public void adRenderSuccess(AdInfo adInfo) {
+                if (adListener!=null) {
+                    adListener.adRenderSuccess(adInfo);
+                }
+            }
+
             /**
              * 时间间隔
              * 记录填充到展示，展示到点击间隔
@@ -745,39 +755,42 @@ public class ListenerUtils {
 
             @Override
             public void adClose(AdInfo info) {
-                if (((MidasNativeTemplateAd) info.getMidasAd()).getAdOutChargeListener() != null) {
-                    ((MidasNativeTemplateAd) info.getMidasAd()).getAdOutChargeListener().adClose(info);
+                if (adListener!=null) {
+                    adListener.adClose(info);
                 }
                 StatisticUtils.advertisingClose(info, intervalTime);
             }
 
             @Override
             public void adSuccess(AdInfo info) {
-                if (((MidasNativeTemplateAd) info.getMidasAd()).getAdOutChargeListener() != null) {
-                    ((MidasNativeTemplateAd) info.getMidasAd()).getAdOutChargeListener().adSuccess(info);
+                if (adListener!=null) {
+                    adListener.adSuccess(info);
                 }
+
                 intervalTime = System.currentTimeMillis();
             }
 
             @Override
             public void adError(AdInfo info, int errorCode, String errorMsg) {
-                if (((MidasNativeTemplateAd) info.getMidasAd()).getAdOutChargeListener() != null) {
-                    ((MidasNativeTemplateAd) info.getMidasAd()).getAdOutChargeListener().adError(info, errorCode, errorMsg);
+                if (adListener!=null) {
+                    adListener.adError(info, errorCode, errorMsg);
                 }
+
             }
 
             @Override
             public void adExposed(AdInfo info) {
-                if (((MidasNativeTemplateAd) info.getMidasAd()).getAdOutChargeListener() != null) {
-                    ((MidasNativeTemplateAd) info.getMidasAd()).getAdOutChargeListener().adExposed(info);
+                if (adListener!=null) {
+                    adListener.adExposed(info);
                 }
+
                 advertisingOfferShow(info);
             }
 
             @Override
             public void adClicked(AdInfo info) {
-                if (((MidasNativeTemplateAd) info.getMidasAd()).getAdOutChargeListener() != null) {
-                    ((MidasNativeTemplateAd) info.getMidasAd()).getAdOutChargeListener().adClicked(info);
+                if (adListener!=null) {
+                    adListener.adClicked(info);
                 }
                 StatisticUtils.advertisingClick(info, intervalTime);
             }
